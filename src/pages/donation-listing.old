@@ -1,0 +1,159 @@
+// import React from "react";
+// import Navbar from "../components/Navbar";
+// import { Footer } from "../components/Footer";
+// import Sidebar from "../components/Sidebar.jsx";
+// import { Image, Input, Textarea } from "@chakra-ui/react";
+// import { Form } from "react-bootstrap";
+// import { Radio, Select, Space } from "antd";
+// import { useState } from "react";
+// import "antd/dist/antd.css";
+
+// const options = [];
+// for (let i = 10; i < 36; i++) {
+//   options.push({
+//     value: i.toString(36) + i,
+//     label: i.toString(36) + i,
+//   });
+// }
+// const handleChange = (value) => {
+//   console.log(`Selected: ${value}`);
+// };
+
+// const DonationListing = () => {
+//   const [size, setSize] = useState("middle");
+//   const handleSizeChange = (e) => {
+//     setSize(e.target.value);
+//   };
+//   return (
+//     <>
+//       <Navbar />
+//       <Sidebar>
+//         <div className="btn-list mt-5">
+//           <div className="d-flex">
+//             <button className="donate-btn2 shadow">Donation Listing</button>
+//             <button className="donatee-btn">Volunteer Listing</button>
+//           </div>
+//         </div>
+//         <div className="d-flex justify-content-between col-md-8">
+//           <p className="listing-txt mt-5 ms-3">Donation Listing</p>
+//           <button className="update-v-btn mt-5">Update</button>
+//         </div>
+//         <div>
+//           <form>
+//             <div className="mb-3 mt-5 col-md-5">
+//               <label
+//                 style={{
+//                   fontWeight: "500",
+//                   fontSize: "20px",
+//                   lineHeight: "24px",
+//                 }}
+//                 className="form-label"
+//               >
+//                 Charity Name
+//               </label>
+//               <Input
+//                 style={{ backgroundColor: "#E8E8E8" }}
+//                 type="tel"
+//                 className="form-control mt-2"
+//                 id="phone-number"
+//                 placeholder="Charity Name"
+//                 required
+//               />
+//             </div>
+//             <div className="mb-3 mt-4 col-md-5">
+//               <label
+//                 style={{
+//                   fontWeight: "500",
+//                   fontSize: "20px",
+//                   lineHeight: "24px",
+//                 }}
+//                 className="form-label"
+//               >
+//                 Description{" "}
+//               </label>
+//               <Textarea
+//                 style={{ backgroundColor: "#E8E8E8" }}
+//                 // type="tel"
+//                 className="form-control mt-2"
+//                 id="phone-number"
+//                 placeholder="Description"
+//                 rows={6}
+//                 required
+//               />
+//             </div>
+//             <div className="mb-3 mt-4 col-md-5">
+//               <label
+//                 style={{
+//                   fontWeight: "500",
+//                   fontSize: "20px",
+//                   lineHeight: "24px",
+//                 }}
+//                 className="form-label"
+//               >
+//                 URL to Donate Page
+//               </label>
+//               <Input
+//                 style={{ backgroundColor: "#E8E8E8" }}
+//                 type="tel"
+//                 className="form-control mt-2"
+//                 id="phone-number"
+//                 placeholder="URL"
+//                 required
+//               />
+//             </div>
+//             <div className="mb-3 mt-3 col-md-4">
+//               <label
+//                 style={{
+//                   fontWeight: "500",
+//                   fontSize: "20px",
+//                   lineHeight: "24px",
+//                 }}
+//                 className="form-label"
+//               >
+//                 Select a Category
+//               </label>
+//               <Form.Select
+//                 style={{ backgroundColor: "#E8E8E8", height: "50px" }}
+//                 // type="select"
+//                 className="form-control mt-2"
+//                 // id="phone-number"
+//                 placeholder="Name on card"
+//                 required
+//               >
+//                 <option value="volvo">education</option>
+//                 <option value="saab">education</option>
+//                 <option value="mercedes">education</option>
+//               </Form.Select>
+//             </div>
+//             <div className="mb-3 mt-3 col-md-4">
+//               <label
+//                 style={{
+//                   fontWeight: "500",
+//                   fontSize: "20px",
+//                   lineHeight: "24px",
+//                 }}
+//                 className="form-label"
+//               >
+//                 Keywords
+//               </label>
+//               <Select
+//                 mode="multiple"
+//                 size={size}
+//                 placeholder="Please select"
+//                 defaultValue={["Volunteer", "Animals"]}
+//                 onChange={handleChange}
+//                 style={{
+//                   width: "100%",
+//                 }}
+//                 options={options}
+//               />
+//             </div>
+//           </form>
+//         </div>
+//       </Sidebar>
+//       <Footer />
+//     </>
+//   );
+// };
+
+// export default DonationListing;

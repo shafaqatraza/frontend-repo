@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/createProfileModels/step2/step2Form.jsx", "src/components/onboarding/Signup/SignupForm.jsx", "src/components/onboarding/Login/LoginForm.jsx", "src/components/Sidebar.jsx", "src/pages/donation-listing.jsx"],
+  "exclude": ["node_modules"]
+}
