@@ -1308,6 +1308,7 @@ color: #E27832;
   font-weight: 800;
   line-height: 19px;
   color: #E27832;
+  margin-left: 22px;
 }
 .pay-main{
   height: 200px;
@@ -1687,6 +1688,46 @@ color: #E27832;
 .hiw-mt5{
   margin-top: 3rem;
 }
+.plans-wrap{
+  margin: 150px 0;
+}
+.c-single-card{
+  width: 300px;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.02), 0px 1px 12px rgba(0, 0, 0, 0.12);
+  padding: 14px 44px;
+}
+.c-card-wrapper{
+  display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 80px;
+  margin-top: 90px;
+}
+.tag-btn{
+  display: inline-block;
+    font-size: 10px;
+    line-height: 12px;
+    color: #FFFFFF;
+    font-weight: 600;
+    background: #E27832;
+    padding: 3px 10px;
+    width: 83px;
+    border-radius: 20px;
+    height: 29px;
+    text-align: center;
+    text-transform: uppercase;
+    float: right;
+}
+.ant-popover.wrapper-notify {
+  /* position: fixed; */
+  width: 470px;
+  max-width: 100%;
+}
+
 @media (max-width: 600px) {
   .cust-button {
     width: calc(100% - 24px);
@@ -1709,8 +1750,19 @@ color: #E27832;
   .hiw-box-rightWrap{
     flex-direction: column-reverse;
   }
+  .c-card-wrapper{
+    gap: 20px;
+  }
   .hiw-mt5{
     margin-top: 1.5rem;
+  }
+  .donate-btn2,
+  .donatee-btn{
+    width: 120px
+  }
+  .btn-list{
+    width: 240px;
+    max-width: 100%;
   }
   .step1-txt2{
     font-size: 11px;
