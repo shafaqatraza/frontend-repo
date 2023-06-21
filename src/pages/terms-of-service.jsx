@@ -72,7 +72,7 @@ const PrivacyPolicy = () => {
         <Box textAlign={'justify'}>
           <Text>
             By accessing or using our website (our "Website") or our mobile
-            application (our "Application") or collecting Good Deeds credits
+            application (our "Application") or collecting Good Deeds deed dollars
             (collectively our "Services"), you agree to be bound by our terms
             of service set forth herein (our "Terms of Service"). If you do
             not agree with our Terms of Service, your sole recourse is to
@@ -320,7 +320,7 @@ const PrivacyPolicy = () => {
               <br></br>
               <Text>
                 register for more than one account or use any other measures
-                in an attempt to gain additional Good Deeds credits or
+                in an attempt to gain additional Good Deeds deed dollars or
                 otherwise take advantage of the Services;
               </Text>
               <br></br>
@@ -532,37 +532,37 @@ const PrivacyPolicy = () => {
                   marginEnd={'6'}
                   color="primary.300"
                 >
-                  GOOD DEEDS CREDITS
+                  GOOD DEEDS DEED DOLLARS
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4} textAlign={'justify'}>
               <Text>
-                GOOD DEEDS will make available virtual Good Deeds credits to
+                GOOD DEEDS will make available virtual Good Deeds deed dollars to
                 its users, partners and/or other members of the GOOD DEEDS
-                community. To earn and use Good Deeds credits, you must have a
+                community. To earn and use Good Deeds deed dollars, you must have a
                 valid and active GOOD DEEDS Account. Any disputes regarding
-                pending credits will be held until resolution has been
+                pending deed dollars will be held until resolution has been
                 resolved. GOOD DEEDS at its sole discretion, may withhold or
-                withdrawal Good Deeds credits from users without notice. Good
-                Deeds may cease or cancel the Good Deeds credits distribution
+                withdrawal Good Deeds deed dollars from users without notice. Good
+                Deeds may cease or cancel the Good Deeds deed dollars distribution
                 at any time.
               </Text>
               <br></br>
               <Text>
-                Good Deeds credits have no cash, monetary or other value and
-                cannot be converted into any currency. Good Deeds credits may
+                Good Deeds deed dollars have no cash, monetary or other value and
+                cannot be converted into any currency. Good Deeds deed dollars may
                 only be used to barter with other GOOD DEEDS users and GOOD
-                DEEDS partners. Any transactions made with Good Deeds credits
+                DEEDS partners. Any transactions made with Good Deeds deed dollars
                 are non-refundable.
               </Text>
               <br></br>
               <Text>
                 You may not sell, charge or otherwise dispose of any Good
-                Deeds credits except in accordance with such conditions as we
+                Deeds deed dollars except in accordance with such conditions as we
                 may prescribe from time to time. Users will be able to
-                transfer, donate or gift any earned Good Deeds credits between
+                transfer, donate or gift any earned Good Deeds deed dollars between
                 Good Deeds users, partners or affiliates.
               </Text>
               <br></br>

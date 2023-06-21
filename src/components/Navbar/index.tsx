@@ -426,7 +426,7 @@ export default function Navbar(props: any) {
             <SignupModal
               show={showModel}
               setShow={setShowModel}
-              TitleModal="Sign up and receive 100 credits"
+              TitleModal="Sign up and receive 100 deed dollars"
               body={
                 <SignupForm
                   userData={data}
@@ -561,7 +561,7 @@ export default function Navbar(props: any) {
                   currentStep={2}
                   lastStep={false}
                   image={explorepegiun.src}
-                  para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual credits that can be used to acquire things you need."
+                  para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn deed dollars that can be used to acquire things you need."
                   show={showModel}
                   setShowModel={setShowModel}
                   goNext={() => {
@@ -587,7 +587,7 @@ export default function Navbar(props: any) {
                 <InnerSection
                   currentStep={3}
                   image={exchangepegiun.src}
-                  para="Receive or provide your items and services in person or remotely. Don't worry — your credits are pending until the transaction successfully happens."
+                  para="Receive or provide your items and services in person or remotely. Don't worry — your deed dollars are pending until the transaction successfully happens."
                   show={showModel}
                   setShowModel={setShowModel}
                   goNext={() => {
@@ -930,7 +930,7 @@ export default function Navbar(props: any) {
                         fontWeight={700}
                         color={'#E27832'}
                       >
-                        {getLoginData()?.user_profile.credits} CREDITS
+                        {getLoginData()?.user_profile.credits} DEED DOLLARS
                       </Text>
 
                       <Button

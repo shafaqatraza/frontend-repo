@@ -21,7 +21,7 @@ const SocialServices = () => {
           <p className="paragraph pt-5">
             <span className="good-deeds">
               <span style={{ color: "#183553" }}>Need more</span>{" "}
-              <span style={{ color: "#E27832" }}>Credits</span>
+              <span style={{ color: "#E27832" }}>Deed Dollars</span>
               <span style={{ color: "#183553" }}>?</span>
             </span>
           </p>

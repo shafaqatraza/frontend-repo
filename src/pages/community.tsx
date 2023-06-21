@@ -169,7 +169,7 @@ const Community = () => {
                             title: "Spread the word about Good Deeds",
                             sublist: [
                                 { description: "Spread the word about the amazing things you are giving and receiving on the Good Deeds site by posting on social media and tagging #gooddeedsinaction and" },
-                                { description: "Influencers: Learn how you can be an official Good Deeds influencer, earning valuable virtual credits to use on the website. Contact Amanda Diplo, amanda@gooddeeds.ca to learn more on how to get involved." },
+                                { description: "Influencers: Learn how you can be an official Good Deeds influencer, earning valuable deed dollars to use on the website. Contact Amanda Diplo, amanda@gooddeeds.ca to learn more on how to get involved." },
                             ]
                         },
                         {

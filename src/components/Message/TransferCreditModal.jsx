@@ -63,7 +63,7 @@ const TransferCreditModal = (props) => {
             >
               <Box>
                 <Text mb={'5px'} fontSize={'12px'} color="#979797">
-                  Enter Credits Here
+                  Enter Deed Dollars Here
                 </Text>
                 <Input
                   variant="unstyled"
@@ -83,7 +83,7 @@ const TransferCreditModal = (props) => {
                     creditAmount ? '#E27832' : isMobile ? '#979797' : '#E27832'
                   }
                 >
-                  Credits
+                  Deed Dollars
                 </Text>
               </Box>
             </Box>
@@ -103,19 +103,19 @@ const TransferCreditModal = (props) => {
                 fontSize="md"
                 mb="15px"
                 isLoading={isLoading}
-                onClick={() => 
+                onClick={() =>
                   {
                     // console.log('transaction submit')
                     getMessage(messageInfo.chat_id, messageInfo.receiver_id, messageInfo.listing_id, userId, {}, {})
                     submit()
                   }}
               >
-                Send Credits
+                Send Deed Dollars
               </Button>
             </Center>
           ) : null}
           <Text color={'black'} style={isMobile ? {paddingBottom:'12px'} : {}}>
-            Credits will remain pending until the completed deed has been
+            Deed Dollars will remain pending until the completed deed has been
             confirmed by both users.
           </Text>
           {isMobile ? null : (
@@ -128,14 +128,14 @@ const TransferCreditModal = (props) => {
                 size="md"
                 fontSize="md"
                 isLoading={isLoading}
-                onClick={() => 
+                onClick={() =>
                   {
                     // console.log('transaction submit')
                     getMessage(messageInfo.chat_id, messageInfo.receiver_id, messageInfo.listing_id, userId, {}, {})
                     submit()
                   }}
               >
-                Send Credits
+                Send Deed Dollars
               </Button>
             </Center>
           )}

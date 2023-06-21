@@ -709,7 +709,7 @@ function Browse(props) {
                                   onChangePrice(e.target.value, 'min')
                                 } else onChangePrice(0, 'min');
                               }}
-                              defaultValue={`${minPrice} credits`}
+                              defaultValue={`${minPrice} deed dollars`}
                             />
                             <Input
                               type="text"
@@ -735,7 +735,7 @@ function Browse(props) {
                           <HStack spacing="6">
                             <Input
                               type="number"
-                              placeholder="100 credits"
+                              placeholder="100 deed dollars"
                               w={92}
                               h={34}
                               bgColor={'grey.200'}

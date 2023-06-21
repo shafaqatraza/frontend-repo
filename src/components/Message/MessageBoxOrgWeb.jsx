@@ -113,7 +113,7 @@ const MessageBoxOrgWeb = (props) => {
 		}
 	}, []);
 
-	//	New chat notification handler	
+	//	New chat notification handler
     useEffect(() => {
 		Pusher.logToConsole = false;
 		var pusher = new Pusher(`${Pusher_key}`, {
@@ -138,11 +138,11 @@ const MessageBoxOrgWeb = (props) => {
 
 
 
-	//	Send message handler	
+	//	Send message handler
 	const sendMessageHandler = async () => {
 		if (message != '') {
 			setLastMessage(message)
-			
+
 			const data = {
 				message: message,
 				sender_id: userId,
@@ -181,7 +181,7 @@ const MessageBoxOrgWeb = (props) => {
 			element.scrollTop = element.scrollHeight + 200
 		}
 	}
-    
+
 	// New message notification handler
 	useEffect(() => {
 		let pusherNotification = {
@@ -280,7 +280,7 @@ const MessageBoxOrgWeb = (props) => {
 		}
 	)
     console.log('aaaaaaa204', conversationData)
-    //=========================================================RETURN==================================================================	
+    //=========================================================RETURN==================================================================
   return (
     <Box
         position={'relative'}
@@ -325,7 +325,7 @@ const MessageBoxOrgWeb = (props) => {
                         </Flex>
                     </Link>
                 </Flex>
-                
+
             </Flex>
         </Box>
 
@@ -346,7 +346,7 @@ const MessageBoxOrgWeb = (props) => {
                     </Text>
                     <Text ml={10} fontWeight={500} fontSize={14}>
                         {userChatInformation[0].listing.credits}{' '}
-                        Credits
+                        Deed Dollars
                     </Text>
                 </Box>
             </Flex>
@@ -386,7 +386,7 @@ const MessageBoxOrgWeb = (props) => {
             pb={5}
             background="#fff"
         >
-            
+
             <Flex
                 justifyContent={'center'}
                 alignItems={'center'}
