@@ -169,7 +169,7 @@ export const ProductSingleCard = (props) => {
           </Text>
           {!(post_type == 'donation') &&
             <Text fontWeight="bold" fontSize={{ base: '14px', sm: 'md' }}>
-              {credit_amount} credits
+              {credit_amount} Deed Dollars
             </Text>
           }
           <Text color={'grey'} fontSize={{ base: '12px', sm: '12px' }}>

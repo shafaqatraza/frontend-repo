@@ -141,7 +141,7 @@ export const Banner: React.FC<{}> = () => {
                     dubShow.signUp = true
                     setShowModel(dubShow)
                   }}
-                >Sign up and get 100 FREE Deed Dollars!</button>
+                >Sign up and get 100 FREE deed dollars!</button>
               }
             </div>
           </div>
@@ -315,7 +315,7 @@ export const Banner: React.FC<{}> = () => {
               currentStep={2}
               lastStep={false}
               image={explorepegiun.src}
-              para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual credits that can be used to acquire things you need."
+              para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn deed dollars that can be used to acquire things you need."
               show={showModel}
               setShowModel={setShowModel}
               goNext={() => {

@@ -152,12 +152,78 @@ const VolunteerCategories = () => {
           </Box>
           <div>
             <p style={{ fontSize: "clamp(16px, 2.2vw + 0.9rem, 24px)", lineHeight: "29px", fontWeight: "700" }} >Popular Categories</p>
-            <div className="mt-3 mb-5 data-charity flex-wrap ms-2">
-              <Image src={Rec1.src} alt={"Image"} />
-              <Image className="mt-3 mt-md-0" src={Rect2.src} alt={"Image"} />
-              <Image className="mt-3 mt-md-0" src={Re3.src} alt={"Image"} />
-              <Image className="mt-3 mt-md-0" src={Rect.src} alt={"Image"} />
-              <Image className="mt-3 mt-md-0" src={Rect4.src} alt={"Image"} />
+            <div className="mt-3 mb-5 data-charity flex-wrap">
+              <div className="position-relative">
+                <Image src={Rec1.src} alt={"Image"} />
+                <Text
+                  fontSize="14px"
+                  fontWeight="600"
+                  lineHeight="16.94px"
+                  color="#000000"
+                  textAlign="center"
+                  position="absolute"
+                  top="50%"
+                  left="50%"
+                  transform="translate(-50%, -50%)"
+                >Spa & Beauty </Text>
+              </div>
+              <div className="position-relative mt-3 mt-md-0">
+                <Image src={Rect2.src} alt={"Image"} />
+                <Text
+                  fontSize="14px"
+                  fontWeight="600"
+                  lineHeight="16.94px"
+                  color="#000000"
+                  textAlign="center"
+                  position="absolute"
+                  top="50%"
+                  left="50%"
+                  transform="translate(-50%, -50%)"
+                >Health & Wellness</Text>
+              </div>
+              <div className="position-relative mt-3 mt-md-0">
+                <Image src={Re3.src} alt={"Image"} />
+                <Text
+                  fontSize="14px"
+                  fontWeight="600"
+                  lineHeight="16.94px"
+                  color="#000000"
+                  textAlign="center"
+                  position="absolute"
+                  top="50%"
+                  left="50%"
+                  transform="translate(-50%, -50%)"
+                >Electronics</Text>
+              </div>
+              <div className="position-relative mt-3 mt-md-0">
+                <Image src={Rect4.src} alt={"Image"} />
+                <Text
+                  fontSize="14px"
+                  fontWeight="600"
+                  lineHeight="16.94px"
+                  color="#000000"
+                  textAlign="center"
+                  position="absolute"
+                  top="50%"
+                  left="50%"
+                  transform="translate(-50%, -50%)"
+                >Clothing & Apparel</Text>
+              </div>
+              <div className="position-relative mt-3 mt-md-0">
+                <Image src={Rect.src} alt={"Image"} />
+                <Text
+                  fontSize="14px"
+                  fontWeight="600"
+                  lineHeight="16.94px"
+                  color="#000000"
+                  textAlign="center"
+                  position="absolute"
+                  top="50%"
+                  left="50%"
+                  transform="translate(-50%, -50%)"
+                >Home Decor</Text>
+              </div>
+
             </div>
           </div>
         </div>

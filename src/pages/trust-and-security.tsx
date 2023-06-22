@@ -267,7 +267,7 @@ const TrustAndSecurity = () => {
                             description: "We collect and use information for business and commercial purposes in accordance with the practice described in this Privacy Policy. Our business purposes for collecting and using information include:",
                             sublist: [
                                 {
-                                    description: "To operate and make available the Good Deeds Platform. We use your data to connect you with other users to enable the posting of, selection for, completion of, and virtual credits for products or Services, in order to fulfill our contracts with users;"
+                                    description: "To operate and make available the Good Deeds Platform. We use your data to connect you with other users to enable the posting of, selection for, completion of, and deed dollars for products or Services, in order to fulfill our contracts with users;"
                                 },
                                 {
                                     description: "For fraud prevention, on the basis of our legitimate interests in ensuring a safe and secure environment in which Clients and users can meet and conduct business, and in order to comply with our legal obligations;"
@@ -338,7 +338,7 @@ const TrustAndSecurity = () => {
                         },
                         {
                             title: "Third Party Agents. ",
-                            description: "We share information, including Identity Information, with entities that process information on our behalf for our business purposes. Third Party Agents assist us with services such as virtual credits processing, data analytics, marketing and advertising, website hosting, fraud prevention and detection, communication services, and technical support. We contractually prohibit our Third Party Agents from retaining, using, or disclosing information about you for any purposes other than performing the services for us, although we may permit them to use information that does not identify you (including information that has been aggregated or de-identified) for any purpose except as prohibited by applicable law."
+                            description: "We share information, including Identity Information, with entities that process information on our behalf for our business purposes. Third Party Agents assist us with services such as deed dollars processing, data analytics, marketing and advertising, website hosting, fraud prevention and detection, communication services, and technical support. We contractually prohibit our Third Party Agents from retaining, using, or disclosing information about you for any purposes other than performing the services for us, although we may permit them to use information that does not identify you (including information that has been aggregated or de-identified) for any purpose except as prohibited by applicable law."
                         },
                         {
                             description: "To operate the Good Deeds Platform, we may share your information with our agents, representatives, vendors and service providers (“Third Party Agents”) so they can provide us with support services as follows:",

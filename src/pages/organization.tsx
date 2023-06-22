@@ -12,12 +12,13 @@ import volunteer from "../assets/imgs/volunteer.png";
 import listing from "../assets/imgs/listing.png";
 import donation from "../assets/imgs/donation.png";
 import giving from "../assets/imgs/giving.png";
-import { color, Image } from "@chakra-ui/react";
+import { color, Image, Button } from "@chakra-ui/react";
 import Candadogo from "../assets/imgs/Canadogo.png";
 import Link from "next/link";
 import Sidebar from "../components/Sidebar";
 import { accessToken, baseUrl } from "../components/Helper/index";
 import axios from "axios";
+import { useRouter } from 'next/router'
 
 const organization = () => {
   const [user, setUser] = useState(null);
@@ -26,6 +27,10 @@ const organization = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hours, setHours] = useState({});
+  const router = useRouter()
+
+  console.log('fffdddss', data.length)
+
   useEffect(() => {
     axios
       .get(`${baseUrl}/profile/info`, {
@@ -88,19 +93,19 @@ const organization = () => {
         console.log(err);
         setLoading(false);
       });
-      axios.get(`${baseUrl}/organization/subscriptions/hours-data?org=${organization}`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }).then((res)=>{
-        setHours(res.data);
+    axios.get(`${baseUrl}/organization/subscriptions/hours-data?org=${organization}`, {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }).then((res) => {
+      setHours(res.data);
 
-      }).catch((err)=>{
-        // console.log(err.response.message,"mes");
+    }).catch((err) => {
+      // console.log(err.response.message,"mes");
 
 
-      })
+    })
   }, [organization]);
   return (
     <div>
@@ -220,7 +225,19 @@ const organization = () => {
                       )}
                     </div>
                     <div className="text-center mt-5 mb-5">
-                      <button className="posting-btn">View Postings</button>
+                      <Button
+                        variant={'solid'}
+                        colorScheme={'orange'}
+                        style={{ borderRadius: 50 }}
+                        size={'md'}
+                        fontSize="12px"
+                        fontWeight="600"
+                        width="170px"
+                        maxW="100%"
+                        onClick={() => { data?.length > 1 ? router.push('/listings') : router.push('/create-listing') }}
+                      >
+                        View Postings
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -232,43 +249,45 @@ const organization = () => {
                     <p className="p-txt mt-3">Plan</p>
                   </div>
                   {
-                  // @ts-ignore: Unreachable code error
-                  hours && Object.keys(hours).length >0 ? (
-        <div className="text-center p-txt2 mt-3">
-          {
-          // @ts-ignore: Unreachable code error
-          hours.used_hours}/{hours.total_hours} hours used
-            <div className="card-body">
-                    <div className="progress">
-                      <div
-                        className="progress-bar"
-                        role="progressbar"
-                        style={{  width: `${
+                    // @ts-ignore: Unreachable code error
+                    hours && Object.keys(hours).length > 0 ? (
+                      <div className="text-center p-txt2 mt-3">
+                        {
                           // @ts-ignore: Unreachable code error
-                          hours.percentage}%`, backgroundColor: "#183553" }}
-                        aria-valuenow={25}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      ></div>
-                    </div>
-                    <Link href="/select-plan">
-                      <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
-                        Upgrade
-                      </button>
-                    </Link>
-                  </div>
-        </div>
-      ) : (
-        <>
-        <p className="text-center mt-3 p-txt2 mb-3">There is no Plan subscribed</p>
-        <Link href="/select-plan">
-                      <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
-                        Subscribe
-                      </button>
-                    </Link>
-        </>
+                          hours.used_hours}/{hours.total_hours} hours used
+                        <div className="card-body">
+                          <div className="progress">
+                            <div
+                              className="progress-bar"
+                              role="progressbar"
+                              style={{
+                                width: `${
+                                  // @ts-ignore: Unreachable code error
+                                  hours.percentage}%`, backgroundColor: "#183553"
+                              }}
+                              aria-valuenow={25}
+                              aria-valuemin={0}
+                              aria-valuemax={100}
+                            ></div>
+                          </div>
+                          <Link href="/select-plan">
+                            <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
+                              Upgrade
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <p className="text-center mt-3 p-txt2 mb-3">There is no Plan subscribed</p>
+                        <Link href="/select-plan">
+                          <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
+                            Subscribe
+                          </button>
+                        </Link>
+                      </>
 
-      )}
+                    )}
 
                 </div>
                 <div className="card mb-5 shadow mt-5 border-0">

@@ -1497,7 +1497,7 @@ const PrivacyPolicy = () => {
                           To operate and make available the Good Deeds
                           Platform. We use your data to connect you with other
                           users to enable the posting of, selection for,
-                          completion of, and virtual credits for products or
+                          completion of, and deed dollars for products or
                           Services, in order to fulfill our contracts with
                           users;
                         </ListItem>
@@ -1657,7 +1657,7 @@ const PrivacyPolicy = () => {
                       Identity Information, with entities that process
                       information on our behalf for our business purposes.
                       Third Party Agents assist us with services such as
-                      virtual credits processing, data analytics, marketing
+                      deed dollars processing, data analytics, marketing
                       and advertising, website hosting, fraud prevention and
                       detection, communication services, and technical
                       support. We contractually prohibit our Third Party
