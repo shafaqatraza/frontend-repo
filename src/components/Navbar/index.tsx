@@ -562,11 +562,7 @@ export default function Navbar(props: any) {
                   currentStep={2}
                   lastStep={false}
                   image={explorepegiun.src}
-<<<<<<< HEAD
                   para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual deed dollars that can be used to acquire things you need."
-=======
-                  para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn deed dollars that can be used to acquire things you need."
->>>>>>> develop
                   show={showModel}
                   setShowModel={setShowModel}
                   goNext={() => {
