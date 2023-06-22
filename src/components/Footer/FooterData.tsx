@@ -13,35 +13,38 @@ export interface LinkGroup {
 
 export const links: LinkGroup[] = [
   {
-    title: "Browse",
-    href: "/browse",
+    title: "Campaigns",
+    href: "/students-landing",
     links: [
-      { label: "Wanted", href: "/browse?type=wanted" },
-      { label: "Offering", href: "/browse?type=offering" },
+      { label: "High School Students", href: "/students-landing" },
+      { label: "Organizations", href: "/charities" },
     ],
   },
   {
-    title: "About",
+    title: "Discover",
+    href: "/about",
+    links: [
+      { label: "Items", href: "/browse?type=offering&activeTab=0" },
+      { label: "Services", href: "/browse?type=offering&activeTab=1" },
+      { label: "Volunteer", href: "/browse?type=offering&activeTab=2" },
+      { label: "Donate", href: "/browse?type=offering&activeTab=3" },
+    ],
+  },
+  {
+    title: "ABOUT",
     href: "/about",
     links: [
       { label: "About Good Deeds", href: "/about" },
-      { label: "How to Use", href: "/how-to-use" },
       { label: "Community Guidelines", href: "/community" },
-      { label: "Accessibility", href: "/accessibility" },
-      { label: "Diversity & Inclusion", href: "/diversity" },
-      { label: "Careers", href: "/careers" },
-      // { label: "Trust & Security", href: "/trust-and-security" },
-      // { label: "Integrations", href: "#" },
-      // { label: "SAML SSO", href: "#" },
+      { label: "Advertise With Us", href: "/advertisement-with-us" },
+
     ],
   },
   {
-    title: "Support",
+    title: "SUPPORT",
     href: "/contact-us",
     links: [
       { label: "Contact Us", href: "/contact-us" },
-      { label: "Organization", href: "/organization" },
-      { label: "Advertise With Us", href: "/advertisement-with-us" },
 
     ],
   },
@@ -66,8 +69,8 @@ type FooterLink = {
 };
 
 export const footerLinks: FooterLink[] = [
-  { label: "Terms of Service", href: "/terms-of-service" },
-  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms & Conditions", href: "/terms-of-service" },
+  { label: "Privacy", href: "/privacy-policy" },
   // { label: 'Offer terms', href: '#' },
   // { label: 'Legal notice', href: '#' },
   // { label: 'Sitemap', href: '#' }

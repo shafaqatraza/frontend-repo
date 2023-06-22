@@ -113,7 +113,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 
 export default function Navbar(props: any) {
 
-  console.log('getLoginData', getLoginData())
+  // console.log('getLoginData', getLoginData())
 
   // const audio= new Audio('https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7');
 
@@ -209,13 +209,14 @@ export default function Navbar(props: any) {
         // Handle response data here
       })
       .catch((error) => {
-        // console.log('errrr org', error.response.data);
-        let errors = error.response?.data.errors;
-        Object.entries(errors).map((error) => {
-          toast({ title: error[1] as ReactNode, status: "error" });
-        });
+        console.log('errrr org', error.response.data.message);
+        toast({ title: error?.response?.data.message, status: "error" })
 
-        // toast({ position: "top", title: "Please fill form.", status: "error" })
+        // let errors = error.response?.data.errors;
+        // Object.entries(errors).map((error) => {
+        //   toast({ title: error[1], status: "error" })
+        //   // console.log('single error', error)
+        // });
 
       });
 
@@ -561,7 +562,7 @@ export default function Navbar(props: any) {
                   currentStep={2}
                   lastStep={false}
                   image={explorepegiun.src}
-                  para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual credits that can be used to acquire things you need."
+                  para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn deed dollars that can be used to acquire things you need."
                   show={showModel}
                   setShowModel={setShowModel}
                   goNext={() => {
@@ -623,6 +624,7 @@ export default function Navbar(props: any) {
                   <Link style={{ color: "black", margin: "0 2rem", fontWeight: "700", fontSize: "16px" }} onClick={() => setOpenDropdown(!openDropdown)} > Discover </Link>
                   {openDropdown &&
                     <Stack direction={'column'} position='absolute' w={'220px'} bg={'#FFF'} top="45px">
+                      <Link href="/about" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>About us</Link>
                       <Link href="/browse?type=offering&activeTab=0" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Items</Link>
                       <Link href="/browse?type=offering&activeTab=1" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Services</Link>
                       <Link href="/browse?type=offering&activeTab=3" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Donate</Link>

@@ -100,8 +100,8 @@ const Careers = () => {
                             description: "Good Deeds practices a method-neutral system that provides team members with the freedom to function at their best according to their natural rhythm. We have faith that the most well-rested minds and bodies can achieve wonders.",
                         },
                         {
-                            title: "Free Virtual Credits  - ",
-                            description: "You’re instantly a brand ambassador once you’re on board. As such, we’d like to provide you with a superb orientation of the platform with free virtual credits. We believe your firsthand experience will help shape a better understanding of the Good Deeds mission and community.",
+                            title: "Free Deed Dollars  - ",
+                            description: "You’re instantly a brand ambassador once you’re on board. As such, we’d like to provide you with a superb orientation of the platform with free deed dollars. We believe your firsthand experience will help shape a better understanding of the Good Deeds mission and community.",
                         },
                         {
                             description: "If you’re interested in joining the Good Deeds family, please reach out and let us know how you wish to contribute. One of our team members will contact you shortly to get to know you a little better before proceeding with the rest of the hiring process."
