@@ -37,7 +37,7 @@ const CreditTransferred = (props) => {
                     }}
                 />
                 <Box pt={5} pb={10} pl={20} pr={20} >
-                    <Text textAlign={"center"} fontWeight={600} fontSize={"24px"} mb={10}>Credits Transferred</Text>
+                    <Text textAlign={"center"} fontWeight={600} fontSize={"24px"} mb={10}>Deed Dollars Transferred</Text>
                     <Center>
                         <Box
                             height={"150px"}

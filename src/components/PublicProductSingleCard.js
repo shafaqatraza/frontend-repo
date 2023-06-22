@@ -101,7 +101,7 @@ export const PublicProductSingleCard = (props) => {
             {title}
           </Text>
           <Text fontWeight="bold" fontSize={{ base: '14px', sm: 'md' }}>
-            {credit_amount} credits
+            {credit_amount} deed dollars
           </Text>
           <Text color={'grey'} fontSize={{ base: '12px', sm: '12px' }}>
             {created_listing}

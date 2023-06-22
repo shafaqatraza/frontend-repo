@@ -308,7 +308,7 @@ const CreateListing = () => {
                 Keywords
               </label>
               <Select
-                mode="multiple"
+                mode="tags"
                 // @ts-ignore: Unreachable code error
                 size={size}
                 placeholder="Please select"
@@ -328,7 +328,7 @@ const CreateListing = () => {
                   width: "100%",
                 }}
                 // @ts-ignore: Unreachable code error
-                options={options}
+                // options={options}
               />
             </div>
             <div className="mb-3 mt-5 col-md-6">

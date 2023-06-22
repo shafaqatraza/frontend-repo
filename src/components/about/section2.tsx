@@ -26,7 +26,7 @@ export const Section2 = () => (
             // color="primary.300"
             pl="6"
             fontWeight={400}>
-            Good Deeds is a platform where contributions are rewarded by encouraging reciprocity through the offering of goods and services. In exchange for donating things that you no longer need or providing services, you earn virtual credits that can be used in the marketplace. We believe that a good deed should be rewarded and that a non-monetized society can help shape communities and beyond.
+            Good Deeds is a platform where contributions are rewarded by encouraging reciprocity through the offering of goods and services. In exchange for donating things that you no longer need or providing services, you earn virtual deed dollars that can be used in the marketplace. We believe that a good deed should be rewarded and that a non-monetized society can help shape communities and beyond.
             <br />
             <br />
             Good Deeds is the world’s first 100% free-to-use marketplace that promotes and recompenses the act of giving. By giving away things we may no longer need, we create a cycle of kindness + reward that helps reduce the environmental impact on the planet, while also promoting mental and physical benefits, nurturing relationships and expanding our social influence.

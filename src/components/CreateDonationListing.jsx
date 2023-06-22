@@ -296,7 +296,7 @@ const CreateDonationListing = () => {
               Keywords
             </label>
             <Select
-              mode="multiple"
+              mode="tags"
               size={size}
               placeholder="Please select"
               // defaultValue={["Volunteer", "Animals"]}
@@ -313,7 +313,7 @@ const CreateDonationListing = () => {
               style={{
                 width: "100%",
               }}
-              options={options}
+              // options={options}
             />
           </div>
           <label

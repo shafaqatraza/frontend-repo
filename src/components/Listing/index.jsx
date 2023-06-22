@@ -615,7 +615,7 @@ const CreateListingForm = () => {
                           : {}
                       }
                     />
-                    <Text ml="4"> Credits</Text>
+                    <Text ml="4"> Deed Dollars</Text>
                   </Flex>
                 </NumberInput>
                 {validator.message(
