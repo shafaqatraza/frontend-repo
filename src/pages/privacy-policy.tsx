@@ -1657,7 +1657,11 @@ const PrivacyPolicy = () => {
                       Identity Information, with entities that process
                       information on our behalf for our business purposes.
                       Third Party Agents assist us with services such as
+<<<<<<< HEAD
                       virtual deed dollars processing, data analytics, marketing
+=======
+                      deed dollars processing, data analytics, marketing
+>>>>>>> develop
                       and advertising, website hosting, fraud prevention and
                       detection, communication services, and technical
                       support. We contractually prohibit our Third Party

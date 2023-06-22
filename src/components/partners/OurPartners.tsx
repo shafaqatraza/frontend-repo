@@ -1,4 +1,4 @@
-import { Image } from "@chakra-ui/react";
+import { Image, Button } from "@chakra-ui/react";
 import React from "react";
 import part1 from "../../assets/imgs/part1.png";
 import part2 from "../../assets/imgs/part2.png";
@@ -11,7 +11,13 @@ import partner4 from "../../assets/imgs/partner4.png";
 import partp1 from "../../assets/imgs/partp1.png";
 import pennyearncreds from "../../assets/imgs/pennyearncreds.png";
 import pennyshop from "../../assets/imgs/penyshop.png";
+import { isLogin } from '../Helper/index'
+import { useToast } from '@chakra-ui/toast'
+import { useRouter } from 'next/router'
+
 const ourPartners = () => {
+  const toast = useToast()
+  const router = useRouter()
   return (
     <>
       <div className="container">
@@ -74,7 +80,23 @@ const ourPartners = () => {
                       Make a real difference in your community by listing your unwanted stuff or by providing a service.
                     </p>
                     <div className="d-flex justify-content-center mt-4">
-                      <a className="p-btn1 text-decoration-none" href="#how_it_works">Make a difference</a>
+                      <Button
+                        variant={'solid'}
+                        colorScheme={'orange'}
+                        style={{ borderRadius: 50 }}
+                        size={'md'}
+                        fontSize="12px"
+                        fontWeight="600"
+                        width="170px"
+                        maxW="100%"
+                        onClick={
+                          () => {
+                            isLogin() ? router.push('/listing/create') : toast({ title: 'Please login to list an item', status: "error", position: 'top' })
+                          }
+                        }
+                      >
+                        Make a difference
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -109,7 +131,20 @@ const ourPartners = () => {
                       Every Deed Dollar earned equals one dollar in value.
                     </p>
                     <div style={{ marginTop: "3.9rem" }} className="d-flex justify-content-center">
-                      <a className="p-btn1 text-decoration-none" href="#how_it_works">Earn Rewards</a>
+                      <a href="#need_more_credits">
+                        <Button
+                          variant={'solid'}
+                          colorScheme={'orange'}
+                          style={{ borderRadius: 50 }}
+                          size={'md'}
+                          fontSize="12px"
+                          fontWeight="600"
+                          width="170px"
+                          maxW="100%"
+                        >
+                          Earn Rewards
+                        </Button>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -144,7 +179,20 @@ const ourPartners = () => {
                       Exchange your Deed Dollars for items or services in the marketplace.
                     </p>
                     <div style={{ marginTop: "2.7rem" }} className="d-flex justify-content-center">
-                      <a className="p-btn1 text-decoration-none" href="#how_it_works">Shop the Marketplace</a>
+                      {/* <a className="p-btn1 text-decoration-none" href="#how_it_works">Shop the Marketplace</a> */}
+                      <Button
+                        variant={'solid'}
+                        colorScheme={'orange'}
+                        style={{ borderRadius: 50 }}
+                        size={'md'}
+                        fontSize="12px"
+                        fontWeight="600"
+                        width="170px"
+                        maxW="100%"
+                        onClick={() => { router.push('/browse?type=offering') }}
+                      >
+                        Shop the Marketplace
+                      </Button>
                     </div>
                   </div>
                 </div>

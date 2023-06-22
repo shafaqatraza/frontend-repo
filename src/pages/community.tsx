@@ -234,7 +234,7 @@ const Community = () => {
                 list={
                     [
                         {
-                            description: "If you are being harassed, or if you notice that someone else in the Good Deeds Community is being harassed, please contact a Good Deeds team member via email (all reports are confidential): \nAmanda Diplo, Community Strategist: amanda@gooddeeds.ca"
+                            description: "If you are being harassed, or if you notice that someone else in the Good Deeds Community is being harassed, please contact a Good Deeds team member via email (all reports are confidential): \nAmanda Diplo, Community Strategist: admin@gooddeeds.ca"
                         },
                         {
                             description: "If a member engages in behavior that violates this code of conduct, they may be given a warning or they may be asked to leave the community, depending on the severity of the behavior. If a member is asked to stop any harassing behavior, they are expected to comply immediately. \nTwo quick notes:",

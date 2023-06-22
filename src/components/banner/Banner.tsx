@@ -141,7 +141,7 @@ export const Banner: React.FC<{}> = () => {
                     dubShow.signUp = true
                     setShowModel(dubShow)
                   }}
-                >Sign up and get 100 FREE Deed Dollars!</button>
+                >Sign up and get 100 FREE deed dollars!</button>
               }
             </div>
           </div>

@@ -16,6 +16,7 @@ const SocialServices = () => {
       <div
         className="container-fluid"
         style={{ backgroundColor: "rgba(222, 227, 230, 0.5)" }}
+        id="need_more_credits"
       >
         <div className="container">
           <p className="paragraph pt-5">
@@ -133,12 +134,12 @@ const SocialServices = () => {
               </p>
               <p
                 style={{
-                  fontSize: "clamp(16px, 2.5vw, 32px )",
+                  fontSize: "clamp(14px, 2.5vw, 24px )",
                   color: "#183553",
                   fontWeight: "600",
-                  lineHeight: "clamp(18px, 2.5vw, 38px)",
+                  lineHeight: "clamp(16px, 2.5vw, 29px)",
                 }}
-                className="my-5 text-center"
+                className="my-3 my-md-5 text-center"
               >
                 Unleash the force of good. Our paid subscriptions empower credible organizations in their quest for volunteers and vital donations.
               </p>
@@ -159,12 +160,12 @@ const SocialServices = () => {
               </p>
               <p
                 style={{
-                  fontSize: "clamp(16px, 2.5vw, 32px )",
+                  fontSize: "clamp(14px, 2.5vw, 24px )",
                   color: "#183553",
                   fontWeight: "600",
-                  lineHeight: "clamp(18px, 2.5vw, 38px)",
+                  lineHeight: "clamp(16px, 2.5vw, 29px)",
                 }}
-                className="my-5 text-center"
+                className="my-3 my-md-5 text-center"
               >
                 Empower change through powerful partnerships. Ad fees from our dedicated corporate allies fuel our mission to create a better world.
               </p>
@@ -173,12 +174,12 @@ const SocialServices = () => {
         </div>
         <div className="container">
           <p
-            className="text-center my-5"
+            className="my-3 my-md-5 text-center"
             style={{
-              fontSize: "clamp(16px, 2.5vw, 32px )",
+              fontSize: "clamp(14px, 2.5vw, 24px )",
               color: "#183553",
               fontWeight: "600",
-              lineHeight: "clamp(18px, 2.5vw, 38px)",
+              lineHeight: "clamp(16px, 2.5vw, 29px)",
             }}
           >
             Fueling the spirit of giving. Good Deeds thrives on the generosity of our community. Donations flow freely, making a direct impact. Our subscribers power our platform, ensuring it remains vibrant and user-friendly. Together, we cultivate a haven of kindness where we all pay it forward.

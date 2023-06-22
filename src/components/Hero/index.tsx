@@ -45,7 +45,7 @@ export default function WithBackgroundImage() {
             fontSize={useBreakpointValue({ base: 'lg' })}
           >
             Browse items and services available in your community, or get
-            started offering your own and earn virtual deed dollars.
+            started offering your own and earn deed dollars.
           </Text>
         </Stack>
       </VStack>
