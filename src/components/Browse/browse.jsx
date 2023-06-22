@@ -735,7 +735,7 @@ function Browse(props) {
                           <HStack spacing="6">
                             <Input
                               type="number"
-                              placeholder="100 credits"
+                              placeholder="100 deed dollars"
                               w={92}
                               h={34}
                               bgColor={'grey.200'}
@@ -749,7 +749,7 @@ function Browse(props) {
                             />
                             <Input
                               type="number"
-                              placeholder="300 credits"
+                              placeholder="300 deed dollars"
                               w={92}
                               h={34}
                               bgColor={'grey.200'}

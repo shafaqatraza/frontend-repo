@@ -53,7 +53,7 @@ export const ProductCard = (props: Props) => {
           >
             {title}
           </Text>
-          <Text fontWeight="bold" fontSize={{base: "14px", sm: "md"}}> {credit_amount} credits</Text>
+          <Text fontWeight="bold" fontSize={{base: "14px", sm: "md"}}> {credit_amount} deed dollars</Text>
         </Stack>
       </Stack>
     </Stack>

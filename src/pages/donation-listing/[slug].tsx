@@ -89,7 +89,7 @@ const DonationListingView = () => {
             <p className="ms-3" style={{fontSize:"18px", color:"#E27832"}}>
              {
               // @ts-ignore: Unreachable code error
-              donationData?.credit_amount} Credits
+              donationData?.credit_amount} Deed Dollars
              </p>
              <p className="ms-3" style={{fontSize:"14px"}}>
              Virtual Deed

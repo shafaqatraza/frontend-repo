@@ -328,7 +328,7 @@ const CreateListing = () => {
                   width: "100%",
                 }}
                 // @ts-ignore: Unreachable code error
-                options={options}
+                // options={options}
               />
             </div>
             <div className="mb-3 mt-5 col-md-6">
