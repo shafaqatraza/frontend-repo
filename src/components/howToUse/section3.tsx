@@ -26,11 +26,7 @@ export const Section3 = () => {
                 <Steps
                     step="1"
                     heading="Create an account"
-<<<<<<< HEAD
                     text="Receive virtual deed dollars from users who want those items or services"
-=======
-                    text="Receive deed dollars from users who want those items or services"
->>>>>>> develop
                     buttonText="Sign Up"
                     id={"signup"}
                 />
@@ -39,11 +35,7 @@ export const Section3 = () => {
                 <Steps
                     step="2"
                     heading="Create a Listing"
-<<<<<<< HEAD
                     list={{ title: "List your items or services", items: ["Set a credit price", "Set your experience level or item condition", "Use virtual deed dollars towards other items and services on the site "] }}
-=======
-                    list={{ title: "List your items or services", items: ["Set a credit price", "Set your experience level or item condition", "Use deed dollars towards other items and services on the site "] }}
->>>>>>> develop
                     buttonText="Create a Listing"
                     id="create"
                 />
@@ -63,13 +55,8 @@ export const Section3 = () => {
                 />{/* step4*/}
                 <Steps
                     step="4"
-<<<<<<< HEAD
                     heading="Use those deed dollars"
                     text="Use virtual deed dollars towards other items and services on the site"
-=======
-                    heading="Use those credits"
-                    text="Use deed dollars towards other items and services on the site"
->>>>>>> develop
 
                 />
                 <Spacer />
