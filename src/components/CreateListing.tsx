@@ -308,7 +308,7 @@ const CreateListing = () => {
                 Keywords
               </label>
               <Select
-                mode="multiple"
+                mode="tags"
                 // @ts-ignore: Unreachable code error
                 size={size}
                 placeholder="Please select"

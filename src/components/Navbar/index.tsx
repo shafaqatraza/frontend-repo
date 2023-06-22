@@ -932,7 +932,8 @@ export default function Navbar(props: any) {
                         fontWeight={700}
                         color={'#E27832'}
                       >
-                        {getLoginData()?.user_profile.credits} CREDITS
+                        {getLoginData()?.user_profile !== null ? `${getLoginData()?.user_profile.credits} CREDITS` : ""}
+
                       </Text>
 
                       <Button
