@@ -87,21 +87,26 @@ const MonthlyPlan = () => {
                       <div className="mt-3">
                         <div className="d-flex mt-3">
                           <p className="ms-2 free-txt4">
-                            {
-                              // @ts-ignore: Unreachable code error
-                              dataone?.features?.map((item, index) => (
-                                <>
-                                  <div className="d-flex">
-                                    <span className="ms-2 pt-2">
-                                      <Image src={good.src} alt={"Plan"} />
-                                    </span>
-                                    <div className='pt-2 ms-2'>
-                                      {item}
-                                    </div>
-                                  </div>
-                                </>
-                              ))
-                            }
+                          {
+                            // @ts-ignore: Unreachable code error
+                            dataone?.features?.map((item, index) => (
+                              <div className="d-flex" key={index}>
+                                {item && item[0] && (
+                                  <span className="ms-2 pt-2">
+                                    <Image src={good.src} alt={"Plan"} />
+                                  </span>
+                                )}
+                                <div className="pt-2 ms-2">
+                                  {item && item[0]}
+                                </div>
+                              </div>
+                            ))
+                          }
+
+
+
+
+
                           </p>
                         </div>
 
@@ -163,17 +168,16 @@ const MonthlyPlan = () => {
                             {
                               // @ts-ignore: Unreachable code error
                               data?.features?.map((item, index) => (
-                                <>
-                                  <div className="d-flex">
+                                <div className="d-flex" key={index}>
+                                  {item && item[0] && (
                                     <span className="ms-2 pt-2">
                                       <Image src={good.src} alt={"Plan"} />
                                     </span>
-                                    <div className='pt-2 ms-2'>
-                                      {item}
-
-                                    </div>
+                                  )}
+                                  <div className="pt-2 ms-2">
+                                    {item && item[0]}
                                   </div>
-                                </>
+                                </div>
                               ))
                             }
 
@@ -237,16 +241,16 @@ const MonthlyPlan = () => {
                             {
                               // @ts-ignore: Unreachable code error
                               datatwo?.features?.map((item, index) => (
-                                <>
-                                  <div className="d-flex">
+                                <div className="d-flex" key={index}>
+                                  {item && item[0] && (
                                     <span className="ms-2 pt-2">
                                       <Image src={good.src} alt={"Plan"} />
                                     </span>
-                                    <div className='pt-2 ms-2'>
-                                      {item}
-                                    </div>
+                                  )}
+                                  <div className="pt-2 ms-2">
+                                    {item && item[0]}
                                   </div>
-                                </>
+                                </div>
                               ))
                             }
                           </p>
@@ -299,16 +303,16 @@ const MonthlyPlan = () => {
                         {
                           // @ts-ignore: Unreachable code error
                           datathree?.features?.map((item, index) => (
-                            <>
-                              <div className="d-flex">
+                            <div className="d-flex" key={index}>
+                              {item && item[0] && (
                                 <span className="ms-2 pt-2">
                                   <Image src={good.src} alt={"Plan"} />
                                 </span>
-                                <div className='free-txt4 pt-2 ms-2'>
-                                  {item}
-                                </div>
+                              )}
+                              <div className="free-txt4 pt-2 ms-2">
+                                {item && item[0]}
                               </div>
-                            </>
+                            </div>
                           ))
                         }
 

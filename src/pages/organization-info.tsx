@@ -146,8 +146,8 @@ const OrganizationInfo = () => {
       },
     })
     .then((res) => {
-      console.log(res.data.data, "new data");
-      setInviteData(res.data.data);
+      console.log(res.data.invitations, "new data");
+      setInviteData(res.data.invitations);
     })
     .catch((err) => {
       console.log(err);
