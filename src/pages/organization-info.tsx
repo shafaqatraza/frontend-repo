@@ -575,7 +575,7 @@ const OrganizationInfo = () => {
       <Link href="/select-plan">
         <button className="up-btn mt-5 mb-5">Upgrade</button>
       </Link>
-      <Link href="/payment">
+      <Link href="/edit-payment">
         <button className="ed-btn ms-3 mt-5 mb-5">
           Edit Payment
         </button>
