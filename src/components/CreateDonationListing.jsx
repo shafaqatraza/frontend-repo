@@ -89,7 +89,7 @@ const CreateDonationListing = () => {
       .catch((err) => {
       });
     axios
-      .get(`${baseUrl}/listings/categories`, {
+      .get(`${baseUrl}/donation-listings/categories`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
