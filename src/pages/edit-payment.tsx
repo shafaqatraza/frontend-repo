@@ -51,6 +51,7 @@ const EditPayment = () => {
   },[])
   const handleSubmit = (event:any) =>{
     event.preventDefault();
+    // @ts-ignore: Unreachable code error
     handleShow(true);
 
   }
