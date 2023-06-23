@@ -70,8 +70,8 @@ const OrganizationInfo = () => {
   const columns = [
     {
       title: "Name",
-      dataIndex: "inviter_user",
-      key: "inviter_user",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "Email",
@@ -80,8 +80,8 @@ const OrganizationInfo = () => {
     },
     {
       title: "Status",
-      dataIndex: "role_id",
-      key: "role_id",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: () => (
@@ -146,7 +146,7 @@ const OrganizationInfo = () => {
       },
     })
     .then((res) => {
-      console.log(res.data.data, "new data");
+      console.log(res.data.data, "new dataz");
       setInviteData(res.data.data);
     })
     .catch((err) => {
@@ -575,7 +575,7 @@ const OrganizationInfo = () => {
       <Link href="/select-plan">
         <button className="up-btn mt-5 mb-5">Upgrade</button>
       </Link>
-      <Link href="/payment">
+      <Link href="/edit-payment">
         <button className="ed-btn ms-3 mt-5 mb-5">
           Edit Payment
         </button>

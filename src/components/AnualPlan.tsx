@@ -84,17 +84,17 @@ const AnualPlan = () => {
                         <p className="ms-2 free-txt4">
                           {
                             // @ts-ignore: Unreachable code error
-                            dataone?.features?.map((item,index)=>(
-                              <>
-                              <div className="d-flex">
-                              <span className="ms-2 pt-2">
-                          <Image src={good.src} alt={"Plan"} />
-                        </span>
-                        <div className='pt-2 ms-2'>
-                        {item}
-                        </div>
+                            dataone?.features?.map((item, index) => (
+                              <div className="d-flex" key={index}>
+                                {item && item[0] && (
+                                  <span className="ms-2 pt-2">
+                                    <Image src={good.src} alt={"Plan"} />
+                                  </span>
+                                )}
+                                <div className="free-txt4 pt-2 ms-2">
+                                  {item && item[0]}
+                                </div>
                               </div>
-                              </>
                             ))
                           }
                         </p>
@@ -161,17 +161,17 @@ const AnualPlan = () => {
 
                         {
                             // @ts-ignore: Unreachable code error
-                        data?.features?.map((item,index)=>(
-                              <>
-                              <div className="d-flex">
-                              <span className="ms-2 pt-2">
-                          <Image src={good.src} alt={"Plan"} />
-                        </span>
-                        <div className='pt-2 ms-2'>
-                        {item}
-                        </div>
+                            data?.features?.map((item, index) => (
+                              <div className="d-flex" key={index}>
+                                {item && item[0] && (
+                                  <span className="ms-2 pt-2">
+                                    <Image src={good.src} alt={"Plan"} />
+                                  </span>
+                                )}
+                                <div className="free-txt4 pt-2 ms-2">
+                                  {item && item[0]}
+                                </div>
                               </div>
-                              </>
                             ))
                           }
 
@@ -233,17 +233,17 @@ const AnualPlan = () => {
                         <p className="free-txt4">
                         {
                             // @ts-ignore: Unreachable code error
-                            datatwo?.features?.map((item,index)=>(
-                              <>
-                              <div className="d-flex">
-                              <span className="ms-2 pt-2">
-                          <Image src={good.src} alt={"Plan"} />
-                        </span>
-                        <div className='pt-2 ms-2'>
-                        {item}
-                        </div>
+                            datatwo?.features?.map((item, index) => (
+                              <div className="d-flex" key={index}>
+                                {item && item[0] && (
+                                  <span className="ms-2 pt-2">
+                                    <Image src={good.src} alt={"Plan"} />
+                                  </span>
+                                )}
+                                <div className="free-txt4 pt-2 ms-2">
+                                  {item && item[0]}
+                                </div>
                               </div>
-                              </>
                             ))
                           }
                         </p>
@@ -303,17 +303,17 @@ const AnualPlan = () => {
                     <div className="mt-3">
                       {
                             // @ts-ignore: Unreachable code error
-                            datathree?.features?.map((item,index)=>(
-                              <>
-                              <div className="d-flex">
-                              <span className="ms-2 pt-2">
-                          <Image src={good.src} alt={"Plan"} />
-                        </span>
-                        <div className='free-txt4 pt-2 ms-2'>
-                        {item}
-                        </div>
+                            datathree?.features?.map((item, index) => (
+                              <div className="d-flex" key={index}>
+                                {item && item[0] && (
+                                  <span className="ms-2 pt-2">
+                                    <Image src={good.src} alt={"Plan"} />
+                                  </span>
+                                )}
+                                <div className="free-txt4 pt-2 ms-2">
+                                  {item && item[0]}
+                                </div>
                               </div>
-                              </>
                             ))
                           }
 
