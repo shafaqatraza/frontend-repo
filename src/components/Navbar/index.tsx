@@ -124,6 +124,7 @@ export default function Navbar(props: any) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   // const [isChatLoading, setIsChatLoading] = useState(true)
   const [chatList, setChatList] = useState(0)
+  const [organizationNotifications, setOrganizationNotifications] = useState(0)
   const [conversations, setConversations] = useState()
   const toast = useToast()
   const [isSmallerThan850] = useMediaQuery('(max-width: 850px)');
@@ -209,7 +210,7 @@ export default function Navbar(props: any) {
         // Handle response data here
       })
       .catch((error) => {
-        console.log('errrr org', error.response.data.message);
+        // console.log('errrr org', error.response.data.message);
         toast({ title: error?.response?.data.message, status: "error" })
 
         // let errors = error.response?.data.errors;
@@ -241,6 +242,10 @@ export default function Navbar(props: any) {
   })
   const [refer, setRefer] = useState<any>('')
   const [isRefer, setIsRefer] = useState<boolean>(true);
+
+  if (typeof window !== 'undefined') {
+		var currOrg = JSON.parse(localStorage.getItem('currentOrganization'));
+	}
 
   useEffect(() => {
 
@@ -304,8 +309,12 @@ export default function Navbar(props: any) {
       }).then((res) => {
         setOrgData(res.data);
       }).catch((err) => {
-        console.log(err);
+        // console.log(err);
       })
+    }
+
+    if(currOrg){
+      getOrganizationNotifications()
     }
 
   }, [])
@@ -313,20 +322,36 @@ export default function Navbar(props: any) {
   useEffect(() => {
 
     // let tmpLoginData = JSON.parse(localStorage.getItem('loggedInUser'));
-    Pusher.logToConsole = true;
-    var pusher = new Pusher(`${Pusher_key}`, {
-      cluster: 'mt1'
-    });
-    var channel = pusher.subscribe('new_message_notification_' + userId);
-    channel.bind('notification', function (data: any) {
-      musicPlayers.current?.play();
-      // toast('You have a new message.');
-      setConversations(data?.newChat)
-      setChatList(chatList + 1)
-    });
-
-
-  }, [])
+      Pusher.logToConsole = false;
+      var pusher = new Pusher(`${Pusher_key}`, {
+        cluster: 'mt1'
+      });
+  
+      if(currOrg){
+        var channel2 = pusher.subscribe('new_notification_organization_'+ currOrg.id);
+        channel2.bind('NewNotificationOrganization', function(data: any) {
+            musicPlayers.current?.play();
+            setOrganizationNotifications(prevCount => prevCount + 1);
+        });
+  
+        var channel3 = pusher.subscribe('notifications_organization_'+ currOrg.id);
+        channel3.bind('OrganizationNotifications', function(data) {
+            setOrganizationNotifications(data.notifications_count);
+        });
+        
+      }else{
+        var channel = pusher.subscribe('new_message_notification_'+userId);
+        channel.bind('notification', function(data: any) {
+          musicPlayers.current?.play();
+          setChatList(prevCount => prevCount + 1)
+        });
+  
+        var channel4 = pusher.subscribe('notifications_member_'+ userId);
+        channel4.bind('MemberNotifications', function(data) {
+          setChatList(data.notifications_count);
+        });
+      }
+    }, [])
 
 
 
@@ -338,15 +363,25 @@ export default function Navbar(props: any) {
         }
       })
       .then((res) => {
-        // setIsChatLoading(false)
         setChatList(res.data)
       })
       .catch((error) => {
-        // setIsChatLoading(true)
       })
   }
 
-
+  const getOrganizationNotifications = async () => {
+    await axios
+      .get(baseUrl + '/organizations/notifications/check?org='+currOrg.slug, {
+        headers: {
+          Authorization: `Bearer ${accessToken()}`
+        }
+      })
+      .then((res) => {
+        setOrganizationNotifications(res.data.has_new_notifications);
+      })
+      .catch((error) => {
+      })
+  }
 
 
   return (
@@ -747,9 +782,7 @@ export default function Navbar(props: any) {
 
                   <Menu>
 
-                    {/* {
-                // @ts-ignore: Unreachable code error
-                currentOrganization?.slug? */}
+                    {currOrg?.slug?
                     <MenuButton
                       as={Button}
                       rounded={'full'}
@@ -765,11 +798,11 @@ export default function Navbar(props: any) {
                       }}
                     >
                       <>
-                        {chatList == 0 ?
+                        {organizationNotifications == 0 ?
                           null
                           :
                           <Badge colorScheme='red' position={'absolute'} top={'-7px'}>
-                            {chatList}
+                            {organizationNotifications}
                           </Badge>
                         }
 
@@ -779,7 +812,7 @@ export default function Navbar(props: any) {
                         />
                       </>
                     </MenuButton>
-                    {/* : */}
+                    :
                     <MenuButton
                       as={Button}
                       rounded={'full'}
@@ -810,7 +843,7 @@ export default function Navbar(props: any) {
                       </>
 
                     </MenuButton>
-                    {/* } */}
+                    }
 
                     {/* <MenuList>
                     {isChatLoading && (

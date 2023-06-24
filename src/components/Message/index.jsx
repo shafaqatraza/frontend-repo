@@ -26,6 +26,7 @@ import { GrFormClose } from 'react-icons/gr'
 import { useRouter } from 'next/router'
 import Messages from './messages'
 import MessageBoxOrgWeb from './MessageBoxOrgWeb'
+import MessageBoxOrgMob from './MessageBoxOrgMob'
 import TransferCreditModal from './TransferCreditModal'
 import RequestCreditModal from './RequestCreditModal'
 import OnHoldCreditModal from './OnHoldCreditModal'
@@ -155,7 +156,11 @@ const Message = (props) => {
 		channel2.bind('pusher:subscription_succeeded', function() {
 			channel2.bind('newChat', function(data) {
 				const newData=data.newchat
-				setChatRoom(newData);
+				if(newData && newData[0].model_type != 'Organization'){
+					setChatRoom(newData);
+				}else if(newData && newData[0].model_type == 'Organization' && userId == newData[0].receiver.id){
+					setChatRoom(newData);
+				}
 			});
 		});
 
@@ -163,7 +168,11 @@ const Message = (props) => {
 		channel.bind('pusher:subscription_succeeded', function() {
 			channel.bind('sender_notify', function(data) {
 					let senderData=data.chat
-					setChatRoom(senderData);
+					if(senderData && senderData[0].model_type != 'Organization'){
+						setChatRoom(senderData);
+					}else if(senderData && senderData[0].model_type == 'Organization' && userId == senderData[0].receiver.id){
+						setChatRoom(senderData);
+					}
 			});
 			});
 	}, [])
@@ -540,7 +549,6 @@ const Message = (props) => {
 					credits: res.data.data[0].listing.credits
 				})
 				setConversationData(res.data.data)
-				console.log('aaaaaaaaa444', res.data.data)
 				setTimeout(() => {
 					scrollToBottom()
 				}, 200)
@@ -864,32 +872,6 @@ const Message = (props) => {
 		Pusher.logToConsole = false
 	}, [])
 
-	// New message notification handler
-	useEffect(() => {
-		let pusherNotification = {
-			broadcaster: 'pusher',
-			key: '877cb5c78bbdba810bf0',
-			cluster: 'mt1',
-			forceTLS: true,
-			encrypted: false,
-			authEndpoint: baseImgUrl + 'broadcasting/auth',
-			auth: {
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					Authorization: `Bearer ${accessToken()}`,
-					Accept: 'application/json'
-				}
-			}
-		}
-
-		const echoNotification = new Echo(pusherNotification)
-		echoNotification.private('new_message_notification_' + userId)
-			.listen('NewMessageNotification', function (e) {
-				// console.log("fffttt", e)
-			})
-		Pusher.logToConsole = false
-	}, [])
-
 	// Image upload handler
 	const onFileUpload = (e) => {
 		var formData = new FormData();
@@ -901,6 +883,8 @@ const Message = (props) => {
 			formData.append('receiver_id', messageInfo.receiver_id)
 			formData.append('chat_id', messageInfo.chat_id)
 			formData.append('media', e.file.originFileObj)
+			formData.append('sent_by_organization', 0)
+
 
 			axios.post(`${baseUrl}/member/chats/image-upload`, formData, {
 				headers: {
@@ -986,7 +970,7 @@ const Message = (props) => {
 			}, 200)
 		}
 	}
-	console.log('aaaaaaa203', conversationData)
+	
 	//=========================================================RETURN==================================================================	
 
 	return (
@@ -1021,9 +1005,7 @@ const Message = (props) => {
 										</Text>
 										{chatRoom.length > 0 &&
 											chatRoom.map((data, index) => (
-
 												<>
-
 													<Flex
 														mt="20px"
 														px={0}
@@ -1038,19 +1020,19 @@ const Message = (props) => {
 																data.listing.id,
 																data.sender_id,
 																data.receiver,
-																data.sender
+																data.sender,
+																data.organization
 															),
 															setShowChat(!showChat)
 														)}
 													>
-
 														<Image
 															boxSize="60px"
 															width={'18%'}
 															mt={'5px'}
 															ml={'7px'}
 															objectFit="cover"
-															src={data.sender.avatar_url  ? data.sender.avatar_url : NoImage.src}
+															src={data.organization? data.organization.avatar : data.listing.user_id===userId ? data.sender.avatar : data.receiver.avatar}
 															alt="Dan Abramov 1"
 															borderRadius={10}
 
@@ -1060,11 +1042,11 @@ const Message = (props) => {
 															<Flex justifyContent={'space-between'}
 																alignItems={'center'}>
 																<Text ml={'20px'} fontWeight={600} fontSize={'14px'}>
-																	{loginUser &&
-																		loginUser.user.id == data?.receiver?.id ?
-																		data?.sender?.username
-																		:
-																		data?.receiver?.username
+																	{data.organization? data.organization.name : loginUser &&
+																	loginUser.user.id == data?.receiver?.id ?
+																	data?.sender?.username
+																	:
+																	data?.receiver?.username
 																	}
 																</Text>
 																{data.new_messages == 0 ?
@@ -1090,19 +1072,16 @@ const Message = (props) => {
 															<Text
 																ml={'20px'}
 																// mb="-10px"
+																whiteSpace='nowrap'
+																overflow='hidden'
+																textOverflow='ellipsis'
+																maxWidth='200px'
 																fontWeight={500}
 																fontSize={'14px'}
 																style={isMobile ? { width: '270px' } : {}}
 															>
 
-																{
-																	data.last_msg &&
-																		data.last_msg.includes('https')
-																		?
-																		'Sent an image'
-																		:
-																		data.last_msg
-																}
+																{ data.last_msg }
 															</Text>
 															<Flex
 																color={'#979797'}
@@ -1220,19 +1199,12 @@ const Message = (props) => {
 															whiteSpace='nowrap'
 															overflow='hidden'
 															textOverflow='ellipsis'
-															maxWidth='100px'
+															maxWidth='200px'
 															fontWeight={500}
 															fontSize={'14px'}
 															style={isMobile ? { width: '270px' } : { }}
 														>
-															{
-																data.last_msg &&
-																	data.last_msg.includes('https')
-																	?
-																	data.last_msg
-																	:
-																	data.last_msg
-															}
+															{data.last_msg}
 														</Text>
 														<Flex
 															color={'#979797'}
@@ -1260,242 +1232,209 @@ const Message = (props) => {
 							{isMobile
 								? showChat
 									? Object.keys(userChatInformation).length != 0 && (
-										<Box
-											position={'relative'}
-											minW={'45%'}
-											borderWidth="1px"
-											style={{ height: '85%' }}
-										>
-											<Flex bg="#183553" py={'15px'} alignItems="center">
-												<Box minWidth="35px" display="flex" justifyContent="center" px="10px">
-													<ChevronLeftIcon
-														fontSize={25}
-														color="white"
-														cursor="pointer"
-														onClick={() => setShowChat(!showChat)}
-													/>
-												</Box>
-												<Box display="flex" alignItems="center" width="100%">
-													<Link href={`/profile/${chatHeader.username}`} display='flex'>
-														<Avatar
-															size={'sm'}
-															name={'fullName' || ''}
-															src={`${chatHeader.avatar_url
-																? chatHeader.avatar_url
-																: userChatInformation[0].receiver.avtar
-																}`}
-															backgroundSize={'contain'}
-															width={'40px'}
-															height={'40px'}
-															style={{
-																borderWidth: 3,
-																borderColor: '#E27832'
-															}}
-														>
-															<div className='onlineStatus' style={{ background: chatHeader.online_status === true ? '#13d50c' : '#bfbfbf' }}></div>
-														</Avatar>
-														<Flex
-															flexDirection={'column'}
-														>
-															<Text color={'white'} ml={3} fontSize={18}>
-																{chatHeader.name}
-															</Text>
-															<Text color={'white'} ml={3} fontSize={10}>
-																{chatHeader.online_status ? 'Online' : chatHeader.last_seen}
-															</Text>
-														</Flex>
-													</Link>
-												</Box>
-												<Box minWidth="35px" display="flex" justifyContent="center" px="10px">
-													<BsChatLeftDotsFill
-														fontSize={25}
-														color="white"
-														cursor="pointer"
-														onClick={() => setTransactionModal(true)}
-													/>
-												</Box>
-											</Flex>
-											{!tCreditModal && 
-												!creditsRequest &&
-												!pendingCreditModal &&
-												!creditTransferred &&
-												!rateAndReviewModal &&
-												!transactionModal && (
-													<>
-														<Box bg="#F6F6F6" py={'10px'}>
-															<Flex
-																alignItems={'start'}
-															>
-																<Box pl="5" >
-																	<Image
-																		boxSize="75px"
-																		objectFit="cover"
-																		src={`${userChatInformation[0].listing.image_path}/${userChatInformation[0].listing.image}`}
-																		alt="Dan Abramov 3"
-																		borderRadius={5}
-																	/>
-																</Box>
-																<Box >
-																	<Text
-																		ml={10}
-																		fontWeight={600}
-																		fontSize={14}
-																	>
-																		{userChatInformation[0].listing.title}
-																	</Text>
-																	<Text
-																		ml={10}
-																		fontWeight={500}
-																		fontSize={14}
-																	>
-																		{userChatInformation[0].listing.credits}{' '}
-																		Credits
-																	</Text>
-																</Box>
-															</Flex>
-														</Box>
-
-														<Box
-															style={{ paddingBottom: '52px' }}
-															overflow={'auto'}
-															maxH={'55%'}
-															sx={{
-																'&::-webkit-scrollbar': {
-																	width: '8px',
-																	borderRadius: '8px'
-																	//   backgroundColor: `rgba(0, 0, 0, 0.05)`,
-																},
-																'&::-webkit-scrollbar-thumb': {
-																	backgroundColor: `rgba(0, 0, 0, 0.05)`
-																}
-															}}
-															id="message-box"
-														>
-															<Messages
-																loaded={loaded}
-																setLoaded={setLoaded}
-																conversation={conversationData}
-																lastMessage={lastMessage}
-																user_chat_info={userChatInformation}
+										<>
+											{userChatInformation[0].model_type === 'Organization' ? (
+												<Box
+													position={'relative'}
+													minW={'45%'}
+													borderWidth="1px"
+													style={{ height: '85%' }}
+												>
+													<Flex bg="#183553" py={'15px'} alignItems="center">
+														<Box minWidth="35px" display="flex" justifyContent="center" px="10px">
+															<ChevronLeftIcon
+																fontSize={25}
+																color="white"
+																cursor="pointer"
+																onClick={() => setShowChat(!showChat)}
 															/>
-															<div ref={messagesEndRef} />
 														</Box>
-
-														<Box
-															position={'absolute'}
-															bottom={'55px'}
-															minW={'100%'}
-															px={'8px'}
-															pb={5}
-															background="#fff"
-														>
-															<Center>
-																{isDeeddCompleted && !rejectStatus && (
-																	<Text textAlign="center" color={'#E27832'}>
-																		Congratulations on a completed Good Deed
+														<Box display="flex" alignItems="center" width="100%">
+															<Link href={chatOrganizationData? '/#' :  `/profile/${chatHeader.username}`} display='flex'>
+																<Avatar
+																	size={'sm'}
+																	name={'fullName' || ''}
+																	src={chatOrganizationData ? chatOrganizationData.avatar : `${chatHeader.avatar_url
+																		? chatHeader.avatar_url
+																		: userChatInformation[0].receiver.avtar
+																		}`}
+																	backgroundSize={'contain'}
+																	width={'40px'}
+																	height={'40px'}
+																	style={{
+																		borderWidth: 3,
+																		borderColor: '#E27832'
+																	}}
+																>
+																	<div className='onlineStatus' style={{ background: chatHeader.online_status === true ? '#13d50c' : '#bfbfbf' }}></div>
+																</Avatar>
+																<Flex
+																	flexDirection={'column'}
+																>
+																	<Text color={'white'} ml={3} fontSize={18}>
+																		{chatOrganizationData.name}
 																	</Text>
-																)}
-																{/* listing saler */}
+																	<Text color={'white'} ml={3} fontSize={10}>
+																		{chatHeader.online_status ? 'Online' : chatHeader.last_seen}
+																	</Text>
+																</Flex>
+															</Link>
+														</Box>
+													</Flex>
+													<MessageBoxOrgMob 
+														messages = {userChatInformation}
+														messageInfoData = {messageInfo} 
+														chatInfoData = {chatHeader}
+														organizationInfoData = {null}
+														conversation={conversationData}
+														message = {message}
+													/>
+												</Box>
+											) : (
+												<Box
+													position={'relative'}
+													minW={'45%'}
+													borderWidth="1px"
+													style={{ height: '85%' }}
+												>
+													<Flex bg="#183553" py={'15px'} alignItems="center">
+														<Box minWidth="35px" display="flex" justifyContent="center" px="10px">
+															<ChevronLeftIcon
+																fontSize={25}
+																color="white"
+																cursor="pointer"
+																onClick={() => setShowChat(!showChat)}
+															/>
+														</Box>
+														<Box display="flex" alignItems="center" width="100%">
+															<Link href={`/profile/${chatHeader.username}`} display='flex'>
+																<Avatar
+																	size={'sm'}
+																	name={'fullName' || ''}
+																	src={`${chatHeader.avatar_url
+																		? chatHeader.avatar_url
+																		: userChatInformation[0].receiver.avtar
+																		}`}
+																	backgroundSize={'contain'}
+																	width={'40px'}
+																	height={'40px'}
+																	style={{
+																		borderWidth: 3,
+																		borderColor: '#E27832'
+																	}}
+																>
+																	<div className='onlineStatus' style={{ background: chatHeader.online_status === true ? '#13d50c' : '#bfbfbf' }}></div>
+																</Avatar>
+																<Flex
+																	flexDirection={'column'}
+																>
+																	<Text color={'white'} ml={3} fontSize={18}>
+																		{chatHeader.name}
+																	</Text>
+																	<Text color={'white'} ml={3} fontSize={10}>
+																		{chatHeader.online_status ? 'Online' : chatHeader.last_seen}
+																	</Text>
+																</Flex>
+															</Link>
+														</Box>
+														<Box minWidth="35px" display="flex" justifyContent="center" px="10px">
+															<BsChatLeftDotsFill
+																fontSize={25}
+																color="white"
+																cursor="pointer"
+																onClick={() => setTransactionModal(true)}
+															/>
+														</Box>
+													</Flex>
+													{!tCreditModal && 
+														!creditsRequest &&
+														!pendingCreditModal &&
+														!creditTransferred &&
+														!rateAndReviewModal &&
+														!transactionModal && (
+															<>
+																<Box bg="#F6F6F6" py={'10px'}>
+																	<Flex
+																		alignItems={'start'}
+																	>
+																		<Box pl="5" >
+																			<Image
+																				boxSize="75px"
+																				objectFit="cover"
+																				src={userChatInformation[0].listing.image? `${userChatInformation[0].listing.image_path}/${userChatInformation[0].listing.image}` : NoImage.src}
+																				alt="Dan Abramov 3"
+																				borderRadius={5}
+																			/>
+																		</Box>
+																		<Box >
+																			<Text
+																				ml={10}
+																				fontWeight={600}
+																				fontSize={14}
+																			>
+																				{userChatInformation[0].listing.title}
+																			</Text>
+																			<Text
+																				ml={10}
+																				fontWeight={500}
+																				fontSize={14}
+																			>
+																				{userChatInformation[0].listing.credits}{' '}
+																				Credits
+																			</Text>
+																		</Box>
+																	</Flex>
+																</Box>
 
-																{userChatInformation.length > 0 &&
-																	userChatInformation[0].listing.listing_type == 'offering' &&
-																	userChatInformation[0].listing.user_id ===
-																	userId &&
-																	!rejectStatus &&
-																	(userChatInformation[0].seller_deed_status == 1) &&
-																	!isDeeddCompleted && (
-																		<Button
-																			w={'70%'}
-																			type="submit"
-																			mt={'5'}
-																			colorScheme="orange"
-																			size="md"
-																			fontSize="md"
-																			onClick={() =>
-																				setRateAndReviewModal(true)
-																			}
-																		>
-																			Rate & Review
-																		</Button>
-																	)}
-																{userChatInformation.length > 0 &&
-																	userChatInformation[0].listing.listing_type == 'offering' &&
-																	userChatInformation[0].listing.user_id !=
-																	userId &&
-																	(userChatInformation[0].buyer_deed_status == 1) &&
-																	!isDeeddCompleted && (
-																		!rejectStatus &&
-																		<Button
-																			w={'70%'}
-																			type="submit"
-																			mt={'5'}
-																			colorScheme="orange"
-																			size="md"
-																			fontSize="md"
-																			onClick={() =>
-																				setRateAndReviewModal(true)
-																			}
-																		>
-																			Rate & Review
-																		</Button>
-																	)}
-																{/* ....................... */}
+																<Box
+																	style={{ paddingBottom: '52px' }}
+																	overflow={'auto'}
+																	maxH={'55%'}
+																	sx={{
+																		'&::-webkit-scrollbar': {
+																			width: '8px',
+																			borderRadius: '8px'
+																			//   backgroundColor: `rgba(0, 0, 0, 0.05)`,
+																		},
+																		'&::-webkit-scrollbar-thumb': {
+																			backgroundColor: `rgba(0, 0, 0, 0.05)`
+																		}
+																	}}
+																	id="message-box"
+																>
+																	<Messages
+																		loaded={loaded}
+																		setLoaded={setLoaded}
+																		conversation={conversationData}
+																		lastMessage={lastMessage}
+																		user_chat_info={userChatInformation}
+																	/>
+																	<div ref={messagesEndRef} />
+																</Box>
 
-																{/* listing saler */}
-																{userChatInformation.length > 0 &&
-																	userChatInformation[0].listing.listing_type == 'wanted' &&
-																	userChatInformation[0].listing.user_id ===
-																	userId &&
-																	!rejectStatus &&
-																	(userChatInformation[0].buyer_deed_status == 1) &&
-																	!isDeeddCompleted && (
-																		<Button
-																			w={'70%'}
-																			type="submit"
-																			mt={'5'}
-																			colorScheme="orange"
-																			size="md"
-																			fontSize="md"
-																			onClick={() =>
-																				setRateAndReviewModal(true)
-																			}
-																		>
-																			Rate & Review
-																		</Button>
-																	)}
-																{userChatInformation.length > 0 &&
-																	userChatInformation[0].listing.listing_type == 'wanted' &&
-																	userChatInformation[0].listing.user_id !=
-																	userId &&
-																	!rejectStatus &&
-																	(userChatInformation[0].seller_deed_status == 1) &&
-																	!isDeeddCompleted && (
-																		<Button
-																			w={'70%'}
-																			type="submit"
-																			mt={'5'}
-																			colorScheme="orange"
-																			size="md"
-																			fontSize="md"
-																			onClick={() =>
-																				setRateAndReviewModal(true)
-																			}
-																		>
-																			Rate & Review
-																		</Button>
-																	)}
+																<Box
+																	position={'absolute'}
+																	bottom={'55px'}
+																	minW={'100%'}
+																	px={'8px'}
+																	pb={5}
+																	background="#fff"
+																>
+																	<Center>
+																		{isDeeddCompleted && !rejectStatus && (
+																			<Text textAlign="center" color={'#E27832'}>
+																				Congratulations on a completed Good Deed
+																			</Text>
+																		)}
+																		{/* listing saler */}
 
-																{/* ///........................... ...........................*/}
-
-																{userChatInformation.length > 0 &&
-																	userChatInformation[0].listing.user_id ===
-																	userId &&
-																	userChatInformation[0].listing.listing_type == 'wanted' &&
-																	userChatInformation[0].buyer_deed_status != 1 &&
-																	(userChatInformation[0].transaction_status != "Completed" || transactionStatus != "Completed") && (
-																		<>
-																			{
-																				((userChatInformation[0].transaction_status == null && transactionStatus == null) || rejectStatus) &&
+																		{userChatInformation.length > 0 &&
+																			userChatInformation[0].listing.listing_type == 'offering' &&
+																			userChatInformation[0].listing.user_id ===
+																			userId &&
+																			!rejectStatus &&
+																			(userChatInformation[0].seller_deed_status == 1) &&
+																			!isDeeddCompleted && (
 																				<Button
 																					w={'70%'}
 																					type="submit"
@@ -1503,64 +1442,184 @@ const Message = (props) => {
 																					colorScheme="orange"
 																					size="md"
 																					fontSize="md"
-																					onClick={() => setTCreditModal(true)}
+																					onClick={() =>
+																						setRateAndReviewModal(true)
+																					}
 																				>
-																					Transfer Credits
+																					Rate & Review
 																				</Button>
-																			}
+																			)}
+																		{userChatInformation.length > 0 &&
+																			userChatInformation[0].listing.listing_type == 'offering' &&
+																			userChatInformation[0].listing.user_id !=
+																			userId &&
+																			(userChatInformation[0].buyer_deed_status == 1) &&
+																			!isDeeddCompleted && (
+																				!rejectStatus &&
+																				<Button
+																					w={'70%'}
+																					type="submit"
+																					mt={'5'}
+																					colorScheme="orange"
+																					size="md"
+																					fontSize="md"
+																					onClick={() =>
+																						setRateAndReviewModal(true)
+																					}
+																				>
+																					Rate & Review
+																				</Button>
+																			)}
+																		{/* ....................... */}
 
-																			{
-																				((userChatInformation[0].transaction_status == "On Hold" || transactionStatus == "On Hold") ||
-																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending")) && !rejectStatus &&
+																		{/* listing saler */}
+																		{userChatInformation.length > 0 &&
+																			userChatInformation[0].listing.listing_type == 'wanted' &&
+																			userChatInformation[0].listing.user_id ===
+																			userId &&
+																			!rejectStatus &&
+																			(userChatInformation[0].buyer_deed_status == 1) &&
+																			!isDeeddCompleted && (
+																				<Button
+																					w={'70%'}
+																					type="submit"
+																					mt={'5'}
+																					colorScheme="orange"
+																					size="md"
+																					fontSize="md"
+																					onClick={() =>
+																						setRateAndReviewModal(true)
+																					}
+																				>
+																					Rate & Review
+																				</Button>
+																			)}
+																		{userChatInformation.length > 0 &&
+																			userChatInformation[0].listing.listing_type == 'wanted' &&
+																			userChatInformation[0].listing.user_id !=
+																			userId &&
+																			!rejectStatus &&
+																			(userChatInformation[0].seller_deed_status == 1) &&
+																			!isDeeddCompleted && (
+																				<Button
+																					w={'70%'}
+																					type="submit"
+																					mt={'5'}
+																					colorScheme="orange"
+																					size="md"
+																					fontSize="md"
+																					onClick={() =>
+																						setRateAndReviewModal(true)
+																					}
+																				>
+																					Rate & Review
+																				</Button>
+																			)}
+
+																		{/* ///........................... ...........................*/}
+
+																		{userChatInformation.length > 0 &&
+																			userChatInformation[0].listing.user_id ===
+																			userId &&
+																			userChatInformation[0].listing.listing_type == 'wanted' &&
+																			userChatInformation[0].buyer_deed_status != 1 &&
+																			(userChatInformation[0].transaction_status != "Completed" || transactionStatus != "Completed") && (
 																				<>
-																					<Button
-																						w={'70%'}
-																						isLoading={isConfirmDisabled}
-																						type="submit"
-																						mt={'5'}
-																						colorScheme="orange"
-																						size="md"
-																						fontSize="md"
-																						onClick={() => confirmCreditHandler()}
-																					>
-																						Mark Complete
-																					</Button>
 																					{
-																						!rejectStatus &&
+																						((userChatInformation[0].transaction_status == null && transactionStatus == null) || rejectStatus) &&
 																						<Button
 																							w={'70%'}
-																							isLoading={isConfirmDisabled}
 																							type="submit"
 																							mt={'5'}
 																							colorScheme="orange"
 																							size="md"
 																							fontSize="md"
-																							onClick={() => rejectCreditHandler()}
+																							onClick={() => setTCreditModal(true)}
 																						>
-																							Cancel Order
+																							Transfer Credits
 																						</Button>
 																					}
+
+																					{
+																						((userChatInformation[0].transaction_status == "On Hold" || transactionStatus == "On Hold") ||
+																							(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending")) && !rejectStatus &&
+																						<>
+																							<Button
+																								w={'70%'}
+																								isLoading={isConfirmDisabled}
+																								type="submit"
+																								mt={'5'}
+																								colorScheme="orange"
+																								size="md"
+																								fontSize="md"
+																								onClick={() => confirmCreditHandler()}
+																							>
+																								Mark Complete
+																							</Button>
+																							{
+																								!rejectStatus &&
+																								<Button
+																									w={'70%'}
+																									isLoading={isConfirmDisabled}
+																									type="submit"
+																									mt={'5'}
+																									colorScheme="orange"
+																									size="md"
+																									fontSize="md"
+																									onClick={() => rejectCreditHandler()}
+																								>
+																									Cancel Order
+																								</Button>
+																							}
+																						</>
+																					}
+
+
+
 																				</>
-																			}
+																			)}
+																		{userChatInformation.length > 0 &&
+																			userChatInformation[0].listing.user_id !=
+																			userId &&
+																			(userChatInformation[0].transaction_status != null || transactionStatus != null) &&
 
+																			userChatInformation[0].listing.listing_type == 'wanted' &&
+																			userChatInformation[0].seller_deed_status != 1 &&
+																			!rejectStatus &&
+																			(userChatInformation[0].transaction_status != "Completed" || transactionStatus != "Completed")
+																			&& (
+																				<>
 
+																					{
+																						(userChatInformation[0].transaction_status == "On Hold" || transactionStatus == "On Hold") ?
 
-																		</>
-																	)}
-																{userChatInformation.length > 0 &&
-																	userChatInformation[0].listing.user_id !=
-																	userId &&
-																	(userChatInformation[0].transaction_status != null || transactionStatus != null) &&
-
-																	userChatInformation[0].listing.listing_type == 'wanted' &&
-																	userChatInformation[0].seller_deed_status != 1 &&
-																	!rejectStatus &&
-																	(userChatInformation[0].transaction_status != "Completed" || transactionStatus != "Completed")
-																	&& (
-																		<>
-
-																			{
-																				(userChatInformation[0].transaction_status == "On Hold" || transactionStatus == "On Hold") ?
+																							<Button
+																								w={'70%'}
+																								isLoading={isConfirmDisabled}
+																								type="submit"
+																								mt={'5'}
+																								colorScheme="orange"
+																								size="md"
+																								fontSize="md"
+																								onClick={() => acceptCreditHandler()}
+																							>
+																								Accept Credits
+																							</Button>
+																							:
+																							(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
+																							<Button
+																								w={'70%'}
+																								isLoading={isConfirmDisabled}
+																								type="submit"
+																								mt={'5'}
+																								colorScheme="orange"
+																								size="md"
+																								fontSize="md"
+																								onClick={() => confirmCreditHandler()}
+																							>
+																								Mark Complete
+																							</Button>
+																					}
 
 																					<Button
 																						w={'70%'}
@@ -1570,12 +1629,51 @@ const Message = (props) => {
 																						colorScheme="orange"
 																						size="md"
 																						fontSize="md"
-																						onClick={() => acceptCreditHandler()}
+																						onClick={() => rejectCreditHandler()}
 																					>
-																						Accept Credits
+																						Cancel Order
 																					</Button>
-																					:
-																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
+																				</>
+
+																			)}
+																		{userChatInformation.length > 0 &&
+																			userChatInformation[0].listing.user_id ===
+																			userId &&
+																			(userChatInformation[0].transaction_status != null || transactionStatus != null) &&
+																			userChatInformation[0].listing.listing_type != 'wanted' &&
+																			!rejectStatus &&
+																			((userChatInformation[0].transaction_status != "Completed" || transactionStatus != "Completed") && userChatInformation[0].seller_deed_status != 1) && (
+																				<>
+																					{
+																						(userChatInformation[0].transaction_status == "On Hold" || transactionStatus == "On Hold") ?
+																							<Button
+																								w={'70%'}
+																								isLoading={isConfirmDisabled}
+																								type="submit"
+																								mt={'5'}
+																								colorScheme="orange"
+																								size="md"
+																								fontSize="md"
+																								onClick={() => acceptCreditHandler()}
+																							>
+																								Accept Credits
+																							</Button>
+																							:
+																							(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
+																							<Button
+																								w={'70%'}
+																								isLoading={isConfirmDisabled}
+																								type="submit"
+																								mt={'5'}
+																								colorScheme="orange"
+																								size="md"
+																								fontSize="md"
+																								onClick={() => confirmCreditHandler()}
+																							>
+																								Mark Complete
+																							</Button>
+																					}
+
 																					<Button
 																						w={'70%'}
 																						isLoading={isConfirmDisabled}
@@ -1584,378 +1682,313 @@ const Message = (props) => {
 																						colorScheme="orange"
 																						size="md"
 																						fontSize="md"
-																						onClick={() => confirmCreditHandler()}
+																						onClick={() => rejectCreditHandler()}
 																					>
-																						Mark Complete
+																						Cancel Order
 																					</Button>
-																			}
+																				</>
 
-																			<Button
-																				w={'70%'}
-																				isLoading={isConfirmDisabled}
-																				type="submit"
-																				mt={'5'}
-																				colorScheme="orange"
-																				size="md"
-																				fontSize="md"
-																				onClick={() => rejectCreditHandler()}
-																			>
-																				Cancel Order
-																			</Button>
-																		</>
-
-																	)}
-																{userChatInformation.length > 0 &&
-																	userChatInformation[0].listing.user_id ===
-																	userId &&
-																	(userChatInformation[0].transaction_status != null || transactionStatus != null) &&
-																	userChatInformation[0].listing.listing_type != 'wanted' &&
-																	!rejectStatus &&
-																	((userChatInformation[0].transaction_status != "Completed" || transactionStatus != "Completed") && userChatInformation[0].seller_deed_status != 1) && (
-																		<>
-																			{
-																				(userChatInformation[0].transaction_status == "On Hold" || transactionStatus == "On Hold") ?
-																					<Button
-																						w={'70%'}
-																						isLoading={isConfirmDisabled}
-																						type="submit"
-																						mt={'5'}
-																						colorScheme="orange"
-																						size="md"
-																						fontSize="md"
-																						onClick={() => acceptCreditHandler()}
-																					>
-																						Accept Credits
-																					</Button>
-																					:
-																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
-																					<Button
-																						w={'70%'}
-																						isLoading={isConfirmDisabled}
-																						type="submit"
-																						mt={'5'}
-																						colorScheme="orange"
-																						size="md"
-																						fontSize="md"
-																						onClick={() => confirmCreditHandler()}
-																					>
-																						Mark Complete
-																					</Button>
-																			}
-
-																			<Button
-																				w={'70%'}
-																				isLoading={isConfirmDisabled}
-																				type="submit"
-																				mt={'5'}
-																				colorScheme="orange"
-																				size="md"
-																				fontSize="md"
-																				onClick={() => rejectCreditHandler()}
-																			>
-																				Cancel Order
-																			</Button>
-																		</>
-
-																	)}
+																			)}
 
 
-																{userChatInformation.length > 0 &&
-																	userChatInformation[0].listing.user_id !==
-																	userId &&
-																	userChatInformation[0].listing.listing_type != 'wanted' &&
+																		{userChatInformation.length > 0 &&
+																			userChatInformation[0].listing.user_id !==
+																			userId &&
+																			userChatInformation[0].listing.listing_type != 'wanted' &&
 
-																	((userChatInformation[0].transaction_status != "Completed" || transactionStatus != "Completed") && userChatInformation[0].buyer_deed_status != 1) && (
-																		<>
-																			{
-																				((userChatInformation[0].transaction_status == "On Hold" || transactionStatus == "On Hold") ||
-																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending"))
-																					&& !rejectStatus ?
-																					<>
-																						<Button
-																							w={'70%'}
-																							isLoading={isConfirmDisabled}
-																							type="submit"
-																							mt={'5'}
-																							colorScheme="orange"
-																							size="md"
-																							fontSize="md"
-																							onClick={() => confirmCreditHandler()}
-																						>
-																							Mark Complete
-																						</Button>
-																						<Button
-																							w={'70%'}
-																							isLoading={isConfirmDisabled}
-																							type="submit"
-																							mt={'5'}
-																							colorScheme="orange"
-																							size="md"
-																							fontSize="md"
-																							onClick={() => rejectCreditHandler()}
-																						>
-																							Cancel Order
-																						</Button>
-																					</>
-																					:
-																					<Button
-																						w={'70%'}
-																						type="submit"
-																						mt={'5'}
-																						colorScheme="orange"
-																						size="md"
-																						fontSize="md"
-																						onClick={() => setTCreditModal(true)}
-																					>
-																						Transfer Credits
-																					</Button>
-																			}
-																			{/* {
-																			userChatInformation[0].transaction_status != null && !rejectStatus &&
+																			((userChatInformation[0].transaction_status != "Completed" || transactionStatus != "Completed") && userChatInformation[0].buyer_deed_status != 1) && (
+																				<>
+																					{
+																						((userChatInformation[0].transaction_status == "On Hold" || transactionStatus == "On Hold") ||
+																							(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending"))
+																							&& !rejectStatus ?
+																							<>
+																								<Button
+																									w={'70%'}
+																									isLoading={isConfirmDisabled}
+																									type="submit"
+																									mt={'5'}
+																									colorScheme="orange"
+																									size="md"
+																									fontSize="md"
+																									onClick={() => confirmCreditHandler()}
+																								>
+																									Mark Complete
+																								</Button>
+																								<Button
+																									w={'70%'}
+																									isLoading={isConfirmDisabled}
+																									type="submit"
+																									mt={'5'}
+																									colorScheme="orange"
+																									size="md"
+																									fontSize="md"
+																									onClick={() => rejectCreditHandler()}
+																								>
+																									Cancel Order
+																								</Button>
+																							</>
+																							:
+																							<Button
+																								w={'70%'}
+																								type="submit"
+																								mt={'5'}
+																								colorScheme="orange"
+																								size="md"
+																								fontSize="md"
+																								onClick={() => setTCreditModal(true)}
+																							>
+																								Transfer Credits
+																							</Button>
+																					}
+																					{/* {
+																					userChatInformation[0].transaction_status != null && !rejectStatus &&
 
-																			
-																		} */}
-																		</>
-																	)}
+																					
+																				} */}
+																				</>
+																			)}
 
-																{/* --------------------------Request Credits Mobile-------------------------------- */}
-																{userChatInformation.length > 0 &&
-																	userChatInformation[0].transaction_status == null && 
-																	(
-																		<>
-																		{
-																			((userChatInformation[0].listing.user_id != userId && userChatInformation[0].listing.listing_type == 'wanted') || 
-																			(userChatInformation[0].listing.user_id === userId && userChatInformation[0].listing.listing_type != 'wanted')) &&
-																				(
+																		{/* --------------------------Request Credits Mobile-------------------------------- */}
+																		{userChatInformation.length > 0 &&
+																			userChatInformation[0].transaction_status == null && 
+																			(
 																				<>
 																				{
-																					userChatInformation[0].credits_request === false && 
-																					(
+																					((userChatInformation[0].listing.user_id != userId && userChatInformation[0].listing.listing_type == 'wanted') || 
+																					(userChatInformation[0].listing.user_id === userId && userChatInformation[0].listing.listing_type != 'wanted')) &&
+																						(
 																						<>
-																						<Button
-																							w={'70%'}
-																							isLoading={isConfirmDisabled}
-																							type="submit"
-																							mt={'5'}
-																							colorScheme="orange"
-																							size="md"
-																							fontSize="md"
-																							onClick={() => setCreditsRequestModal(true)}
-																						>
-																							Request Credits
-																						</Button>
-																						
+																						{
+																							userChatInformation[0].credits_request === false && 
+																							(
+																								<>
+																								<Button
+																									w={'70%'}
+																									isLoading={isConfirmDisabled}
+																									type="submit"
+																									mt={'5'}
+																									colorScheme="orange"
+																									size="md"
+																									fontSize="md"
+																									onClick={() => setCreditsRequestModal(true)}
+																								>
+																									Request Credits
+																								</Button>
+																								
+																								</>
+																							) || 
+																							userChatInformation[0].transaction_status == null && userChatInformation[0].credits_request !== false &&
+																								<Button
+																									w={'70%'}
+																									isLoading={isConfirmDisabled}
+																									type="submit"
+																									mt={'5'}
+																									colorScheme="orange"
+																									size="md"
+																									fontSize="md"
+																									disabled
+																								>
+																									Request Credits
+																								</Button>
+																						}
 																						</>
-																					) || 
-																					userChatInformation[0].transaction_status == null && userChatInformation[0].credits_request !== false &&
-																						<Button
-																							w={'70%'}
-																							isLoading={isConfirmDisabled}
-																							type="submit"
-																							mt={'5'}
-																							colorScheme="orange"
-																							size="md"
-																							fontSize="md"
-																							disabled
-																						>
-																							Request Credits
-																						</Button>
+																						)
 																				}
 																				</>
-																				)
+																		)	
 																		}
-																		</>
-																)	
-																}
-																{/* --------------------------Request Credits Mobile End-------------------------------- */}
+																		{/* --------------------------Request Credits Mobile End-------------------------------- */}
 
-															</Center>
-														</Box>
-
-														<Box
-															position={'absolute'}
-															bottom={0}
-															minW={'100%'}
-															px={'8px'}
-															pb={5}
-															background="#fff"
-														>
-															<Flex
-																justifyContent={'center'}
-																alignItems={'center'}
-															>
-																<Box mr={'20px'}>
-																	{
-																		!isImgMsgLoading ?
-																			<Upload
-																				maxCount={1}
-																				name="avatar"
-																				id="output"
-																				listType="picture-card"
-																				className="chat-image-uploader"
-																				showUploadList={false}
-																				showRemoveIcon={true}
-																				onChange={(e) => {
-																					onFileUpload(e)
-																				}
-																				}
-																			>
-																				<BiCamera fontSize={35} color="grey" />
-																			</Upload>
-																			:
-																			<Spinner
-																				thickness="4px"
-																				speed="0.65s"
-																				emptyColor="orange.200"
-																				color="orange.500"
-																				size="md"
-																			/>
-																	}
-
+																	</Center>
 																</Box>
-																<InputGroup size="xl" width={'100%'}>
-																	<Input
-																		pr="4.5rem"
-																		pl={'5'}
-																		minH={'45px'}
-																		type={'text'}
-																		placeholder="Message here"
-																		backgroundColor={'#fff'}
-																		borderRadius={20}
-																		value={message}
-																		onChange={(e) => {
-																			setMessage(e.target.value)
-																		}}
-																		onKeyPress={(e) => {
-																			if (
-																				e.key === 'Enter' ||
-																				e.code === 'NumpadEnter'
-																			) {
-																				!isMsgLoading &&
-																					sendMessageHandler()
+
+																<Box
+																	position={'absolute'}
+																	bottom={0}
+																	minW={'100%'}
+																	px={'8px'}
+																	pb={5}
+																	background="#fff"
+																>
+																	<Flex
+																		justifyContent={'center'}
+																		alignItems={'center'}
+																	>
+																		<Box mr={'20px'}>
+																			{
+																				!isImgMsgLoading ?
+																					<Upload
+																						maxCount={1}
+																						name="avatar"
+																						id="output"
+																						listType="picture-card"
+																						className="chat-image-uploader"
+																						showUploadList={false}
+																						showRemoveIcon={true}
+																						onChange={(e) => {
+																							onFileUpload(e)
+																						}
+																						}
+																					>
+																						<BiCamera fontSize={35} color="grey" />
+																					</Upload>
+																					:
+																					<Spinner
+																						thickness="4px"
+																						speed="0.65s"
+																						emptyColor="orange.200"
+																						color="orange.500"
+																						size="md"
+																					/>
 																			}
-																		}}
-																	/>
 
-																	<InputRightElement width="3.5rem" h={'100%'}>
-																		{
-																			!isMsgLoading ?
-																				<BsFillArrowUpCircleFill
-																					fontSize={30}
-																					color={'#E27832'}
-																					fontWeight={600}
-																					onClick={sendMessageHandler}
-																				/>
-																				:
-																				<Spinner
-																					thickness="4px"
-																					speed="0.65s"
-																					emptyColor="orange.200"
-																					color="orange.500"
-																					size="md"
-																				/>
-																		}
-																	</InputRightElement>
-																</InputGroup>
-															</Flex>
-														</Box>
-													</>
-												)}
-											{tCreditModal && (
-												<TransferCreditModal
-													messageInfo={messageInfo}
-													getMessage={getMessage}
-													isLoading={isTransactionLoading}
-													show={tCreditModal}
-													onClose={() => closeModal('transfer_credits')}
-													submit={transferCreditHandler}
-													creditAmount={creditAmount}
-													setCreditAmount={(e) => setCreditAmount(e)}
-													userChatInformation={userChatInformation.length ? userChatInformation[0] : []}
-												/>
-											)}
-											
-											{/* ----------------Request Credits Modal Mobile-------------- */}
-											{creditsRequest && (
-												<RequestCreditModal
-													messageInfo={messageInfo}
-													getMessage={getMessage}
-													isLoading={isTransactionLoading}
-													show={creditsRequest}
-													onClose={() => closeModal('credits_request')}
-													submit={requestCreditHandler}
-													creditAmount={creditAmount}
-													setCreditAmount={(e) => setCreditAmount(e)}
-													userChatInformation={userChatInformation.length ? userChatInformation[0] : []}
-												/>
-											)}
-											{/* ----------------Request Credits Modal End-------------- */}
+																		</Box>
+																		<InputGroup size="xl" width={'100%'}>
+																			<Input
+																				pr="4.5rem"
+																				pl={'5'}
+																				minH={'45px'}
+																				type={'text'}
+																				placeholder="Message here"
+																				backgroundColor={'#fff'}
+																				borderRadius={20}
+																				value={message}
+																				onChange={(e) => {
+																					setMessage(e.target.value)
+																				}}
+																				onKeyPress={(e) => {
+																					if (
+																						e.key === 'Enter' ||
+																						e.code === 'NumpadEnter'
+																					) {
+																						!isMsgLoading &&
+																							sendMessageHandler()
+																					}
+																				}}
+																			/>
 
-											{isModalShow && (
-												<ModalPopup
-													TitleModal="Your don't have enough credits"
-													show={isModalShow}
-													size={'xs'}
-													setShow={(value) => {
-														setIsModalShow(value)
-													}}
-													body={
-														<InnerSection
-															goNext={() => { }}
-															lastStep={false}
-															para="Complete a deed or invite friends to earn more credits"
-															show={isModalShow}
-															setIsModalShow={setIsModalShow}
+																			<InputRightElement width="3.5rem" h={'100%'}>
+																				{
+																					!isMsgLoading ?
+																						<BsFillArrowUpCircleFill
+																							fontSize={30}
+																							color={'#E27832'}
+																							fontWeight={600}
+																							onClick={sendMessageHandler}
+																						/>
+																						:
+																						<Spinner
+																							thickness="4px"
+																							speed="0.65s"
+																							emptyColor="orange.200"
+																							color="orange.500"
+																							size="md"
+																						/>
+																				}
+																			</InputRightElement>
+																		</InputGroup>
+																	</Flex>
+																</Box>
+															</>
+														)}
+													{tCreditModal && (
+														<TransferCreditModal
+															messageInfo={messageInfo}
+															getMessage={getMessage}
+															isLoading={isTransactionLoading}
+															show={tCreditModal}
+															onClose={() => closeModal('transfer_credits')}
+															submit={transferCreditHandler}
+															creditAmount={creditAmount}
+															setCreditAmount={(e) => setCreditAmount(e)}
+															userChatInformation={userChatInformation.length ? userChatInformation[0] : []}
 														/>
-													}
-												/>
+													)}
+													
+													{/* ----------------Request Credits Modal Mobile-------------- */}
+													{creditsRequest && (
+														<RequestCreditModal
+															messageInfo={messageInfo}
+															getMessage={getMessage}
+															isLoading={isTransactionLoading}
+															show={creditsRequest}
+															onClose={() => closeModal('credits_request')}
+															submit={requestCreditHandler}
+															creditAmount={creditAmount}
+															setCreditAmount={(e) => setCreditAmount(e)}
+															userChatInformation={userChatInformation.length ? userChatInformation[0] : []}
+														/>
+													)}
+													{/* ----------------Request Credits Modal End-------------- */}
+
+													{isModalShow && (
+														<ModalPopup
+															TitleModal="Your don't have enough credits"
+															show={isModalShow}
+															size={'xs'}
+															setShow={(value) => {
+																setIsModalShow(value)
+															}}
+															body={
+																<InnerSection
+																	goNext={() => { }}
+																	lastStep={false}
+																	para="Complete a deed or invite friends to earn more credits"
+																	show={isModalShow}
+																	setIsModalShow={setIsModalShow}
+																/>
+															}
+														/>
+													)}
+													{pendingCreditModal && (
+														<PendingCreditModal
+															messageInfo={messageInfo}
+															getMessage={getMessage}
+															show={pendingCreditModal}
+															onClose={() => closeModal('pending_credits')}
+														/>
+													)}
+													{creditTransferred && (
+														<CreditTransferredModal
+															messageInfo={messageInfo}
+															getMessage={getMessage}
+															show={creditTransferred}
+															onClose={() => closeModal('credits_transferred')}
+														/>
+													)}
+													{rateAndReviewModal && (
+														<RateAndReviewModal
+															isLoading={isTransactionLoading}
+															submitReviewAndRating={() =>
+																submitReviewAndRating()
+															}
+															setRatingValue={(e) => setRatingValue(e)}
+															ratingValue={ratingValue}
+															reviewText={reviewText}
+															setReviewText={(e) => setReviewText(e)}
+															show={rateAndReviewModal}
+															onClose={() => closeModal('rate_and_review')}
+														/>
+													)}
+													{transactionModal && (
+														<TransactionModal
+															messageInfo={messageInfo}
+															getMessage={getMessage}
+															submitTransactionReport={() =>
+																submitTransactionReport()
+															}
+															show={transactionModal}
+															onClose={() => closeModal('transaction')}
+															setTransactionReportText={(e) =>
+																setTransactionReportText(e)
+															}
+															transactionReportText={transactionReportText}
+														/>
+													)}
+												</Box>
 											)}
-											{pendingCreditModal && (
-												<PendingCreditModal
-													messageInfo={messageInfo}
-													getMessage={getMessage}
-													show={pendingCreditModal}
-													onClose={() => closeModal('pending_credits')}
-												/>
-											)}
-											{creditTransferred && (
-												<CreditTransferredModal
-													messageInfo={messageInfo}
-													getMessage={getMessage}
-													show={creditTransferred}
-													onClose={() => closeModal('credits_transferred')}
-												/>
-											)}
-											{rateAndReviewModal && (
-												<RateAndReviewModal
-													isLoading={isTransactionLoading}
-													submitReviewAndRating={() =>
-														submitReviewAndRating()
-													}
-													setRatingValue={(e) => setRatingValue(e)}
-													ratingValue={ratingValue}
-													reviewText={reviewText}
-													setReviewText={(e) => setReviewText(e)}
-													show={rateAndReviewModal}
-													onClose={() => closeModal('rate_and_review')}
-												/>
-											)}
-											{transactionModal && (
-												<TransactionModal
-													messageInfo={messageInfo}
-													getMessage={getMessage}
-													submitTransactionReport={() =>
-														submitTransactionReport()
-													}
-													show={transactionModal}
-													onClose={() => closeModal('transaction')}
-													setTransactionReportText={(e) =>
-														setTransactionReportText(e)
-													}
-													transactionReportText={transactionReportText}
-												/>
-											)}
-										</Box>
+										</>
 									)
 									: null
 								: Object.keys(userChatInformation).length !== 0 && (

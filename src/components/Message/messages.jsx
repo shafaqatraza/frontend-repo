@@ -40,7 +40,7 @@ const Messages = (props) => {
         let chats = conversation.map((msg, key) => {
             
             datePrint = moment(msg.created_at).format('h:mm: a');
-            if (msg.message !== null && user_chat_info[0].chat_id === msg.chat_id) {
+            if (msg.message !== null && msg.message !== '' && user_chat_info[0].chat_id == msg.chat_id) {
                 if (msg.type !== null && (msg.type === 'credit_request' || msg.type === 'transaction_rejected' || msg.type === "transaction_pending" || msg.type === "transaction_accepted" || msg.message.includes('ransferred') || msg.message.includes('ending'))) {
                     return (
                         
