@@ -623,7 +623,7 @@ export default function Navbar(props: any) {
                 <Box position="relative">
                   <Link style={{ color: "black", margin: "0 2rem", fontWeight: "700", fontSize: "16px" }} onClick={() => setOpenDropdown(!openDropdown)} > Discover </Link>
                   {openDropdown &&
-                    <Stack direction={'column'} position='absolute' w={'220px'} bg={'#FFF'} top="45px">
+                    <Stack direction={'column'} position='absolute' w={'220px'} bg={'#FFF'} top="45px" backgrounf="#fff" zIndex="999">
                       <Link href="/about" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>About us</Link>
                       <Link href="/browse?type=offering&activeTab=0" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Items</Link>
                       <Link href="/browse?type=offering&activeTab=1" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Services</Link>

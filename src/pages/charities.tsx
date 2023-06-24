@@ -388,12 +388,10 @@ const Charities = () => {
                         textAlign: "center",
                       }}
                     >
-                      Convenient Access
+                      Optimized Security and Safety
                     </p>
                     <p className="card-text text-center mt-4 mb-3">
-                      Access Good Deeds’s diverse and growing database of
-                      volunteers with varying levels of unique skills and
-                      expertise based on your project needs.
+                      Provide your volunteers with access to a reliable and secure platform to connect with vetted and age-appropriate volunteer opportunities.
                     </p>
                   </div>
                 </div>
@@ -562,7 +560,7 @@ const Charities = () => {
                     src={pennyfundraising.src}
                     alt={"Skilled Workers"}
                   />
-                  <span className="text-center mb-2 skill-txt">Fund Raising</span>
+                  <span className="text-center mb-2 skill-txt">Fundraising</span>
                 </div>
               </Popover>
             </div>
@@ -673,7 +671,7 @@ const Charities = () => {
                 <p className="mt-5 mb-2 step1-txt">Sign up</p>
                 <hr className="hr-step1" style={{ height: "5px" }} />
                 <p className="step1-txt2 mt-2">
-                  Sign Up for Good deeds account
+                  Sign up and create a Good Deeds User account, linked to your organization portal. Ensure you possess the necessary credentials to open an account on behalf of your charity or nonprofit organization.
                 </p>
               </div>
             </div>
@@ -690,7 +688,7 @@ const Charities = () => {
                 <hr className="hr-step2" style={{ height: "5px" }} />
 
                 <p className="step1-txt2 mt-2">
-                  Create or Add an Organization to being <span className="d-block">creating listings for volunteers or donations!</span>
+                  To list volunteer opportunities or set up a donor page on the Good Deeds portal, simply add and create an organization profile.
                 </p>
               </div>
               <div>
@@ -716,9 +714,8 @@ const Charities = () => {
                 <p className="mt-5 mb-2 step1-txt">Set Up Your Dashboard</p>
                 <hr className="hr-step1" style={{ height: "5px" }} />
                 <p className="step1-txt2 mt-2">
-                  Organize your dashboard for easy visibility
-                  <span className="d-block">and management of user donations and</span>
-                  <span className="d-block">volunteer applications.</span>
+                  Create volunteer applications, advertise volunteer roles, and establish a donor page. The dashboard offers vital insights to effectively oversee volunteers and donors.
+
                 </p>
               </div>
             </div>
@@ -746,7 +743,7 @@ const Charities = () => {
                 <hr className="hr-step2" style={{ height: "5px" }} />
 
                 <p className="step1-txt2 mt-2">
-                  Follow up with a selected volunteer application <span className="d-block">and start collaborating on your campaign!</span>
+                  Follow up with a selected volunteer application and start collaborating on your campaign!
                 </p>
               </div>
               <div>
