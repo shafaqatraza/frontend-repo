@@ -244,11 +244,11 @@ export default function Navbar(props: any) {
   const [isRefer, setIsRefer] = useState<boolean>(true);
 
   if (typeof window !== 'undefined') {
-		var currOrg = localStorage.getItem('currentOrganization');
+    var currOrg = localStorage.getItem('currentOrganization') as string | null;
     if (currOrg !== null) {
-      var currOrg = JSON.parse(currOrg);
+      currOrg = JSON.parse(currOrg);
     }
-	}
+  }
 
   useEffect(() => {
 
