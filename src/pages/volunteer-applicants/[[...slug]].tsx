@@ -381,7 +381,7 @@ applicantName?.applications?.map((application) => {
             <Input
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
-              placeholder="Number of credits"
+              placeholder="Number of deed dollars"
               className="form-control"
               // value={formData.number_of_credits}
               // onChange={(event) =>

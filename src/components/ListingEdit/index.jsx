@@ -624,7 +624,7 @@ const EditListingForm = () => {
                       variant="filled"
                       width="30%"
                     />
-                    <Text ml="4"> Credits</Text>
+                    <Text ml="4"> Deed Dollars</Text>
                   </Flex>
                 </NumberInput>
                 {validator.message(
@@ -803,7 +803,7 @@ const EditListingForm = () => {
                       marginRight: isMobile ? '2%' : 0,
                       position: "relative"
                     }}
-                  > 
+                  >
                     <img
                       src={`${media.path}/${media.image}`}
                       alt="avatar"

@@ -11,6 +11,8 @@ const SearchTags = (props) => {
         keywordList, selectedKeywords,
         categoryList, selectedCategory,
         serviceCategoryList, selectedServiceCategory,
+        volunteerCategoryList, selectedVolunteerCategory,
+        donationCategoryList, selectedDonationCategory,
         conditionList, selectedCondition,
         levelList, selectedLevel,
         minPrice, maxPrice, sortBy,
@@ -21,6 +23,8 @@ const SearchTags = (props) => {
     const [keywordTags, setKeywordTags] = useState([]);
     const [categoryTags, setCategoryTags] = useState([]);
     const [serviceCategoryTags, setServiceCategoryTags] = useState([]);
+    const [volunteerCategoryTags, setVolunteerCategoryTags] = useState([]);
+    const [donationCategoryTags, setDonationCategoryTags] = useState([]);
     const [levelTags, setLevelTags] = useState([]);
     const [conditionTags, setConditionTags] = useState([]);
     const [minTag, setMintag] = useState("");
@@ -54,6 +58,16 @@ const SearchTags = (props) => {
         let result = serviceCategoryList.filter((item => selectedServiceCategory.includes(item.id)))
         setServiceCategoryTags(result);
     }, [selectedServiceCategory]);
+
+    useEffect(() => {
+        let result = volunteerCategoryList.filter((item => selectedVolunteerCategory.includes(item.id)))
+        setVolunteerCategoryTags(result);
+    }, [selectedVolunteerCategory]);
+
+    useEffect(() => {
+        let result = donationCategoryList.filter((item => selectedDonationCategory.includes(item.id)))
+        setDonationCategoryTags(result);
+    }, [selectedDonationCategory]);
 
     useEffect(() => {
         let result = levelList.filter((item => selectedLevel.includes(item.id)))
@@ -129,11 +143,25 @@ const SearchTags = (props) => {
                     <SmallCloseIcon onClick={() => removeFilter('category', item.id)} cursor={"pointer"} color="#ffffff" backgroundColor="#000000" borderRadius="10px" marginLeft="6px" />
                 </Tag>)
                 )}
-                
+
                 {serviceCategoryTags.length > 0 && serviceCategoryTags.map((item) =>
                 (<Tag {...tagStyling} key={item.id}>
                     <TagLabel>{item.name}</TagLabel>
                     <SmallCloseIcon onClick={() => removeFilter('serviceCategory', item.id)} cursor={"pointer"} color="#ffffff" backgroundColor="#000000" borderRadius="10px" marginLeft="6px" />
+                </Tag>)
+                )}
+
+                {volunteerCategoryTags.length > 0 && volunteerCategoryTags.map((item) =>
+                (<Tag {...tagStyling} key={item.id}>
+                    <TagLabel>{item.name}</TagLabel>
+                    <SmallCloseIcon onClick={() => removeFilter('volunteerCategory', item.id)} cursor={"pointer"} color="#ffffff" backgroundColor="#000000" borderRadius="10px" marginLeft="6px" />
+                </Tag>)
+                )}
+
+                {donationCategoryTags.length > 0 && donationCategoryTags.map((item) =>
+                (<Tag {...tagStyling} key={item.id}>
+                    <TagLabel>{item.name}</TagLabel>
+                    <SmallCloseIcon onClick={() => removeFilter('donationCategory', item.id)} cursor={"pointer"} color="#ffffff" backgroundColor="#000000" borderRadius="10px" marginLeft="6px" />
                 </Tag>)
                 )}
 

@@ -145,7 +145,7 @@ const Message = (props) => {
 		}
 	}, []);
 
-	//	New chat notification handler	
+	//	New chat notification handler
     useEffect(() => {
 		Pusher.logToConsole = false;
 		var pusher = new Pusher(`${Pusher_key}`, {
@@ -169,7 +169,7 @@ const Message = (props) => {
 	}, [])
 
 
-	//	Set insufficient credits handler	
+	//	Set insufficient credits handler
 	useEffect(() => {
 		if (profileData) {
 			if (creditAmount !== "") {
@@ -183,7 +183,7 @@ const Message = (props) => {
 		}
 	}, [creditAmount])
 
-	//	Transfer credits handler	
+	//	Transfer credits handler
 	const transferCreditHandler = async () => {
 
 		if (isInsufficientCredits) {
@@ -266,7 +266,7 @@ const Message = (props) => {
 			})
 	}
 
-	//	Reject transaction handler	
+	//	Reject transaction handler
 	const rejectCreditHandler = async () => {
 		let filterPending = conversationData.filter((e) => e.type === 'transaction_pending' || (e.message !== null && e.message !== "" && e.message.includes('Pending')))
 		if (filterPending.length === 0) {
@@ -322,7 +322,7 @@ const Message = (props) => {
 
 	}
 
-	//	Accept transaction handler	
+	//	Accept transaction handler
 	const acceptCreditHandler = async () => {
 		setTimeout(async () => {
 			let transactions = conversationData.filter((e) => e.transaction_id != null)
@@ -367,7 +367,7 @@ const Message = (props) => {
 
 	}
 
-	//	Complete deed handler	
+	//	Complete deed handler
 	const confirmCreditHandler = async () => {
 		setTimeout(async () => {
 			let filterPending = conversationData.filter((e) => e.type === 'transaction_pending' || (e.message !== null && e.message !== "" && e.message.includes('Pending')))
@@ -380,7 +380,7 @@ const Message = (props) => {
 				return
 			}
 			let transactions = conversationData.filter((data) => data.transaction_id != null)
-			
+
 			if (conversationData.length > 0) {
 				setIsConfirmDisabled(true)
 				setIsTransactionLoading(true)
@@ -419,11 +419,11 @@ const Message = (props) => {
 			}
 		}, 500);
 	}
-	//	Send message handler	
+	//	Send message handler
 	const sendMessageHandler = async () => {
 		if (message != '') {
 			setLastMessage(message)
-			
+
 			const data = {
 				message: message,
 				sender_id: userId,
@@ -453,7 +453,7 @@ const Message = (props) => {
 
 		}
 	}
-	
+
 	//	Message box scroll handler
 	const scrollToBottom = () => {
 		var element = document.getElementById('message-box')
@@ -471,7 +471,7 @@ const Message = (props) => {
 		receiver = {},
 		sender = {},
 		organization = {}
-	) => { 
+	) => {
 
 		setMessageInfo({
 			chat_id: '',
@@ -494,7 +494,7 @@ const Message = (props) => {
 		if(organization !== null){
 			setChatOrganizationData({ name:organization.name, slug: organization.slug, avatar: organization.avatar })
 		}
-		
+
 		setConversationData([])
 		await axios
 			.get(baseUrl + '/member/messages/' + id, {
@@ -532,7 +532,7 @@ const Message = (props) => {
 					setIsCreditAccepted(isChatCompleted.length > 0 ? true : false)
 					setCreditAmount(res.data.data[0].listing.credits)
 				}
-				
+
 				setMessageInfo({
 					chat_id: id,
 					receiver_id: receiver_id,
@@ -547,14 +547,14 @@ const Message = (props) => {
 			})
 			.catch((error) => {
 			})
-			
+
 		if (!channelArray.includes('chat_' + userId + '_' + listing_id)) {
-			
+
 			channelArray.push('chat_' + userId + '_' + listing_id);
 			echo = new Echo(pusher)
 			echo.private('chat_' + userId + '_' + listing_id)
 				.listen('ChatEvent', function (data) {
-					
+
 					notificationHandler(1)
 					setTransactionStatus(data.transaction_status)
 					if (data.message !== null && data.message !== "") {
@@ -569,7 +569,7 @@ const Message = (props) => {
 					// setIsCreditAccepted(isChatCompleted.length > 0 ? true : false)
 					if (listing_id == data.listing_id) {
 						setConversationData((conversationData) => conversationData.concat(data))
-						
+
 						if (data.transaction_status == "Rejected") {
 							setRejectStatus(true)
 						}
@@ -600,7 +600,7 @@ const Message = (props) => {
 				}
 			})
 			.then((res) => {
-				
+
 				if (listingData != undefined) {
 					removeListinData()
 					let tmpExisting = res.data.data
@@ -771,7 +771,7 @@ const Message = (props) => {
 					}
 				})
 				.then((res) => {
-					
+
 					getChats()
 					setMessageInfo({
 						chat_id: res.data.data[0].chat_id,
@@ -803,7 +803,7 @@ const Message = (props) => {
 					setCreditAmount(res.data.data[0].listing.credits)
 					setUserChatInformation(res.data.data)
 					setConversationData(res.data.data)
-					
+
 					if (Object.keys(pusher).length === 0) {
 
 						pusher = {
@@ -843,7 +843,7 @@ const Message = (props) => {
 							// setIsCreditAccepted(isChatCompleted.length > 0 ? true : false)
 							if (res.data.data[0].listing.id == data.listing_id) {
 								setConversationData((conversationData) => conversationData.concat(data))
-								
+
 								if (data.transaction_status == "Rejected") {
 									setRejectStatus(true)
 								}
@@ -961,7 +961,7 @@ const Message = (props) => {
 			}
 		}
 	)
-	
+
 	const closeModal = async(modal) =>{
 
 		if(modal){
@@ -975,11 +975,11 @@ const Message = (props) => {
 			}else if(modal === 'credits_transferred'){
 				setCreditTransferred(false)
 			}else if(modal === 'rate_and_review'){
-				setRateAndReviewModal(false) 
+				setRateAndReviewModal(false)
 			}else if(modal === 'transaction'){
-				setTransactionModal(false)  
+				setTransactionModal(false)
 			}else if(modal === 'on_hold_credits'){
-				setOnHoldCreditModal(false)  
+				setOnHoldCreditModal(false)
 			}
 			setTimeout(() => {
 				scrollToBottom()
@@ -987,7 +987,7 @@ const Message = (props) => {
 		}
 	}
 	console.log('aaaaaaa203', conversationData)
-	//=========================================================RETURN==================================================================	
+	//=========================================================RETURN==================================================================
 
 	return (
 		<Box
@@ -1147,7 +1147,7 @@ const Message = (props) => {
 									}}
 								>
 									<Text px={10} fontWeight={600} fontSize={22}>
-										All Chats 
+										All Chats
 									</Text>
 									{  chatRoom.length > 0 &&
 										chatRoom.map((data, index) => (
@@ -1172,7 +1172,7 @@ const Message = (props) => {
 															data.organization
 														)
 													}
-												> 
+												>
 													<Box width={'60px'}>
 														<Image
 															boxSize="60px"
@@ -1315,7 +1315,7 @@ const Message = (props) => {
 													/>
 												</Box>
 											</Flex>
-											{!tCreditModal && 
+											{!tCreditModal &&
 												!creditsRequest &&
 												!pendingCreditModal &&
 												!creditTransferred &&
@@ -1349,7 +1349,7 @@ const Message = (props) => {
 																		fontSize={14}
 																	>
 																		{userChatInformation[0].listing.credits}{' '}
-																		Credits
+																		Deed Dollars
 																	</Text>
 																</Box>
 															</Flex>
@@ -1505,7 +1505,7 @@ const Message = (props) => {
 																					fontSize="md"
 																					onClick={() => setTCreditModal(true)}
 																				>
-																					Transfer Credits
+																					Transfer Deed Dollars
 																				</Button>
 																			}
 
@@ -1572,7 +1572,7 @@ const Message = (props) => {
 																						fontSize="md"
 																						onClick={() => acceptCreditHandler()}
 																					>
-																						Accept Credits
+																						Accept Deed Dollars
 																					</Button>
 																					:
 																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -1625,7 +1625,7 @@ const Message = (props) => {
 																						fontSize="md"
 																						onClick={() => acceptCreditHandler()}
 																					>
-																						Accept Credits
+																						Accept Deed Dollars
 																					</Button>
 																					:
 																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -1707,29 +1707,29 @@ const Message = (props) => {
 																						fontSize="md"
 																						onClick={() => setTCreditModal(true)}
 																					>
-																						Transfer Credits
+																						Transfer Deed Dollars
 																					</Button>
 																			}
 																			{/* {
 																			userChatInformation[0].transaction_status != null && !rejectStatus &&
 
-																			
+
 																		} */}
 																		</>
 																	)}
 
 																{/* --------------------------Request Credits Mobile-------------------------------- */}
 																{userChatInformation.length > 0 &&
-																	userChatInformation[0].transaction_status == null && 
+																	userChatInformation[0].transaction_status == null &&
 																	(
 																		<>
 																		{
-																			((userChatInformation[0].listing.user_id != userId && userChatInformation[0].listing.listing_type == 'wanted') || 
+																			((userChatInformation[0].listing.user_id != userId && userChatInformation[0].listing.listing_type == 'wanted') ||
 																			(userChatInformation[0].listing.user_id === userId && userChatInformation[0].listing.listing_type != 'wanted')) &&
 																				(
 																				<>
 																				{
-																					userChatInformation[0].credits_request === false && 
+																					userChatInformation[0].credits_request === false &&
 																					(
 																						<>
 																						<Button
@@ -1742,11 +1742,11 @@ const Message = (props) => {
 																							fontSize="md"
 																							onClick={() => setCreditsRequestModal(true)}
 																						>
-																							Request Credits
+																							Request Deed Dollars
 																						</Button>
-																						
+
 																						</>
-																					) || 
+																					) ||
 																					userChatInformation[0].transaction_status == null && userChatInformation[0].credits_request !== false &&
 																						<Button
 																							w={'70%'}
@@ -1758,14 +1758,14 @@ const Message = (props) => {
 																							fontSize="md"
 																							disabled
 																						>
-																							Request Credits
+																							Request Deed Dollars
 																						</Button>
 																				}
 																				</>
 																				)
 																		}
 																		</>
-																)	
+																)
 																}
 																{/* --------------------------Request Credits Mobile End-------------------------------- */}
 
@@ -1874,7 +1874,7 @@ const Message = (props) => {
 													userChatInformation={userChatInformation.length ? userChatInformation[0] : []}
 												/>
 											)}
-											
+
 											{/* ----------------Request Credits Modal Mobile-------------- */}
 											{creditsRequest && (
 												<RequestCreditModal
@@ -1893,7 +1893,7 @@ const Message = (props) => {
 
 											{isModalShow && (
 												<ModalPopup
-													TitleModal="Your don't have enough credits"
+													TitleModal="Your don't have enough deed dollars"
 													show={isModalShow}
 													size={'xs'}
 													setShow={(value) => {
@@ -1903,7 +1903,7 @@ const Message = (props) => {
 														<InnerSection
 															goNext={() => { }}
 															lastStep={false}
-															para="Complete a deed or invite friends to earn more credits"
+															para="Complete a deed or invite friends to earn more deed dollars"
 															show={isModalShow}
 															setIsModalShow={setIsModalShow}
 														/>
@@ -1961,11 +1961,11 @@ const Message = (props) => {
 								: Object.keys(userChatInformation).length !== 0 && (
 									<>
 									{userChatInformation[0].model_type === 'Organization' ? (
-										<MessageBoxOrgWeb 
-											messages = {userChatInformation} 
+										<MessageBoxOrgWeb
+											messages = {userChatInformation}
 											messageInfoData = {messageInfo}
 											chatInfoData = {chatHeader}
-											organizationInfoData = {chatOrganizationData} 
+											organizationInfoData = {chatOrganizationData}
 											conversation={conversationData}
 											message = {message}
 										/>
@@ -2021,13 +2021,13 @@ const Message = (props) => {
 													</Text>
 												</Flex>
 											</Box>
-											{!tCreditModal && 
+											{!tCreditModal &&
 												!creditsRequest &&
 												!pendingCreditModal &&
 												!creditTransferred &&
 												!rateAndReviewModal &&
 												!transactionModal && (
-													<> 
+													<>
 														<Box bg="#F6F6F6" py={'10px'}>
 															<Flex alignItems={'center'}>
 																<Box pl="20">
@@ -2047,7 +2047,7 @@ const Message = (props) => {
 																	</Text>
 																	<Text ml={10} fontWeight={500} fontSize={14}>
 																		{userChatInformation[0].listing.credits}{' '}
-																		Credits
+																		Deed Dollars
 																	</Text>
 																</Box>
 															</Flex>
@@ -2203,7 +2203,7 @@ const Message = (props) => {
 																					fontSize="md"
 																					onClick={() => setTCreditModal(true)}
 																				>
-																					Transfer Credits
+																					Transfer Deed Dollars
 																				</Button>
 																			}
 
@@ -2270,7 +2270,7 @@ const Message = (props) => {
 																						fontSize="md"
 																						onClick={() => acceptCreditHandler()}
 																					>
-																						Accept Credits
+																						Accept Deed Dollars
 																					</Button>
 																					:
 																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -2306,16 +2306,16 @@ const Message = (props) => {
 
 																{/* --------------------------Request Credits Web-------------------------------- */}
 																{userChatInformation.length > 0 &&
-																	userChatInformation[0].transaction_status == null && 
+																	userChatInformation[0].transaction_status == null &&
 																	(
 																		<>
 																		{
-																			((userChatInformation[0].listing.user_id != userId && userChatInformation[0].listing.listing_type == 'wanted') || 
+																			((userChatInformation[0].listing.user_id != userId && userChatInformation[0].listing.listing_type == 'wanted') ||
 																			(userChatInformation[0].listing.user_id === userId && userChatInformation[0].listing.listing_type != 'wanted')) &&
 																				(
 																				<>
 																				{
-																					userChatInformation[0].credits_request === false && 
+																					userChatInformation[0].credits_request === false &&
 																					(
 																						<>
 																						<Button
@@ -2328,12 +2328,12 @@ const Message = (props) => {
 																							fontSize="md"
 																							onClick={() => setCreditsRequestModal(true)}
 																						>
-																							Request Credits
+																							Request Deed Dollars
 																						</Button>
-																						
+
 																						</>
-																					) || 
-																					userChatInformation[0].transaction_status == null && userChatInformation[0].credits_request !== false && 
+																					) ||
+																					userChatInformation[0].transaction_status == null && userChatInformation[0].credits_request !== false &&
 																						<Button
 																							w={'70%'}
 																							isLoading={isConfirmDisabled}
@@ -2344,14 +2344,14 @@ const Message = (props) => {
 																							fontSize="md"
 																							disabled
 																						>
-																							Request Credits
+																							Request Deed Dollars
 																						</Button>
 																				}
 																				</>
 																				)
 																		}
 																		</>
-																)	
+																)
 																}
 																{/* --------------------------Request Credits Web End-------------------------------- */}
 
@@ -2376,7 +2376,7 @@ const Message = (props) => {
 																						fontSize="md"
 																						onClick={() => acceptCreditHandler()}
 																					>
-																						Accept Credits
+																						Accept Deed Dollars
 																					</Button>
 																					:
 																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -2458,13 +2458,13 @@ const Message = (props) => {
 																						fontSize="md"
 																						onClick={() => setTCreditModal(true)}
 																					>
-																						Transfer Credits
+																						Transfer Deed Dollars
 																					</Button>
 																			}
 																			{/* {
 																				userChatInformation[0].transaction_status != null && !rejectStatus &&
 
-																				
+
 																			} */}
 																		</>
 																	)}
@@ -2598,7 +2598,7 @@ const Message = (props) => {
 
 											{isModalShow && (
 												<ModalPopup
-													TitleModal="Your don't have enough credits"
+													TitleModal="Your don't have enough deed dollars"
 													show={isModalShow}
 													size={'xs'}
 													setShow={(value) => {
@@ -2608,7 +2608,7 @@ const Message = (props) => {
 														<InnerSection
 															goNext={() => { }}
 															lastStep={false}
-															para="Complete a deed or invite friends to earn more credits"
+															para="Complete a deed or invite friends to earn more deed dollars"
 															show={isModalShow}
 															setIsModalShow={setIsModalShow}
 														/>

@@ -326,7 +326,7 @@ const NewMessage = (props) => {
                                                 <Center>
                                                     <Button w={"70%"} type="submit" mt={"5"} colorScheme="orange" size="md" fontSize="md"
                                                         onClick={() => setTCreditModal(true)} >
-                                                        Transfer Credits
+                                                        Transfer Deed Dollars
                                                     </Button>
                                                 </Center>
                                             </Box>

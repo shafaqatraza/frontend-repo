@@ -307,7 +307,7 @@ const VolunteerApplication = (props) => {
                   </Flex>
                   <Flex justifyContent={"space-between"} mt={"10px"}>
                     <Text fontSize={"24px"} color="orange.500" fontWeight="700">
-                      {listingData?.credit_amount ? `${listingData.credit_amount} Credits` : ''}
+                      {listingData?.credit_amount ? `${listingData.credit_amount} Deed Dollars` : ''}
                     </Text>
                   </Flex>
                   {listingData?.organization?.address !== null ? (

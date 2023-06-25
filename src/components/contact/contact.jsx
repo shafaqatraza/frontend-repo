@@ -171,13 +171,13 @@ const Contact = (props) => {
                     p={isSmallerThan767 ? '30px 15px' : '30px 100px'}
                 >
                     {/* <Text textAlign="center" fontSize="28px">Contact Us</Text> */}
-                    <SimpleGrid columns={isMobile ? 1 : 2} spacing={isMobile ? 0 : 10}>
+                    <SimpleGrid columns={1} spacing={isMobile ? 0 : 10}>
                         <FormControl id="name" isRequired >
                             <FormLabel color="gray.500">First Name</FormLabel>
                             <Input variant="filled" placeholder="First Name" value={contactForm.first_name} onChange={event => setContactForm({ ...contactForm, first_name: event.currentTarget.value })} name="first_name" type="text" maxLength={50} />
                         </FormControl>
 
-                        <FormControl mt="8" id="name" isRequired>
+                        <FormControl id="name" isRequired>
                             <FormLabel color="gray.500">Last Name</FormLabel>
                             <Input variant="filled" placeholder="Last Name" value={contactForm.last_name} onChange={event => setContactForm({ ...contactForm, last_name: event.currentTarget.value })} name="last_name" type="text" maxLength={50} />
                         </FormControl>

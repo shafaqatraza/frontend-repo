@@ -143,7 +143,7 @@ const MessageBoxWeb = () => {
 		}
 	}, []);
 
-	//	New chat notification handler	
+	//	New chat notification handler
     useEffect(() => {
 		Pusher.logToConsole = false;
 		var pusher = new Pusher(`${Pusher_key}`, {
@@ -167,7 +167,7 @@ const MessageBoxWeb = () => {
 	}, [])
 
 
-	//	Set insufficient credits handler	
+	//	Set insufficient credits handler
 	useEffect(() => {
 		if (profileData) {
 			if (creditAmount !== "") {
@@ -181,7 +181,7 @@ const MessageBoxWeb = () => {
 		}
 	}, [creditAmount])
 
-	//	Transfer credits handler	
+	//	Transfer credits handler
 	const transferCreditHandler = async () => {
 
 		if (isInsufficientCredits) {
@@ -264,7 +264,7 @@ const MessageBoxWeb = () => {
 			})
 	}
 
-	//	Reject transaction handler	
+	//	Reject transaction handler
 	const rejectCreditHandler = async () => {
 		let filterPending = conversationData.filter((e) => e.type === 'transaction_pending' || (e.message !== null && e.message !== "" && e.message.includes('Pending')))
 		if (filterPending.length === 0) {
@@ -320,7 +320,7 @@ const MessageBoxWeb = () => {
 
 	}
 
-	//	Accept transaction handler	
+	//	Accept transaction handler
 	const acceptCreditHandler = async () => {
 		setTimeout(async () => {
 			let transactions = conversationData.filter((e) => e.transaction_id != null)
@@ -365,7 +365,7 @@ const MessageBoxWeb = () => {
 
 	}
 
-	//	Complete deed handler	
+	//	Complete deed handler
 	const confirmCreditHandler = async () => {
 		setTimeout(async () => {
 			let filterPending = conversationData.filter((e) => e.type === 'transaction_pending' || (e.message !== null && e.message !== "" && e.message.includes('Pending')))
@@ -378,7 +378,7 @@ const MessageBoxWeb = () => {
 				return
 			}
 			let transactions = conversationData.filter((data) => data.transaction_id != null)
-			
+
 			if (conversationData.length > 0) {
 				setIsConfirmDisabled(true)
 				setIsTransactionLoading(true)
@@ -417,11 +417,11 @@ const MessageBoxWeb = () => {
 			}
 		}, 500);
 	}
-	//	Send message handler	
+	//	Send message handler
 	const sendMessageHandler = async () => {
 		if (message != '') {
 			setLastMessage(message)
-			
+
 			const data = {
 				message: message,
 				sender_id: userId,
@@ -486,7 +486,7 @@ const MessageBoxWeb = () => {
 		} else if (userId === sender.id) {
 			setChatHeader({ name: receiver.name, avatar_url: receiver.avatar, username: receiver.username, online_status: receiver.online_status, last_seen: receiver.last_seen })
 		}
-		
+
 		setConversationData([])
 		await axios
 			.get(baseUrl + '/member/messages/' + id, {
@@ -534,14 +534,14 @@ const MessageBoxWeb = () => {
 			})
 			.catch((error) => {
 			})
-			
+
 		if (!channelArray.includes('chat_' + userId + '_' + listing_id)) {
-			
+
 			channelArray.push('chat_' + userId + '_' + listing_id);
 			echo = new Echo(pusher)
 			echo.private('chat_' + userId + '_' + listing_id)
 				.listen('ChatEvent', function (data) {
-					
+
 					notificationHandler(1)
 					setTransactionStatus(data.transaction_status)
 					if (data.message !== null && data.message !== "") {
@@ -587,7 +587,7 @@ const MessageBoxWeb = () => {
 				}
 			})
 			.then((res) => {
-				
+
 				if (listingData != undefined) {
 					removeListinData()
 					let tmpExisting = res.data.data
@@ -758,7 +758,7 @@ const MessageBoxWeb = () => {
 					}
 				})
 				.then((res) => {
-					
+
 					getChats()
 					setMessageInfo({
 						chat_id: res.data.data[0].chat_id,
@@ -946,7 +946,7 @@ const MessageBoxWeb = () => {
 			}
 		}
 	)
-	
+
 	const closeModal = async(modal) =>{
 
 		if(modal){
@@ -960,18 +960,18 @@ const MessageBoxWeb = () => {
 			}else if(modal === 'credits_transferred'){
 				setCreditTransferred(false)
 			}else if(modal === 'rate_and_review'){
-				setRateAndReviewModal(false) 
+				setRateAndReviewModal(false)
 			}else if(modal === 'transaction'){
-				setTransactionModal(false)  
+				setTransactionModal(false)
 			}else if(modal === 'on_hold_credits'){
-				setOnHoldCreditModal(false)  
+				setOnHoldCreditModal(false)
 			}
 			setTimeout(() => {
 				scrollToBottom()
 			}, 200)
 		}
 	}
-    //=========================================================RETURN==================================================================	
+    //=========================================================RETURN==================================================================
   return (
     <Box
         position={'relative'}
@@ -1024,7 +1024,7 @@ const MessageBoxWeb = () => {
                 </Text>
             </Flex>
         </Box>
-        {!tCreditModal && 
+        {!tCreditModal &&
             !creditsRequest &&
             !pendingCreditModal &&
             !creditTransferred &&
@@ -1048,7 +1048,7 @@ const MessageBoxWeb = () => {
                                 </Text>
                                 <Text ml={10} fontWeight={500} fontSize={14}>
                                     {userChatInformation[0].listing.credits}{' '}
-                                    Credits
+                                    Deed Dollars
                                 </Text>
                             </Box>
                         </Flex>
@@ -1204,7 +1204,7 @@ const MessageBoxWeb = () => {
                                                 fontSize="md"
                                                 onClick={() => setTCreditModal(true)}
                                             >
-                                                Transfer Credits
+                                                Transfer Deed Dollars
                                             </Button>
                                         }
 
@@ -1271,7 +1271,7 @@ const MessageBoxWeb = () => {
                                                     fontSize="md"
                                                     onClick={() => acceptCreditHandler()}
                                                 >
-                                                    Accept Credits
+                                                    Accept Deed Dollars
                                                 </Button>
                                                 :
                                                 (userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -1307,16 +1307,16 @@ const MessageBoxWeb = () => {
 
                             {/* --------------------------Request Credits Web-------------------------------- */}
                             {userChatInformation.length > 0 &&
-                                userChatInformation[0].transaction_status == null && 
+                                userChatInformation[0].transaction_status == null &&
                                 (
                                     <>
                                     {
-                                        ((userChatInformation[0].listing.user_id != userId && userChatInformation[0].listing.listing_type == 'wanted') || 
+                                        ((userChatInformation[0].listing.user_id != userId && userChatInformation[0].listing.listing_type == 'wanted') ||
                                         (userChatInformation[0].listing.user_id === userId && userChatInformation[0].listing.listing_type != 'wanted')) &&
                                             (
                                             <>
                                             {
-                                                userChatInformation[0].credits_request === false && 
+                                                userChatInformation[0].credits_request === false &&
                                                 (
                                                     <>
                                                     <Button
@@ -1329,12 +1329,12 @@ const MessageBoxWeb = () => {
                                                         fontSize="md"
                                                         onClick={() => setCreditsRequestModal(true)}
                                                     >
-                                                        Request Credits
+                                                        Request Deed Dollars
                                                     </Button>
-                                                    
+
                                                     </>
-                                                ) || 
-                                                userChatInformation[0].transaction_status == null && userChatInformation[0].credits_request !== false && 
+                                                ) ||
+                                                userChatInformation[0].transaction_status == null && userChatInformation[0].credits_request !== false &&
                                                     <Button
                                                         w={'70%'}
                                                         isLoading={isConfirmDisabled}
@@ -1345,14 +1345,14 @@ const MessageBoxWeb = () => {
                                                         fontSize="md"
                                                         disabled
                                                     >
-                                                        Request Credits
+                                                        Request Deed Dollars
                                                     </Button>
                                             }
                                             </>
                                             )
                                     }
                                     </>
-                            )	
+                            )
                             }
                             {/* --------------------------Request Credits Web End-------------------------------- */}
 
@@ -1377,7 +1377,7 @@ const MessageBoxWeb = () => {
                                                     fontSize="md"
                                                     onClick={() => acceptCreditHandler()}
                                                 >
-                                                    Accept Credits
+                                                    Accept Deed Dollars
                                                 </Button>
                                                 :
                                                 (userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -1459,13 +1459,13 @@ const MessageBoxWeb = () => {
                                                     fontSize="md"
                                                     onClick={() => setTCreditModal(true)}
                                                 >
-                                                    Transfer Credits
+                                                    Transfer Deed Dollars
                                                 </Button>
                                         }
                                         {/* {
                                             userChatInformation[0].transaction_status != null && !rejectStatus &&
 
-                                            
+
                                         } */}
                                     </>
                                 )}
@@ -1599,7 +1599,7 @@ const MessageBoxWeb = () => {
 
         {isModalShow && (
             <ModalPopup
-                TitleModal="Your don't have enough credits"
+                TitleModal="Your don't have enough deed dollars"
                 show={isModalShow}
                 size={'xs'}
                 setShow={(value) => {
@@ -1609,7 +1609,7 @@ const MessageBoxWeb = () => {
                     <InnerSection
                         goNext={() => { }}
                         lastStep={false}
-                        para="Complete a deed or invite friends to earn more credits"
+                        para="Complete a deed or invite friends to earn more deed dollars"
                         show={isModalShow}
                         setIsModalShow={setIsModalShow}
                     />
