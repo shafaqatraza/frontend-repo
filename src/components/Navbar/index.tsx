@@ -244,7 +244,10 @@ export default function Navbar(props: any) {
   const [isRefer, setIsRefer] = useState<boolean>(true);
 
   if (typeof window !== 'undefined') {
-		var currOrg = JSON.parse(localStorage.getItem('currentOrganization'));
+		var currOrg = localStorage.getItem('currentOrganization');
+    if (currOrg !== null) {
+      var currOrg = JSON.parse(currOrg);
+    }
 	}
 
   useEffect(() => {
@@ -335,7 +338,7 @@ export default function Navbar(props: any) {
         });
   
         var channel3 = pusher.subscribe('notifications_organization_'+ currOrg.id);
-        channel3.bind('OrganizationNotifications', function(data) {
+        channel3.bind('OrganizationNotifications', function(data: any) {
             setOrganizationNotifications(data.notifications_count);
         });
         
@@ -347,7 +350,7 @@ export default function Navbar(props: any) {
         });
   
         var channel4 = pusher.subscribe('notifications_member_'+ userId);
-        channel4.bind('MemberNotifications', function(data) {
+        channel4.bind('MemberNotifications', function(data: any) {
           setChatList(data.notifications_count);
         });
       }
@@ -965,7 +968,7 @@ export default function Navbar(props: any) {
                         fontWeight={700}
                         color={'#E27832'}
                       >
-                        {getLoginData()?.user_profile.credits} DEED DOLLARS
+                        {getLoginData()?.user_profile?.credits} DEED DOLLARS 
                       </Text>
 
                       <Button
