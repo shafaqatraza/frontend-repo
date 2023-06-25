@@ -120,7 +120,7 @@ const Message = (props) => {
 		cluster: 'mt1'
 		});
 		// If new message received in the organization chat
-		var channel3 = pusher.subscribe('new_chat_organization_'+currentOrganization.id);
+		var channel3 = pusher.subscribe('new_chat_organization_'+currOrg.id);
 		channel3.bind('pusher:subscription_succeeded', function() {
 			channel3.bind('newChatOrganization', function(data) {
 				const newData=data.newchat
@@ -197,11 +197,11 @@ const Message = (props) => {
 			.catch((error) => {
 			})
 			
-		if (!channelArray.includes('new_message_organization_' + currentOrganization.id + '_' + listing_id)) {
+		if (!channelArray.includes('new_message_organization_' + currOrg.id + '_' + listing_id)) {
 			
-			channelArray.push('new_message_organization_' + currentOrganization.id + '_' + listing_id);
+			channelArray.push('new_message_organization_' + currOrg.id + '_' + listing_id);
 			echo = new Echo(pusher)
-			echo.private('new_message_organization_' + currentOrganization.id + '_' + listing_id)
+			echo.private('new_message_organization_' + currOrg.id + '_' + listing_id)
 				.listen('newMessageEventOrganization', function (data) {
 
 					notificationHandler(1)
@@ -226,7 +226,7 @@ const Message = (props) => {
 	//	Get chats handler
 	const getChats = async () => {
 		
-		if (!currentOrganization) {
+		if (!currOrg) {
 			router.push('/'); // Redirect to the home page
 		}else{
 			await axios
