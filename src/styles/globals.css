@@ -666,10 +666,18 @@ margin-bottom: 24px;
   line-height: 29px;
 
 }
+.charities-wrapper{
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 80px 0 120px;
+  gap: 20px;
+}
 .card-text{
   font-size: clamp(16px, 18px, 20px);
   font-weight: 700;
-  line-height: clamp(18px, 2.5vw, 20px);
+  line-height: clamp(18px, 2.5vw, 24px);
 }
 .card-txt{
   font-size: 14px;
@@ -933,6 +941,9 @@ margin-bottom: 24px;
   }
   .main-volunteer-section{
     margin-top: 40px;
+  }
+  .charities-wrapper{
+    justify-content: center;
   }
 }
 
@@ -1701,7 +1712,15 @@ color: #E27832;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.02), 0px 1px 12px rgba(0, 0, 0, 0.12);
-  padding: 14px 44px;
+  padding: 14px 44px 72px;
+  position: relative;
+}
+.c-donate-btn{
+  border-radius: 50px !important;
+  position: absolute !important;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .c-card-wrapper{
   display: flex;

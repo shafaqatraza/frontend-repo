@@ -37,10 +37,12 @@ import MonthlyPlan from "../components/MonthlyPlan";
 import AnualPlan from "../components/AnualPlan";
 import { useMediaQuery } from '@chakra-ui/react'
 import { Popover } from 'antd';
+import { useRouter } from 'next/router'
 
 const Charities = () => {
   const [selectedButton, setSelectedButton] = useState(1);
   const [isSmallerThan767] = useMediaQuery('(max-width: 767px)')
+  const router = useRouter()
 
   const handleClickOne = () => {
     setSelectedButton(1);
@@ -327,144 +329,130 @@ const Charities = () => {
             </div>
           </div>
         </div>
-        <div>
-          <div className="row mt-5">
-            <div className="col-md-3 part-card">
-              <div className="d-flex justify-content-center">
-                <div
-                  className="card border-1"
-                  style={{ height: "410px", width: "252px" }}
-                >
-                  <div className="d-flex justify-content-center mt-3 mb-3s">
-                    <Image
-                      style={{ maxWidth: "92px", height: "106px" }}
-                      src={partner1.src}
-                      alt={"Image"}
-                    />
-                  </div>
-                  <div className="card-body">
-                    <p
-                      className="mt-4"
-                      style={{
-                        fontSize: "clamp(16px, 1.5vw, 24px)",
-                        lineHeight: "clamp(20px, 3.5vw, 30px)",
-                        fontWeight: "bold",
-                        color: "#212121",
-                        textAlign: "center",
-                      }}
-                    >
-                      Convenient Access
-                    </p>
-                    <p className="card-text text-center mt-4 mb-3">
-                      Access Good Deeds’s diverse and growing database of
-                      volunteers with varying levels of unique skills and
-                      expertise based on your project needs.
-                    </p>
-                  </div>
-                </div>
-              </div>
+        <div className="charities-wrapper ">
+          <div
+            className="card border-1"
+            style={{ width: "276px" }}
+          >
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
+              <Image
+                style={{ maxWidth: "92px", height: "106px" }}
+                src={partner1.src}
+                alt={"Image"}
+              />
             </div>
-            <div className="col-md-3 part-card">
-              <div className="d-flex justify-content-center">
-                <div
-                  className="card border-1"
-                  style={{ height: "410px", width: "252px" }}
-                >
-                  <div className="d-flex justify-content-center mt-3 mb-3s">
-                    <Image
-                      style={{ width: "92px", height: "106px" }}
-                      src={partner2.src}
-                      alt={"Image"}
-                    />
-                  </div>
-                  <div className="card-body">
-                    <p
-                      className="mt-4"
-                      style={{
-                        fontSize: "clamp(16px, 1.5vw, 24px)",
-                        lineHeight: "clamp(20px, 3.5vw, 30px)",
-                        fontWeight: "bold",
-                        color: "#212121",
-                        textAlign: "center",
-                      }}
-                    >
-                      Optimized Security and Safety
-                    </p>
-                    <p className="card-text text-center mt-4 mb-3">
-                      Provide your volunteers with access to a reliable and secure platform to connect with vetted and age-appropriate volunteer opportunities.
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="card-body">
+              <p
+                style={{
+                  fontSize: "clamp(20px, 1.5vw, 24px)",
+                  lineHeight: "clamp(20px, 3.5vw, 30px)",
+                  fontWeight: "bold",
+                  color: "#212121",
+                  textAlign: "center",
+                  height: '60px',
+                  overflow: 'hidden'
+                }}
+              >
+                Convenient Access
+              </p>
+              <p className="card-text text-center mt-4 mb-3">
+                Access Good Deeds diverse and growing database of
+                volunteers with varying levels of unique skills and
+                expertise based on your project needs.
+              </p>
             </div>
-            <div className="col-md-3 part-card">
-              <div className="d-flex justify-content-center">
-                <div
-                  className="card border-1 border-black"
-                  style={{ height: "410px", width: "252px" }}
-                >
-                  <div className="d-flex justify-content-center mt-3 mb-3s">
-                    <Image
-                      style={{ width: "106px", height: "106px" }}
-                      src={partner3.src}
-                      alt={"Image"}
-                    />
-                  </div>
-                  <div className="card-body">
-                    <p
-                      className="mt-4"
-                      style={{
-                        fontSize: "clamp(16px, 1.5vw, 24px)",
-                        lineHeight: "clamp(20px, 3.5vw, 30px)",
-                        fontWeight: "bold",
-                        color: "#212121",
-                        textAlign: "center",
-                      }}
-                    >
-                      Trusted Quality
-                    </p>
-                    <p className="card-text text-center mt-4 mb-3">
-                      Our rate and review feature maintains trusted standards in
-                      reliability, transparency, and accountability.
-                    </p>
-                  </div>
-                </div>
-              </div>
+          </div>
+          <div
+            className="card border-1"
+            style={{ width: "276px" }}
+          >
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
+              <Image
+                style={{ width: "92px", height: "106px" }}
+                src={partner2.src}
+                alt={"Image"}
+              />
             </div>
-            <div className="col-md-3 part-card">
-              <div className="d-flex justify-content-center">
-                <div
-                  className="card border-1"
-                  style={{ height: "410px", width: "252px" }}
-                >
-                  <div className="d-flex justify-content-center mt-3 mb-3s">
-                    <Image
-                      style={{ width: "112px", height: "92px" }}
-                      src={partner4.src}
-                      alt={"Image"}
-                    />
-                  </div>
-                  <div className="card-body">
-                    <p
-                      className="mt-4"
-                      style={{
-                        fontSize: "clamp(16px, 1.5vw, 24px)",
-                        lineHeight: "clamp(20px, 3.5vw, 30px)",
-                        fontWeight: "bold",
-                        color: "#212121",
-                        textAlign: "center",
-                      }}
-                    >
-                      Engaging Reward System
-                    </p>
-                    <p className="card-text text-center mt-4 mb-3">
-                      Improve your volunteer engagement and retention with a
-                      reward system where volunteers earn Deed Dollars for their
-                      invaluable contributions.
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="card-body">
+              <p
+                style={{
+                  fontSize: "clamp(20px, 1.5vw, 24px)",
+                  lineHeight: "clamp(20px, 3.5vw, 30px)",
+                  fontWeight: "bold",
+                  color: "#212121",
+                  textAlign: "center",
+                  height: '60px',
+                  overflow: 'hidden'
+                }}
+              >
+                Optimized Security and Safety
+              </p>
+              <p className="card-text text-center mt-4 mb-3">
+                Provide your volunteers with access to a reliable and secure platform to connect with vetted and age-appropriate volunteer opportunities.
+              </p>
+            </div>
+          </div>
+          <div
+            className="card border-1 border-black"
+            style={{ width: "276px" }}
+          >
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
+              <Image
+                style={{ width: "106px", height: "106px" }}
+                src={partner3.src}
+                alt={"Image"}
+              />
+            </div>
+            <div className="card-body">
+              <p
+                style={{
+                  fontSize: "clamp(20px, 1.5vw, 24px)",
+                  lineHeight: "clamp(20px, 3.5vw, 30px)",
+                  fontWeight: "bold",
+                  color: "#212121",
+                  textAlign: "center",
+                  height: '60px',
+                  overflow: 'hidden'
+                }}
+              >
+                Trusted Quality
+              </p>
+              <p className="card-text text-center mt-4 mb-3">
+                Our rate and review feature maintains trusted standards in
+                reliability, transparency, and accountability.
+              </p>
+            </div>
+          </div>
+          <div
+            className="card border-1"
+            style={{ width: "276px" }}
+          >
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
+              <Image
+                style={{ width: "112px", height: "92px" }}
+                src={partner4.src}
+                alt={"Image"}
+              />
+            </div>
+            <div className="card-body">
+              <p
+                style={{
+                  fontSize: "clamp(20px, 1.5vw, 24px)",
+                  lineHeight: "clamp(20px, 3.5vw, 30px)",
+                  fontWeight: "bold",
+                  color: "#212121",
+                  textAlign: "center",
+                  height: '60px',
+                  overflow: 'hidden'
+                }}
+              >
+                Engaging Reward System
+              </p>
+              <p className="card-text text-center mt-4 mb-3">
+                Improve your volunteer engagement and retention with a
+                reward system where volunteers earn Deed Dollars for their
+                invaluable contributions.
+              </p>
             </div>
           </div>
         </div>
@@ -772,7 +760,7 @@ const Charities = () => {
           <div className="c-card-wrapper">
             <div className="c-single-card">
               <div className="tag-btn mb-2">SOCIAL Servies</div>
-              <Image src={charityLogo1.src} alt={"Donate"} />
+              <Image src={charityLogo1.src} alt={"Donate"} width={'211px'} height={'211px'} />
               <div className="d-flex flex-column justify-content-between">
                 <Text fontSize="14px" fontWeight="700" lineHeight="17px" color="#000000" mt={'15px'}>Boys & Girls Club of Canada</Text>
                 <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
@@ -781,7 +769,7 @@ const Charities = () => {
                 <Button
                   variant={'solid'}
                   colorScheme={'orange'}
-                  style={{ borderRadius: 50 }}
+                  className='c-donate-btn'
                   size={'md'}
                   fontSize="16px"
                   m="20px auto 0"
@@ -795,7 +783,7 @@ const Charities = () => {
             </div>
             <div className="c-single-card">
               <div className="tag-btn mb-2">SOCIAL Servies</div>
-              <Image src={charityLogo2.src} alt={"Donate"} />
+              <Image src={charityLogo3.src} alt={"Donate"} width={'211px'} height={'211px'} />
               <div className="d-flex flex-column justify-content-between">
                 <Text fontSize="14px" fontWeight="700" lineHeight="17px" color="#000000" mt={'15px'}>Habitat for Humanity</Text>
                 <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
@@ -804,7 +792,7 @@ const Charities = () => {
                 <Button
                   variant={'solid'}
                   colorScheme={'orange'}
-                  style={{ borderRadius: 50 }}
+                  className='c-donate-btn'
                   size={'md'}
                   fontSize="16px"
                   m="20px auto 0"
@@ -818,7 +806,7 @@ const Charities = () => {
             </div>
             <div className="c-single-card">
               <div className="tag-btn mb-2">PUBLIC BENEFIT</div>
-              <Image src={charityLogo3.src} alt={"Donate"} />
+              <Image src={charityLogo2.src} alt={"Donate"} width={'211px'} height={'211px'} />
               <div className="d-flex flex-column justify-content-between">
                 <Text fontSize="14px" fontWeight="700" lineHeight="17px" color="#000000" mt={'15px'}>Geneva Centre for Auism</Text>
                 <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
@@ -827,7 +815,7 @@ const Charities = () => {
                 <Button
                   variant={'solid'}
                   colorScheme={'orange'}
-                  style={{ borderRadius: 50 }}
+                  className='c-donate-btn'
                   size={'md'}
                   fontSize="16px"
                   m="20px auto 0"
@@ -847,7 +835,7 @@ const Charities = () => {
             display="block"
             _hover={{ background: 'none' }}
             _focus={{ background: 'none' }}
-          // onClick={submitForm}
+            onClick={() => router.push('/browse?type=offering&activeTab=3')}
           >
             See more
           </Button>

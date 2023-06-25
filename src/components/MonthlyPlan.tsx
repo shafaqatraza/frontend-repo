@@ -25,7 +25,7 @@ const MonthlyPlan = () => {
         },
       })
       .then((res) => {
-        // console.log('plans data', res.data.data);
+        // console.log('pladddd', res.data.data[0]?.packages[0]);
 
         setData(res.data.data[0]?.packages[0])
         setDataDesc(res.data.data[0]?.packages[0]?.description)
@@ -89,7 +89,8 @@ const MonthlyPlan = () => {
                           // @ts-ignore: Unreachable code error
                           dataone?.features?.map((item, index) => (
                             <>
-                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                              {console.log('dfdfd', item)}
+                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }} key={index}>
                                 <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
                                 <p className='m-0 free-txt4'>
                                   {item}
@@ -153,7 +154,7 @@ const MonthlyPlan = () => {
                           // @ts-ignore: Unreachable code error
                           data?.features?.map((item, index) => (
                             <>
-                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }} key={index}>
                                 <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
                                 <p className='m-0 free-txt4'>
                                   {item}
@@ -219,7 +220,7 @@ const MonthlyPlan = () => {
                           // @ts-ignore: Unreachable code error
                           datatwo?.features?.map((item, index) => (
                             <>
-                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }} key={index}>
                                 <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
                                 <p className='m-0 free-txt4'>
                                   {item}
@@ -276,7 +277,7 @@ const MonthlyPlan = () => {
                           // @ts-ignore: Unreachable code error
                           datathree?.features?.map((item, index) => (
                             <>
-                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }} key={index}>
                                 <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
                                 <p className='m-0 free-txt4'>
                                   {item}
