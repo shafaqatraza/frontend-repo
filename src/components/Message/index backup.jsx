@@ -1241,7 +1241,7 @@ const Message = (props) => {
 																		fontSize={14}
 																	>
 																		{userChatInformation[0].listing.credits}{' '}
-																		Credits
+																		Deed Dollars
 																	</Text>
 																</Box>
 															</Flex>
@@ -1396,7 +1396,7 @@ const Message = (props) => {
 																					fontSize="md"
 																					onClick={() => setTCreditModal(true)}
 																				>
-																					Transfer Credits
+																					Transfer Deed Dollars
 																				</Button>
 																			}
 
@@ -1463,7 +1463,7 @@ const Message = (props) => {
 																						fontSize="md"
 																						onClick={() => acceptCreditHandler()}
 																					>
-																						Accept Credits
+																						Accept Deed Dollars
 																					</Button>
 																					:
 																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -1516,7 +1516,7 @@ const Message = (props) => {
 																						fontSize="md"
 																						onClick={() => acceptCreditHandler()}
 																					>
-																						Accept Credits
+																						Accept Deed Dollars
 																					</Button>
 																					:
 																					(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -1598,13 +1598,13 @@ const Message = (props) => {
 																						fontSize="md"
 																						onClick={() => setTCreditModal(true)}
 																					>
-																						Transfer Credits
+																						Transfer Deed Dollars
 																					</Button>
 																			}
 																			{/* {
 																			userChatInformation[0].transaction_status != null && !rejectStatus &&
 
-																			
+
 																		} */}
 																		</>
 																	)}
@@ -1717,7 +1717,7 @@ const Message = (props) => {
 											)}
 											{isModalShow && (
 												<ModalPopup
-													TitleModal="Your don't have enough credits"
+													TitleModal="Your don't have enough deed dollars"
 													show={isModalShow}
 													size={'xs'}
 													setShow={(value) => {
@@ -1727,7 +1727,7 @@ const Message = (props) => {
 														<InnerSection
 															goNext={() => { }}
 															lastStep={false}
-															para="Complete a deed or invite friends to earn more credits"
+															para="Complete a deed or invite friends to earn more deed dollars"
 															show={isModalShow}
 															setIsModalShow={setIsModalShow}
 														/>
@@ -1847,7 +1847,7 @@ const Message = (props) => {
 																</Text>
 																<Text ml={10} fontWeight={500} fontSize={14}>
 																	{userChatInformation[0].listing.credits}{' '}
-																	Credits
+																	Deed Dollars
 																</Text>
 															</Box>
 														</Flex>
@@ -2002,7 +2002,7 @@ const Message = (props) => {
 																				fontSize="md"
 																				onClick={() => setTCreditModal(true)}
 																			>
-																				Transfer Credits
+																				Transfer Deed Dollars
 																			</Button>
 																		}
 
@@ -2069,7 +2069,7 @@ const Message = (props) => {
 																					fontSize="md"
 																					onClick={() => acceptCreditHandler()}
 																				>
-																					Accept Credits
+																					Accept Deed Dollars
 																				</Button>
 																				:
 																				(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -2122,7 +2122,7 @@ const Message = (props) => {
 																					fontSize="md"
 																					onClick={() => acceptCreditHandler()}
 																				>
-																					Accept Credits
+																					Accept Deed Dollars
 																				</Button>
 																				:
 																				(userChatInformation[0].transaction_status == "Pending" || transactionStatus == "Pending") &&
@@ -2204,13 +2204,13 @@ const Message = (props) => {
 																					fontSize="md"
 																					onClick={() => setTCreditModal(true)}
 																				>
-																					Transfer Credits
+																					Transfer Deed Dollars
 																				</Button>
 																		}
 																		{/* {
 																			userChatInformation[0].transaction_status != null && !rejectStatus &&
 
-																			
+
 																		} */}
 																	</>
 																)}
@@ -2329,7 +2329,7 @@ const Message = (props) => {
 										)}
 										{isModalShow && (
 											<ModalPopup
-												TitleModal="Your don't have enough credits"
+												TitleModal="Your don't have enough deed dollars"
 												show={isModalShow}
 												size={'xs'}
 												setShow={(value) => {
@@ -2339,7 +2339,7 @@ const Message = (props) => {
 													<InnerSection
 														goNext={() => { }}
 														lastStep={false}
-														para="Complete a deed or invite friends to earn more credits"
+														para="Complete a deed or invite friends to earn more deed dollars"
 														show={isModalShow}
 														setIsModalShow={setIsModalShow}
 													/>

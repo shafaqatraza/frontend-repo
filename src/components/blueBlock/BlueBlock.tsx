@@ -43,7 +43,7 @@ export const BlueBlock: React.FC<{}> = () => {
         <Flex {...flexObj} justify={{ base: "center", md: "flex-start" }}>
           <Box>
             <Text {...textHeading} textAlign="center">
-              Earn Credits
+              Earn Deed Dollars
             </Text>
             <Text color="white" fontSize="md" align="center">
               Use your virtual currency how and when you want to.

@@ -244,7 +244,10 @@ export default function Navbar(props: any) {
   const [isRefer, setIsRefer] = useState<boolean>(true);
 
   if (typeof window !== 'undefined') {
-		var currOrg = JSON.parse(localStorage.getItem('currentOrganization'));
+		var currOrg = localStorage.getItem('currentOrganization');
+    if (currOrg !== null) {
+      var currOrg = JSON.parse(currOrg);
+    }
 	}
 
   useEffect(() => {
@@ -335,7 +338,7 @@ export default function Navbar(props: any) {
         });
   
         var channel3 = pusher.subscribe('notifications_organization_'+ currOrg.id);
-        channel3.bind('OrganizationNotifications', function(data) {
+        channel3.bind('OrganizationNotifications', function(data: any) {
             setOrganizationNotifications(data.notifications_count);
         });
         
@@ -347,7 +350,7 @@ export default function Navbar(props: any) {
         });
   
         var channel4 = pusher.subscribe('notifications_member_'+ userId);
-        channel4.bind('MemberNotifications', function(data) {
+        channel4.bind('MemberNotifications', function(data: any) {
           setChatList(data.notifications_count);
         });
       }
@@ -462,7 +465,7 @@ export default function Navbar(props: any) {
             <SignupModal
               show={showModel}
               setShow={setShowModel}
-              TitleModal="Sign up and receive 100 credits"
+              TitleModal="Sign up and receive 100 deed dollars"
               body={
                 <SignupForm
                   userData={data}
@@ -597,7 +600,7 @@ export default function Navbar(props: any) {
                   currentStep={2}
                   lastStep={false}
                   image={explorepegiun.src}
-                  para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn deed dollars that can be used to acquire things you need."
+                  para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual deed dollars that can be used to acquire things you need."
                   show={showModel}
                   setShowModel={setShowModel}
                   goNext={() => {
@@ -623,7 +626,7 @@ export default function Navbar(props: any) {
                 <InnerSection
                   currentStep={3}
                   image={exchangepegiun.src}
-                  para="Receive or provide your items and services in person or remotely. Don't worry — your credits are pending until the transaction successfully happens."
+                  para="Receive or provide your items and services in person or remotely. Don't worry — your deed dollars are pending until the transaction successfully happens."
                   show={showModel}
                   setShowModel={setShowModel}
                   goNext={() => {
@@ -658,7 +661,7 @@ export default function Navbar(props: any) {
                 <Box position="relative">
                   <Link style={{ color: "black", margin: "0 2rem", fontWeight: "700", fontSize: "16px" }} onClick={() => setOpenDropdown(!openDropdown)} > Discover </Link>
                   {openDropdown &&
-                    <Stack direction={'column'} position='absolute' w={'220px'} bg={'#FFF'} top="45px">
+                    <Stack direction={'column'} position='absolute' w={'220px'} bg={'#FFF'} top="45px" backgrounf="#fff" zIndex="999">
                       <Link href="/about" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>About us</Link>
                       <Link href="/browse?type=offering&activeTab=0" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Items</Link>
                       <Link href="/browse?type=offering&activeTab=1" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Services</Link>
@@ -965,8 +968,7 @@ export default function Navbar(props: any) {
                         fontWeight={700}
                         color={'#E27832'}
                       >
-                        {getLoginData()?.user_profile !== null ? `${getLoginData()?.user_profile.credits} CREDITS` : ""}
-
+                        {getLoginData()?.user_profile?.credits} DEED DOLLARS 
                       </Text>
 
                       <Button

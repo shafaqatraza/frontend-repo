@@ -53,7 +53,7 @@ const PendingCreditModal = (props) => {
           pr={isMobile ? 0 : 20}
         >
           <Text textAlign={isMobile ? "start" : 'center'} fontWeight={600} fontSize={'24px'} mb={10}>
-            Credits Pending
+          Deed Dollars Pending
           </Text>
           <Center>
             <Box
@@ -79,7 +79,7 @@ const PendingCreditModal = (props) => {
         </Box>
         <Box textAlign={'center'} px={isMobile ? 0 : 20} pb={isMobile ? 5 : 0}>
           <Text color={'black'}>
-            Credits will remain pending until the completed deed has been
+          Deed Dollars will remain pending until the completed deed has been
             confirmed by both users.
           </Text>
         </Box>

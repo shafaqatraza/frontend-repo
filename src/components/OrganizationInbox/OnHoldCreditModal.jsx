@@ -18,7 +18,7 @@ import {
 const OnHoldCreditModal = (props) => {
     const { show, onClose, getMessage,  messageInfo } = props
     return (
-        <Fade in={show} 
+        <Fade in={show}
             style={{
                 zIndex: '9',
                 position: 'absolute',
@@ -62,7 +62,7 @@ const OnHoldCreditModal = (props) => {
                     pr={isMobile ? 0 : 20}
                 >
                     <Text textAlign={isMobile ? "start" : 'center'} fontWeight={600} fontSize={'24px'} mb={5}>
-                        Credits On Hold
+                    Deed Dollars On Hold
                     </Text>
                     <Center>
                         <Box
@@ -88,7 +88,7 @@ const OnHoldCreditModal = (props) => {
                 </Box>
                 <Box textAlign={'center'} px={isMobile ? 0 : 20} pb={isMobile ? 5 : 0}>
                     <Text color={'black'}>
-                        Credits are  on hold
+                    Deed Dollars are  on hold
                     </Text>
                 </Box>
             </Box>
