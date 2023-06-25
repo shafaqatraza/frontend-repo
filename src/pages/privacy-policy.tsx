@@ -90,7 +90,7 @@ const PrivacyPolicy = () => {
             DEEDS ", "we", "us", or "our" are references to Good Deeds Canadian Inc.)
             in the use of our website (our "Website") and/or or mobile
             application (together the “Platform”) , including the trade
-            listing service and collection and use of Good Deeds credits
+            listing service and collection and use of Good Deeds deed dollars
             (collectively with the Platform, the "Services"). By using our
             Services, you are consenting to our Privacy Policy and the
             collection, use and disclosure of your personal information by
@@ -217,7 +217,7 @@ const PrivacyPolicy = () => {
 
               <Text>
                 When you sign up for a GOOD DEEDS account in order to earn and
-                use Good Deeds credits, we will also collect your phone number
+                use Good Deeds deed dollars, we will also collect your phone number
                 to use for second-factor authentication.
               </Text>
               <br></br>
@@ -250,10 +250,10 @@ const PrivacyPolicy = () => {
               </Text>
               <br></br>
               <Text>
-                If you use Good Deeds credits, GOOD DEEDS will keep track of
+                If you use Good Deeds deed dollars, GOOD DEEDS will keep track of
                 the amount of the transaction, the date of the transaction, as
                 well as the party with which you made the transaction in order
-                to facilitate the transfer of the Good Deeds credits.
+                to facilitate the transfer of the Good Deeds deed dollars.
               </Text>
 
               <br></br>
@@ -689,7 +689,7 @@ const PrivacyPolicy = () => {
                 a range of actions including for example: administratively
                 ending or canceling listings, hiding or demoting all listings
                 from search results, lowering user rating, exchanging
-                restrictions, and account suspension. All credits exchanged in
+                restrictions, and account suspension. All deed dollars exchanged in
                 relation to listings or accounts on which we take any action
                 will not be refunded or otherwise credited to your account.
               </Text>
@@ -752,7 +752,7 @@ const PrivacyPolicy = () => {
                 a range of actions including for example: administratively
                 ending or canceling listings, hiding or demoting all listings
                 from search results, lowering user rating, exchanging
-                restrictions, and account suspension. All credits exchanged in
+                restrictions, and account suspension. All deed dollars exchanged in
                 relation to listings or accounts on which we take any action
                 will not be refunded or otherwise credited to your account.
               </Text>
@@ -1497,7 +1497,7 @@ const PrivacyPolicy = () => {
                           To operate and make available the Good Deeds
                           Platform. We use your data to connect you with other
                           users to enable the posting of, selection for,
-                          completion of, and deed dollars for products or
+                          completion of, and virtual deed dollars for products or
                           Services, in order to fulfill our contracts with
                           users;
                         </ListItem>
@@ -1657,7 +1657,11 @@ const PrivacyPolicy = () => {
                       Identity Information, with entities that process
                       information on our behalf for our business purposes.
                       Third Party Agents assist us with services such as
+<<<<<<< HEAD
+                      virtual deed dollars processing, data analytics, marketing
+=======
                       deed dollars processing, data analytics, marketing
+>>>>>>> develop
                       and advertising, website hosting, fraud prevention and
                       detection, communication services, and technical
                       support. We contractually prohibit our Third Party
@@ -2775,7 +2779,7 @@ const PrivacyPolicy = () => {
                 a range of actions including for example: administratively
                 ending or canceling listings, hiding or demoting all listings
                 from search results, lowering users rating, exchanging
-                restrictions, and account suspension. All credits in relation
+                restrictions, and account suspension. All deed dollars in relation
                 to listings or accounts on which we take any action will not
                 be refunded or otherwise credited to your account.
               </Text>
@@ -2905,7 +2909,7 @@ const PrivacyPolicy = () => {
                 adult content or offers to buy or sell outside of Good Deeds,
                 and must be specific to the listing, such as a product review,
                 demonstration or installation video
-                <br></br>• Credits for third-party providers are not allowed
+                <br></br>• Deed Dollars for third-party providers are not allowed
                 to link off Good Deeds or contain external web addresses or
                 contact information, and must follow these guidelines:
                 <br></br>o They may contain up to 10 words of text (HTML font
@@ -2926,7 +2930,7 @@ const PrivacyPolicy = () => {
                 a range of actions including for example: administratively
                 ending or canceling listings, hiding or demoting all listings
                 from search results, lowering users rating, exchanging
-                restrictions, and account suspension. All credits in relation
+                restrictions, and account suspension. All deed dollars in relation
                 to listings or accounts on which we take any action will not
                 be refunded or otherwise credited to your account.
               </Text>
@@ -2948,7 +2952,7 @@ const PrivacyPolicy = () => {
                 a range of actions including for example: administratively
                 ending or canceling listings, hiding or demoting all listings
                 from search results, lowering users rating, exchanging
-                restrictions, and account suspension. All credits in relation
+                restrictions, and account suspension. All deed dollars in relation
                 to listings or accounts on which we take any action will not
                 be refunded or otherwise credited to your account.
               </Text>
@@ -2989,7 +2993,7 @@ const PrivacyPolicy = () => {
                 a range of actions including for example: administratively
                 ending or canceling listings, hiding or demoting all listings
                 from search results, lowering users rating, exchanging
-                restrictions, and account suspension. All credits in relation
+                restrictions, and account suspension. All deed dollars in relation
                 to listings or accounts on which we take any action will not
                 be refunded or otherwise credited to your account.
               </Text>
@@ -3037,7 +3041,7 @@ const PrivacyPolicy = () => {
                 <Text>
                   • How closely the listing matches the user’s search terms
                   <br></br>• How popular the item is
-                  <br></br>• The number of credits for the item
+                  <br></br>• The number of deed dollars for the item
                   <br></br>• The quality of your listing (description, photos,
                   and so on)
                   <br></br>• How complete the listing is
@@ -3050,7 +3054,7 @@ const PrivacyPolicy = () => {
                 a range of actions including for example: administratively
                 ending or canceling listings, hiding or demoting all listings
                 from search results, lowering users rating, exchanging
-                restrictions, and account suspension. All credits in relation
+                restrictions, and account suspension. All deed dollars in relation
                 to listings or accounts on which we take any action will not
                 be refunded or otherwise credited to your account.
               </Text>
@@ -3073,7 +3077,7 @@ const PrivacyPolicy = () => {
                 sort order. Users who follow best listing and selling
                 practices will see their items appear higher in the search
                 results. <br></br> <br></br>
-                Start by offering competitive credits expectations, pick up or
+                Start by offering competitive deed dollars expectations, pick up or
                 shipping and great customer service. <br></br> <br></br>
                 Here are some more recommendations for improving your Best
                 Match ranking: <br></br>
@@ -3219,7 +3223,7 @@ const PrivacyPolicy = () => {
                 <br></br>• You believe the user is making a false claim
                 <br></br>• You believe the user is misusing the Credit back
                 guarantee or the returns system
-                <br></br>• They’ve asked you to send credits without using the
+                <br></br>• They’ve asked you to send deed dollars without using the
                 platform
                 <br></br>• They’re messaging you more than what would be
                 considered normal, with no intention of receiving the item
@@ -3535,7 +3539,7 @@ const PrivacyPolicy = () => {
     <span className="privacy">Privacy</span> <span className="policy">Policy</span>
 </p>
 <div className="text-center">
-<p className="p-privacy mb-5">This privacy policy (our "Privacy Policy") sets out the information gathering and dissemination practices of Good Deeds LLC. and/or its affiliates and subsidiaries (references to, "GOOD DEEDS ", "we", "us", or "our" are references to Good Deeds Canadian Inc.) in the use of our website (our "Website") and/or or mobile application (together the “Platform”) , including the trade listing service and collection and use of Good Deeds credits (collectively with the Platform, the "Services"). By using our Services, you are consenting to our Privacy Policy and the collection, use and disclosure of your personal information by GOOD DEEDS as outlined herein. If our Privacy Policy is not acceptable to you, please do not submit any of your personal information.
+<p className="p-privacy mb-5">This privacy policy (our "Privacy Policy") sets out the information gathering and dissemination practices of Good Deeds LLC. and/or its affiliates and subsidiaries (references to, "GOOD DEEDS ", "we", "us", or "our" are references to Good Deeds Canadian Inc.) in the use of our website (our "Website") and/or or mobile application (together the “Platform”) , including the trade listing service and collection and use of Good Deeds deed dollars (collectively with the Platform, the "Services"). By using our Services, you are consenting to our Privacy Policy and the collection, use and disclosure of your personal information by GOOD DEEDS as outlined herein. If our Privacy Policy is not acceptable to you, please do not submit any of your personal information.
 
 <span className="d-block mt-5">We may update the Privacy Policy from time to time and you are responsible for periodically reviewing the most current version of the Privacy Policy on our Website. Your continued use of our Services or submission of information will be deemed your conclusive acceptance of our updated Privacy Policy.</span>
 <span className="d-block mt-5">

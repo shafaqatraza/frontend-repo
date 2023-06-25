@@ -25,7 +25,7 @@ const MonthlyPlan = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.data[0]?.packages[0]);
+        // console.log('pladddd', res.data.data[0]?.packages[0]);
 
         setData(res.data.data[0]?.packages[0])
         setDataDesc(res.data.data[0]?.packages[0]?.description)
@@ -85,31 +85,20 @@ const MonthlyPlan = () => {
                       </p>
                       <hr className="mt-3" />
                       <div className="mt-3">
-                        <div className="d-flex mt-3">
-                          <p className="ms-2 free-txt4">
-                          {
-                            // @ts-ignore: Unreachable code error
-                            dataone?.features?.map((item, index) => (
-                              <div className="d-flex" key={index}>
-                                {item && item[0] && (
-                                  <span className="ms-2 pt-2">
-                                    <Image src={good.src} alt={"Plan"} />
-                                  </span>
-                                )}
-                                <div className="pt-2 ms-2">
-                                  {item && item[0]}
-                                </div>
+                        {
+                          // @ts-ignore: Unreachable code error
+                          dataone?.features?.map((item, index) => (
+                            <>
+                              {console.log('dfdfd', item)}
+                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }} key={index}>
+                                <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                <p className='m-0 free-txt4'>
+                                  {item}
+                                </p>
                               </div>
-                            ))
-                          }
-
-
-
-
-
-                          </p>
-                        </div>
-
+                            </>
+                          ))
+                        }
                       </div>
                     </div>
                     <div className="mt-3 ms-3">
@@ -161,28 +150,19 @@ const MonthlyPlan = () => {
                       </p>
                       <hr className="mt-3" />
                       <div className="mt-3">
-                        <div className="d-flex mt-3">
-
-                          <p className="ms-2 free-txt4">
-
-                            {
-                              // @ts-ignore: Unreachable code error
-                              data?.features?.map((item, index) => (
-                                <div className="d-flex" key={index}>
-                                  {item && item[0] && (
-                                    <span className="ms-2 pt-2">
-                                      <Image src={good.src} alt={"Plan"} />
-                                    </span>
-                                  )}
-                                  <div className="pt-2 ms-2">
-                                    {item && item[0]}
-                                  </div>
-                                </div>
-                              ))
-                            }
-
-                          </p>
-                        </div>
+                        {
+                          // @ts-ignore: Unreachable code error
+                          data?.features?.map((item, index) => (
+                            <>
+                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }} key={index}>
+                                <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                <p className='m-0 free-txt4'>
+                                  {item}
+                                </p>
+                              </div>
+                            </>
+                          ))
+                        }
                       </div>
                     </div>
                     {/* <div className="mt-3 ms-3">
@@ -236,26 +216,19 @@ const MonthlyPlan = () => {
                       </p>
                       <hr className="mt-3" />
                       <div className="mt-3">
-                        <div className="d-flex mt-3">
-                          <p className="free-txt4">
-                            {
-                              // @ts-ignore: Unreachable code error
-                              datatwo?.features?.map((item, index) => (
-                                <div className="d-flex" key={index}>
-                                  {item && item[0] && (
-                                    <span className="ms-2 pt-2">
-                                      <Image src={good.src} alt={"Plan"} />
-                                    </span>
-                                  )}
-                                  <div className="pt-2 ms-2">
-                                    {item && item[0]}
-                                  </div>
-                                </div>
-                              ))
-                            }
-                          </p>
-                        </div>
-
+                        {
+                          // @ts-ignore: Unreachable code error
+                          datatwo?.features?.map((item, index) => (
+                            <>
+                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }} key={index}>
+                                <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                <p className='m-0 free-txt4'>
+                                  {item}
+                                </p>
+                              </div>
+                            </>
+                          ))
+                        }
                       </div>
                     </div>
                     <Link className="btns d-flex justify-content-center" href={`/payment/${
@@ -303,16 +276,14 @@ const MonthlyPlan = () => {
                         {
                           // @ts-ignore: Unreachable code error
                           datathree?.features?.map((item, index) => (
-                            <div className="d-flex" key={index}>
-                              {item && item[0] && (
-                                <span className="ms-2 pt-2">
-                                  <Image src={good.src} alt={"Plan"} />
-                                </span>
-                              )}
-                              <div className="free-txt4 pt-2 ms-2">
-                                {item && item[0]}
-                              </div>
-                            </div>
+                            <>
+                              <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }} key={index}>
+                                <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                <p className='m-0 free-txt4'>
+                                  {item}
+                                </p>
+                                </div>
+                            </>
                           ))
                         }
 

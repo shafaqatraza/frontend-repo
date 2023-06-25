@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import Sidebar from "../components/Sidebar.jsx";
 import { Image, Input, Textarea } from "@chakra-ui/react";
 import { Form } from "react-bootstrap";
 import { Radio, Select, Space } from "antd";
-import { useState } from "react";
 import "antd/dist/antd.css";
 import axios from "axios";
 import { accessToken, baseUrl } from "../components/Helper/index";
@@ -61,6 +60,8 @@ const CreateDonationListing = () => {
   const [thumbnail, setThumbnail] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState([]);
+  const [donationCategoryList, setDonationCategoryList] = useState([])
+
   const handleThumbnailClick = () => {
     const input = document.createElement("input");
     input.type = "file";
@@ -74,6 +75,13 @@ const CreateDonationListing = () => {
       setFormData({ ...formData, thumbnail: [file] });
     };
   };
+
+  const getDonationCategoryList = useCallback(async () => {
+    const data = await axios.get(`${baseUrl}/donation-listings/categories`)
+    if (data.status === 200) {
+      setDonationCategoryList(data.data.data)
+    }
+  }, [])
 
   useEffect(() => {
     axios
@@ -100,6 +108,8 @@ const CreateDonationListing = () => {
       })
       .catch((err) => {
       });
+
+    getDonationCategoryList()
   }, []);
 
   const handleSubmit = (event) => {
@@ -271,7 +281,7 @@ const CreateDonationListing = () => {
                   }
                   size="large"
                 >
-                  {data.map((item) => (
+                  {donationCategoryList.map((item) => (
                     // @ts-ignore: Unreachable code error
                     <Option key={item.id} value={item.id}>
                       {
@@ -313,7 +323,7 @@ const CreateDonationListing = () => {
               style={{
                 width: "100%",
               }}
-              options={options}
+            // options={options}
             />
           </div>
           <label

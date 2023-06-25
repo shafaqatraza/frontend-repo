@@ -27,7 +27,7 @@ export default function SimpleThreeColumns() {
           text={'See your acts of kindness be rewarded.'}
         />
         <Feature
-          title={'Earn Credits'}
+          title={'Earn Deed Dollars'}
           text={'Use your virtual currency how and when you want to.'}
         />
       </SimpleGrid>

@@ -19,13 +19,13 @@ import {
   import moment from 'moment';
   import { userId } from '../../components/Helper/index';
   import { isMobile } from "react-device-detect";
-  
-  
+
+
   export const MyTabs = (props) => {
-  
+
     const { listingData, transactionData } = props;
     const [transactionList, setTransactionList] = useState([]);
-  
+
     useEffect(() => {
       let tmp = transactionData;
       tmp.sort((a, b) => a.id < b.id ? 1 : -1);
@@ -40,7 +40,7 @@ import {
             printCredit = `-${item.credits}`;
           }
         }
-  
+
         if (userId !== item.received_by.id && item.status === "On Hold" || item.status === "Completed") {
           return (
             <>
@@ -60,7 +60,7 @@ import {
                     {printCredit}
                   </Text>
                   <p className="text-sm text-color-yellow  text-right">
-                    creditss
+                  deed dollars
                   </p>
                 </div>
               </div>
@@ -88,7 +88,7 @@ import {
                       {printCredit}
                     </Text>
                     <p className="text-sm text-color-yellow  text-right">
-                      creditss
+                    deed dollars
                     </p>
                   </div>
                 </div>
@@ -96,7 +96,7 @@ import {
               </>
             )
           }
-  
+
       });
       setTransactionList(allData)
     }, [transactionData])
@@ -114,7 +114,7 @@ import {
                 overflow="hidden"
                 position="relative"
               >
-  
+
                 <Tab
                   _focus={{ outline: "none" }}
                   _selected={{ color: "orange.400" }}
@@ -131,7 +131,7 @@ import {
                 >
                   <Text zIndex="100">Transactions</Text>
                 </Tab>
-  
+
                 <TabIndicator
                   bg="white"
                   h="100%"
@@ -142,7 +142,7 @@ import {
               </TabList>
             </Flex>
             <TabPanels>
-  
+
               <TabPanel>
                 <Box
                   maxW="7xl"
@@ -178,4 +178,3 @@ import {
       </Box>
     );
   };
-  

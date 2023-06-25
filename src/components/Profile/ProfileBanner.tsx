@@ -549,7 +549,7 @@ export const ProfileBanner = (props: any) => {
               {profileData.user_profile.credits || 0}
             </Text>
 
-            <Text fontSize={14}>credits available</Text>
+            <Text fontSize={14}>deed dollars available</Text>
           </VStack>
           <VStack
             color="main.1000"
@@ -563,7 +563,7 @@ export const ProfileBanner = (props: any) => {
             }
           >
             <Text fontSize={14} style={{ textAlign: 'center', width: '60%' }}>
-              Invite your friends and get 10 credits
+              Invite your friends and get 10 deed dollars
             </Text>
             <Text fontSize={16} color="primary.300" fontWeight={600}>
               url link here
