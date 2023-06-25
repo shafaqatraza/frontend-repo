@@ -8,11 +8,12 @@ import {
 } from "@chakra-ui/react";
 import React, { useRef, useEffect, useMemo, useState } from "react";
 import { userId } from "../Helper/index";
+import { currentOrganization } from "../Helper/index";
 import moment from 'moment';
 
 const Messages = (props) => {
     let { conversation, lastMessage , setLoaded, loaded, user_chat_info} = props
-
+    
     const messagesEndRef = useRef(null)
     const imageReF = useRef(null)
     const scrollToBottom = () => {
@@ -24,18 +25,20 @@ const Messages = (props) => {
     const testFunction = () => {
         setLoaded(true)
     }
+    
     useMemo(() => {
         setChats("");
         let datePrint = "";
+        
         let chats = conversation.map((msg, key) => {
-
+            
             datePrint = moment(msg.created_at).format('h:mm: a');
-            if (msg.message !== '' && user_chat_info[0].chat_id == msg.chat_id) {
-                if (userId === msg.sender_id) {
+            if (msg.message !== null && msg.message !== '' && user_chat_info[0].chat_id == msg.chat_id) {
+                if (currentOrganization && msg.sent_by_organization == 1 || userId == msg.sender_id) {
                     return (
                         <>
                             {(msg.type === "image"  ?
-                                <>
+                                <> 
                                 <Image
                                     onLoad={testFunction}
                                     ref={imageReF}
@@ -53,10 +56,10 @@ const Messages = (props) => {
                                     fontSize={"14px"}
                                     loaded
                                     style={{display: loaded? 'block': 'none'}}
-                                />
+                                /> 
                                 {!loaded && <Spinner /> }
                                 </>
-                                :
+                                : 
                                 <Box width={"100%"} className="content-data" >
                                     <Box
 
@@ -72,7 +75,7 @@ const Messages = (props) => {
                                         fontSize={"14px"}
                                     >
                                         <Flex justifyContent={"space-between"} alignItems={"end"}>
-                                            {msg.type === "image" ?
+                                            {msg.type === "image" ? 
                                             <Image
                                                 src={msg.message}
                                                 alt={"name"}
@@ -122,8 +125,8 @@ const Messages = (props) => {
                                         fontSize={"14px"}
                                     >
                                         <Flex justifyContent={"space-between"} alignItems={"end"}>
-                                            <Text>{msg.message}</Text>
-                                            <Text fontSize={"10px"}>{datePrint}</Text>
+                                        <Text  wordBreak={'break-all'} >{msg.message}</Text>
+                                        <Text fontSize={"10px"}>{datePrint}</Text>
                                         </Flex>
                                     </Box>
                                 </Box>
