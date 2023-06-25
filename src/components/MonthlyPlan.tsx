@@ -282,7 +282,7 @@ const MonthlyPlan = () => {
                                 <p className='m-0 free-txt4'>
                                   {item}
                                 </p>
-                              </div>
+                                </div>
                             </>
                           ))
                         }

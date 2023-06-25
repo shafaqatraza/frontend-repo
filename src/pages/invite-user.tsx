@@ -126,7 +126,7 @@ const InviteUser = () => {
                   type="radio"
                   id="checkbox1"
                   name="checkbox1"
-                  value="1" checked={selectedRadio === '1'} onChange={handleRadioChange}/>
+                  value="7" checked={selectedRadio === '7'} onChange={handleRadioChange}/>
 
               </div>
               <div>
@@ -159,7 +159,7 @@ const InviteUser = () => {
               <div>
                 <Form.Check
                   type="radio"
-                  value="7" checked={selectedRadio === '7'} onChange={handleRadioChange}
+                  value="8" checked={selectedRadio === '8'} onChange={handleRadioChange}
                   name="checkbox2"
                   id="checkbox2"
                 />

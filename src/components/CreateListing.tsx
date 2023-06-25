@@ -69,14 +69,15 @@ const CreateListing = () => {
       })
       .catch((err) => {
       });
-    axios
-      .get(`${baseUrl}/listings/categories`, {
+      axios
+      .get(`${baseUrl}/volunteer-listings/categories`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
         },
       })
       .then((res) => {
+        console.log(res.data, "volunteer categories")
         setData(res.data.data);
       })
       .catch((err) => {
