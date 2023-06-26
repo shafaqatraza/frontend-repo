@@ -267,11 +267,7 @@ const TrustAndSecurity = () => {
                             description: "We collect and use information for business and commercial purposes in accordance with the practice described in this Privacy Policy. Our business purposes for collecting and using information include:",
                             sublist: [
                                 {
-<<<<<<< HEAD
-                                    description: "To operate and make available the Good Deeds Platform. We use your data to connect you with other users to enable the posting of, selection for, completion of, and virtual deed dollars for products or Services, in order to fulfill our contracts with users;"
-=======
                                     description: "To operate and make available the Good Deeds Platform. We use your data to connect you with other users to enable the posting of, selection for, completion of, and deed dollars for products or Services, in order to fulfill our contracts with users;"
->>>>>>> develop
                                 },
                                 {
                                     description: "For fraud prevention, on the basis of our legitimate interests in ensuring a safe and secure environment in which Clients and users can meet and conduct business, and in order to comply with our legal obligations;"

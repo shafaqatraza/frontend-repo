@@ -65,6 +65,8 @@ import {
   removeListinData,
   notificationHandler,
   currentOrganization,
+  currOrgId,
+  currOrgSlug
 } from '../../components/Helper/index';
 // import Img1 from '../../assets/imgs/screen1.png'
 import Img1 from '../../assets/imgs/logo/mainlogo.png'
@@ -136,7 +138,7 @@ export default function Navbar(props: any) {
   const [thumbnail, setThumbnail] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
-
+  
   const [showModel, setShowModel] = useState<ModelType>({
     login: false,
     forgotPassword: false,
@@ -243,12 +245,9 @@ export default function Navbar(props: any) {
   const [refer, setRefer] = useState<any>('')
   const [isRefer, setIsRefer] = useState<boolean>(true);
 
-  if (typeof window !== 'undefined') {
-    var currOrg = localStorage.getItem('currentOrganization') as string | null;
-    if (currOrg !== null) {
-      currOrg = JSON.parse(currOrg);
-    }
-  }
+  // if (typeof window !== 'undefined') {
+	// 	var currOrg = JSON.parse(localStorage.getItem('currentOrganization'));
+	// }
 
   useEffect(() => {
 
@@ -316,7 +315,7 @@ export default function Navbar(props: any) {
       })
     }
 
-    if(currOrg){
+    if(currOrgId){
       getOrganizationNotifications()
     }
 
@@ -330,14 +329,14 @@ export default function Navbar(props: any) {
         cluster: 'mt1'
       });
   
-      if(currOrg){
-        var channel2 = pusher.subscribe('new_notification_organization_'+ currOrg.id);
+      if(currOrgId){
+        var channel2 = pusher.subscribe('new_notification_organization_'+ currOrgId);
         channel2.bind('NewNotificationOrganization', function(data: any) {
             musicPlayers.current?.play();
             setOrganizationNotifications(prevCount => prevCount + 1);
         });
   
-        var channel3 = pusher.subscribe('notifications_organization_'+ currOrg.id);
+        var channel3 = pusher.subscribe('notifications_organization_'+ currOrgId);
         channel3.bind('OrganizationNotifications', function(data: any) {
             setOrganizationNotifications(data.notifications_count);
         });
@@ -373,8 +372,9 @@ export default function Navbar(props: any) {
   }
 
   const getOrganizationNotifications = async () => {
-    await axios
-      .get(baseUrl + '/organizations/notifications/check?org='+currOrg.slug, {
+    if(currOrgSlug){
+      await axios
+      .get(baseUrl + '/organizations/notifications/check?org='+currOrgSlug, {
         headers: {
           Authorization: `Bearer ${accessToken()}`
         }
@@ -384,6 +384,8 @@ export default function Navbar(props: any) {
       })
       .catch((error) => {
       })
+    }
+    
   }
 
 
@@ -661,7 +663,7 @@ export default function Navbar(props: any) {
                 <Box position="relative">
                   <Link style={{ color: "black", margin: "0 2rem", fontWeight: "700", fontSize: "16px" }} onClick={() => setOpenDropdown(!openDropdown)} > Discover </Link>
                   {openDropdown &&
-                    <Stack direction={'column'} position='absolute' w={'220px'} bg={'#FFF'} top="45px" backgrounf="#fff" zIndex="999">
+                    <Stack direction={'column'} position='absolute' w={'220px'} bg={'#FFF'} top="45px" background="#fff" zIndex="999">
                       <Link href="/about" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>About us</Link>
                       <Link href="/browse?type=offering&activeTab=0" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Items</Link>
                       <Link href="/browse?type=offering&activeTab=1" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Services</Link>
@@ -785,7 +787,7 @@ export default function Navbar(props: any) {
 
                   <Menu>
 
-                    {currOrg?.slug?
+                    {currOrgId?
                     <MenuButton
                       as={Button}
                       rounded={'full'}
@@ -968,7 +970,7 @@ export default function Navbar(props: any) {
                         fontWeight={700}
                         color={'#E27832'}
                       >
-                        {getLoginData()?.user_profile?.credits} DEED DOLLARS 
+                        {getLoginData()?.user_profile?.credits} DEED DOLLARS
                       </Text>
 
                       <Button

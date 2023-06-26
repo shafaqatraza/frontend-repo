@@ -45,6 +45,27 @@ export const currentOrganizationInfo = () => {
 };
 
 
+export const currOrganizationId = () => {
+    if (typeof window !== 'undefined') {
+        let storageVal = null;
+        if (localStorage.getItem('currentOrganization') !== null) {
+            storageVal = JSON.parse(localStorage.getItem('currentOrganization'));
+            return storageVal? storageVal.id : null;
+        }
+    }
+    return "";
+};
+
+export const currOrganizationSlug = () => {
+    if (typeof window !== 'undefined') {
+        let storageVal = null;
+        if (localStorage.getItem('currentOrganization') !== null) {
+            storageVal = JSON.parse(localStorage.getItem('currentOrganization'));
+            return storageVal? storageVal.slug : null;
+        }
+    }
+    return "";
+};
 
 export const contactListingData = () => {
     if (typeof window !== 'undefined') {
@@ -144,5 +165,7 @@ export const baseUrl = baseURL;
 export const baseImgUrl = baseImgURL;
 export const userId = currentUserId();
 export const currentOrganization = currentOrganizationInfo();
+export const currOrgId = currOrganizationId();
+export const currOrgSlug = currOrganizationSlug();
 export const listingData = contactListingData();
 export const GOOGLE_API_KEY = GOOGLE_API;
