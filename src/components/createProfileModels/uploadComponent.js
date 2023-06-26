@@ -43,12 +43,12 @@ const Avatar = (props) => {
     }
     return isJpgOrPng && isLt2M;
   };
-  
+   
   const handleChange = async (info) => {
     setLoading(true);
     const fileExtension = info.file.name.split(".").pop().toLowerCase();
     if (info.file.status === "done") {
-      setAvatar(info);
+      setAvatar(info.file.originFileObj);
       getBase64(info.file.originFileObj, (imageUrl) => {
         setImageUrl(imageUrl);
         setLoading(false);
@@ -71,7 +71,7 @@ const Avatar = (props) => {
           setLoading(false);
         });
       } catch (error) {
-        console.error("Error converting HEIC to JPEG:", error);
+        // console.error("Error converting HEIC to JPEG:", error);
         setLoading(false);
         toast({ title: "Failed to convert HEIC to JPEG", status: "error" });
       }

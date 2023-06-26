@@ -127,17 +127,18 @@ export const Step2Form = (props) => {
 
   return (
     <chakra.form
-      onSubmit={(e) => {
+      onSubmit={(e) => { 
         e.preventDefault()
+        console.log('aaaaaaa22', data.avatar);
         var formData = new FormData()
         formData.append('username', data.username)
         formData.append('bio', data.bio)
         formData.append('location', data.location)
         formData.append('website_url', data.website_url)
-        formData.append('avatar', data.avatar.file.originFileObj)
+        formData.append('avatar', data.avatar)
         formData.append('coordinates', latLng)
         mutation.mutate(formData)
-      }}
+      }} 
       {...props}
     >
       <Stack spacing="6" className="create-profile-form">
