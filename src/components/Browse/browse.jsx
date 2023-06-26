@@ -109,8 +109,8 @@ function Browse(props) {
   const [volunteerData, setVolunteerData] = useState([])
   const [donationData, setDonationData] = useState([])
 
-  console.log("selectedVolunteerCategory", selectedVolunteerCategory)
-  console.log("selectedServiceCategory", selectedServiceCategory)
+  // console.log("selectedVolunteerCategory", selectedVolunteerCategory)
+  // console.log("selectedServiceCategory", selectedServiceCategory)
 
   // const [tmpLoading, setTmpLoading] = useState(false)
   let tmpLoading = true;

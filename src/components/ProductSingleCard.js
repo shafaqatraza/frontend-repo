@@ -34,10 +34,10 @@ export const ProductSingleCard = (props) => {
     isImageEdit
   } = props
 
-  // console.log("nooooooqqqs", product);
 
   const { title, credit_amount, name, media, id, created_at, transaction_status, slug, post_type, thumbnail, created_at_human_diff, url_to_donate, category } = product
   // console.log("category", category);
+  console.log("deqsdeqssss", product);
 
   // const created_listing = moment(created_at).utc().format('YYYY-MM-DD, h:mm a')
   const router = useRouter()
@@ -59,7 +59,7 @@ export const ProductSingleCard = (props) => {
         >
           <Image
             src={
-              post_type == 'items' || post_type == 'service' ?
+              post_type == 'item' || post_type == 'service' ?
                 (media.length > 0
                   ? `${media[0].path}/${media[0].image}`
                   : NoImage.src)
