@@ -105,13 +105,12 @@ const Message = (props) => {
 
 	//	Check if user is logedin handler
 	useEffect(() => {
-
-		if (!isLogin()) {
+		if (!isLogin() && currOrg === null) {
 			router.push({ pathname: '/' })
 		} else {
 			getProfileDetails()
 		}
-	}, []);
+	}, [currOrg]);
 
 	//	New chat notification handler	
     useEffect(() => {
@@ -119,16 +118,18 @@ const Message = (props) => {
 		var pusher = new Pusher(`${Pusher_key}`, {
 		cluster: 'mt1'
 		});
-		// If new message received in the organization chat
-		var channel3 = pusher.subscribe('new_chat_organization_'+currOrg.id);
-		channel3.bind('pusher:subscription_succeeded', function() {
-			channel3.bind('newChatOrganization', function(data) {
-				const newData=data.newchat
-				if(newData && newData[0].model_type != null){
-					setChatRoom(newData);
-				}
+		if(currOrg){
+			// If new message received in the organization chat
+			var channel3 = pusher.subscribe('new_chat_organization_'+currOrg.id);
+			channel3.bind('pusher:subscription_succeeded', function() {
+				channel3.bind('newChatOrganization', function(data) {
+					const newData=data.newchat
+					if(newData && newData[0].model_type != null){
+						setChatRoom(newData);
+					}
+				});
 			});
-		});
+		}
 		
 	}, [])
 
