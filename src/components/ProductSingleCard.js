@@ -34,10 +34,12 @@ export const ProductSingleCard = (props) => {
     isImageEdit
   } = props
 
+  // console.log("nooooooqqqs", product);
 
   const { title, credit_amount, name, media, id, created_at, transaction_status, slug, post_type, thumbnail, created_at_human_diff, url_to_donate, category } = product
-  
-
+  // console.log("category", category);
+  console.log('kkk', title, media[0].path, media[0].image);
+  console.log('bbb', baseImgUrl);
   // const created_listing = moment(created_at).utc().format('YYYY-MM-DD, h:mm a')
   const router = useRouter()
   const toast = useToast()
@@ -58,18 +60,17 @@ export const ProductSingleCard = (props) => {
         >
           <Image
             src={
-              (post_type === 'item' || post_type === 'service') &&
-              media.length > 0
-                ? media[0].path.startsWith('https://')
+              post_type == 'item' || post_type == 'service' ?
+                (media.length > 0
                   ? `${media[0].path}/${media[0].image}`
-                  : `${baseImgUrl}${media[0].path}/${media[0].image}`
-                : thumbnail != null
-                ? thumbnail
-                : NoImage.src
+                  : NoImage.src)
+                : (
+                  thumbnail != null ? thumbnail : NoImage.src
+                )
             }
             alt={name}
             draggable="false"
-            fallback={<img src={NoImage.src} alt="No Image" />}
+            fallback={<Skeleton />}
             width="100% !important"
             margin={0}
             borderRadius="0"
@@ -125,6 +126,7 @@ export const ProductSingleCard = (props) => {
             isBookmark={inWhishList}
             onClick={(e) => {
               e.stopPropagation()
+              // console.log('clicked', isLogin())
               if (!isLogin()) {
                 toast({
                   position: 'top',
