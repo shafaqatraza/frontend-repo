@@ -124,7 +124,7 @@ const GetStarted = () => {
                     </div>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col md={12}>
                     <div className="d-flex justify-content-center mt-5 mb-5">
                       <video width="600" controls>
@@ -132,9 +132,9 @@ const GetStarted = () => {
                       </video>
                     </div>
                   </Col>
-                </Row>
+                </Row> */}
 
-                <Row>
+                <Row className='mt-5'>
                   <Col md={10}>
                     <div className="hiw-box-rightWrap">
                       <div className="col-md-6">
@@ -155,7 +155,7 @@ const GetStarted = () => {
                     </div>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col md={12}>
                     <div className="d-flex justify-content-center mt-5 mb-5">
                       <video width="600" controls>
@@ -163,8 +163,8 @@ const GetStarted = () => {
                       </video>
                     </div>
                   </Col>
-                </Row>
-                <Row>
+                </Row> */}
+                <Row className='mt-5 mb-5'>
                   <Col md={10}>
                     <div className="hiw-box-leftWrap">
                       <div>
@@ -188,7 +188,7 @@ const GetStarted = () => {
                     </div>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col md={12}>
                     <div className="d-flex justify-content-center mt-5 mb-5">
                       <video width="600" controls>
@@ -196,7 +196,7 @@ const GetStarted = () => {
                       </video>
                     </div>
                   </Col>
-                </Row>
+                </Row> */}
               </TabPanel>
 
               <TabPanel>
@@ -224,7 +224,7 @@ const GetStarted = () => {
                     </div>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col md={12}>
                     <div className="d-flex justify-content-center mt-5 mb-5">
                       <video width="600" controls>
@@ -232,9 +232,9 @@ const GetStarted = () => {
                       </video>
                     </div>
                   </Col>
-                </Row>
+                </Row> */}
 
-                <Row>
+                <Row className='mt-5'>
                   <Col md={10}>
                     <div className="hiw-box-rightWrap">
                       <div className="col-md-6">
@@ -256,7 +256,7 @@ const GetStarted = () => {
                     </div>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col md={12}>
                     <div className="d-flex justify-content-center mt-5 mb-5">
                       <video width="600" controls>
@@ -264,9 +264,9 @@ const GetStarted = () => {
                       </video>
                     </div>
                   </Col>
-                </Row>
+                </Row> */}
 
-                <Row>
+                <Row className='mt-5'>
                   <Col md={10}>
                     <div className="hiw-box-leftWrap">
                       <div>
@@ -289,7 +289,7 @@ const GetStarted = () => {
                     </div>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col md={12}>
                     <div className="d-flex justify-content-center mt-5 mb-5">
                       <video width="600" controls>
@@ -297,9 +297,9 @@ const GetStarted = () => {
                       </video>
                     </div>
                   </Col>
-                </Row>
+                </Row> */}
 
-                <Row>
+                <Row className='mt-5'>
                   <Col md={10}>
                     <div className="hiw-box-rightWrap">
                       <div className="col-md-6">
@@ -322,7 +322,7 @@ const GetStarted = () => {
                     </div>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col md={12}>
                     <div className="d-flex justify-content-center mt-5 mb-5">
                       <video width="600" controls>
@@ -330,8 +330,8 @@ const GetStarted = () => {
                       </video>
                     </div>
                   </Col>
-                </Row>
-                <Row>
+                </Row> */}
+                <Row className='mt-5 mb-5'>
                   <Col md={10}>
                     <div className="hiw-box-leftWrap">
                       <div>
@@ -354,7 +354,7 @@ const GetStarted = () => {
                     </div>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col md={12}>
                     <div className="d-flex justify-content-center mt-5 mb-5">
                       <video width="600" controls>
@@ -362,7 +362,7 @@ const GetStarted = () => {
                       </video>
                     </div>
                   </Col>
-                </Row>
+                </Row> */}
               </TabPanel>
             </TabPanels>
           </Tabs>
