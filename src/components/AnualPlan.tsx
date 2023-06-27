@@ -1,40 +1,90 @@
-import { Image, Link } from '@chakra-ui/react';
+import { Image, Link, Button } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from "react-bootstrap";
 import good from "../assets/imgs/good.png";
 import axios from 'axios';
-import { accessToken, baseUrl } from "../components/Helper/index";
+import { accessToken, baseUrl, isLogin } from "../components/Helper/index";
+import { useRouter } from 'next/router'
+import { useToast } from '@chakra-ui/toast'
 
 const AnualPlan = () => {
   const [data, setData] = useState([]);
-  const [dataone, setDataOne] = useState([]);
+  const [dataone, setDataOne] = useState<{ id: number } | null>(null);
   const [dataonedesc, setDataOneDesc] = useState([]);
   const [datatwodesc, setDataTwoDesc] = useState([]);
   const [datadesc, setDataDesc] = useState([]);
   const [datatwo, setDataTwo] = useState([]);
   const [datathree, setDataThree] = useState([]);
   const [datathreedesc, setDataThreeDesc] = useState([]);
+  const [orgData, setOrgData] = useState([]);
+  const router = useRouter()
+  const toast = useToast()
+
+
   useEffect(() => {
-    axios
-      .get(`${baseUrl}/organization/subscriptions/plans`, {
+    if (isLogin()) {
+      axios
+        .get(`${baseUrl}/public/organization/subscriptions/plans`, {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+        .then((res) => {
+          // console.log("annualllll", res.data.data);
+          setData(res.data.data[1]?.packages[0])
+          setDataDesc(res.data.data[1]?.packages[0]?.description)
+          setDataOne(res.data.data[1]?.packages[1])
+          setDataOneDesc(res.data.data[1]?.packages[1]?.description)
+          setDataTwo(res.data.data[1]?.packages[2])
+          setDataTwoDesc(res.data.data[1]?.packages[2]?.description)
+          setDataThree(res.data.data[1]?.packages[3])
+          setDataThreeDesc(res.data.data[1]?.packages[3]?.description)
+        })
+        .catch((err) => {
+        })
+      axios.get(`${baseUrl}/organizations`, {
         headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+          Authorization: 'Bearer ' + accessToken(),
+        }
+      }).then((res) => {
+        setOrgData(res.data);
+      }).catch((err) => {
+        // console.log(err);
       })
-      .then((res) => {
-        setData(res.data.data[1]?.packages[0])
-        setDataDesc(res.data.data[1]?.packages[0]?.description)
-        setDataOne(res.data.data[1]?.packages[1])
-        setDataOneDesc(res.data.data[1]?.packages[1]?.description)
-        setDataTwo(res.data.data[1]?.packages[2])
-        setDataTwoDesc(res.data.data[1]?.packages[2]?.description)
-        setDataThree(res.data.data[1]?.packages[3])
-        setDataThreeDesc(res.data.data[1]?.packages[3]?.description)
-      })
-      .catch((err) => {
-      });
+    } else (
+      axios
+        .get(`${baseUrl}/public/organization/subscriptions/plans`)
+        .then((res) => {
+          // console.log("annualllll", res.data.data);
+          setData(res.data.data[1]?.packages[0])
+          setDataDesc(res.data.data[1]?.packages[0]?.description)
+          setDataOne(res.data.data[1]?.packages[1])
+          setDataOneDesc(res.data.data[1]?.packages[1]?.description)
+          setDataTwo(res.data.data[1]?.packages[2])
+          setDataTwoDesc(res.data.data[1]?.packages[2]?.description)
+          setDataThree(res.data.data[1]?.packages[3])
+          setDataThreeDesc(res.data.data[1]?.packages[3]?.description)
+        })
+        .catch((err) => {
+        })
+    )
+
   }, [])
+
+  const handlePlanButton = () => {
+    console.log('clicked')
+    if (isLogin()) {
+      if (Array.isArray(orgData) && orgData.length > 0) {
+        router.push(`/payment/${dataone?.id}`)
+      } else {
+        toast({ position: "top", title: "Please first create your organization", status: "error" })
+      }
+    } else {
+      toast({ position: "top", title: "Please login to select plan", status: "error" })
+    }
+  };
+
   return (
     <>
       <Container>
@@ -57,7 +107,7 @@ const AnualPlan = () => {
                         <p className="card-title mt-3 free-txt text-center">
 
                           {// @ts-ignore: Unreachable code error
-                            dataone.name}
+                            dataone?.name}
                         </p>
                         <p className=" mt-4 text-center free-txt2">
                           {dataonedesc}
@@ -84,12 +134,14 @@ const AnualPlan = () => {
                             // @ts-ignore: Unreachable code error
                             dataone?.features?.map((item, index) => (
                               <>
-                                <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
-                                  <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
-                                  <p className='m-0 free-txt4'>
-                                    {item}
-                                  </p>
-                                </div>
+                                {item && item[0] && (
+                                  <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                                    <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                    <p className='m-0 free-txt4'>
+                                      {item}
+                                    </p>
+                                  </div>
+                                )}
                               </>
                             ))
                           }
@@ -102,12 +154,17 @@ const AnualPlan = () => {
                         </p>
                       </div>
                       <div className="btns d-flex justify-content-center">
-                        <Link className="btns d-flex justify-content-center" href={`/payment/${
-                          // @ts-ignore: Unreachable code error
-                          dataone?.id}`}>
-
-                          <button className="select-btn mt-5 mb-4">Select</button>
-                        </Link>
+                        <Button
+                          variant={'solid'}
+                          colorScheme={'orange'}
+                          size={'md'}
+                          fontSize="16px"
+                          onClick={handlePlanButton}
+                          w="150px"
+                          className='my-4 mx-auto'
+                        >
+                          Select
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -153,12 +210,14 @@ const AnualPlan = () => {
                             // @ts-ignore: Unreachable code error
                             data?.features?.map((item, index) => (
                               <>
-                                <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
-                                  <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
-                                  <p className='m-0 free-txt4'>
-                                    {item}
-                                  </p>
-                                </div>
+                                {item && item[0] && (
+                                  <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                                    <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                    <p className='m-0 free-txt4'>
+                                      {item}
+                                    </p>
+                                  </div>
+                                )}
                               </>
                             ))
                           }
@@ -170,12 +229,17 @@ const AnualPlan = () => {
                     </p>
                   </div> */}
                       <div className="btns d-flex justify-content-center">
-                        <Link className="btns d-flex justify-content-center" href={`/payment/${
-                          // @ts-ignore: Unreachable code error
-                          data?.id}`}>
-
-                          <button className="select-btn mt-4 mb-4">Select</button>
-                        </Link>
+                        <Button
+                          variant={'solid'}
+                          colorScheme={'orange'}
+                          size={'md'}
+                          fontSize="16px"
+                          onClick={handlePlanButton}
+                          w="150px"
+                          className='my-4 mx-auto'
+                        >
+                          Select
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -218,12 +282,14 @@ const AnualPlan = () => {
                             // @ts-ignore: Unreachable code error
                             datatwo?.features?.map((item, index) => (
                               <>
-                                <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
-                                  <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
-                                  <p className='m-0 free-txt4'>
-                                    {item}
-                                  </p>
-                                </div>
+                                {item && item[0] && (
+                                  <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                                    <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                    <p className='m-0 free-txt4'>
+                                      {item}
+                                    </p>
+                                  </div>
+                                )}
                               </>
                             ))
                           }
@@ -235,12 +301,17 @@ const AnualPlan = () => {
                     </p> */}
                       </div>
                       <div className="btns d-flex justify-content-center">
-                        <Link className="btns d-flex justify-content-center" href={`/payment/${
-                          // @ts-ignore: Unreachable code error
-                          datatwo?.id}`}>
-
-                          <button className="select-btn mt-5 mb-4">Select</button>
-                        </Link>
+                        <Button
+                          variant={'solid'}
+                          colorScheme={'orange'}
+                          size={'md'}
+                          fontSize="16px"
+                          onClick={handlePlanButton}
+                          w="150px"
+                          className='my-4 mx-auto'
+                        >
+                          Select
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -283,12 +354,14 @@ const AnualPlan = () => {
                             // @ts-ignore: Unreachable code error
                             datathree?.features?.map((item, index) => (
                               <>
-                                <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
-                                  <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
-                                  <p className='m-0 free-txt4'>
-                                    {item}
-                                  </p>
-                                </div>
+                                {item && item[0] && (
+                                  <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                                    <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                    <p className='m-0 free-txt4'>
+                                      {item}
+                                    </p>
+                                  </div>
+                                )}
                               </>
                             ))
                           }
@@ -298,12 +371,17 @@ const AnualPlan = () => {
                       </div>
 
                       <div className="btns d-flex justify-content-center">
-                        <Link className="btns d-flex justify-content-center" href={`/payment/${
-                          // @ts-ignore: Unreachable code error
-                          datathree?.id}`}>
-
-                          <button className="select-btn mt-5 mb-4">Select</button>
-                        </Link>
+                        <Button
+                          variant={'solid'}
+                          colorScheme={'orange'}
+                          size={'md'}
+                          fontSize="16px"
+                          onClick={handlePlanButton}
+                          w="150px"
+                          className='my-4 mx-auto'
+                        >
+                          Select
+                        </Button>
                       </div>
                     </div>
                   </div>
