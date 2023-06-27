@@ -114,6 +114,12 @@ function Browse(props) {
 
   // const [tmpLoading, setTmpLoading] = useState(false)
   let tmpLoading = true;
+  
+  useEffect(() => {
+    if(router.query.activeTab !== undefined){
+      refreshFilter(Number(router.query.activeTab));
+    }
+  }, [router.query.activeTab]);
 
   const getCategoryList = useCallback(async () => {
     const data = await axios.get(`${baseUrl}/listings/categories`)
