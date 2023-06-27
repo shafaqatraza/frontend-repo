@@ -60,17 +60,18 @@ export const ProductSingleCard = (props) => {
         >
           <Image
             src={
-              post_type == 'item' || post_type == 'service' ?
-                (media.length > 0
+              (post_type === 'item' || post_type === 'service') &&
+              media.length > 0
+                ? media[0].path.startsWith('https://')
                   ? `${media[0].path}/${media[0].image}`
-                  : NoImage.src)
-                : (
-                  thumbnail != null ? thumbnail : NoImage.src
-                )
+                  : `${baseImgUrl}${media[0].path}/${media[0].image}`
+                : thumbnail != null
+                ? thumbnail
+                : NoImage.src
             }
             alt={name}
             draggable="false"
-            fallback={<Skeleton />}
+            fallback={<img src={NoImage.src} alt="No Image" />}
             width="100% !important"
             margin={0}
             borderRadius="0"
