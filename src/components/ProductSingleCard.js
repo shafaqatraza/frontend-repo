@@ -36,8 +36,7 @@ export const ProductSingleCard = (props) => {
 
 
   const { title, credit_amount, name, media, id, created_at, transaction_status, slug, post_type, thumbnail, created_at_human_diff, url_to_donate, category } = product
-  // console.log("category", category);
-  console.log("deqsdeqssss", product);
+  
 
   // const created_listing = moment(created_at).utc().format('YYYY-MM-DD, h:mm a')
   const router = useRouter()
