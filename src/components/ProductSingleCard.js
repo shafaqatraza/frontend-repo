@@ -59,7 +59,7 @@ export const ProductSingleCard = (props) => {
         >
           <Image
             src={
-              post_type == 'items' || post_type == 'service' ?
+              post_type == 'item' || post_type == 'service' ?
                 (media.length > 0
                   ? `${media[0].path}/${media[0].image}`
                   : NoImage.src)

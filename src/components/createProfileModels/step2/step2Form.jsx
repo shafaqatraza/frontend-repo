@@ -48,7 +48,6 @@ export const Step2Form = (props) => {
     {
       onSuccess: (data) => {
         let tmpLoginData = JSON.parse(localStorage.getItem('loggedInUser'))
-        // console.log("LmnopZq", data.data)
         tmpLoginData.user = data.data.data.user
         localStorage.setItem('loggedInUser', JSON.stringify(tmpLoginData))
         toast({
@@ -129,7 +128,6 @@ export const Step2Form = (props) => {
     <chakra.form
       onSubmit={(e) => { 
         e.preventDefault()
-        console.log('aaaaaaa22', data.avatar);
         var formData = new FormData()
         formData.append('username', data.username)
         formData.append('bio', data.bio)
