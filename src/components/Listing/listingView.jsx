@@ -594,7 +594,7 @@ const ListingView = (props) => {
                   {listingData.post_type == 'item' || listingData.post_type == 'service' ?
                     (
                       <>
-                        <Slider {...settings} className="listing-slider-wrap">
+                        <Slider {...settings} className="listing-slider-wrap" style={{ margin: '0 0 110px 0' }}>
                           {listingData.media.length > 0 &&
                             listingData.media.map((media, index) => (
                               <div className="listing-images" key={index}>

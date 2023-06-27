@@ -1149,6 +1149,9 @@ color: #E27832;
   background-color: #F6F6F6;
   padding: 20px;
   border-radius: 8px;
+  width: 327px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 .stars {
   color: #E27832;
