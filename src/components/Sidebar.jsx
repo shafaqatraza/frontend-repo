@@ -95,7 +95,7 @@ const Sidebar = (props) => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/organization-info">
+                    <Link href="/organization/profile">
                       <a>Profile</a>
                     </Link>
                   </div>
@@ -121,7 +121,7 @@ const Sidebar = (props) => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/volunteer-applications">
+                    <Link href="/organization/volunteer-applications">
                       <a>Volunteer Applications</a>
                     </Link>
                   </div>
@@ -134,7 +134,7 @@ const Sidebar = (props) => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/donation-analytics">
+                    <Link href="/organization/donation-analytics">
                       <a>Donation Analytics</a>
                     </Link>
                   </div>
@@ -147,7 +147,7 @@ const Sidebar = (props) => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/settings">
+                    <Link href="/organization/settings">
                       <a>Settings</a>
                     </Link>
                   </div>

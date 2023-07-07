@@ -35,10 +35,10 @@ export const currentUserId = () => {
 
 export const currentOrganizationInfo = () => {
     if (typeof window !== 'undefined') {
-        let storageVal = {};
+        let orgData = {};
         if (localStorage.getItem('currentOrganization') !== null) {
-            storageVal = JSON.parse(localStorage.getItem('currentOrganization'));
-            return storageVal;
+            orgData = JSON.parse(localStorage.getItem('currentOrganization'));
+            return orgData;
         }
     }
     return "";

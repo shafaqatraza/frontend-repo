@@ -64,12 +64,12 @@ const InviteUser = () => {
     })
       .then((response) => {
         console.log(response.data);
-        router.push("/organization-info");
+        router.push("/organization/profile");
         // Handle response data here
       })
       .catch((error) => {
         console.error(error);
-        router.push("/organization-info");
+        router.push("/organization/profile");
         // Handle error here
       });
 

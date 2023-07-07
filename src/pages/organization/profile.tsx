@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import { Footer } from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import { Footer } from "../../components/Footer";
 import user from "../assets/imgs/user.png";
 import home from "../assets/imgs/home.png";
 import setting from "../assets/imgs/setting.png";
 import volunteer from "../assets/imgs/volunteer.png";
 import listing from "../assets/imgs/listing.png";
 import donation from "../assets/imgs/donation.png";
-import autism from "../assets/imgs/autism.png";
-import good from "../assets/imgs/good.png";
-import edit from "../assets/imgs/edit.png";
+import autism from "../../assets/imgs/autism.png";
+import good from "../../assets/imgs/good.png";
+import edit from "../../assets/imgs/edit.png";
 import Candadogo from "../assets/imgs/Canadogo.png";
 import { color, Image, Input } from "@chakra-ui/react";
 import Link from "next/link";
@@ -17,11 +17,11 @@ import { Table } from "antd";
 import { Modal, Button } from "react-bootstrap";
 import "antd/dist/antd.css";
 import { FaCheck } from "react-icons/fa";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../../components/Sidebar";
 import axios from "axios";
-import { accessToken, baseUrl } from "../components/Helper/index";
-import placeholder from "../assets/imgs/placeholder.png";
-import camera from "../assets/imgs/camera.png";
+import { accessToken, baseUrl } from "../../components/Helper/index";
+import placeholder from "../../assets/imgs/placeholder.png";
+import camera from "../../assets/imgs/camera.png";
 
 const OrganizationInfo = () => {
   const [formData, setFormData] = useState({
@@ -129,11 +129,10 @@ const OrganizationInfo = () => {
         },
       })
       .then((res) => {
-        console.log(res.data[0].slug, "datatatata");
         setSlug(res.data[0].slug);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
