@@ -1146,7 +1146,7 @@ const ListingView = (props) => {
                           </AccordionItem>
                         </Accordion>
                         {/* <Box mr={[0, 0, "50px", "50px"]} ml={[0, 0, "50px", "50px"]} mt={10}> */}
-                        {listingData.post_type == 'volunteer' ?
+                        {/* {listingData.post_type == 'volunteer' ?
                           <Button
                             type="submit"
                             mt={"5"}
@@ -1162,7 +1162,7 @@ const ListingView = (props) => {
                             Contact
                           </Button>
                           :
-                          null}
+                          null} */}
 
                       </Box>
 

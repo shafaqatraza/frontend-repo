@@ -148,7 +148,7 @@ const organization = () => {
                           }
                         </p>
                         <div className="mt-3">
-                          <Link href="/organization-info">
+                          <Link href="/organization/profile">
                             <a className="orga-txt">
                               {
                                 // @ts-ignore: Unreachable code error
@@ -170,7 +170,7 @@ const organization = () => {
                           }
                         </p>
                         <div className="mt-3">
-                          <a className="orga-txt" href="/organization-info">
+                          <a className="orga-txt" href="/organization/profile">
                             Organization Setting
                           </a>
                         </div>
