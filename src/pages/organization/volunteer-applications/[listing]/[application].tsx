@@ -22,7 +22,8 @@ const CompletedApplication = () => {
 
     axios
       .get(
-        `${baseUrl}/volunteer-applications/applicants/${application}/show?org=${currentOrganization?.slug}`,
+        `${baseUrl}/volunteer-applications/applicants/${application}/show?org=${// @ts-ignore: Unreachable code error
+          currentOrganization?.slug}`,
         {
           headers: {
             Authorization: "Bearer " + accessToken(),

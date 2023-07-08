@@ -1,25 +1,18 @@
-import React, { useEffect, useCallback, useState } from "react";
-import Navbar from "../components/Navbar";
-import { Footer } from "../components/Footer";
-import Sidebar from "../components/Sidebar.jsx";
+import React, { useEffect } from "react";
+import Navbar from "../../../../../components/Navbar";
+import Sidebar from "../../../../../components/Sidebar.jsx";
 import { Image, Input, Textarea } from "@chakra-ui/react";
 import { Form } from "react-bootstrap";
 import { Radio, Select, Space } from "antd";
+import { useState } from "react";
 import "antd/dist/antd.css";
 import axios from "axios";
-import { accessToken, baseUrl } from "../components/Helper/index";
+import { accessToken, baseUrl, currentOrganization } from "../../../../../components/Helper/index";
 import { useRouter } from "next/router";
 import { Modal } from "react-bootstrap";
-import camera from "../assets/imgs/camera.png";
-// import { Select } from "antd";
+import camera from "../../../../../assets/imgs/camera.png";
+import { Footer } from "../../../../../components/Footer";
 
-// const options = [];
-// for (let i = 10; i < 36; i++) {
-//   options.push({
-//     value: i.toString(36) + i,
-//     label: i.toString(36) + i,
-//   });
-// }
 const myData = [
   { value: "apple", label: "Volunteer" },
   { value: "banana", label: "Animals" },
@@ -33,10 +26,10 @@ const options = myData.map((item) => ({
 const handleChange = (value) => {
 };
 
-const CreateDonationListing = () => {
+const EditDonationListing = () => {
+  const router = useRouter();
   const [size, setSize] = useState("middle");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = typeof window !== "undefined" ? useRouter() : null;
   const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
   const handleCloseSuccess = () => setShowSuccess(false);
@@ -45,6 +38,9 @@ const CreateDonationListing = () => {
   if (!router) {
     return null;
   }
+
+  const { slug } = router.query;
+
   const handleSizeChange = (e) => {
     setSize(e.target.value);
   };
@@ -56,12 +52,11 @@ const CreateDonationListing = () => {
     category_id: null,
     thumbnail: [],
   });
-  const [slug, setSlug] = useState([]);
+ 
   const [thumbnail, setThumbnail] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState([]);
-  const [donationCategoryList, setDonationCategoryList] = useState([])
-
+  const [donationdata, setDonationData] = useState([]);
   const handleThumbnailClick = () => {
     const input = document.createElement("input");
     input.type = "file";
@@ -76,41 +71,40 @@ const CreateDonationListing = () => {
     };
   };
 
-  const getDonationCategoryList = useCallback(async () => {
-    const data = await axios.get(`${baseUrl}/donation-listings/categories`)
-    if (data.status === 200) {
-      setDonationCategoryList(data.data.data)
+  useEffect(()=>{
+    if(slug !== undefined){
+      axios
+        .get(
+          `${baseUrl}/donation-listings/${slug}/show?org=${// @ts-ignore: Unreachable code error
+            currentOrganization?.slug}`,
+          {
+            headers: {
+              Authorization: "Bearer " + accessToken(),
+              // 'Content-Type': 'application/x-www-form-urlencoded'
+            },
+          }
+        )
+        .then((res) => {
+          setFormData(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  
+      axios
+        .get(`${baseUrl}/donation-listings/categories`, {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+        .then((res) => {
+          setData(res.data.data);
+        })
+        .catch((err) => {
+        });
     }
-  }, [])
-
-  useEffect(() => {
-    axios
-      .get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        setSlug(res.data[0].slug);
-      })
-      .catch((err) => {
-      });
-    axios
-      .get(`${baseUrl}/listings/categories`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        setData(res.data.data);
-      })
-      .catch((err) => {
-      });
-
-    getDonationCategoryList()
-  }, []);
+  },[slug, currentOrganization])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -124,7 +118,7 @@ const CreateDonationListing = () => {
     formData.keywords.forEach((keyword) => form.append("keywords[]", keyword));
     formData.thumbnail.forEach((file) => form.append("thumbnail", file));
     axios
-      .post(`${baseUrl}/donation-listings/store/${slug}`, form, {
+      .post(`${baseUrl}/donation-listings/${slug}/update?org=${currentOrganization?.slug}`, form, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
@@ -132,7 +126,7 @@ const CreateDonationListing = () => {
       })
       .then((response) => {
         setShowSuccess(true);
-        router.push("/organization/listings");
+        router.push("/listings");
         setIsSubmitting(false);
         setFormData({
           title: "",
@@ -155,12 +149,20 @@ const CreateDonationListing = () => {
         // Handle error here
       });
   };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
   return (
     <>
       <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
         <div className="p-3">
           <p className="modal-txt text-center p-5 mt-3">
-            Donation Listing Created Successfully
+            Donation Listing Updated Successfully
           </p>
         </div>
         <div className="d-flex justify-content-center pb-5">
@@ -170,12 +172,20 @@ const CreateDonationListing = () => {
         </div>
       </Modal>
 
-      <div className="d-flex justify-content-between col-md-8">
-        <p className="listing-txt mt-5 ms-3">Donation Listings</p>
+    <Navbar/>
+    <Sidebar>
+    <div className="btn-list mt-5">
+          <div className="d-flex">
+            <button className="donate-btn2 shadow">Donation Listing</button>
+            <button className="donatee-btn">Volunteer Listing</button>
+          </div>
+        </div>
+    <div className="d-flex justify-content-between col-md-8">
+        <p className="listing-txt mt-5">Edit Donation Listing</p>
       </div>
       <div>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3 mt-5 col-md-5">
+          <div className="mb-3 mt-4 col-md-5">
             <label
               style={{
                 fontWeight: "500",
@@ -190,10 +200,8 @@ const CreateDonationListing = () => {
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
               className="form-control mt-2"
-              value={formData.title}
-              onChange={(event) =>
-                setFormData({ ...formData, title: event.target.value })
-              }
+              value={formData.title || ""}
+             onChange={handleInputChange}
               name="title"
               placeholder="Charity Name"
               required
@@ -214,10 +222,8 @@ const CreateDonationListing = () => {
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
               className="form-control mt-2"
-              value={formData.description}
-              onChange={(event) =>
-                setFormData({ ...formData, description: event.target.value })
-              }
+              value={formData.description || ""}
+              onChange={handleInputChange}
               name="description"
               placeholder="Description"
               rows={6}
@@ -239,10 +245,9 @@ const CreateDonationListing = () => {
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
               className="form-control mt-2"
-              value={formData.url_to_donate}
-              onChange={(event) =>
-                setFormData({ ...formData, url_to_donate: event.target.value })
-              }
+              value={formData.url_to_donate || ""}
+              onChange={handleInputChange}
+              name="url_to_donate"
               placeholder="URL"
               required
             />
@@ -266,7 +271,7 @@ const CreateDonationListing = () => {
                   style={{ width: "100%" }}
                   placeholder="Select category"
                   optionFilterProp="children"
-                  value={formData.category_id}
+                  value={formData.category_id || ""}
                   onChange={(value) =>
                     setFormData({ ...formData, category_id: value })
                   }
@@ -281,7 +286,7 @@ const CreateDonationListing = () => {
                   }
                   size="large"
                 >
-                  {donationCategoryList.map((item) => (
+                  {data.map((item) => (
                     // @ts-ignore: Unreachable code error
                     <Option key={item.id} value={item.id}>
                       {
@@ -306,7 +311,7 @@ const CreateDonationListing = () => {
               Keywords
             </label>
             <Select
-              mode="tags"
+              mode="multiple"
               size={size}
               placeholder="Please select"
               // defaultValue={["Volunteer", "Animals"]}
@@ -323,7 +328,7 @@ const CreateDonationListing = () => {
               style={{
                 width: "100%",
               }}
-            // options={options}
+              options={options}
             />
           </div>
           <label
@@ -358,13 +363,15 @@ const CreateDonationListing = () => {
               onClick={handleSubmit}
               className="update-v-btn mt-5 mb-5"
             >
-              Create
+              Update
             </button>
           )}
         </form>
       </div>
+    </Sidebar>
+    <Footer/>
     </>
   );
 };
 
-export default CreateDonationListing;
+export default EditDonationListing;
