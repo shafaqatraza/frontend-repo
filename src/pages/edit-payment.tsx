@@ -23,6 +23,7 @@ const EditPayment = () => {
   const { id } = router.query;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [slug, setSlug] = useState([]);
+  const [packageData, setPackageData] = useState([]);
   const [formData, setFormData] = useState({
     full_name: "",
     address: "",
@@ -48,7 +49,20 @@ const EditPayment = () => {
       })
       .catch((err) => {
       });
-  },[])
+      axios.get(`${baseUrl}/organization/subscriptions/subscribed-package?org=${slug}`, {
+        headers: {
+          Authorization: "Bearer " + accessToken(),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }).then((res)=>{
+        console.log(res.data.data, "npackage");
+        setPackageData(res.data.data);
+
+      }).catch((err)=>{
+        console.log(err);
+
+      })
+  },[slug])
   const handleSubmit = (event:any) =>{
     event.preventDefault();
     // @ts-ignore: Unreachable code error
@@ -271,9 +285,15 @@ const EditPayment = () => {
                 <Image src={gooddeedsorange.src}/>
               </div>
               <div className="mt-4 ms-3">
-                <p style={{fontSize:"24px", lineHeight:"30px", fontWeight:"700"}}>Premium Package</p>
+                <p style={{fontSize:"24px", lineHeight:"30px", fontWeight:"700"}}>
+
+                  {
+                  // @ts-ignore: Unreachable code error
+                  packageData.package_name}</p>
                 <p style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#E27832"}}>Auto-renewal</p>
-                <p style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>$40 month / billed monthly</p>
+                <p style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>${
+                // @ts-ignore: Unreachable code error
+                packageData.package_amount} month / billed monthly</p>
               </div>
               </div>
               <div className="mt-4">

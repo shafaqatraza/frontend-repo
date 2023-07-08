@@ -28,8 +28,12 @@ const EditVolunteerListing = () => {
   const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShowSuccess(true);
+  const handleCloseError = () => setShowError(false);
+  const handleShowError = () => setShowError(true);
+  const [donError, setDonError] = useState([]);
   // @ts-ignore: Unreachable code error
   const { reset } = useForm();
   const router = useRouter();
@@ -70,7 +74,7 @@ const EditVolunteerListing = () => {
         .catch((err) => {
           console.log(err);
         });
-  
+
       axios
         .get(`${baseUrl}/volunteer-listings/categories`, {
           headers: {
@@ -120,7 +124,17 @@ const EditVolunteerListing = () => {
     // @ts-ignore: Unreachable code error
     form.append("level_id", 2);
     formData.keywords.forEach((keyword) => form.append("keywords[]", keyword));
-    formData.thumbnail.forEach((file) => form.append("thumbnail", file));
+    if (Array.isArray(formData.thumbnail)) {
+      formData.thumbnail.forEach((file) => form.append("thumbnail", file));
+    } else if (formData.thumbnail && typeof formData.thumbnail[Symbol.iterator] === 'function') {
+      // @ts-ignore: Unreachable code error
+      for (const file of formData.thumbnail) {
+        form.append("thumbnail", file);
+      }
+    } else if (formData.thumbnail) {
+      form.append("thumbnail", formData.thumbnail);
+    }
+    // @ts-ignore: Unreachable code error
     axios.post(`${baseUrl}/volunteer-listings/${slug}/update?org=${currentOrganization?.slug}`, form, {
       headers: {
         Authorization: 'Bearer ' + accessToken(),
@@ -143,7 +157,18 @@ const EditVolunteerListing = () => {
           keywords: [],
           thumbnail: [],
         });
-        setShowSuccess(true);
+        // setShowSuccess(true);
+        setShowError(true);
+        if (error.response && error.response.data && error.response.data.errors) {
+          const errorMessages = error.response.data.errors;
+          console.error('An error occurred:', errorMessages);
+
+          // Set errors in state
+          // @ts-ignore: Unreachable code error
+          setDonError(Object.values(errorMessages).flat());
+        } else {
+          console.error('An unknown error occurred:', error);
+        }
         setIsSubmitting(false);
         // Handle error here
       });
@@ -167,6 +192,22 @@ const EditVolunteerListing = () => {
         </div>
         <div className="d-flex justify-content-center pb-5">
           <button onClick={handleCloseSuccess} className="modal-btn">Got it</button>
+        </div>
+      </Modal>
+      <Modal show={showError} onHide={handleCloseError} closeButton>
+        <div className="p-3">
+          <p className="modal-txt text-center p-5 mt-3">
+          <ul>
+          {donError.map((errorMessage, index) => (
+            <li key={index}>{errorMessage}</li>
+          ))}
+        </ul>
+          </p>
+        </div>
+        <div className="d-flex justify-content-center pb-5">
+          <button onClick={handleCloseError} className="modal-btn">
+            Got it
+          </button>
         </div>
       </Modal>
            <Navbar/>
@@ -272,7 +313,8 @@ const EditVolunteerListing = () => {
                   style={{ width: "100%" }}
                   placeholder="Select category"
                   optionFilterProp="children"
-                  value={formData.category_id}
+                  // @ts-ignore: Unreachable code error
+                  value={formData.category || ""}
                   onChange={(value) =>
                     setFormData({ ...formData, category_id: value })
                   }
