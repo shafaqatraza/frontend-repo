@@ -5,7 +5,8 @@ import edit2 from "../assets/imgs/edit2.png";
 import charity from "../assets/imgs/Charity.png";
 import { Image } from "@chakra-ui/react";
 import axios from "axios";
-import { accessToken, baseUrl } from "./Helper/index";
+import { useToast } from '@chakra-ui/toast'
+import { accessToken, baseUrl, currentOrganization } from "./Helper/index";
 import Link from "next/link";
 
 
@@ -19,28 +20,13 @@ interface Donation {
 const DonationListing = () => {
   const [data, setData] = useState<Donation[]>([]);
   const [refresh, setRefresh] = useState(false);
-  const [slug, setSlug] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const toast = useToast()
 
-  useEffect(() => {
+  const getDonationListings = () => {
     axios
-      .get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        setLoading(true);
-        setSlug(res.data[0].slug);
-      })
-      .catch((err) => {
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${baseUrl}/donation-listings/all/${slug}`, {
+      .get(`${baseUrl}/donation-listings/all/${// @ts-ignore: Unreachable code error
+        currentOrganization?.slug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
@@ -53,17 +39,32 @@ const DonationListing = () => {
       .catch((err) => {
         setLoading(false);
       });
-  }, [slug]);
+  }
+  useEffect(() => {
+    if(currentOrganization){
+      setLoading(true)
+      getDonationListings();
+    }
+  }, [currentOrganization]);
+
   const deleteDonation = (charity: any) => {
+    setLoading(true)
     axios
-      .delete(`${baseUrl}/donation-listings/${charity}`, {
+      .delete(`${baseUrl}/donation-listings/${charity}/delete?org=${// @ts-ignore: Unreachable code error
+        currentOrganization?.slug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
         },
       })
       .then((res) => {
-        setRefresh(!refresh);
+        if (res.status === 200) {
+          getDonationListings();
+          toast({
+            title: res.data.message,
+            status: 'success'
+          })
+        }
       })
       .catch((err) => {
       });
@@ -105,18 +106,18 @@ const DonationListing = () => {
                   <div className="position-absolute top-0 end-0">
                     <div className="d-flex justify-content-end p-2">
                       <div className="d-flex align-items-center me-2">
-                      <Link href={`/donation-listing/${item?.slug}`}>
-  <a>
-    <img src={viewlogo.src} />
-  </a>
-</Link>
+                      <Link href={`listings/donation-listing/${item?.slug}`}>
+                        <a>
+                          <img src={viewlogo.src} />
+                        </a>
+                      </Link>
                       </div>
                       <div className="d-flex align-items-center me-2">
-                      <Link href={`/edit-donation-listing/${item?.slug}`}>
-  <a>
-    <img src={edit2.src} />
-  </a>
-</Link>
+                      <Link href={`listings/donation-listing/${item?.slug}/update`}>
+                        <a>
+                          <img src={edit2.src} />
+                        </a>
+                      </Link>
                       </div>
                       <div className="d-flex align-items-center me-2">
                         <Image

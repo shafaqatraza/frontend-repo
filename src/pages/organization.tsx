@@ -234,7 +234,7 @@ const organization = () => {
                         fontWeight="600"
                         width="170px"
                         maxW="100%"
-                        onClick={() => { data?.length > 1 ? router.push('/listings') : router.push('/create-listing') }}
+                        onClick={() => { data?.length > 1 ? router.push('/organization/listings') : router.push('/organization/listings/create') }}
                       >
                         View Postings
                       </Button>

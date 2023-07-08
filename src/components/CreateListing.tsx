@@ -126,7 +126,7 @@ const CreateListing = () => {
       }
     })
       .then((response) => {
-        router.push("/listings");
+        router.push("/organization/listings");
         setShowSuccess(true);
         // @ts-ignore: Unreachable code error
         setIsSubmitting(false);
