@@ -19,7 +19,8 @@ const VolunteerListingView = () => {
       setError(null);
       axios
         .get(
-          `${baseUrl}/volunteer-listings/${slug}/show?org=${currentOrganization?.slug}`,
+          `${baseUrl}/volunteer-listings/${slug}/show?org=${// @ts-ignore: Unreachable code error
+            currentOrganization?.slug}`,
           {
             headers: {
               Authorization: "Bearer " + accessToken(),
@@ -41,7 +42,7 @@ const VolunteerListingView = () => {
       return
     }
   }, [slug, currentOrganization]);
-  
+
   if (error) {
     return <div>Error: {error}</div>;
   }

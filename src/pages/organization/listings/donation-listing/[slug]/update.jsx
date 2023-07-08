@@ -75,7 +75,8 @@ const EditDonationListing = () => {
     if(slug !== undefined){
       axios
         .get(
-          `${baseUrl}/donation-listings/${slug}/show?org=${currentOrganization?.slug}`,
+          `${baseUrl}/donation-listings/${slug}/show?org=${// @ts-ignore: Unreachable code error
+            currentOrganization?.slug}`,
           {
             headers: {
               Authorization: "Bearer " + accessToken(),
