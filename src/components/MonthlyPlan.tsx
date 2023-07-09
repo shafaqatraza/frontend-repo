@@ -76,10 +76,9 @@ const MonthlyPlan = () => {
   }, [])
 
   const handlePlanButton = () => {
-    console.log('clicked')
     if (isLogin()) {
       if (Array.isArray(orgData) && orgData.length > 0) {
-        router.push(`/payment/${dataone?.id}`)
+        router.push(`/organization/payment-plans/${dataone?.id}`)
       } else {
         toast({ position: "top", title: "Please first create your organization", status: "error" })
       }
