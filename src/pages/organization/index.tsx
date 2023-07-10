@@ -279,7 +279,7 @@ const organization = () => {
                       </div>
                     ) : (
                       <>
-                        <p className="text-center mt-3 p-txt2 mb-3">There is no Plan subscribed</p>
+                        <p className="text-center mt-3 p-txt2 mb-3">There is no plan subscribed</p>
                         <Link href="/organization/payment-plans">
                           <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
                             Subscribe

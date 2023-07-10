@@ -12,7 +12,12 @@ import { useRouter } from "next/router";
 const CompletedApplication = () => {
   const router = useRouter();
   const { listing, application } = router.query;
-  const [applicationData, setApplicationData] = useState([]);
+  const [applicationData, setApplicationData] = useState({
+    applicant: {
+      full_name: '',
+      email: ''
+    }
+  });
   const [receiverId, setReceiverId] = useState<string | undefined>();
   const [formData, setFormData] = useState({
     receiver_id: '',

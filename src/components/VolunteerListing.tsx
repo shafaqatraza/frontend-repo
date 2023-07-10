@@ -41,7 +41,8 @@ const VolunteerListing = () => {
   const deleteVolunteer = (charity: any) => {
     setLoading(true)
     axios
-      .delete(`${baseUrl}/volunteer-listings/${charity}/delete?org=${currentOrganization?.slug}`, {
+      .delete(`${baseUrl}/volunteer-listings/${charity}/delete?org=${ // @ts-ignore: Unreachable code error
+        currentOrganization?.slug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
@@ -98,7 +99,8 @@ const VolunteerListing = () => {
                     <div className="d-flex justify-content-end p-2">
                       <div className="d-flex align-items-center me-2">
 
-                      <Link href={`listings/volunteer-listing/${item?.slug}`}>
+                      <Link href={`listings/volunteer-listing/${ // @ts-ignore: Unreachable code error
+                        item?.slug}`}>
                         <a>
                           <img src={viewlogo.src} />
                         </a>

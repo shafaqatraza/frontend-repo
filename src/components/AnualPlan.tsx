@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from "react-bootstrap";
 import good from "../assets/imgs/good.png";
 import axios from 'axios';
-import { accessToken, baseUrl, isLogin } from "../components/Helper/index";
+import { accessToken, baseUrl, isLogin, currentOrganization } from "../components/Helper/index";
 import { useRouter } from 'next/router'
 import { useToast } from '@chakra-ui/toast'
 
@@ -22,66 +22,50 @@ const AnualPlan = () => {
 
 
   useEffect(() => {
-    if (isLogin()) {
+
+    if(isLogin() && !orgData){
       axios
-        .get(`${baseUrl}/public/organization/subscriptions/plans`, {
+        .get(`${baseUrl}/organizations`, {
           headers: {
             Authorization: "Bearer " + accessToken(),
             "Content-Type": "application/x-www-form-urlencoded",
           },
         })
         .then((res) => {
-          // console.log("annualllll", res.data.data);
-          setData(res.data.data[1]?.packages[0])
-          setDataDesc(res.data.data[1]?.packages[0]?.description)
-          setDataOne(res.data.data[1]?.packages[1])
-          setDataOneDesc(res.data.data[1]?.packages[1]?.description)
-          setDataTwo(res.data.data[1]?.packages[2])
-          setDataTwoDesc(res.data.data[1]?.packages[2]?.description)
-          setDataThree(res.data.data[1]?.packages[3])
-          setDataThreeDesc(res.data.data[1]?.packages[3]?.description)
+          setOrgData(res.data);
         })
         .catch((err) => {
-        })
-      axios.get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: 'Bearer ' + accessToken(),
-        }
-      }).then((res) => {
-        setOrgData(res.data);
-      }).catch((err) => {
-        // console.log(err);
+          console.log(err);
+        });
+    }
+    
+    axios
+      .get(`${baseUrl}/public/organization/subscriptions/plans`)
+      .then((res) => {
+        setData(res.data.data[1]?.packages[0])
+        setDataDesc(res.data.data[1]?.packages[0]?.description)
+        setDataOne(res.data.data[1]?.packages[1])
+        setDataOneDesc(res.data.data[1]?.packages[1]?.description)
+        setDataTwo(res.data.data[1]?.packages[2])
+        setDataTwoDesc(res.data.data[1]?.packages[2]?.description)
+        setDataThree(res.data.data[1]?.packages[3])
+        setDataThreeDesc(res.data.data[1]?.packages[3]?.description)
+
       })
-    } else (
-      axios
-        .get(`${baseUrl}/public/organization/subscriptions/plans`)
-        .then((res) => {
-          // console.log("annualllll", res.data.data);
-          setData(res.data.data[1]?.packages[0])
-          setDataDesc(res.data.data[1]?.packages[0]?.description)
-          setDataOne(res.data.data[1]?.packages[1])
-          setDataOneDesc(res.data.data[1]?.packages[1]?.description)
-          setDataTwo(res.data.data[1]?.packages[2])
-          setDataTwoDesc(res.data.data[1]?.packages[2]?.description)
-          setDataThree(res.data.data[1]?.packages[3])
-          setDataThreeDesc(res.data.data[1]?.packages[3]?.description)
-        })
-        .catch((err) => {
-        })
-    )
+      .catch((err) => {
+      })
 
   }, [])
 
-  const handlePlanButton = () => {
-    console.log('clicked')
+  const handlePlanButton = (plan_id: any) => {
     if (isLogin()) {
-      if (Array.isArray(orgData) && orgData.length > 0) {
-        router.push(`/payment/${dataone?.id}`)
+      if (currentOrganization || orgData) {
+        router.push(`/organization/payment-plans/${plan_id}`)
       } else {
-        toast({ position: "top", title: "Please first create your organization", status: "error" })
+        toast({ position: "top", title: "Please create your organization first!", status: "error" })
       }
     } else {
-      toast({ position: "top", title: "Please login to select plan", status: "error" })
+      toast({ position: "top", title: "Please login to select plan!", status: "error" })
     }
   };
 
@@ -159,7 +143,7 @@ const AnualPlan = () => {
                           colorScheme={'orange'}
                           size={'md'}
                           fontSize="16px"
-                          onClick={handlePlanButton}
+                          onClick={() => handlePlanButton(dataone?.id)}
                           w="150px"
                           className='my-4 mx-auto'
                         >
@@ -234,7 +218,8 @@ const AnualPlan = () => {
                           colorScheme={'orange'}
                           size={'md'}
                           fontSize="16px"
-                          onClick={handlePlanButton}
+                          onClick={() => handlePlanButton( // @ts-ignore: Unreachable code error
+                            data?.id)}
                           w="150px"
                           className='my-4 mx-auto'
                         >
@@ -306,7 +291,8 @@ const AnualPlan = () => {
                           colorScheme={'orange'}
                           size={'md'}
                           fontSize="16px"
-                          onClick={handlePlanButton}
+                          onClick={() => handlePlanButton( // @ts-ignore: Unreachable code error
+                            datatwo?.id)}
                           w="150px"
                           className='my-4 mx-auto'
                         >
@@ -376,7 +362,8 @@ const AnualPlan = () => {
                           colorScheme={'orange'}
                           size={'md'}
                           fontSize="16px"
-                          onClick={handlePlanButton}
+                          onClick={() => handlePlanButton( // @ts-ignore: Unreachable code error
+                            datathree?.id)}
                           w="150px"
                           className='my-4 mx-auto'
                         >

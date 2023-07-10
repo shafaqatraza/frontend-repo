@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../components/Navbar";
-import { Footer } from "../../components/Footer";
-import Sidebar from "../../components/Sidebar.jsx";
+import Navbar from "../../../components/Navbar";
+import { Footer } from "../../../components/Footer";
+import Sidebar from "../../../components/Sidebar.jsx";
 import { Container, Row, Col } from "react-bootstrap";
 import { Image, Input } from "@chakra-ui/react";
 import back from "../../assets/imgs/back.png";
@@ -9,7 +9,7 @@ import gooddeedsorange from "../../assets/imgs/gooddeedsorange.png";
 import { Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { accessToken, baseUrl } from "../../components/Helper/index";
+import { accessToken, baseUrl } from "../../../components/Helper/index";
 
 const Payment = () => {
   const [show, setShow] = useState(false);
