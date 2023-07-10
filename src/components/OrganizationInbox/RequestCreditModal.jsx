@@ -13,7 +13,7 @@ import {
   import {
       userId,
   } from '../Helper/index'
-  
+
   const RequestCreditModal = (props) => {
     const { show, onClose, submit, setCreditAmount, creditAmount, userChatInformation, isLoading, getMessage,
       messageInfo } = props
@@ -63,7 +63,7 @@ import {
               >
                 <Box>
                   <Text mb={'5px'} fontSize={'12px'} color="#979797">
-                    Enter Credits Here
+                    Enter Deed Dollars Here
                   </Text>
                   <Input
                     variant="unstyled"
@@ -83,7 +83,7 @@ import {
                       creditAmount ? '#E27832' : isMobile ? '#979797' : '#E27832'
                     }
                   >
-                    Credits
+                    Deed Dollars
                   </Text>
                 </Box>
               </Box>
@@ -103,7 +103,7 @@ import {
                   fontSize="md"
                   mb="15px"
                   isLoading={isLoading}
-                  onClick={() => 
+                  onClick={() =>
                     {
                       // console.log('transaction submit')
                       getMessage(messageInfo.chat_id, messageInfo.receiver_id, messageInfo.listing_id, userId, {}, {})
@@ -114,7 +114,7 @@ import {
                 </Button>
               </Center>
             ) : null}
-           
+
             {isMobile ? null : (
               <Center>
                 <Button
@@ -125,7 +125,7 @@ import {
                   size="md"
                   fontSize="md"
                   isLoading={isLoading}
-                  onClick={() => 
+                  onClick={() =>
                     {
                       // console.log('transaction submit')
                       getMessage(messageInfo.chat_id, messageInfo.receiver_id, messageInfo.listing_id, userId, {}, {})
@@ -141,6 +141,5 @@ import {
       </Fade>
     )
   }
-  
+
   export default RequestCreditModal
-  

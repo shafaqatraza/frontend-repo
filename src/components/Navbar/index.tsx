@@ -65,6 +65,8 @@ import {
   removeListinData,
   notificationHandler,
   currentOrganization,
+  currOrgId,
+  currOrgSlug
 } from '../../components/Helper/index';
 // import Img1 from '../../assets/imgs/screen1.png'
 import Img1 from '../../assets/imgs/logo/mainlogo.png'
@@ -113,7 +115,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 
 export default function Navbar(props: any) {
 
-  console.log('getLoginData', getLoginData())
+  // console.log('getLoginData', getLoginData())
 
   // const audio= new Audio('https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7');
 
@@ -124,6 +126,7 @@ export default function Navbar(props: any) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   // const [isChatLoading, setIsChatLoading] = useState(true)
   const [chatList, setChatList] = useState(0)
+  const [organizationNotifications, setOrganizationNotifications] = useState(0)
   const [conversations, setConversations] = useState()
   const toast = useToast()
   const [isSmallerThan850] = useMediaQuery('(max-width: 850px)');
@@ -135,7 +138,7 @@ export default function Navbar(props: any) {
   const [thumbnail, setThumbnail] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
-
+  
   const [showModel, setShowModel] = useState<ModelType>({
     login: false,
     forgotPassword: false,
@@ -209,13 +212,14 @@ export default function Navbar(props: any) {
         // Handle response data here
       })
       .catch((error) => {
-        // console.log('errrr org', error.response.data);
-        let errors = error.response?.data.errors;
-        Object.entries(errors).map((error) => {
-          toast({ title: error[1] as ReactNode, status: "error" });
-        });
+        // console.log('errrr org', error.response.data.message);
+        toast({ title: error?.response?.data.message, status: "error" })
 
-        // toast({ position: "top", title: "Please fill form.", status: "error" })
+        // let errors = error.response?.data.errors;
+        // Object.entries(errors).map((error) => {
+        //   toast({ title: error[1], status: "error" })
+        //   // console.log('single error', error)
+        // });
 
       });
 
@@ -240,6 +244,10 @@ export default function Navbar(props: any) {
   })
   const [refer, setRefer] = useState<any>('')
   const [isRefer, setIsRefer] = useState<boolean>(true);
+
+  // if (typeof window !== 'undefined') {
+	// 	var currOrg = JSON.parse(localStorage.getItem('currentOrganization'));
+	// }
 
   useEffect(() => {
 
@@ -303,8 +311,12 @@ export default function Navbar(props: any) {
       }).then((res) => {
         setOrgData(res.data);
       }).catch((err) => {
-        console.log(err);
+        // console.log(err);
       })
+    }
+
+    if(currOrgId){
+      getOrganizationNotifications()
     }
 
   }, [])
@@ -312,20 +324,36 @@ export default function Navbar(props: any) {
   useEffect(() => {
 
     // let tmpLoginData = JSON.parse(localStorage.getItem('loggedInUser'));
-    Pusher.logToConsole = true;
-    var pusher = new Pusher(`${Pusher_key}`, {
-      cluster: 'mt1'
-    });
-    var channel = pusher.subscribe('new_message_notification_' + userId);
-    channel.bind('notification', function (data: any) {
-      musicPlayers.current?.play();
-      // toast('You have a new message.');
-      setConversations(data?.newChat)
-      setChatList(chatList + 1)
-    });
-
-
-  }, [])
+      Pusher.logToConsole = false;
+      var pusher = new Pusher(`${Pusher_key}`, {
+        cluster: 'mt1'
+      });
+  
+      if(currOrgId){
+        var channel2 = pusher.subscribe('new_notification_organization_'+ currOrgId);
+        channel2.bind('NewNotificationOrganization', function(data: any) {
+            musicPlayers.current?.play();
+            setOrganizationNotifications(prevCount => prevCount + 1);
+        });
+  
+        var channel3 = pusher.subscribe('notifications_organization_'+ currOrgId);
+        channel3.bind('OrganizationNotifications', function(data: any) {
+            setOrganizationNotifications(data.notifications_count);
+        });
+        
+      }else{
+        var channel = pusher.subscribe('new_message_notification_'+userId);
+        channel.bind('notification', function(data: any) {
+          musicPlayers.current?.play();
+          setChatList(prevCount => prevCount + 1)
+        });
+  
+        var channel4 = pusher.subscribe('notifications_member_'+ userId);
+        channel4.bind('MemberNotifications', function(data: any) {
+          setChatList(data.notifications_count);
+        });
+      }
+    }, [])
 
 
 
@@ -337,15 +365,28 @@ export default function Navbar(props: any) {
         }
       })
       .then((res) => {
-        // setIsChatLoading(false)
         setChatList(res.data)
       })
       .catch((error) => {
-        // setIsChatLoading(true)
       })
   }
 
-
+  const getOrganizationNotifications = async () => {
+    if(currOrgSlug){
+      await axios
+      .get(baseUrl + '/organizations/notifications/check?org='+currOrgSlug, {
+        headers: {
+          Authorization: `Bearer ${accessToken()}`
+        }
+      })
+      .then((res) => {
+        setOrganizationNotifications(res.data.has_new_notifications);
+      })
+      .catch((error) => {
+      })
+    }
+    
+  }
 
 
   return (
@@ -426,7 +467,7 @@ export default function Navbar(props: any) {
             <SignupModal
               show={showModel}
               setShow={setShowModel}
-              TitleModal="Sign up and receive 100 credits"
+              TitleModal="Sign up and receive 100 deed dollars"
               body={
                 <SignupForm
                   userData={data}
@@ -561,7 +602,7 @@ export default function Navbar(props: any) {
                   currentStep={2}
                   lastStep={false}
                   image={explorepegiun.src}
-                  para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual credits that can be used to acquire things you need."
+                  para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual deed dollars that can be used to acquire things you need."
                   show={showModel}
                   setShowModel={setShowModel}
                   goNext={() => {
@@ -587,7 +628,7 @@ export default function Navbar(props: any) {
                 <InnerSection
                   currentStep={3}
                   image={exchangepegiun.src}
-                  para="Receive or provide your items and services in person or remotely. Don't worry — your credits are pending until the transaction successfully happens."
+                  para="Receive or provide your items and services in person or remotely. Don't worry — your deed dollars are pending until the transaction successfully happens."
                   show={showModel}
                   setShowModel={setShowModel}
                   goNext={() => {
@@ -622,7 +663,8 @@ export default function Navbar(props: any) {
                 <Box position="relative">
                   <Link style={{ color: "black", margin: "0 2rem", fontWeight: "700", fontSize: "16px" }} onClick={() => setOpenDropdown(!openDropdown)} > Discover </Link>
                   {openDropdown &&
-                    <Stack direction={'column'} position='absolute' w={'220px'} bg={'#FFF'} top="45px">
+                    <Stack direction={'column'} position='absolute' w={'220px'} bg={'#FFF'} top="45px" background="#fff" zIndex="999">
+                      <Link href="/about" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>About us</Link>
                       <Link href="/browse?type=offering&activeTab=0" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Items</Link>
                       <Link href="/browse?type=offering&activeTab=1" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Services</Link>
                       <Link href="/browse?type=offering&activeTab=3" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Donate</Link>
@@ -745,9 +787,7 @@ export default function Navbar(props: any) {
 
                   <Menu>
 
-                    {/* {
-                // @ts-ignore: Unreachable code error
-                currentOrganization?.slug? */}
+                    {currOrgId?
                     <MenuButton
                       as={Button}
                       rounded={'full'}
@@ -763,11 +803,11 @@ export default function Navbar(props: any) {
                       }}
                     >
                       <>
-                        {chatList == 0 ?
+                        {organizationNotifications == 0 ?
                           null
                           :
                           <Badge colorScheme='red' position={'absolute'} top={'-7px'}>
-                            {chatList}
+                            {organizationNotifications}
                           </Badge>
                         }
 
@@ -777,7 +817,7 @@ export default function Navbar(props: any) {
                         />
                       </>
                     </MenuButton>
-                    {/* : */}
+                    :
                     <MenuButton
                       as={Button}
                       rounded={'full'}
@@ -808,7 +848,7 @@ export default function Navbar(props: any) {
                       </>
 
                     </MenuButton>
-                    {/* } */}
+                    }
 
                     {/* <MenuList>
                     {isChatLoading && (
@@ -930,7 +970,7 @@ export default function Navbar(props: any) {
                         fontWeight={700}
                         color={'#E27832'}
                       >
-                        {getLoginData()?.user_profile.credits} CREDITS
+                        {getLoginData()?.user_profile?.credits} DEED DOLLARS
                       </Text>
 
                       <Button

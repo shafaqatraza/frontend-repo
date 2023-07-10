@@ -5,7 +5,7 @@ import HaniCam from "../../assets/imgs/add-a-photo.png";
 import { useToast } from "@chakra-ui/toast";
 import ImgCrop from "antd-img-crop";
 import "antd/dist/antd.css";
-//import heic2any from 'heic2any';
+// import heic2any from 'heic2any';
 // import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 const Avatar = (props) => {
   // const { promisify } = require('util');
@@ -43,42 +43,73 @@ const Avatar = (props) => {
     }
     return isJpgOrPng && isLt2M;
   };
-  const handleChange = (info) => {
+   
+  const handleChange = async (info) => {
     setLoading(true);
+    const fileExtension = info.file.name.split(".").pop().toLowerCase();
     if (info.file.status === "done") {
-      setAvatar(info);
+      setAvatar(info.file.originFileObj);
       getBase64(info.file.originFileObj, (imageUrl) => {
         setImageUrl(imageUrl);
         setLoading(false);
       });
-    }
-    if (info.file.originFileObj.type === "") {
-      fetch(URL.createObjectURL(info.file.originFileObj))
-      // .then((res) => res.blob())
-      // .then((blob) => heic2any({ blob, toType: "image/jpeg" }))
-        .then((conversionResult) => {
-          setImageUrl(URL.createObjectURL(conversionResult));
-          const fd = new FormData();
-          fd.set('a', conversionResult);
+    } else if (fileExtension === "heic") {
+      try {
+        const heic2any = (await import("heic2any")).default;
+        const jpegImage = await heic2any({
+          blob: info.file.originFileObj,
+          toType: "image/jpeg",
+        });
 
-          let avatar_file = {}
-          avatar_file.file = {}
-          avatar_file.file.originFileObj = fd.get('a')
-          setAvatar(avatar_file)
-          setLoading(false);
-        })
-        .catch((e) => {
+        const convertedFile = new File([jpegImage], info.file.name, {
+          type: "image/jpeg",
+        });
+
+        setAvatar(convertedFile);
+        getBase64(convertedFile, (imageUrl) => {
+          setImageUrl(imageUrl);
           setLoading(false);
         });
+      } catch (error) {
+        // console.error("Error converting HEIC to JPEG:", error);
+        setLoading(false);
+        toast({ title: "Failed to convert HEIC to JPEG", status: "error" });
+      }
     } else {
       setLoading(false);
-      setImageUrl(URL.createObjectURL(info.file.originFileObj));
+      // setImageUrl(URL.createObjectURL(info.file.originFileObj));
     }
   };
 
-  const checkHeic=(e)=>{
-console.log(e)
-  }
+  const convertHeicToJpg = async (heicFile) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const heicBuffer = event.target.result;
+        try {
+          const jpgBuffer = await heic2any({
+            blob: heicBuffer,
+            toType: "image/jpeg",
+          });
+          resolve(jpgBuffer);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      };
+      reader.readAsArrayBuffer(heicFile);
+    });
+  };
+
+  const renderUploadButton = () => {
+    if (imageUrl) {
+      return <Image src={imageUrl} alt="avatar" className="avatar-image" />;
+    } else {
+      return <Image src={HaniCam.src} alt="camera" />;
+    }
+  };
 
   const uploadButton = (
     <div style={{ position: "absolute", top: "20px" }}>
@@ -94,12 +125,11 @@ console.log(e)
           className="flex justify-center items-center create-profile-image"
           style={{
             border:
-              isAvatarAvailable == false && !imageUrl
+              isAvatarAvailable === false && !imageUrl
                 ? "1px solid #E74C3C"
                 : "none",
           }}
         >
-          {" "}
           {imageUrl ? (
             <Image src={imageUrl} alt="avatar" className="avatar-image" />
           ) : (
@@ -107,7 +137,7 @@ console.log(e)
           )}
         </div>
       )}
-      {isAvatarAvailable == false && !imageUrl && (
+      {isAvatarAvailable === false && !imageUrl && (
         <Text textAlign="center" color="#E74C3C" fontWeight="500">
           Required Field
         </Text>
@@ -117,23 +147,22 @@ console.log(e)
       </Button>
     </div>
   );
+
   return (
-    // <ImgCrop  rotate>
-    <Upload
-      name="avatar"
-      id="output"
-      listType="picture-card"
-      className="avatar-uploader avatar-new-profile "
-      showUploadList={false}
-      // beforeUpload={beforeUpload}
-      accept=".heic,.jpg,.jpeg,.svg,.gif,.png,.tiff,.svg,.ief,.bmp"
-      onChange={(e) => {
-        handleChange(e);
-      }}
-    >
-      {uploadButton}
-    </Upload>
-    //  {/* </ImgCrop>  */}
+    // <ImgCrop rotate>
+      <Upload
+        name="avatar"
+        id="output"
+        listType="picture-card"
+        className="avatar-uploader avatar-new-profile "
+        showUploadList={false}
+        beforeUpload={beforeUpload}
+        accept=".heic,.jpg,.jpeg,.svg,.gif,.png,.tiff,.svg,.ief,.bmp"
+        onChange={handleChange}
+      >
+        {uploadButton}
+      </Upload>
+    //  </ImgCrop>
   );
 };
 

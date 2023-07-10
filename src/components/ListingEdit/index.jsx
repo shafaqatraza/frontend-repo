@@ -55,9 +55,7 @@ const EditListingForm = () => {
   const toast = useToast()
   const [validator, showValidationMessage] = useValidator()
   const router = useRouter()
-  // console.log(router);
   const { id } = router.query
-  // console.log(id)
   const options = ['item', 'service']
   const [step1, setStep1] = useState(true)
   const [listingId, setListingId] = useState(typeof id !== undefined ? id : '')
@@ -293,7 +291,7 @@ const EditListingForm = () => {
     let formData = new FormData()
     let ttmpImages = tmpNewImages.filter(e => e.listing_id === undefined)
     for (let i = 0; i < ttmpImages.length; i++) {
-      formData.append('media[' + i + ']', ttmpImages[i].originFileObj)
+      formData.append('media[' + i + ']', ttmpImages[i])
     }
 
     axios.post(baseUrl + `/user/member-listings/${listingId}/image`, formData, {
@@ -310,11 +308,26 @@ const EditListingForm = () => {
 
   }
 
-  const handleAvtar = (file, number) => {
+  const handleAvtar = async (file, number, type) => {
     let tmpArray = avatar
     let tmpNumber = tmpAvtarNo
     if (!tmpAvtarNo.includes(number)) {
-      tmpArray.push(file.file)
+      if(type === "heic"){
+        
+        const heic2any = (await import("heic2any")).default;
+        const jpegImage = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+        });
+
+        const convertedFile = new File([jpegImage], file.name, {
+          type: "image/jpeg",
+        });
+        tmpArray.push(convertedFile)
+      }else{
+        tmpArray.push(file)
+      }
+      
       tmpNumber.push(number)
       setTmpAvtarNo(tmpNumber)
     }
@@ -367,7 +380,6 @@ const EditListingForm = () => {
 
   const mutation = useMutation(
     (formData) => {
-      // console.log('-------', `${baseUrl}/user/member-listings/${listingId}`)
       setIsLoading(true)
       return axios.put(
         `${baseUrl}/user/member-listings/${listingId}`,
@@ -624,7 +636,7 @@ const EditListingForm = () => {
                       variant="filled"
                       width="30%"
                     />
-                    <Text ml="4"> Credits</Text>
+                    <Text ml="4"> Deed Dollars</Text>
                   </Flex>
                 </NumberInput>
                 {validator.message(
@@ -803,7 +815,7 @@ const EditListingForm = () => {
                       marginRight: isMobile ? '2%' : 0,
                       position: "relative"
                     }}
-                  > 
+                  >
                     <img
                       src={`${media.path}/${media.image}`}
                       alt="avatar"

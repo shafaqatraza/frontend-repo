@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import Sidebar from "../components/Sidebar.jsx";
 import { Image, Input, Textarea } from "@chakra-ui/react";
 import { Form } from "react-bootstrap";
 import { Radio, Select, Space } from "antd";
-import { useState } from "react";
 import "antd/dist/antd.css";
 import axios from "axios";
 import { accessToken, baseUrl } from "../components/Helper/index";
@@ -39,9 +38,12 @@ const CreateDonationListing = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = typeof window !== "undefined" ? useRouter() : null;
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [image, setImage] = useState(null);
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShowSuccess(true);
+  const handleCloseError = () => setShowError(false);
+  const handleShowError = () => setShowError(true);
 
   if (!router) {
     return null;
@@ -61,6 +63,9 @@ const CreateDonationListing = () => {
   const [thumbnail, setThumbnail] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState([]);
+  const [donationCategoryList, setDonationCategoryList] = useState([]);
+  const [donError, setDonError] = useState([]);
+
   const handleThumbnailClick = () => {
     const input = document.createElement("input");
     input.type = "file";
@@ -74,6 +79,13 @@ const CreateDonationListing = () => {
       setFormData({ ...formData, thumbnail: [file] });
     };
   };
+
+  const getDonationCategoryList = useCallback(async () => {
+    const data = await axios.get(`${baseUrl}/donation-listings/categories`)
+    if (data.status === 200) {
+      setDonationCategoryList(data.data.data)
+    }
+  }, [])
 
   useEffect(() => {
     axios
@@ -100,6 +112,8 @@ const CreateDonationListing = () => {
       })
       .catch((err) => {
       });
+
+    getDonationCategoryList()
   }, []);
 
   const handleSubmit = (event) => {
@@ -112,7 +126,15 @@ const CreateDonationListing = () => {
     form.append("url_to_donate", formData.url_to_donate);
     form.append("category_id", formData.category_id);
     formData.keywords.forEach((keyword) => form.append("keywords[]", keyword));
-    formData.thumbnail.forEach((file) => form.append("thumbnail", file));
+    if (Array.isArray(formData.thumbnail)) {
+      formData.thumbnail.forEach((file) => form.append("thumbnail", file));
+    } else if (formData.thumbnail && typeof formData.thumbnail[Symbol.iterator] === 'function') {
+      for (const file of formData.thumbnail) {
+        form.append("thumbnail", file);
+      }
+    } else if (formData.thumbnail) {
+      form.append("thumbnail", formData.thumbnail);
+    }
     axios
       .post(`${baseUrl}/donation-listings/store/${slug}`, form, {
         headers: {
@@ -122,7 +144,7 @@ const CreateDonationListing = () => {
       })
       .then((response) => {
         setShowSuccess(true);
-        router.push("/listings");
+        router.push("/organization/listings");
         setIsSubmitting(false);
         setFormData({
           title: "",
@@ -133,8 +155,16 @@ const CreateDonationListing = () => {
         // Handle response data here
       })
       .catch((error) => {
-        setShowSuccess(true);
-        console.error(error);
+        setShowError(true);
+        if (error.response && error.response.data && error.response.data.errors) {
+          const errorMessages = error.response.data.errors;
+          console.error('An error occurred:', errorMessages);
+
+          // Set errors in state
+          setDonError(Object.values(errorMessages).flat());
+        } else {
+          console.error('An unknown error occurred:', error);
+        }
         setIsSubmitting(false);
         setFormData({
           title: "",
@@ -155,6 +185,23 @@ const CreateDonationListing = () => {
         </div>
         <div className="d-flex justify-content-center pb-5">
           <button onClick={handleCloseSuccess} className="modal-btn">
+            Got it
+          </button>
+        </div>
+      </Modal>
+
+      <Modal show={showError} onHide={handleCloseError} closeButton>
+        <div className="p-3">
+          <p className="modal-txt text-center p-5 mt-3">
+          <ul>
+          {donError.map((errorMessage, index) => (
+            <li key={index}>{errorMessage}</li>
+          ))}
+        </ul>
+          </p>
+        </div>
+        <div className="d-flex justify-content-center pb-5">
+          <button onClick={handleCloseError} className="modal-btn">
             Got it
           </button>
         </div>
@@ -271,7 +318,7 @@ const CreateDonationListing = () => {
                   }
                   size="large"
                 >
-                  {data.map((item) => (
+                  {donationCategoryList.map((item) => (
                     // @ts-ignore: Unreachable code error
                     <Option key={item.id} value={item.id}>
                       {
@@ -296,7 +343,7 @@ const CreateDonationListing = () => {
               Keywords
             </label>
             <Select
-              mode="multiple"
+              mode="tags"
               size={size}
               placeholder="Please select"
               // defaultValue={["Volunteer", "Animals"]}
@@ -313,7 +360,7 @@ const CreateDonationListing = () => {
               style={{
                 width: "100%",
               }}
-              options={options}
+            // options={options}
             />
           </div>
           <label

@@ -82,6 +82,8 @@ function Browse(props) {
   const [resetSlider, setresetSlider] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState([])
   const [selectedServiceCategory, setSelectedServiceCategory] = useState([])
+  const [selectedVolunteerCategory, setSelectedVolunteerCategory] = useState([])
+  const [selectedDonationCategory, setSelectedDonationCategory] = useState([])
   const [selectedLevel, setSelectedLevel] = useState([])
   const [selectedCondition, setSelectedCondition] = useState([])
   const [isVirtual, setIsVirtual] = useState(0)
@@ -90,6 +92,8 @@ function Browse(props) {
 
   const [categoryList, setCategoryList] = useState([])
   const [serviceCategoryList, setServiceCategoryList] = useState([])
+  const [volunteerCategoryList, setVolunteerCategoryList] = useState([])
+  const [donationCategoryList, setDonationCategoryList] = useState([])
   const [conditionList, setConditionList] = useState([])
   const [levelList, setLevelList] = useState([])
   const [keywordList, setKeywordList] = useState([])
@@ -105,10 +109,17 @@ function Browse(props) {
   const [volunteerData, setVolunteerData] = useState([])
   const [donationData, setDonationData] = useState([])
 
-  // console.log("frDDfrfr", donationData)
+  // console.log("selectedVolunteerCategory", selectedVolunteerCategory)
+  // console.log("selectedServiceCategory", selectedServiceCategory)
 
   // const [tmpLoading, setTmpLoading] = useState(false)
   let tmpLoading = true;
+  
+  useEffect(() => {
+    if(router.query.activeTab !== undefined){
+      refreshFilter(Number(router.query.activeTab));
+    }
+  }, [router.query.activeTab]);
 
   const getCategoryList = useCallback(async () => {
     const data = await axios.get(`${baseUrl}/listings/categories`)
@@ -121,6 +132,20 @@ function Browse(props) {
     const data = await axios.get(`${baseUrl}/listings/service-categories`)
     if (data.status === 200) {
       setServiceCategoryList(data.data.data)
+    }
+  }, [])
+
+  const getVolunteerCategoryList = useCallback(async () => {
+    const data = await axios.get(`${baseUrl}/volunteer-listings/categories`)
+    if (data.status === 200) {
+      setVolunteerCategoryList(data.data.data)
+    }
+  }, [])
+
+  const getDonationCategoryList = useCallback(async () => {
+    const data = await axios.get(`${baseUrl}/donation-listings/categories`)
+    if (data.status === 200) {
+      setDonationCategoryList(data.data.data)
     }
   }, [])
 
@@ -223,7 +248,8 @@ function Browse(props) {
     let bURL = "";
 
     if (isLogin() && props.isBookmark) {
-      bURL = `${baseUrl}/user/bookmarked/${filterListingType}?post_type=${filterPostType}&page=${page}&credit_range_from=${miPrice}&credit_range_to=${obj.maxPrice || ''}${locationDataFilter}`;
+      bURL = `${baseUrl}/user/bookmarked/${filterListingType}?post_type=${filterPostType}&page=${page}&credit_range_from=${miPrice}&credit_range_to=${obj.maxPrice || ''}${locationData
+        }`;
     } else if (props.isSearch) {
       bURL = `${baseUrl}/browse/${filterListingType}?post_type=${filterPostType}&page=${page}&credit_range_from=${miPrice}&credit_range_to=${obj.maxPrice || ''}${locationDataFilter}&title=${router.query.search}`;
     } else {
@@ -263,7 +289,8 @@ function Browse(props) {
     setCurrentPage(1)
     setSelectedCategory([])
     setSelectedServiceCategory([])
-    setSelectedServiceCategory([])
+    setSelectedDonationCategory([])
+    setSelectedVolunteerCategory([])
     let obj = getCurerntFilter({ type: type, tab: currentTab, page: 1, category: [], serviceCategory: [], serviceCategory: [] })
     if (currentTab === 0 || currentTab === 1) {
       getFilterData(false, obj)
@@ -298,6 +325,8 @@ function Browse(props) {
   useEffect(() => {
     getCategoryList()
     getServiceCategoryList()
+    getVolunteerCategoryList()
+    getDonationCategoryList()
     getConditionList()
     getLevelList()
     // getKeywordList()
@@ -349,6 +378,8 @@ function Browse(props) {
       maxPrice: e.maxPrice || maxPrice !== 0 ? maxPrice : '',
       category: e.category || selectedCategory,
       serviceCategory: e.serviceCategory || selectedServiceCategory,
+      volunteerCategory: e.volunteerCategory || selectedVolunteerCategory,
+      donationCategory: e.donationCategory || selectedDonationCategory,
       level: e.level || selectedLevel,
       condition: e.condition || selectedCondition,
       isVirtual: isVirtual,
@@ -456,6 +487,8 @@ function Browse(props) {
     let filterKeyword = [...selectedKeywords],
       filterCategory = [...selectedCategory],
       filterServiceCategory = [...selectedServiceCategory],
+      filterVolunteerCategory = [...selectedVolunteerCategory],
+      filterDonationCategory = [...selectedDonationCategory],
       filterLevel = [...selectedLevel],
       filterCondition = [...selectedCondition],
       min = minPrice,
@@ -473,6 +506,12 @@ function Browse(props) {
     } else if (tmptype === 'serviceCategory') {
       filterServiceCategory = selectedServiceCategory.filter((e) => e !== id)
       setSelectedServiceCategory(filterServiceCategory)
+    } else if (tmptype === 'volunteerCategory') {
+      filterVolunteerCategory = selectedVolunteerCategory.filter((e) => e !== id)
+      setSelectedVolunteerCategory(filterVolunteerCategory)
+    } else if (tmptype === 'donationCategory') {
+      filterDonationCategory = selectedDonationCategory.filter((e) => e !== id)
+      setSelectedDonationCategory(filterDonationCategory)
     } else if (tmptype === 'level') {
       filterLevel = selectedLevel.filter((e) => e !== id)
       setSelectedLevel(filterLevel)
@@ -514,11 +553,15 @@ function Browse(props) {
       (filterKeyword = []),
         (filterCategory = []),
         (filterServiceCategory = []),
+        (filterVolunteerCategory = []),
+        (filterDonationCategory = []),
         (filterLevel = []),
         (filterCondition = [])
       setSelectedKeywords([])
       setSelectedCategory([])
       setSelectedServiceCategory([])
+      setSelectedVolunteerCategory([])
+      setSelectedDonationCategory([])
       setSelectedLevel([])
       setSelectedCondition([])
 
@@ -565,7 +608,9 @@ function Browse(props) {
       minAddress: minAdd,
       maxAddress: maxAdd,
       sortBy: tmpSortBy,
-      serviceCategory: filterServiceCategory
+      serviceCategory: filterServiceCategory,
+      volunteerCategory: filterVolunteerCategory,
+      donationCategory: filterDonationCategory
     })
     getFilterData(false, obj)
   }
@@ -662,108 +707,115 @@ function Browse(props) {
                       </AccordionButton>
                     </h2>
                     <AccordionPanel pb={4} pl="2">
-                      <Stack spacing="5">
-                        <FormLabel fontWeight="semibold" as="legend" mb="0">
-                          Credit Range
-                        </FormLabel>
+                      {/* Deed dollars range filter */}
+                      {activeTab === 0 || activeTab === 1 ?
+                        <Stack spacing="5">
+                          <FormLabel fontWeight="semibold" as="legend" mb="0">
+                            Deed Dollars Range
+                          </FormLabel>
 
-                        {!resetSlider && (
-                          <PriceRangePicker
-                            defaultValue={[
-                              parseInt(minPrice),
-                              parseInt(maxPrice)
-                            ]}
-                            max={5000}
-                            changeRange={(e) => {
-                              onChangePrice(e, 'slider')
-                            }}
-                          />
-                        )}
-                        {resetSlider && (
-                          <PriceRangePicker
-                            defaultValue={[
-                              parseInt(minPrice),
-                              parseInt(maxPrice)
-                            ]}
-                            max={5000}
-                            changeRange={(e) => {
-                              onChangePrice(e, 'slider')
-                            }}
-                          />
-                        )}
+                          {!resetSlider && (
+                            <PriceRangePicker
+                              defaultValue={[
+                                parseInt(minPrice),
+                                parseInt(maxPrice)
+                              ]}
+                              max={5000}
+                              changeRange={(e) => {
+                                onChangePrice(e, 'slider')
+                              }}
+                            />
+                          )}
+                          {resetSlider && (
+                            <PriceRangePicker
+                              defaultValue={[
+                                parseInt(minPrice),
+                                parseInt(maxPrice)
+                              ]}
+                              max={5000}
+                              changeRange={(e) => {
+                                onChangePrice(e, 'slider')
+                              }}
+                            />
+                          )}
 
-                        {!resetSlider && (
-                          <Flex justifyContent="space-between">
-                            <Input
-                              type="text"
-                              placeholder="5000 credit"
-                              maxWidth={100}
-                              width="auto"
-                              h={34}
-                              bgColor={'grey.200'}
-                              fontSize="sm"
-                              border={0}
-                              px={2}
-                              onBlur={(e) => {
-                                if (e?.target?.value) {
+                          {!resetSlider && (
+                            <Flex justifyContent="space-between">
+                              <Input
+                                type="text"
+                                placeholder="100"
+                                maxWidth={100}
+                                width="auto"
+                                h={34}
+                                bgColor={'grey.200'}
+                                fontSize="sm"
+                                border={0}
+                                px={2}
+                                onBlur={(e) => {
+                                  if (e?.target?.value) {
+                                    onChangePrice(e.target.value, 'min')
+                                  } else onChangePrice(0, 'min');
+                                }}
+                                // defaultValue={`${minPrice} deed dollars`}
+                                defaultValue={minPrice !== 0 ? `${minPrice} deed dollars` : ''}
+                              />
+                              <Input
+                                type="text"
+                                placeholder="5000"
+                                maxWidth={100}
+                                width="auto"
+                                h={34}
+                                bgColor={'grey.200'}
+                                fontSize="sm"
+                                border={0}
+                                px={2}
+                                onBlur={(e) => {
+                                  if (e?.target?.value) {
+                                    onChangePrice(e.target.value, 'max')
+                                  } else onChangePrice(0, 'max')
+                                }}
+                                defaultValue={maxPrice !== 0 ? `${maxPrice} deed dollars` : ''}
+                              />
+                            </Flex>
+                          )}
+
+                          {resetSlider && (
+                            <HStack spacing="6">
+                              <Input
+                                type="number"
+                                placeholder="100 deed dollars"
+                                w={92}
+                                h={34}
+                                bgColor={'grey.200'}
+                                fontSize="sm"
+                                border={0}
+                                px={3}
+                                onBlur={(e) => {
                                   onChangePrice(e.target.value, 'min')
-                                } else onChangePrice(0, 'min');
-                              }}
-                              defaultValue={`${minPrice} credits`}
-                            />
-                            <Input
-                              type="text"
-                              placeholder="5000 credit"
-                              maxWidth={100}
-                              width="auto"
-                              h={34}
-                              bgColor={'grey.200'}
-                              fontSize="sm"
-                              border={0}
-                              px={2}
-                              onBlur={(e) => {
-                                if (e?.target?.value) {
+                                }}
+                                defaultValue={minPrice !== 0 ? `${minPrice} deed dollars` : ''}
+                              />
+                              <Input
+                                type="number"
+                                placeholder="300 deed dollars"
+                                w={92}
+                                h={34}
+                                bgColor={'grey.200'}
+                                fontSize="sm"
+                                border={0}
+                                px={3}
+                                onBlur={(e) => {
                                   onChangePrice(e.target.value, 'max')
-                                } else onChangePrice(0, 'max')
-                              }}
-                              defaultValue={maxPrice !== 0 ? `${maxPrice} credits` : ''}
-                            />
-                          </Flex>
-                        )}
+                                }}
+                                defaultValue={maxPrice !== 0 ? `${maxPrice} deed dollars` : ''}
+                              />
+                            </HStack>
+                          )}
+                        </Stack>
+                        : null
+                      }
 
-                        {resetSlider && (
-                          <HStack spacing="6">
-                            <Input
-                              type="number"
-                              placeholder="100 credits"
-                              w={92}
-                              h={34}
-                              bgColor={'grey.200'}
-                              fontSize="sm"
-                              border={0}
-                              px={3}
-                              onBlur={(e) => {
-                                onChangePrice(e.target.value, 'min')
-                              }}
-                              defaultValue={minPrice !== 0 ? `${minPrice} credits` : ''}
-                            />
-                            <Input
-                              type="number"
-                              placeholder="300 credits"
-                              w={92}
-                              h={34}
-                              bgColor={'grey.200'}
-                              fontSize="sm"
-                              border={0}
-                              px={3}
-                              onBlur={(e) => {
-                                onChangePrice(e.target.value, 'max')
-                              }}
-                              defaultValue={maxPrice !== 0 ? `${maxPrice} credits` : ''}
-                            />
-                          </HStack>
-                        )}
-                      </Stack>
+                      {/* Categories filters */}
                       {activeTab === 0 && (
                         <CheckboxFilter
                           spacing="3"
@@ -785,14 +837,23 @@ function Browse(props) {
                       {activeTab === 2 && (
                         <CheckboxFilter
                           spacing="3"
-                          options={serviceCategoryList}
+                          options={volunteerCategoryList}
                           label="Category"
-                          onCheckboxChange={(e) => setSelectedServiceCategory(e)}
-                          defaultValue={selectedServiceCategory}
+                          onCheckboxChange={(e) => setSelectedVolunteerCategory(e)}
+                          defaultValue={selectedVolunteerCategory}
+                        />
+                      )}
+                      {activeTab === 3 && (
+                        <CheckboxFilter
+                          spacing="3"
+                          options={donationCategoryList}
+                          label="Category"
+                          onCheckboxChange={(e) => setSelectedDonationCategory(e)}
+                          defaultValue={selectedDonationCategory}
                         />
                       )}
 
-
+                      {/* Condition Filter */}
                       {activeTab === 0 && (
                         <CheckboxFilter
                           spacing="3"
@@ -804,6 +865,7 @@ function Browse(props) {
                           defaultValue={selectedCondition}
                         />
                       )}
+                      {/* Level of Expertise Filter */}
                       {activeTab === 1 && (
                         <CheckboxFilter
                           spacing="3"
@@ -822,7 +884,7 @@ function Browse(props) {
                           defaultValue={selectedLevel}
                         />
                       )}
-
+                      {/* Location Filter */}
                       <Stack spacing="5" mt={5}>
                         <label style={{ fontSize: 16, fontWeight: 600 }}>Location</label>
                         {!resetSlider && (
@@ -1055,14 +1117,16 @@ function Browse(props) {
                     </AccordionPanel>
                   </AccordionItem>
                 </Accordion>
-                <Text
-                  color={'primary.300'}
-                  textAlign="center"
-                  fontWeight={500}
-                  margin="20px 0 !important"
-                >
-                  {paginationMeta.total || 0} Results
-                </Text>
+                {activeTab === 0 || activeTab === 1 ?
+                  <Text
+                    color={'primary.300'}
+                    textAlign="center"
+                    fontWeight={500}
+                    margin="20px 0 !important"
+                  >
+                    {paginationMeta.total || 0} Results
+                  </Text>
+                  : null}
                 <Box mt={isSmallerThan767 ? 'auto !important' : 0} pb={5}>
                   <Button
                     onClick={() => handleApplyFilter()}
@@ -1169,8 +1233,12 @@ function Browse(props) {
                       <SearchTags
                         selectedCategory={selectedCategory}
                         selectedServiceCategory={selectedServiceCategory}
+                        selectedVolunteerCategory={selectedVolunteerCategory}
+                        selectedDonationCategory={selectedDonationCategory}
                         categoryList={categoryList}
                         serviceCategoryList={serviceCategoryList}
+                        volunteerCategoryList={volunteerCategoryList}
+                        donationCategoryList={donationCategoryList}
                         selectedLevel={selectedLevel}
                         levelList={levelList}
                         selectedCondition={selectedCondition}

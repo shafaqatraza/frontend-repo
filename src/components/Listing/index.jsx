@@ -87,7 +87,6 @@ const CreateListingForm = () => {
   const [isLoading, setIsLoading] = useState(false)
   // const [address, setAddress] = useState("")
   const [latLng, setLatLng] = useState({})
-  // console.log("latlngZZ", latLng)
 
   // const handleCreateItem = (item) => {
   //   setPickerItems((curr) => [...curr, item])
@@ -95,14 +94,12 @@ const CreateListingForm = () => {
   // }
 
   // const handleSelectedItemsChange = (selectedItems) => {
-  //   console.log("dffdff", selectedItems);
   //   if (selectedItems) {
   //     setSelectedItems(selectedItems)
   //   }
   // }
 
   const handleChangeTags = (value) => {
-    // console.log(`selected`, value);
     setSelectedItems(value)
   };
 
@@ -160,7 +157,7 @@ const CreateListingForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // console.log(avatar)
+    
     if (validator.allValid()) {
       var formData = new FormData()
       formData.append('post_type', postType)
@@ -192,8 +189,9 @@ const CreateListingForm = () => {
       for (let i = 0; i < selectedItems.length; i++) {
         formData.append('keywords[' + i + ']', selectedItems[i])
       }
+
       for (let i = 0; i < avatar.length; i++) {
-        formData.append('media[' + i + ']', avatar[i].originFileObj)
+        formData.append('media[' + i + ']', avatar[i])
       }
 
       mutation.mutate(formData)
@@ -331,11 +329,27 @@ const CreateListingForm = () => {
     setLevelHTML(levelList)
   }
 
-  const handleAvtar = (file, number) => {
+  const handleAvtar = async (file, number, type) => {
     let tmpArray = avatar
     let tmpNumber = tmpAvtarNo
     if (!tmpAvtarNo.includes(number)) {
-      tmpArray.push(file.file)
+      if(type === "heic"){
+        
+        const heic2any = (await import("heic2any")).default;
+        const jpegImage = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+        });
+
+        const convertedFile = new File([jpegImage], file.name, {
+          type: "image/jpeg",
+        });
+
+        tmpArray.push(convertedFile)
+      }else{
+        tmpArray.push(file)
+      }
+      
       tmpNumber.push(number)
       setTmpAvtarNo(tmpNumber)
     }
@@ -615,7 +629,7 @@ const CreateListingForm = () => {
                           : {}
                       }
                     />
-                    <Text ml="4"> Credits</Text>
+                    <Text ml="4"> Deed Dollars</Text>
                   </Flex>
                 </NumberInput>
                 {validator.message(

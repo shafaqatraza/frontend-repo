@@ -594,7 +594,7 @@ const ListingView = (props) => {
                   {listingData.post_type == 'item' || listingData.post_type == 'service' ?
                     (
                       <>
-                        <Slider {...settings} className="listing-slider-wrap">
+                        <Slider {...settings} className="listing-slider-wrap" style={{ margin: '0 0 110px 0' }}>
                           {listingData.media.length > 0 &&
                             listingData.media.map((media, index) => (
                               <div className="listing-images" key={index}>
@@ -1059,7 +1059,7 @@ const ListingView = (props) => {
                                             color="primary.300"
                                             fontWeight={600}
                                           >
-                                            credits
+                                            deed dollars
                                           </Text>
                                         </Box>
                                       </Flex>
@@ -1146,7 +1146,7 @@ const ListingView = (props) => {
                           </AccordionItem>
                         </Accordion>
                         {/* <Box mr={[0, 0, "50px", "50px"]} ml={[0, 0, "50px", "50px"]} mt={10}> */}
-                        {listingData.post_type == 'volunteer' ?
+                        {/* {listingData.post_type == 'volunteer' ?
                           <Button
                             type="submit"
                             mt={"5"}
@@ -1162,7 +1162,7 @@ const ListingView = (props) => {
                             Contact
                           </Button>
                           :
-                          null}
+                          null} */}
 
                       </Box>
 
@@ -1186,7 +1186,7 @@ const ListingView = (props) => {
                     </Flex>
                     <Flex justifyContent={"space-between"} mt={"10px"}>
                       <Text fontSize={"24px"} color="orange.500" fontWeight="700">
-                        {listingData.credit_amount} Credits
+                        {listingData.credit_amount} Deed Dollars
                       </Text>
 
                       {/* <IconButton
@@ -1380,7 +1380,7 @@ const ListingView = (props) => {
                     </Flex>
                     <Flex justifyContent={"space-between"} mt={"10px"}>
                       <Text fontSize={"24px"} color="orange.500" fontWeight="700">
-                        {listingData.credit_amount ? `${listingData.credit_amount} Credits` : ''}
+                        {listingData.credit_amount ? `${listingData.credit_amount} Deed Dollars` : ''}
                       </Text>
                     </Flex>
                     {listingData.organization.address !== null ? (
@@ -1465,7 +1465,7 @@ const ListingView = (props) => {
 
               {isModalShow && (
                 <ModalPopup
-                  TitleModal="Your don't have enough credits"
+                  TitleModal="Your don't have enough deed dollars"
                   show={isModalShow}
                   size={"xs"}
                   setShow={(value) => {
@@ -1475,7 +1475,7 @@ const ListingView = (props) => {
                     <InnerSection
                       // image={Img1.src}
                       lastStep={false}
-                      para="Complete a deed or invite friends to earn more credits"
+                      para="Complete a deed or invite friends to earn more deed dollars"
                       show={isModalShow}
                       setIsModalShow={setIsModalShow}
                     />

@@ -47,7 +47,8 @@ import {
 	removeListinData,
 	getLoginData,
 	totalMessageNotification,
-	notificationHandler
+	notificationHandler,
+	currentOrganization
 
 } from '../Helper/index'
 import { useToast } from '@chakra-ui/toast'
@@ -113,42 +114,18 @@ const MessageBoxOrgWeb = (props) => {
 		}
 	}, []);
 
-	//	New chat notification handler	
-    useEffect(() => {
-		Pusher.logToConsole = false;
-		var pusher = new Pusher(`${Pusher_key}`, {
-		cluster: 'mt1'
-		});
-		var channel2 = pusher.subscribe('new_chat_notification_'+userId);
-		channel2.bind('pusher:subscription_succeeded', function() {
-			channel2.bind('newChat', function(data) {
-				const newData=data.newchat
-				setChatRoom(newData);
-			});
-		});
-
-		var channel = pusher.subscribe('sender_chat_'+userId);
-		channel.bind('pusher:subscription_succeeded', function() {
-			channel.bind('sender_notify', function(data) {
-					let senderData=data.chat
-					setChatRoom(senderData);
-			});
-			});
-	}, [])
-
-
 
 	//	Send message handler	
 	const sendMessageHandler = async () => {
 		if (message != '') {
 			setLastMessage(message)
-			
 			const data = {
 				message: message,
 				sender_id: userId,
 				listing_id: messageInfo.listing_id,
 				receiver_id: messageInfo.receiver_id,
-				chat_id: messageInfo.chat_id
+				chat_id: messageInfo.chat_id,
+				sent_by_organization: currentOrganization? true: false
 			}
 			setIsMsgLoading(true)
 			await axios
@@ -181,32 +158,6 @@ const MessageBoxOrgWeb = (props) => {
 			element.scrollTop = element.scrollHeight + 200
 		}
 	}
-    
-	// New message notification handler
-	useEffect(() => {
-		let pusherNotification = {
-			broadcaster: 'pusher',
-			key: '877cb5c78bbdba810bf0',
-			cluster: 'mt1',
-			forceTLS: true,
-			encrypted: false,
-			authEndpoint: baseImgUrl + 'broadcasting/auth',
-			auth: {
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					Authorization: `Bearer ${accessToken()}`,
-					Accept: 'application/json'
-				}
-			}
-		}
-
-		const echoNotification = new Echo(pusherNotification)
-		echoNotification.private('new_message_notification_' + userId)
-			.listen('NewMessageNotification', function (e) {
-				// console.log("fffttt", e)
-			})
-		Pusher.logToConsole = false
-	}, [])
 
 	// Image upload handler
 	const onFileUpload = (e) => {
@@ -219,6 +170,7 @@ const MessageBoxOrgWeb = (props) => {
 			formData.append('receiver_id', messageInfo.receiver_id)
 			formData.append('chat_id', messageInfo.chat_id)
 			formData.append('media', e.file.originFileObj)
+			formData.append('sent_by_organization', currentOrganization? 1: 0)
 
 			axios.post(`${baseUrl}/member/chats/image-upload`, formData, {
 				headers: {
@@ -279,7 +231,7 @@ const MessageBoxOrgWeb = (props) => {
 			}
 		}
 	)
-    console.log('aaaaaaa204', conversationData)
+    
     //=========================================================RETURN==================================================================	
   return (
     <Box

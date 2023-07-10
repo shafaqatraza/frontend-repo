@@ -70,8 +70,8 @@ const OrganizationInfo = () => {
   const columns = [
     {
       title: "Name",
-      dataIndex: "inviter_user",
-      key: "inviter_user",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "Email",
@@ -80,8 +80,8 @@ const OrganizationInfo = () => {
     },
     {
       title: "Status",
-      dataIndex: "role_id",
-      key: "role_id",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: () => (
@@ -146,7 +146,7 @@ const OrganizationInfo = () => {
       },
     })
     .then((res) => {
-      console.log(res.data.data, "new data");
+      console.log(res.data.data, "new dataz");
       setInviteData(res.data.data);
     })
     .catch((err) => {
@@ -384,14 +384,14 @@ const OrganizationInfo = () => {
                         name="full_name"
                         required
                       />
-                    </div> */}
+                    </div> */ }
                      <div className="mb-3">
                       <label className="form-label fw-bold">Email</label>
                       <Input
                         style={{ backgroundColor: "#E8E8E8" }}
                         type="text"
                         className="form-control"
-                        value={formData.business_email || ""}
+                        value={formData?.business_email || ""}
                         onChange={handleInputChange}
                         name="business_email"
                         required
@@ -403,7 +403,7 @@ const OrganizationInfo = () => {
                         style={{ backgroundColor: "#E8E8E8" }}
                         type="text"
                         className="form-control"
-                        value={formData.full_name || ""}
+                        value={formData?.full_name || ""}
                         onChange={handleInputChange}
                         name="full_name"
                         required
@@ -415,7 +415,7 @@ const OrganizationInfo = () => {
                         style={{ backgroundColor: "#E8E8E8" }}
                         type="text"
                         className="form-control"
-                        value={formData.location || ""}
+                        value={formData?.location || ""}
                         onChange={handleInputChange}
                         name="location"
                         required
@@ -429,7 +429,7 @@ const OrganizationInfo = () => {
                         style={{ backgroundColor: "#E8E8E8" }}
                         type="text"
                         className="form-control"
-                        value={formData.business_number || ""}
+                        value={formData?.business_number || ""}
                         onChange={handleInputChange}
                         name="business_number"
                         required
@@ -441,7 +441,7 @@ const OrganizationInfo = () => {
                         style={{ backgroundColor: "#E8E8E8" }}
                         type="text"
                         className="form-control"
-                        value={formData.website_url || ""}
+                        value={formData?.website_url || ""}
                         onChange={handleInputChange}
                         name="website_url"
                         required
@@ -455,7 +455,7 @@ const OrganizationInfo = () => {
                         style={{ backgroundColor: "#E8E8E8" }}
                         rows={3}
                         className="form-control"
-                        value={formData.about || ""}
+                        value={formData?.about || ""}
                         onChange={handleInputChange}
                         name="about"
                         required
@@ -575,7 +575,7 @@ const OrganizationInfo = () => {
       <Link href="/select-plan">
         <button className="up-btn mt-5 mb-5">Upgrade</button>
       </Link>
-      <Link href="/payment">
+      <Link href="/edit-payment">
         <button className="ed-btn ms-3 mt-5 mb-5">
           Edit Payment
         </button>

@@ -112,10 +112,10 @@ const EditProfileForm = (props) => {
       formData.append('location', location)
       formData.append('verified_email', true)
       formData.append('website_url', website)
-
-      if (Object.keys(avatar).length > 0) {
-        formData.append('avatar', avatar.file.originFileObj)
-      }
+      formData.append('avatar', avatar)
+      // if (Object.keys(avatar).length > 0) {  
+      //   formData.append('avatar', avatar)
+      // }
       mutation.mutate(formData)
     } else {
       showValidationMessage(true)
