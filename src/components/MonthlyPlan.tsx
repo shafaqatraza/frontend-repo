@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from "react-bootstrap";
 import good from "../assets/imgs/good.png";
 import axios from 'axios';
-import { accessToken, baseUrl, isLogin } from "../components/Helper/index";
+import { accessToken, baseUrl, isLogin, currentOrganization } from "../components/Helper/index";
 import { useRouter } from 'next/router'
 import { useToast } from '@chakra-ui/toast'
 
@@ -16,7 +16,7 @@ const MonthlyPlan = () => {
   const [datatwo, setDataTwo] = useState([]);
   const [datathree, setDataThree] = useState([]);
   const [datathreedesc, setDataThreeDesc] = useState([]);
-  const [orgData, setOrgData] = useState([]);
+  const [orgData, setOrgData] = useState(null);
   const [id, setID] = useState([]);
   const router = useRouter()
   const toast = useToast()
@@ -24,67 +24,50 @@ const MonthlyPlan = () => {
   // console.log('orgData', orgData)
 
   useEffect(() => {
-    if (isLogin()) {
+
+    if(isLogin() && !orgData){
       axios
-        .get(`${baseUrl}/organization/subscriptions/plans`, {
+        .get(`${baseUrl}/organizations`, {
           headers: {
             Authorization: "Bearer " + accessToken(),
             "Content-Type": "application/x-www-form-urlencoded",
           },
         })
         .then((res) => {
-          // console.log('fffffrr', res.data.data[0]?.packages[1])
-          setData(res.data.data[0]?.packages[0])
-          setDataDesc(res.data.data[0]?.packages[0]?.description)
-          setDataOne(res.data.data[0]?.packages[1])
-          setDataOneDesc(res.data.data[0]?.packages[1]?.description)
-          setDataTwo(res.data.data[0]?.packages[2])
-          setDataTwoDesc(res.data.data[0]?.packages[2]?.description)
-          setDataThree(res.data.data[0]?.packages[3])
-          setDataThreeDesc(res.data.data[0]?.packages[3]?.description)
-
+          setOrgData(res.data);
         })
         .catch((err) => {
-        })
+          console.log(err);
+        });
+    }
+    
+    axios
+      .get(`${baseUrl}/public/organization/subscriptions/plans`)
+      .then((res) => {
+        setData(res.data.data[0]?.packages[0])
+        setDataDesc(res.data.data[0]?.packages[0]?.description)
+        setDataOne(res.data.data[0]?.packages[1])
+        setDataOneDesc(res.data.data[0]?.packages[1]?.description)
+        setDataTwo(res.data.data[0]?.packages[2])
+        setDataTwoDesc(res.data.data[0]?.packages[2]?.description)
+        setDataThree(res.data.data[0]?.packages[3])
+        setDataThreeDesc(res.data.data[0]?.packages[3]?.description)
 
-      axios.get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: 'Bearer ' + accessToken(),
-        }
-      }).then((res) => {
-        setOrgData(res.data);
-      }).catch((err) => {
-        // console.log(err);
       })
-    } else (
-      axios
-        .get(`${baseUrl}/public/organization/subscriptions/plans`)
-        .then((res) => {
-          setData(res.data.data[0]?.packages[0])
-          setDataDesc(res.data.data[0]?.packages[0]?.description)
-          setDataOne(res.data.data[0]?.packages[1])
-          setDataOneDesc(res.data.data[0]?.packages[1]?.description)
-          setDataTwo(res.data.data[0]?.packages[2])
-          setDataTwoDesc(res.data.data[0]?.packages[2]?.description)
-          setDataThree(res.data.data[0]?.packages[3])
-          setDataThreeDesc(res.data.data[0]?.packages[3]?.description)
+      .catch((err) => {
+      })
 
-        })
-        .catch((err) => {
-        })
-    )
   }, [])
 
-  const handlePlanButton = () => {
-    console.log('clicked')
+  const handlePlanButton = (plan_id: any) => {
     if (isLogin()) {
-      if (Array.isArray(orgData) && orgData.length > 0) {
-        router.push(`/payment/${dataone?.id}`)
+      if (currentOrganization || orgData) {
+        router.push(`/organization/payment-plans/${plan_id}`)
       } else {
-        toast({ position: "top", title: "Please first create your organization", status: "error" })
+        toast({ position: "top", title: "Please create your organization first!", status: "error" })
       }
     } else {
-      toast({ position: "top", title: "Please login to select plan", status: "error" })
+      toast({ position: "top", title: "Please login to select plan!", status: "error" })
     }
   };
 
@@ -168,7 +151,7 @@ const MonthlyPlan = () => {
                       colorScheme={'orange'}
                       size={'md'}
                       fontSize="16px"
-                      onClick={handlePlanButton}
+                      onClick={() => handlePlanButton(dataone?.id)}
                       w="150px"
                       className='my-4 mx-auto'
                     >
@@ -237,26 +220,27 @@ const MonthlyPlan = () => {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="mt-3 ms-3">
-                  <p className="free-txt5">
-                    *Volunteer rewards based on 20 Deed Dollars per hour
-                  </p>
-                </div> */}
+                        {/* <div className="mt-3 ms-3">
+                      <p className="free-txt5">
+                        *Volunteer rewards based on 20 Deed Dollars per hour
+                      </p>
+                    </div> */}
 
                     <Button
                       variant={'solid'}
                       colorScheme={'orange'}
                       size={'md'}
                       fontSize="16px"
-                      onClick={handlePlanButton}
+                      onClick={() => handlePlanButton( // @ts-ignore: Unreachable code error
+                        data?.id)}
                       w="150px"
                       className='my-4 mx-auto'
                     >
                       Select
                     </Button>
-                    {/* <div className="btns d-flex justify-content-center">
-                  <button onClick={()=>console.log(data?.id, "data")} className="select-btn mt-4 mb-4">Select</button>
-                </div> */}
+                        {/* <div className="btns d-flex justify-content-center">
+                      <button onClick={()=>console.log(data?.id, "data")} className="select-btn mt-4 mb-4">Select</button>
+                    </div> */}
                   </div>
                 </div>
                 <div>
@@ -321,7 +305,8 @@ const MonthlyPlan = () => {
                       colorScheme={'orange'}
                       size={'md'}
                       fontSize="16px"
-                      onClick={handlePlanButton}
+                      onClick={() => handlePlanButton( // @ts-ignore: Unreachable code error
+                        datatwo?.id)}
                       w="150px"
                       className='my-4 mx-auto'
                     >
@@ -388,7 +373,8 @@ const MonthlyPlan = () => {
                       colorScheme={'orange'}
                       size={'md'}
                       fontSize="16px"
-                      onClick={handlePlanButton}
+                      onClick={()=> handlePlanButton( // @ts-ignore: Unreachable code error
+                        datathree?.id) }
                       w="150px"
                       className='my-4 mx-auto'
                     >

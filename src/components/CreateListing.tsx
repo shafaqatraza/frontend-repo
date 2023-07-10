@@ -25,9 +25,13 @@ const CreateListing = () => {
   const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShowSuccess(true);
-  const [volunteerCategoryList, setVolunteerCategoryList] = useState([])
+  const handleCloseError = () => setShowError(false);
+  const handleShowError = () => setShowError(true);
+  const [volunteerCategoryList, setVolunteerCategoryList] = useState([]);
+  const [donError, setDonError] = useState([]);
 
   // @ts-ignore: Unreachable code error
   const { reset } = useForm();
@@ -119,7 +123,16 @@ const CreateListing = () => {
     // @ts-ignore: Unreachable code error
     form.append("level_id", formData.level_id);
     formData.keywords.forEach((keyword) => form.append("keywords[]", keyword));
-    formData.thumbnail.forEach((file) => form.append("thumbnail", file));
+    if (Array.isArray(formData.thumbnail)) {
+      formData.thumbnail.forEach((file) => form.append("thumbnail", file));
+    } else if (formData.thumbnail && typeof formData.thumbnail[Symbol.iterator] === 'function') {
+      // @ts-ignore: Unreachable code error
+      for (const file of formData.thumbnail) {
+        form.append("thumbnail", file);
+      }
+    } else if (formData.thumbnail) {
+      form.append("thumbnail", formData.thumbnail);
+    }
     axios.post(`${baseUrl}/volunteer-listings/store/${slug}`, form, {
       headers: {
         Authorization: 'Bearer ' + accessToken(),
@@ -135,14 +148,25 @@ const CreateListing = () => {
       .catch((error) => {
         console.error(error);
         // @ts-ignore: Unreachable code error
-        setFormData({
-          title: "",
-          description: "",
-          credit_amount: "",
-          keywords: [],
-          thumbnail: [],
-        });
-        setShowSuccess(true);
+        // setFormData({
+        //   title: "",
+        //   description: "",
+        //   credit_amount: "",
+        //   keywords: [],
+        //   thumbnail: [],
+        // });
+        // setShowSuccess(true);
+        setShowError(true);
+        if (error.response && error.response.data && error.response.data.errors) {
+          const errorMessages = error.response.data.errors;
+          console.error('An error occurred:', errorMessages);
+
+          // Set errors in state
+          // @ts-ignore: Unreachable code error
+          setDonError(Object.values(errorMessages).flat());
+        } else {
+          console.error('An unknown error occurred:', error);
+        }
         setIsSubmitting(false);
         // Handle error here
       });
@@ -158,6 +182,22 @@ const CreateListing = () => {
         </div>
         <div className="d-flex justify-content-center pb-5">
           <button onClick={handleCloseSuccess} className="modal-btn">Got it</button>
+        </div>
+      </Modal>
+      <Modal show={showError} onHide={handleCloseError} closeButton>
+        <div className="p-3">
+          <p className="modal-txt text-center p-5 mt-3">
+          <ul>
+          {donError.map((errorMessage, index) => (
+            <li key={index}>{errorMessage}</li>
+          ))}
+        </ul>
+          </p>
+        </div>
+        <div className="d-flex justify-content-center pb-5">
+          <button onClick={handleCloseError} className="modal-btn">
+            Got it
+          </button>
         </div>
       </Modal>
       <form>

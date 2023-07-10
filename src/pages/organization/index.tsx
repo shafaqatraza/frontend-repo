@@ -1,22 +1,22 @@
 import React, { useEffect } from "react";
-import { Footer } from "../components/Footer";
-import Navbar from "../components/Navbar";
+import { Footer } from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 import { useState } from "react";
-import user from "../assets/imgs/user.png";
-import userB from "../assets/imgs/userB.png";
-import heartB from "../assets/imgs/heartB.png";
-import heart from "../assets/imgs/heart.png";
-import home from "../assets/imgs/home.png";
-import setting from "../assets/imgs/setting.png";
-import volunteer from "../assets/imgs/volunteer.png";
-import listing from "../assets/imgs/listing.png";
-import donation from "../assets/imgs/donation.png";
-import giving from "../assets/imgs/giving.png";
+import user from "../../assets/imgs/user.png";
+import userB from "../../assets/imgs/userB.png";
+import heartB from "../../assets/imgs/heartB.png";
+import heart from "../../assets/imgs/heart.png";
+import home from "../../assets/imgs/home.png";
+import setting from "../../assets/imgs/setting.png";
+import volunteer from "../../assets/imgs/volunteer.png";
+import listing from "../../assets/imgs/listing.png";
+import donation from "../../assets/imgs/donation.png";
+import giving from "../../assets/imgs/giving.png";
 import { color, Image, Button } from "@chakra-ui/react";
-import Candadogo from "../assets/imgs/Canadogo.png";
+import Candadogo from "../../assets/imgs/Canadogo.png";
 import Link from "next/link";
-import Sidebar from "../components/Sidebar";
-import { accessToken, baseUrl } from "../components/Helper/index";
+import Sidebar from "../../components/Sidebar";
+import { accessToken, baseUrl } from "../../components/Helper/index";
 import axios from "axios";
 import { useRouter } from 'next/router'
 
@@ -270,7 +270,7 @@ const organization = () => {
                               aria-valuemax={100}
                             ></div>
                           </div>
-                          <Link href="/select-plan">
+                          <Link href="/organization/payment-plans">
                             <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
                               Upgrade
                             </button>
@@ -279,8 +279,8 @@ const organization = () => {
                       </div>
                     ) : (
                       <>
-                        <p className="text-center mt-3 p-txt2 mb-3">There is no Plan subscribed</p>
-                        <Link href="/select-plan">
+                        <p className="text-center mt-3 p-txt2 mb-3">There is no plan subscribed</p>
+                        <Link href="/organization/payment-plans">
                           <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
                             Subscribe
                           </button>

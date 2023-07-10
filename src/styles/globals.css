@@ -1338,8 +1338,16 @@ color: #E27832;
   background-color: #E27832;
   color: white;
 }
+
 .pay-main2{
   height: 340px;
+}
+
+.payment-plan-main{
+  height: 30px;
+}
+.payment-plan-main2{
+  height: 170px;
 }
 .create-list-btn{
   width: 172px;

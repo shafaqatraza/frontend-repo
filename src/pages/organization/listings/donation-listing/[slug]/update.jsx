@@ -31,9 +31,13 @@ const EditDonationListing = () => {
   const [size, setSize] = useState("middle");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [image, setImage] = useState(null);
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShowSuccess(true);
+  const handleCloseError = () => setShowError(false);
+  const handleShowError = () => setShowError(true);
+  const [donError, setDonError] = useState([]);
 
   if (!router) {
     return null;
@@ -52,7 +56,7 @@ const EditDonationListing = () => {
     category_id: null,
     thumbnail: [],
   });
- 
+
   const [thumbnail, setThumbnail] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState([]);
@@ -90,7 +94,7 @@ const EditDonationListing = () => {
         .catch((err) => {
           console.log(err);
         });
-  
+
       axios
         .get(`${baseUrl}/donation-listings/categories`, {
           headers: {
@@ -116,7 +120,16 @@ const EditDonationListing = () => {
     form.append("url_to_donate", formData.url_to_donate);
     form.append("category_id", formData.category_id);
     formData.keywords.forEach((keyword) => form.append("keywords[]", keyword));
-    formData.thumbnail.forEach((file) => form.append("thumbnail", file));
+    if (Array.isArray(formData.thumbnail)) {
+      formData.thumbnail.forEach((file) => form.append("thumbnail", file));
+    } else if (formData.thumbnail && typeof formData.thumbnail[Symbol.iterator] === 'function') {
+      // @ts-ignore: Unreachable code error
+      for (const file of formData.thumbnail) {
+        form.append("thumbnail", file);
+      }
+    } else if (formData.thumbnail) {
+      form.append("thumbnail", formData.thumbnail);
+    }
     axios
       .post(`${baseUrl}/donation-listings/${slug}/update?org=${currentOrganization?.slug}`, form, {
         headers: {
@@ -137,7 +150,18 @@ const EditDonationListing = () => {
         // Handle response data here
       })
       .catch((error) => {
-        setShowSuccess(true);
+        // setShowSuccess(true);
+        setShowError(true);
+        if (error.response && error.response.data && error.response.data.errors) {
+          const errorMessages = error.response.data.errors;
+          console.error('An error occurred:', errorMessages);
+
+          // Set errors in state
+          // @ts-ignore: Unreachable code error
+          setDonError(Object.values(errorMessages).flat());
+        } else {
+          console.error('An unknown error occurred:', error);
+        }
         console.error(error);
         setIsSubmitting(false);
         setFormData({
@@ -167,6 +191,22 @@ const EditDonationListing = () => {
         </div>
         <div className="d-flex justify-content-center pb-5">
           <button onClick={handleCloseSuccess} className="modal-btn">
+            Got it
+          </button>
+        </div>
+      </Modal>
+      <Modal show={showError} onHide={handleCloseError} closeButton>
+        <div className="p-3">
+          <p className="modal-txt text-center p-5 mt-3">
+          <ul>
+          {donError.map((errorMessage, index) => (
+            <li key={index}>{errorMessage}</li>
+          ))}
+        </ul>
+          </p>
+        </div>
+        <div className="d-flex justify-content-center pb-5">
+          <button onClick={handleCloseError} className="modal-btn">
             Got it
           </button>
         </div>
@@ -271,7 +311,7 @@ const EditDonationListing = () => {
                   style={{ width: "100%" }}
                   placeholder="Select category"
                   optionFilterProp="children"
-                  value={formData.category_id || ""}
+                  value={formData.category || ""}
                   onChange={(value) =>
                     setFormData({ ...formData, category_id: value })
                   }

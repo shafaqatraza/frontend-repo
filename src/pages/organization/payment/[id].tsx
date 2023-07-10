@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import { Footer } from "../components/Footer";
-import Sidebar from "../components/Sidebar.jsx";
+import Navbar from "../../../components/Navbar";
+import { Footer } from "../../../components/Footer";
+import Sidebar from "../../../components/Sidebar.jsx";
 import { Container, Row, Col } from "react-bootstrap";
 import { Image, Input } from "@chakra-ui/react";
-import back from "../assets/imgs/back.png";
-import gooddeedsorange from "../assets/imgs/gooddeedsorange.png";
+import back from "../../assets/imgs/back.png";
+import gooddeedsorange from "../../assets/imgs/gooddeedsorange.png";
 import { Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { accessToken, baseUrl } from "../components/Helper/index";
+import { accessToken, baseUrl } from "../../../components/Helper/index";
 
-const EditPayment = () => {
+const Payment = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -23,7 +23,6 @@ const EditPayment = () => {
   const { id } = router.query;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [slug, setSlug] = useState([]);
-  const [packageData, setPackageData] = useState([]);
   const [formData, setFormData] = useState({
     full_name: "",
     address: "",
@@ -49,24 +48,36 @@ const EditPayment = () => {
       })
       .catch((err) => {
       });
-      axios.get(`${baseUrl}/organization/subscriptions/subscribed-package?org=${slug}`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }).then((res)=>{
-        console.log(res.data.data, "npackage");
-        setPackageData(res.data.data);
-
-      }).catch((err)=>{
-        console.log(err);
-
-      })
-  },[slug])
+  },[])
   const handleSubmit = (event:any) =>{
     event.preventDefault();
+    const form = new FormData();
     // @ts-ignore: Unreachable code error
-    handleShow(true);
+    form.append("package_id", id);
+    form.append("full_name", formData.full_name);
+    form.append("address", formData.address);
+    form.append("country", formData.country);
+    form.append("email", formData.email);
+    form.append("payment_token", formData.payment_token);
+    form.append("postal_code", formData.postal_code);
+    form.append("state", formData.state);
+    form.append("city", formData.city);
+    form.append("phone_number", formData.phone_number);
+
+    axios.post(`${baseUrl}/organization/subscriptions/plans?org=${slug}`, form,  {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },}).then((res)=>{
+      console.log(res);
+      handleShow();
+      router.push("/organization");
+
+    }).catch((err)=>{
+      console.log(err);
+      handleShowSuccess();
+
+    })
 
   }
   return (
@@ -75,11 +86,11 @@ const EditPayment = () => {
       <Modal show={show} onHide={handleClose} closeButton>
         <div className="p-3">
           <p className="modal-txt text-center p-5 mt-3">
-            You have successfully edited your payment method
+            You have successfully subscribed
           </p>
         </div>
         <div className="d-flex justify-content-center pb-5">
-          <button onClick={handleClose} className="modal-btn">Got it</button>
+          <button className="modal-btn">Got it</button>
         </div>
       </Modal>
       <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
@@ -285,15 +296,9 @@ const EditPayment = () => {
                 <Image src={gooddeedsorange.src}/>
               </div>
               <div className="mt-4 ms-3">
-                <p style={{fontSize:"24px", lineHeight:"30px", fontWeight:"700"}}>
-
-                  {
-                  // @ts-ignore: Unreachable code error
-                  packageData.package_name}</p>
+                <p style={{fontSize:"24px", lineHeight:"30px", fontWeight:"700"}}>Premium Package</p>
                 <p style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#E27832"}}>Auto-renewal</p>
-                <p style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>${
-                // @ts-ignore: Unreachable code error
-                packageData.package_amount} month / billed monthly</p>
+                <p style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>$40 month / billed monthly</p>
               </div>
               </div>
               <div className="mt-4">
@@ -351,4 +356,4 @@ const EditPayment = () => {
   );
 };
 
-export default EditPayment;
+export default Payment;

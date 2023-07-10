@@ -13,10 +13,10 @@ const VolunteerListingView = () => {
   const [volunteerData, setVolunteerData] = useState([]);
   const router = useRouter();
   const { slug } = router.query;
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   useEffect(() => {
     if(slug !== undefined){
-      setError(null);
+      setError('');
       axios
         .get(
           `${baseUrl}/volunteer-listings/${slug}/show?org=${// @ts-ignore: Unreachable code error
@@ -43,7 +43,7 @@ const VolunteerListingView = () => {
     }
   }, [slug, currentOrganization]);
 
-  if (error) {
+  if (error != '') {
     return <div>Error: {error}</div>;
   }
 
