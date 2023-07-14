@@ -3,13 +3,17 @@ import Navbar from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
 import Sidebar from "../../../components/Sidebar.jsx";
 import { Container, Row, Col } from "react-bootstrap";
-import { Image, Input } from "@chakra-ui/react";
+import { Image, Input, color } from "@chakra-ui/react";
 import back from "../../../assets/imgs/back.png";
 import gooddeedsorange from "../../../assets/imgs/gooddeedsorange.png";
 import { Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { accessToken, baseUrl, currentOrganization } from "../../../components/Helper/index";
+import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
+import { CardNumberElement, CardCvcElement, CardExpiryElement} from '@stripe/react-stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
+import { useToast } from '@chakra-ui/toast'
 
 const calculateHST = (price: number): number => {
   const hst = parseFloat(price.toString()) * 0.13;
@@ -21,39 +25,61 @@ const calculateTotalPrice = (price: number, calculatedHST: number): number => {
   const tempPrice = parseFloat(price.toString()) + parseFloat(calculatedHST.toString());
   return tempPrice;
 };
+const stripePromise = loadStripe('pk_test_51MzNd8HXctCE4qHqr1vcficqBBBYQp6cFwZxDFefUmKIx6C11wm0pHZCG52m4NYghl36riJi7TZZbZ1ACNg8vJAZ00XFHi92vG');
 
-const Payment = () => {
+const StripeForm = () => {
+  const toast = useToast()
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [image, setImage] = useState(null);
-  const handleCloseSuccess = () => setShowSuccess(false);
-  const handleShowSuccess = () => setShowSuccess(true);
+  const handleShowModal = () => setShow(true);
+  const handleCloseModal = () => setShow(false);
   const router = useRouter();
   const { id } = router.query;
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [price, setPrice] = useState(0);
+  const [pricingTenure, setPricingTenure] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
   const [hst, setHST] = useState(0);
   const [packageData, setPackageData] = useState({
     name: '',
+    currency: '',
     currency_symbol: '',
     amount: 0,
     tenure: ''
   });
 
-  
+  let tenureAbbreviation = '';
+
+  if (pricingTenure === 'annually') {
+    tenureAbbreviation = 'yr';
+  } else if (pricingTenure) {
+    tenureAbbreviation = pricingTenure.substr(0, 2);
+  }
+
+  const cardElementOptions = {
+    // iconStyle: 'default', 
+    style: {
+      base: {
+        fontSize: '16px',
+        lineHeight: '24px',
+        padding: '10px',
+        borderRadius: '4px',
+        backgroundColor: '#E8E8E8',
+        border: '1px solid #d3dce6',
+      },
+    },
+    showIcon: true, // Add this option to show the card icon
+  };
   const [formData, setFormData] = useState({
-    full_name: "",
-    address: "",
+    first_name: "",
+    last_name: "",
+    address_line1: "",
+    address_line2: "",
     country:"",
     postal_code: "",
-    payment_token: "U?!U!meN67RPNuF4UKlNqU1Yg1Y5k8U-?U-BN1cM-RurSFqQz6QqOBAD79/kuxzW",
+    payment_token: "",
     email:"",
-    city: "Toronto",
-    state:"ON",
-    phone_number: "87337382827",
+    city: "",
+    state:"",
+    phone_number: "",
     card_detail: {
       name_on_card: '',
       card_number: '',
@@ -75,6 +101,7 @@ const Payment = () => {
         .then((res) => {
           setPackageData(res.data.data);
           setPrice(res.data.data?.amount);
+          setPricingTenure(res.data.data?.tenure);
         })
         .catch((err) => {
           console.log(err);
@@ -94,16 +121,88 @@ const Payment = () => {
     setTotalPrice(calculatedTotalPrice);
   }, [hst])
 
-  const handleSubmit = (event:any) =>{
+
+  const stripe = useStripe();
+  const elements = useElements();
+  const [message, setMessage] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [paymentStatus, setPaymentStatus] = React.useState("");
+
+  const handleSubmit = async (event:any) =>{
+    setIsLoading(true);
     event.preventDefault();
+
+    if (!stripe || !elements) {
+      toast({ position: 'top', title: 'Please fill in the card details!', status: 'info' })
+      setIsLoading(false);
+      return;
+    }
+
+    if (!stripePromise) {
+      return;
+    }
+
+    const cardNumberElement = elements.getElement(CardNumberElement);
+    const cardExpiryElement = elements.getElement(CardExpiryElement);
+    const cardCvcElement = elements.getElement(CardCvcElement);
+
+    // Check if card details are filled
+    if (!cardNumberElement || !cardExpiryElement || !cardCvcElement) {
+      // Handle error, Card elements are not available
+      toast({ position: 'top', title: 'Something went wrong, please try again later.', status: 'error' })
+      setIsLoading(false);
+      return;
+    }
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardNumberElement,
+      billing_details: {
+        name: formData.first_name + ' ' + formData.last_name,
+        address: {
+          line1: formData.address_line1,
+          line2: formData.address_line2,
+          country: formData.country,
+          postal_code: formData.postal_code,
+        },
+        email: formData.email,
+        phone: formData.phone_number,
+      },
+    });
+
+    // Check for errors
+    if (error) {
+      // Handle the payment error
+      // console.log(error);
+      toast({ position: 'top', title: 'Please fill in the card details!', status: 'info' })
+      setIsLoading(false);
+      return;
+    }
+
+    // Check if paymentMethod is defined
+    if (!paymentMethod) {
+      // Handle the case where paymentMethod is undefined
+      // console.log("Payment method is undefined");
+      toast({ position: 'top', title: 'Payment method is undefined!', status: 'error' })
+      setIsLoading(false);
+      return; 
+    }
+
+    // Get the payment method ID
+    const paymentToken = paymentMethod.id;
+
     const form = new FormData();
     // @ts-ignore: Unreachable code error
     form.append("package_id", id);
-    form.append("full_name", formData.full_name);
-    form.append("address", formData.address);
+    form.append("first_name", formData.first_name);
+    form.append("last_name", formData.last_name);
+    form.append("address_line1", formData.address_line1);
+    form.append("address_line2", formData.address_line2);
     form.append("country", formData.country);
     form.append("email", formData.email);
-    form.append("payment_token", formData.payment_token);
+    // Append the payment_token to the form data
+    form.append("payment_token", paymentToken);
+
     form.append("postal_code", formData.postal_code);
     form.append("state", formData.state);
     form.append("city", formData.city);
@@ -113,49 +212,55 @@ const Payment = () => {
     form.append("card_number", formData.card_detail.card_number);
     form.append("expiry_date", formData.card_detail.expiry_date);
     form.append("cvv", formData.card_detail.cvv);
-
+    
+    console.log('kkkkkk', paymentMethod)
+    setIsLoading(false);
     axios.post(`${baseUrl}/organization/subscriptions/payment?org=${ // @ts-ignore: Unreachable code error
       currentOrganization?.slug}`, form,  {
       headers: {
         Authorization: "Bearer " + accessToken(),
         "Content-Type": "application/x-www-form-urlencoded",
       },}).then((res)=>{
-      console.log(res);
-      handleShow();
-      router.push("/organization");
-
+        if(res.status == 200){
+          // setPaymentStatus('success')
+          setMessage(res.data.message)
+          handleShowModal();
+        }
+      // router.push("/organization");
     }).catch((err)=>{
       console.log(err);
-      handleShowSuccess();
-
+      // setPaymentStatus('failed')
+      setMessage(err.error)
+      handleShowModal();
     })
 
+  }
+
+  const goToDashboard = () =>{
+    handleCloseModal()
+    router.push("/organization");
   }
   return (
     <>
       <Navbar />
-      <Modal show={show} onHide={handleClose} closeButton>
-        <div className="p-3">
-          <p className="modal-txt text-center p-5 mt-3">
-            You have successfully subscribed
-          </p>
-        </div>
-        <div className="d-flex justify-content-center pb-5">
-          <button className="modal-btn">Got it</button>
-        </div>
-      </Modal>
-      <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
-        <div className="p-3">
-          <p className="modal-txt text-center p-5 mt-3">
-            You have already subscribed another plan
-          </p>
-        </div>
-        <div className="d-flex justify-content-center pb-5">
-          <button onClick={handleCloseSuccess} className="modal-btn">
+
+      {/* Show Success Modal */}
+      {/* <Modal show={show} onHide={handleCloseModal} closeButton>
+      <div className="p-3">
+        <p className="modal-txt text-center p-5 mt-3">{message}</p>
+      </div>
+      <div className="d-flex justify-content-center pb-5">
+        {paymentStatus == 'success'?
+          <button onClick={goToDashboard} className="modal-btn">
             Got it
           </button>
-        </div>
-      </Modal>
+        :
+          <button onClick={handleCloseModal} className="modal-btn">
+            Got it
+          </button>
+        }
+      </div>
+    </Modal> */}
       <Sidebar>
         <Row>
           <Col md={6}>
@@ -166,71 +271,138 @@ const Payment = () => {
             <div className="mt-5">
               <p className="modal-txt">Billing Information</p>
             </div>
-            <form>
+            <form id="payment-form" onSubmit={handleSubmit}>
             <Row>
-
-                <div className="mb-3 mt-3">
-                  <label className="form-label fw-bold">Full Name</label>
-                  <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    type="text"
-                    className="form-control"
-                    value={formData.full_name}
-                    onChange={(event) =>
-                    setFormData({ ...formData, full_name: event.target.value })
-                    }
-                    name="full_name"
-                    id="full_name"
-                    required
-                  />
-                </div>
+              
+                <Col md={6}>
+                  <div className="mb-3 mt-3">
+                      <label className="form-label fw-bold">First Name</label>
+                      <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="text"
+                        className="form-control"
+                        value={formData.first_name}
+                        onChange={(event) =>
+                        setFormData({ ...formData, first_name: event.target.value })
+                        }
+                        name="first_name"
+                        id="first_name"
+                        required
+                      />
+                    </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3 mt-3">
+                      <label className="form-label fw-bold">Last Name</label>
+                      <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="text"
+                        className="form-control"
+                        value={formData.last_name}
+                        onChange={(event) =>
+                        setFormData({ ...formData, last_name: event.target.value })
+                        }
+                        name="last_name"
+                        id="last_name"
+                        required
+                      />
+                    </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <label className="form-label fw-bold">Email</label>
+                    <Input
+                      style={{ backgroundColor: "#E8E8E8" }}
+                      type="email"
+                      className="form-control"
+                      value={formData.email}
+                      onChange={(event) =>
+                      setFormData({ ...formData, email: event.target.value })
+                      }
+                      name="email"
+                      id="email"
+                      required
+                    />
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <label className="form-label fw-bold">Country</label>
+                    <Input
+                      style={{ backgroundColor: "#E8E8E8" }}
+                      type="text"
+                      className="form-control"
+                      value={formData.country}
+                      onChange={(event) =>
+                      setFormData({ ...formData, country: event.target.value })
+                      }
+                      name="country"
+                      id="country"
+                      required
+                    />
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <label className="form-label fw-bold">Billing address</label>
+                    <Input
+                      style={{ backgroundColor: "#E8E8E8" }}
+                      type="text"
+                      className="form-control"
+                      value={formData.address_line1}
+                      onChange={(event) =>
+                      setFormData({ ...formData, address_line1: event.target.value })
+                      }
+                      name="address_line1"
+                      id="address_line1"
+                      required
+                    />
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <label className="form-label fw-bold">Billing address, line 2
+                    </label>
+                    <Input
+                      style={{ backgroundColor: "#E8E8E8" }}
+                      type="text"
+                      className="form-control"
+                      value={formData.address_line2}
+                      onChange={(event) =>
+                      setFormData({ ...formData, address_line2: event.target.value })
+                      }
+                      name="address_line2"
+                      id="address_line2"
+                      required
+                    />
+                  </div>
+                </Col>
+            </Row>
+            <div className="mt-5">
+              <p className="modal-txt">Payment Method</p>
+            </div>
+            <Row>
+              <Col md={12}>
                 <div className="mb-3">
-                  <label className="form-label fw-bold">Email</label>
-                  <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    type="email"
-                    className="form-control"
-                    value={formData.email}
-                    onChange={(event) =>
-                    setFormData({ ...formData, email: event.target.value })
-                    }
-                    name="email"
-                    id="email"
-                    required
-                  />
+                  <label className="form-label fw-bold">Card Number</label>
+                  <CardNumberElement className="form-control" id="cardNumber" options={cardElementOptions} />
                 </div>
+              </Col>
+              <Col md={4}>
                 <div className="mb-3">
-                  <label className="form-label fw-bold">Address</label>
-                  <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    type="text"
-                    className="form-control"
-                    value={formData.address}
-                    onChange={(event) =>
-                    setFormData({ ...formData, address: event.target.value })
-                    }
-                    name="address"
-                    id="address"
-                    required
-                  />
+                  <label className="form-label fw-bold">Expiry Date</label>
+                  <CardExpiryElement className="form-control" id="expiryDate" options={cardElementOptions}/>
                 </div>
+              </Col>
+              <Col md={4}>
                 <div className="mb-3">
-                  <label className="form-label fw-bold">Country</label>
-                  <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    type="text"
-                    className="form-control"
-                    value={formData.country}
-                    onChange={(event) =>
-                    setFormData({ ...formData, country: event.target.value })
-                    }
-                    name="country"
-                    id="country"
-                    required
-                  />
+                  <label className="form-label fw-bold">CVC</label>
+                  <CardCvcElement className="form-control" id="cvc" options={cardElementOptions}/>
                 </div>
+              </Col>
+              <Col md={4}>
                 <div className="mb-3">
-                  <label className="form-label fw-bold">Zip Code</label>
+                  <label className="form-label fw-bold">Postal Code</label>
                   <Input
                     style={{ backgroundColor: "#E8E8E8" }}
                     type="text"
@@ -244,143 +416,16 @@ const Payment = () => {
                     required
                   />
                 </div>
+              </Col>
+              {/* <div className="col-md-6"></div> */}
+              <button disabled={isLoading || !stripe || !elements} id="submit" className="sub-btn mt-5 mb-5">
+                <span id="button-text">
+                  {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Pay now"}
+                </span>
+              </button>
             </Row>
-            <div className="mt-5">
-              <p className="modal-txt">Payment Method</p>
-            </div>
-            <Row>
-              <div className="mb-3 mt-3">
-                <label className="form-label fw-bold">Name on Card</label>
-                <Input
-                  style={{ backgroundColor: "#E8E8E8" }}
-                  type="text"
-                  className="form-control"
-                  name="name_on_card"
-                  id="name_on_card"
-                  value={formData.card_detail.name_on_card}
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      card_detail: {
-                        ...formData.card_detail,
-                        name_on_card: event.target.value
-                      }
-                    })
-                  }
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label fw-bold">Credit Card No</label>
-                <Input
-                  style={{ backgroundColor: "#E8E8E8" }}
-                  type="number"
-                  className="form-control"
-                  placeholder="xxxx xxxx xxxx"
-                  name="card_number"
-                  id="card_number"
-                  value={formData.card_detail.card_number}
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      card_detail: {
-                        ...formData.card_detail,
-                        card_number: event.target.value
-                      }
-                    })
-                  }
-                  required
-                />
-              </div>
-              <Row>
-                <Col md={5}>
-                  <div className="mb-3">
-                    <label className="form-label fw-bold">Expiry Date</label>
-                    <Input
-                      style={{ backgroundColor: "#E8E8E8" }}
-                      type="text"
-                      className="form-control"
-                      placeholder="mm/yy"
-                      name="expiry_date"
-                      id="expiry_date"
-                      value={formData.card_detail.expiry_date}
-                      onChange={(event) =>
-                        setFormData({
-                          ...formData,
-                          card_detail: {
-                            ...formData.card_detail,
-                            expiry_date: event.target.value
-                          }
-                        })
-                      }
-                      required
-                    />
-                  </div>
-                </Col>
-                <Col md={5}>
-                  <div className="mb-3">
-                    <label className="form-label fw-bold">CVV</label>
-                    <Input
-                      style={{ backgroundColor: "#E8E8E8" }}
-                      type="number"
-                      className="form-control"
-                      placeholder="***"
-                      name="cvv"
-                      id="cvv"
-                      value={formData.card_detail.cvv}
-                      onChange={(event) =>
-                        setFormData({
-                          ...formData,
-                          card_detail: {
-                            ...formData.card_detail,
-                            cvv: event.target.value
-                          }
-                        })
-                      }
-                      required
-                    />
-                  </div>
-                </Col>
-              </Row>
-              {/* <div>
-                <label className="fs-5 fw-bold">Payment Plan</label>
-              </div> */}
-              {/* <div className="mt-3">
-                <label className="switch ms-2">
-                  <input type="radio" />
-                  <span className="slider round"></span>
-                </label>
-                <span className="fs-6" style={{ marginLeft: "10px" }}>
-                  Monthly
-                </span>
-              </div>
-              <div>
-                <label className="switch ms-2">
-                  <input type="radio" />
-                  <span className="slider round"></span>
-                </label>
-                <span className="fs-6" style={{ marginLeft: "10px" }}>
-                  Anually
-                </span>
-                <span className="fs-6 fw-bold ms-5" style={{ marginLeft: "10px", color:"#E27832" }}>
-                Save 20% Annually
-                </span>
-              </div> */}
-              {isSubmitting ? (
-            <div
-              style={{ color: "#E27832" }}
-              className="spinner-border mt-5"
-            ></div>
-          ) : (
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="sub-btn mt-5 mb-5 col-md-4"
-            >
-              Submit Payment
-            </button>
-          )}
-            </Row>
+            {/* Show any error or success messages */}
+            {message && <div id="payment-message">{message}</div>}
             </form>
           </Col>
           <Col md={6}>
@@ -394,7 +439,7 @@ const Payment = () => {
                 <p style={{fontSize:"24px", lineHeight:"30px", fontWeight:"700"}}>{packageData?.name}</p>
                 <p style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#E27832"}}>Auto-renewal</p>
                 <p style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>
-                  {packageData?.currency_symbol}{packageData?.amount} month / billed {packageData?.tenure}</p>
+                {packageData?.currency?.toUpperCase()} {packageData?.currency_symbol}{packageData?.amount}/{tenureAbbreviation}, billed {packageData?.tenure}</p>
               </div>
               </div>
               <div className="mt-4">
@@ -413,39 +458,6 @@ const Payment = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="card shadow mt-5">
-              <div>
-                <p className="modal-txt text-center py-4">Invoices</p>
-                <div className="float-right me-5 mt-3">
-                <p style={{fontSize:"13px", lineHeight:"16px", fontWeight:"500"}}>Download Invoice</p>
-                </div>
-              </div>
-              <div className="d-flex col-md-9 mt-5 justify-content-between">
-                <div className="ms-5">
-                <input type="checkbox" />
-                <span className="ms-2" style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>May 2023</span>
-                </div>
-                <div>
-                <input type="checkbox" />
-                <span className="ms-2" style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>May 2023</span>
-                </div>
-              </div>
-              <div className="d-flex col-md-9 justify-content-between">
-                <div className="ms-5">
-                <input type="checkbox" />
-                <span className="ms-2" style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>June 2023</span>
-                </div>
-                <div>
-                <input type="checkbox" />
-                <span className="ms-2" style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>June 2023</span>
-                </div>
-              </div>
-              <div>
-                <p className="p-5" style={{fontSize:"13px", lineHeight:"16px", fontWeight:"500"}}>
-                Filter: by range (month/day/year)
-                </p>
-              </div>
-            </div> */}
           </Col>
         </Row>
       </Sidebar>
@@ -454,4 +466,12 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+const PaymentPage = () => {
+  return (
+    <Elements stripe={stripePromise}>
+      <StripeForm />
+    </Elements>
+  );
+};
+
+export default PaymentPage;
