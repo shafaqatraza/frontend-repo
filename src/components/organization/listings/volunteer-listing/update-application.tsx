@@ -1,20 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import Navbar from "../components/Navbar";
-import { Footer } from "../components/Footer";
-import Sidebar from "../components/Sidebar.jsx";
 import { Row, Col, Container, Modal } from "react-bootstrap";
 import { Image, Input, Textarea } from "@chakra-ui/react";
-import trash from "../assets/imgs/trash.png";
-import plus from "../assets/imgs/plus.png";
-import cros from "../assets/imgs/cros.png";
-import plustwo from "../assets/imgs/plustwo.png";
-import CheckBox from "../components/CheckBox";
-import RadioButtonQuestion from "../components/RadioButtonQuestion";
-import ShortAnswer from "../components/ShortAnswer";
-import Availability from "../components/Availability";
-import AskExperience from "../components/AskExperience";
+import trash from "../../../../assets/imgs/trash.png";
+import plus from "../../../../assets/imgs/plus.png";
+import cros from "../../../../assets/imgs/cros.png";
+import plustwo from "../../../../assets/imgs/plustwo.png";
 import axios from "axios";
-import { accessToken, baseUrl } from "../components/Helper/index";
+import { accessToken, baseUrl, currOrgSlug } from "../../../../components/Helper/index";
 import { Select } from "antd";
 import { useToast } from '@chakra-ui/toast'
 import { useRouter } from 'next/router'
@@ -37,13 +29,18 @@ interface AvailabilityState {
 
 const CreateApplication = (props: Props) => {
   const [dataArray, setDataArray] = useState([]);
-  const [organization, setOrganization] = useState(null);
-  const [inputValue, setInputValue] = useState("");
   const [volundata, setVolunData] = useState([]);
+  const [applicationQuestions, setApplicationQuestions] = useState([{
+    question_type_id: 0
+  }]);
   const [successMessage, setSuccessMessage] = useState("");
   const toast = useToast()
   const router = useRouter()
+  if (!router) {
+    return null;
+  }
 
+  const { slug } = router.query;
   // const [formData, setFormData] = useState({
   //   listing_id: null,
   //   tenant_module_id: 1,
@@ -53,32 +50,16 @@ const CreateApplication = (props: Props) => {
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShowSuccess(true);
 
-  
 
-  const handleChildCheckbox = (childCheckbox: any) => {
-    // @ts-ignore: Unreachable code error
-    setDataArray((prevDataArray) => [
-      ...prevDataArray,
-      { type: "checkbox", value: childCheckbox },
-    ]);
-    // @ts-ignore: Unreachable code error
-    setFormData((prevFormData) => {
-      const updatedData = [...prevFormData.data, JSON.parse(childCheckbox)];
-      return { ...prevFormData, data: updatedData };
-    });
-  };
   const [showCard, setShowcard] = useState(false);
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
-  const [selectedComponents, setSelectedComponents] = useState<JSX.Element[]>(
-    []
-  );
 
   const handleButtonClick = () => {
     setShowcard(!showCard);
     setSelectedButton(null);
   };
 // ===============================================================================================
-
+  
   const [questions, setQuestions] = useState<{ id: string; type: string; type_id:number; html: JSX.Element }[]>([]);
   const [listingId, setListingId] = useState("");
   const [options, setOptions] = useState<Option[]>([]);
@@ -99,16 +80,48 @@ const CreateApplication = (props: Props) => {
     }));
   };
 
+  
+  useEffect(() => {
+    axios
+    .get(`${baseUrl}/volunteer-listings/all/${currOrgSlug}`, {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .then((res) => {
+      setVolunData(res.data.data);
+    })
+    .catch((err) => {
+    });
+
+    // Get application-form data for specific listing.
+    axios
+      .get(`${baseUrl}/application-form/show/${slug}?org=${currOrgSlug}`, {
+        headers: {
+          Authorization: "Bearer " + accessToken(),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
+      .then((res) => {
+        setApplicationQuestions(res.data.data)
+      })
+      .catch((err) => {
+      });
+  }, [currOrgSlug, slug]);
+
+  
+  
   const handleSelectChange = (value: string) => {
     setListingId(value);
   };
 
-  const handleAddOption = (id: string, options: Option[][]) => { // @ts-ignore: Unreachable code error
+  const handleAddOption = (id: string, options: Option[][]) => {  // @ts-ignore: Unreachable code error
     if (options[id] && options[id].length < 4) {  
       setOptions((prevOptions) => {
         // Get the existing options array for the specific question ID, or initialize an empty array
         // @ts-ignore: Unreachable code error
-        const questionOptions = prevOptions[id] || []; 
+        const questionOptions = prevOptions[id] || [];
         const newOption = { label: `Option ${questionOptions.length + 1}`, value: "" };
     
         // Create a new options object with the updated options array for the specific question ID
@@ -123,11 +136,10 @@ const CreateApplication = (props: Props) => {
   };
   
   const handleOptionChange = (id: string, index: number, value: string, options: Option[][]) => { // @ts-ignore: Unreachable code error
-    if (options[id]) { 
+    if (options[id]) {
       setOptions((prevOptions) => { // @ts-ignore: Unreachable code error
-        const questionOptions = prevOptions[id] || []; 
-        // @ts-ignore: Unreachable code error
-        const updatedQuestionOptions = questionOptions.map((option, optionIndex) => { 
+        const questionOptions = prevOptions[id] || []; // @ts-ignore: Unreachable code error
+        const updatedQuestionOptions = questionOptions.map((option, optionIndex) => {
           if (optionIndex === index) {
             return { ...option, value: value };
           }
@@ -143,7 +155,7 @@ const CreateApplication = (props: Props) => {
   };
   
   const handleRemoveOption = (id: string, index: number, options: []) => { // @ts-ignore: Unreachable code error
-    if (options[id] && options[id].length > 2) {
+    if (options[id] && options[id].length > 2) { // @ts-ignore: Unreachable code error
       const updatedOptions = {
         ...options, // @ts-ignore: Unreachable code error
         [id]: options[id].filter((option, i) => i !== index)
@@ -164,7 +176,8 @@ const CreateApplication = (props: Props) => {
     setOptions([]);
     setQuestionErrors({});
   }
-
+  console.log('qqqqqqqqqq', questions)
+  console.log('oooooooooo', options)
 // ===============================================================================================
   const shortQuestionHTML = (id: string, questionErrors: []) => {
   return (
@@ -176,7 +189,7 @@ const CreateApplication = (props: Props) => {
             <Input
               style={{ backgroundColor: "#E8E8E8" }}
               type="tel"
-              className={`form-control mt-2 ${ // @ts-ignore: Unreachable code error
+              className={`form-control mt-2 ${// @ts-ignore: Unreachable code error
                 questionErrors[id] ? 'input-error' : ''}`}
               id={id}
               placeholder="Question"
@@ -221,8 +234,7 @@ const CreateApplication = (props: Props) => {
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] && // @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -284,18 +296,16 @@ const CreateApplication = (props: Props) => {
           <p className="listing-txt">Question</p>
             <Input
               style={{ backgroundColor: "#E8E8E8" }}
-              type="text"
-              className={`form-control mt-2 ${ // @ts-ignore: Unreachable code error
-                questionErrors[id] ? 'input-error' : ''}`}
+              type="text" // @ts-ignore: Unreachable code error
+              className={`form-control mt-2 ${questionErrors[id] ? 'input-error' : ''}`}
               id={id}
               placeholder="Question"
               onChange={(e) => handleInputChange(id)}
-            />
+            /> 
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] && // @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -366,8 +376,7 @@ const CreateApplication = (props: Props) => {
           <div className="card shadow p-4 mt-3">
             <p className="fw-bold">* I am available and agree to commit to:</p>
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] && // @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -475,20 +484,17 @@ const CreateApplication = (props: Props) => {
                   type="text" 
                   style={{ backgroundColor: "#E8E8E8" }} 
                   placeholder="Begin Typing here" 
-                  id={`work-experience-${id}`}
-                  // @ts-ignore: Unreachable code error
+                  id={`work-experience-${id}`} // @ts-ignore: Unreachable code error
                   className={`${questionErrors[`work-experience-${id}`] ? 'input-error' : ''}`}
                   onChange={(e) => handleInputChange(`work-experience-${id}`)}
                 />
               </div>
-              
               {// @ts-ignore: Unreachable code error
               questionErrors[`work-experience-${id}`] && <p className="error-message">Please fill out the field.</p>}
             </div>
             
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] && // @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -499,7 +505,7 @@ const CreateApplication = (props: Props) => {
                       type="radio"
                       disabled
                     />
-                    <span style={ // @ts-ignore: Unreachable code error
+                    <span style={// @ts-ignore: Unreachable code error
                       {"font-size": "16px"} }>{option.value}</span>
                   </div>
                 </div>
@@ -548,8 +554,7 @@ const CreateApplication = (props: Props) => {
           <p className="fw-bold">* Are you fully vacination against COVID-19 (2 doses)</p>
             <div className="checkbox-container d-flex flex-column mt-3 ms-3">
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] && // @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -560,7 +565,7 @@ const CreateApplication = (props: Props) => {
                       type="radio"
                       disabled
                     />
-                    <span style={ // @ts-ignore: Unreachable code error
+                    <span style={// @ts-ignore: Unreachable code error
                       {"font-size": "16px"} }>{option.value}</span>
                   </div>
                 </div>
@@ -576,8 +581,10 @@ const CreateApplication = (props: Props) => {
   
 // ===============================================================================================
 
-const handleAddQuestion = (type: string) => {
-  const id = 'question-' + questions.length;
+const handleAddQuestion = (type: string, question_length: number) => {
+  const id = 'question-' + question_length;
+  
+  console.log('cccccccc', id)
   let newQuestion: JSX.Element;
   let type_id: number;
 
@@ -670,22 +677,6 @@ const handleAddQuestion = (type: string) => {
   setQuestions((prevQuestions) => [...prevQuestions, question]);
 };
 
-  useEffect(() => {
-    axios
-      .get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        setOrganization(res.data[0]?.slug);
-        // @ts-ignore: Unreachable code error
-        // setFormData({ ...formData, org_slug: organization });
-      })
-      .catch((err) => {
-      });
-  }, [organization]);
 
   const handleSubmit = (event: any) => { 
     event.preventDefault();
@@ -873,10 +864,10 @@ const handleAddQuestion = (type: string) => {
     }
     
 
-    console.log('dddddd', formData, organization)
+    console.log('dddddd', formData)
     
     axios
-      .post(`${baseUrl}/application-form/store?org=${organization}`, formData, {
+      .post(`${baseUrl}/application-form/store?org=${currOrgSlug}`, formData, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
@@ -894,25 +885,33 @@ const handleAddQuestion = (type: string) => {
       });
 
   };
-
-
-
-
-
+  
   useEffect(() => {
-    axios
-      .get(`${baseUrl}/volunteer-listings/all/${organization}`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        setVolunData(res.data.data);
-      })
-      .catch((err) => {
-      });
-  }, [organization]);
+	
+      if(applicationQuestions.length > 0){ 
+			setQuestions([]); 
+			setOptions([]);
+			setQuestionErrors({});
+			applicationQuestions.forEach((question, index) => {
+				let type = question.question_type_id;
+				if(type === 1){
+					handleAddQuestion("ShortQuestion", index+1)
+				}else if(type === 2){
+					handleAddQuestion("CheckboxQuestion", index+1)
+				}else if(type === 3){
+					handleAddQuestion("RadioButtonQuestion", index+1)
+				}else if(type === 4){
+					handleAddQuestion("ConditionalQuestion", index+1)
+				}else if(type === 5){
+					handleAddQuestion("AskAvailability", index+1)
+				}else if(type === 6){
+					handleAddQuestion("WorkExperience", index+1)
+				}
+				
+			});
+			
+      }
+  }, [applicationQuestions])
 
   return (
     <>
@@ -958,9 +957,7 @@ const handleAddQuestion = (type: string) => {
                     handleSelectChange(e);
                     handleInputChange('listing_id');
                   }}
-                  onSearch={(value) => setInputValue(value)}
-                  filterOption={(input, option) =>
-                    // @ts-ignore: Unreachable code error
+                  filterOption={(input, option) => // @ts-ignore: Unreachable code error
                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                   }
                 >
@@ -1005,12 +1002,12 @@ const handleAddQuestion = (type: string) => {
                   style={{ width: "250px", height: "226px" }}
                   className="card ques-card shadow mt-2"
                 >
-                  <button onClick={()=> handleAddQuestion("ShortQuestion")} className="ques-card-button"> Short Question </button>
-                  <button onClick={()=> handleAddQuestion("CheckboxQuestion")} className="ques-card-button" > Checkbox Question </button>
-                  <button onClick={()=> handleAddQuestion("RadioButtonQuestion")} className="ques-card-button"> Radio Button Question</button>
-                  <button onClick={()=> handleAddQuestion("ConditionalQuestion")} className="ques-card-button">Conditional Question </button>
-                  <button onClick={()=> handleAddQuestion("AskAvailability")} className="ques-card-button"> Ask Availability </button>
-                  <button onClick={()=> handleAddQuestion("WorkExperience")} className="ques-card-button"> Work Experience </button>
+                  <button onClick={()=> handleAddQuestion("ShortQuestion", questions.length+1)} className="ques-card-button"> Short Question </button>
+                  <button onClick={()=> handleAddQuestion("CheckboxQuestion", questions.length+1)} className="ques-card-button" > Checkbox Question </button>
+                  <button onClick={()=> handleAddQuestion("RadioButtonQuestion", questions.length+1)} className="ques-card-button"> Radio Button Question</button>
+                  <button onClick={()=> handleAddQuestion("ConditionalQuestion", questions.length+1)} className="ques-card-button">Conditional Question </button>
+                  <button onClick={()=> handleAddQuestion("AskAvailability", questions.length+1)} className="ques-card-button"> Ask Availability </button>
+                  <button onClick={()=> handleAddQuestion("WorkExperience", questions.length+1)} className="ques-card-button"> Work Experience </button>
                 </div>
               )}
             </div>
@@ -1028,13 +1025,13 @@ const handleAddQuestion = (type: string) => {
                 question.html(questionErrors)
             ) : question.type === 'CheckboxQuestion' ? ( // @ts-ignore: Unreachable code error
                 question.html(options, questionErrors)
-            ) : question.type === 'RadioButtonQuestion' ? (// @ts-ignore: Unreachable code error
+            ) : question.type === 'RadioButtonQuestion' ? ( // @ts-ignore: Unreachable code error
                 question.html(options, questionErrors)
-            ) : question.type === 'ConditionalQuestion' ? (// @ts-ignore: Unreachable code error
+            ) : question.type === 'ConditionalQuestion' ? ( // @ts-ignore: Unreachable code error
                 question.html(options, questionErrors)
-            ) : question.type === 'AskAvailability' ? (// @ts-ignore: Unreachable code error
+            ) : question.type === 'AskAvailability' ? ( // @ts-ignore: Unreachable code error
                 question.html(options)
-            ) : question.type === 'WorkExperience' ? (// @ts-ignore: Unreachable code error
+            ) : question.type === 'WorkExperience' ? ( // @ts-ignore: Unreachable code error
               question.html(options, questionErrors)
             ) : null }
           </div>

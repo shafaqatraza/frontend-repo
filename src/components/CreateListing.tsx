@@ -81,7 +81,7 @@ const CreateListing = () => {
         },
       })
       .then((res) => {
-        console.log(res.data, "volunteer categories")
+        // console.log(res.data, "volunteer categories")
         setData(res.data.data);
       })
       .catch((err) => {

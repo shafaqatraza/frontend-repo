@@ -17,20 +17,34 @@ interface FormData {
   is_required: number;
 }
 
-const CheckBox = (props: any) => {
+type RadioButtonQuestionProps = {
+  onChildCheckbox: (value: any) => void;
+  onDelete: (index: number) => void;
+  index: number; // Add index prop
+};
+
+const RadioButtonQuestion = ({ onChildCheckbox, onDelete, index }: RadioButtonQuestionProps) => {
   const [question, setQuestion] = useState("");
-  const [options, setOptions] = useState<Option[]>([]);
+  const [options, setOptions] = useState<Option[]>([
+    { label: "Option 1", value: "" },
+    { label: "Option 2", value: "" },
+  ]);
+  
   const [isRequired, setIsRequired] = useState(false);
 
   const handleAddOption = () => {
-    setOptions([
-      ...options,
-      { label: `Option ${options.length + 1}`, value: "" },
-    ]);
+    if(options.length < 4){
+      setOptions([
+        ...options,
+        { label: `Option ${options.length + 1}`, value: "" },
+      ]);
+    }
   };
 
   const handleRemoveOption = (index: number) => {
-    setOptions(options.filter((option, i) => i !== index));
+    if (options.length > 2) {
+      setOptions(options.filter((option, i) => i !== index));
+    }
   };
 
   const handleOptionChange = (index: number, value: string) => {
@@ -48,7 +62,7 @@ const CheckBox = (props: any) => {
       is_required: isRequired ? 1 : 0,
     };
     console.log(formData);
-    props.onChildCheckbox(JSON.stringify(formData));
+    onChildCheckbox(JSON.stringify(formData));
   };
   const sendDataCheckbox = () => {
     // props.onChildData(JSON.stringify(FormData));
@@ -78,7 +92,8 @@ const CheckBox = (props: any) => {
                 <input
                   className="mt-2"
                   style={{ height: "18px", width: "18px" }}
-                  type="checkbox"
+                  type="radio"
+                  disabled
                 />
                 <input
                   id={`option-${index}`}
@@ -86,7 +101,7 @@ const CheckBox = (props: any) => {
                   value={option.value}
                   style={{ width: "80%" }}
                   className="border-bottom-input ms-3 mt-1"
-                  placeholder="Option 1"
+                  placeholder={`Option ${index+1}`}
                   onChange={(event) =>
                     handleOptionChange(index, event.target.value)
                   }
@@ -116,7 +131,7 @@ const CheckBox = (props: any) => {
               onBlur={handleFormSubmit}
             />
             <label className="form-label me-3 mt-1">Required</label>
-            <span className="mt-1">
+            <span className="mt-1" onClick={() => onDelete(index)}>
               <Image src={trash.src} />
             </span>
           </div>
@@ -126,4 +141,4 @@ const CheckBox = (props: any) => {
   );
 };
 
-export default CheckBox;
+export default RadioButtonQuestion;

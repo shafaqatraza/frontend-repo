@@ -108,7 +108,7 @@ const CreateApplication = (props: Props) => {
       setOptions((prevOptions) => {
         // Get the existing options array for the specific question ID, or initialize an empty array
         // @ts-ignore: Unreachable code error
-        const questionOptions = prevOptions[id] || []; 
+        const questionOptions = prevOptions[id] || [];
         const newOption = { label: `Option ${questionOptions.length + 1}`, value: "" };
     
         // Create a new options object with the updated options array for the specific question ID
@@ -123,11 +123,10 @@ const CreateApplication = (props: Props) => {
   };
   
   const handleOptionChange = (id: string, index: number, value: string, options: Option[][]) => { // @ts-ignore: Unreachable code error
-    if (options[id]) { 
+    if (options[id]) {
       setOptions((prevOptions) => { // @ts-ignore: Unreachable code error
-        const questionOptions = prevOptions[id] || []; 
-        // @ts-ignore: Unreachable code error
-        const updatedQuestionOptions = questionOptions.map((option, optionIndex) => { 
+        const questionOptions = prevOptions[id] || []; // @ts-ignore: Unreachable code error
+        const updatedQuestionOptions = questionOptions.map((option, optionIndex) => {
           if (optionIndex === index) {
             return { ...option, value: value };
           }
@@ -142,7 +141,8 @@ const CreateApplication = (props: Props) => {
     }
   };
   
-  const handleRemoveOption = (id: string, index: number, options: []) => { // @ts-ignore: Unreachable code error
+  const handleRemoveOption = (id: string, index: number, options: []) => {
+    // @ts-ignore: Unreachable code error
     if (options[id] && options[id].length > 2) {
       const updatedOptions = {
         ...options, // @ts-ignore: Unreachable code error
@@ -176,7 +176,7 @@ const CreateApplication = (props: Props) => {
             <Input
               style={{ backgroundColor: "#E8E8E8" }}
               type="tel"
-              className={`form-control mt-2 ${ // @ts-ignore: Unreachable code error
+              className={`form-control mt-2 ${// @ts-ignore: Unreachable code error
                 questionErrors[id] ? 'input-error' : ''}`}
               id={id}
               placeholder="Question"
@@ -215,14 +215,14 @@ const CreateApplication = (props: Props) => {
               className={`form-control mt-2 ${// @ts-ignore: Unreachable code error
                 questionErrors[id] ? 'input-error' : ''}`}
               id={id}
-              placeholder="Question" // @ts-ignore: Unreachable code error
-              onChange={(e) => handleInputChange(id, e.target.value)}
+              placeholder="Question"
+              onChange={// @ts-ignore: Unreachable code error
+                (e) => handleInputChange(id, e.target.value)}
             />
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] && // @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -285,7 +285,7 @@ const CreateApplication = (props: Props) => {
             <Input
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
-              className={`form-control mt-2 ${ // @ts-ignore: Unreachable code error
+              className={`form-control mt-2 ${// @ts-ignore: Unreachable code error
                 questionErrors[id] ? 'input-error' : ''}`}
               id={id}
               placeholder="Question"
@@ -294,8 +294,7 @@ const CreateApplication = (props: Props) => {
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] &&// @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -310,7 +309,7 @@ const CreateApplication = (props: Props) => {
                       type="text"
                       value={option.value}
                       style={{ width: "80%" }}
-                      className={`border-bottom-input ms-3 mt-1 ${// @ts-ignore: Unreachable code error
+                      className={`border-bottom-input ms-3 mt-1 ${ // @ts-ignore: Unreachable code error
                         questionErrors[`${id}-option-${index}`] ? 'option-error' : ''}`}
                       placeholder={`Option ${index+1}`}
                       onChange={(event) => {
@@ -366,8 +365,7 @@ const CreateApplication = (props: Props) => {
           <div className="card shadow p-4 mt-3">
             <p className="fw-bold">* I am available and agree to commit to:</p>
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] && // @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -475,20 +473,17 @@ const CreateApplication = (props: Props) => {
                   type="text" 
                   style={{ backgroundColor: "#E8E8E8" }} 
                   placeholder="Begin Typing here" 
-                  id={`work-experience-${id}`}
-                  // @ts-ignore: Unreachable code error
+                  id={`work-experience-${id}`} // @ts-ignore: Unreachable code error
                   className={`${questionErrors[`work-experience-${id}`] ? 'input-error' : ''}`}
                   onChange={(e) => handleInputChange(`work-experience-${id}`)}
                 />
               </div>
-              
               {// @ts-ignore: Unreachable code error
               questionErrors[`work-experience-${id}`] && <p className="error-message">Please fill out the field.</p>}
             </div>
             
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] && // @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -499,8 +494,8 @@ const CreateApplication = (props: Props) => {
                       type="radio"
                       disabled
                     />
-                    <span style={ // @ts-ignore: Unreachable code error
-                      {"font-size": "16px"} }>{option.value}</span>
+                    <span style={// @ts-ignore: Unreachable code error
+                    {"font-size": "16px"} }>{option.value}</span>
                   </div>
                 </div>
               ))}
@@ -548,8 +543,7 @@ const CreateApplication = (props: Props) => {
           <p className="fw-bold">* Are you fully vacination against COVID-19 (2 doses)</p>
             <div className="checkbox-container d-flex flex-column mt-3 ms-3">
             {// @ts-ignore: Unreachable code error
-            options[id] &&
-            // @ts-ignore: Unreachable code error
+            options[id] && // @ts-ignore: Unreachable code error
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -559,7 +553,7 @@ const CreateApplication = (props: Props) => {
                       style={{ height: "18px", width: "18px" }}
                       type="radio"
                       disabled
-                    />
+                    /> 
                     <span style={ // @ts-ignore: Unreachable code error
                       {"font-size": "16px"} }>{option.value}</span>
                   </div>
@@ -964,7 +958,7 @@ const handleAddQuestion = (type: string) => {
                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                   }
                 >
-                  {volundata.map((item) => ( // @ts-ignore: Unreachable code error
+                  {volundata.map((item) => (// @ts-ignore: Unreachable code error
                     <Option key={item.id} value={item.id}>
                       {// @ts-ignore: Unreachable code error
                       item.title}
@@ -1024,9 +1018,9 @@ const handleAddQuestion = (type: string) => {
           {questions.map((question, index) => (
             <div key={question.id} className="component-container">
            
-            {question.type === 'ShortQuestion' ? ( // @ts-ignore: Unreachable code error
+            {question.type === 'ShortQuestion' ? (// @ts-ignore: Unreachable code error
                 question.html(questionErrors)
-            ) : question.type === 'CheckboxQuestion' ? ( // @ts-ignore: Unreachable code error
+            ) : question.type === 'CheckboxQuestion' ? (// @ts-ignore: Unreachable code error
                 question.html(options, questionErrors)
             ) : question.type === 'RadioButtonQuestion' ? (// @ts-ignore: Unreachable code error
                 question.html(options, questionErrors)

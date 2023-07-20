@@ -47,10 +47,10 @@ export const currentOrganizationInfo = () => {
 
 export const currOrganizationId = () => {
     if (typeof window !== 'undefined') {
-        let storageVal = null;
+        let organizationId = null;
         if (localStorage.getItem('currentOrganization') !== null) {
-            storageVal = JSON.parse(localStorage.getItem('currentOrganization'));
-            return storageVal? storageVal.id : null;
+            organizationId = JSON.parse(localStorage.getItem('currentOrganization'));
+            return organizationId? organizationId.id : null;
         }
     }
     return "";
@@ -58,10 +58,10 @@ export const currOrganizationId = () => {
 
 export const currOrganizationSlug = () => {
     if (typeof window !== 'undefined') {
-        let storageVal = null;
+        let organizationSlug = null;
         if (localStorage.getItem('currentOrganization') !== null) {
-            storageVal = JSON.parse(localStorage.getItem('currentOrganization'));
-            return storageVal? storageVal.slug : null;
+            organizationSlug = JSON.parse(localStorage.getItem('currentOrganization'));
+            return organizationSlug? organizationSlug.slug : null;
         }
     }
     return "";

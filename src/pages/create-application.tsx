@@ -25,7 +25,7 @@ const CreateApplication = () => {
     const componentToAdd = components[event.currentTarget.value];
     setSelectedComponents([...selectedComponents, componentToAdd]);
   };
-  const components: { [key: string]: JSX.Element } = {
+  const components: { [key: string]: JSX.Element } = { // @ts-ignore: Unreachable code error
     'Button 1': <ShortAnswer/>,
     'Button 2' : <CheckBox/>,
     'Button 4': <Availability/>,
@@ -68,7 +68,7 @@ const CreateApplication = () => {
                   >
                     Full Name*
                   </label>
-                  <Input
+                  <Input // @ts-ignore: Unreachable code error
                     style={{ backgroundColor: "#E8E8E8" }}
                     type="tel"
                     className="form-control mt-1"

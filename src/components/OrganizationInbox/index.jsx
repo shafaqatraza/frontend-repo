@@ -92,23 +92,21 @@ const Message = (props) => {
 	let [loaded, setLoaded] = useState(true)
 
 	//	Get profile detail handler
-	const getProfileDetails = useCallback(async () => {
-		const data = await axios.get(`${baseUrl}/user/info`, {
-			headers: {
-				Authorization: "Bearer " + accessToken(),
-			},
-		});
-		if (data.status === 200) {
-			setProfileData(data.data.data)
-		}
-	}, []);
+	// const getProfileDetails = useCallback(async () => {
+	// 	const data = await axios.get(`${baseUrl}/user/info`, {
+	// 		headers: {
+	// 			Authorization: "Bearer " + accessToken(),
+	// 		},
+	// 	});
+	// 	if (data.status === 200) {
+	// 		setProfileData(data.data.data)
+	// 	}
+	// }, []);
 
 	//	Check if user is logedin handler
 	useEffect(() => {
 		if (!isLogin() && currOrg === null) {
 			router.push({ pathname: '/' })
-		} else {
-			getProfileDetails()
 		}
 	}, [currOrg]);
 

@@ -1849,9 +1849,28 @@ color: #E27832;
         color: #000000;
 }
 
+.input-error {
+  border: 1px solid red !important;
+}
+
+
+.option-error {
+  border-bottom: 1px solid red !important;
+}
+.error-message {
+  color: red;
+  font-size: 14px;
+}
+
+/* .right-side-column {
+  z-index: 2;
+  position: relative;
+} */
+
 /* @media (max-width: 450px) {
   .avatar-uploader-listing .ant-upload.ant-upload-select-picture-card {
     height: 140px;
     width: 100%;
   }
 } */
+
