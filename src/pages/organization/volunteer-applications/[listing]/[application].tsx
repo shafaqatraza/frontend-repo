@@ -8,15 +8,22 @@ import Link from "next/link";
 import axios from "axios";
 import { accessToken, baseUrl, currentOrganization } from "../../../../components/Helper/index";
 import { useRouter } from "next/router";
-
+interface ApplicationData {
+  application: any[]; // Assuming the application array contains any type of data
+  applicant: {
+    full_name: string;
+    email: string;
+  };
+}
 const CompletedApplication = () => {
   const router = useRouter();
   const { listing, application } = router.query;
-  const [applicationData, setApplicationData] = useState({
+  const [applicationData, setApplicationData] = useState<ApplicationData>({
+    application: [{}],
     applicant: {
       full_name: '',
-      email: ''
-    }
+      email: '',
+    },
   });
   const [receiverId, setReceiverId] = useState<string | undefined>();
   const [formData, setFormData] = useState({
