@@ -1,32 +1,49 @@
-import { Image, Link } from '@chakra-ui/react';
+import { Image, Link, Button } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from "react-bootstrap";
 import good from "../assets/imgs/good.png";
 import axios from 'axios';
-import { accessToken, baseUrl } from "../components/Helper/index";
+import { accessToken, baseUrl, isLogin, currentOrganization } from "../components/Helper/index";
+import { useRouter } from 'next/router'
+import { useToast } from '@chakra-ui/toast'
 
 const MonthlyPlan = () => {
   const [data, setData] = useState([]);
-  const [dataone, setDataOne] = useState([]);
+  const [dataone, setDataOne] = useState<{ id: number } | null>(null);
   const [dataonedesc, setDataOneDesc] = useState([]);
   const [datatwodesc, setDataTwoDesc] = useState([]);
   const [datadesc, setDataDesc] = useState([]);
   const [datatwo, setDataTwo] = useState([]);
   const [datathree, setDataThree] = useState([]);
   const [datathreedesc, setDataThreeDesc] = useState([]);
+  const [orgData, setOrgData] = useState(null);
   const [id, setID] = useState([]);
+  const router = useRouter()
+  const toast = useToast()
+
+  // console.log('orgData', orgData)
 
   useEffect(() => {
-    axios
-      .get(`${baseUrl}/organization/subscriptions/plans`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        console.log(res.data.data[0]?.packages[0]);
 
+    if(isLogin() && !orgData){
+      axios
+        .get(`${baseUrl}/organizations`, {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+        .then((res) => {
+          setOrgData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    
+    axios
+      .get(`${baseUrl}/public/organization/subscriptions/plans`)
+      .then((res) => {
         setData(res.data.data[0]?.packages[0])
         setDataDesc(res.data.data[0]?.packages[0]?.description)
         setDataOne(res.data.data[0]?.packages[1])
@@ -38,8 +55,23 @@ const MonthlyPlan = () => {
 
       })
       .catch((err) => {
-      });
+      })
+
   }, [])
+
+  const handlePlanButton = (plan_id: any) => {
+    if (isLogin()) {
+      if (currentOrganization || orgData) {
+        router.push(`/organization/payment-plans/${plan_id}`)
+      } else {
+        toast({ position: "top", title: "Please create your organization first!", status: "error" })
+      }
+    } else {
+      toast({ position: "top", title: "Please login to select plan!", status: "error" })
+    }
+  };
+
+
   return (
     <>
       <Container>
@@ -61,7 +93,7 @@ const MonthlyPlan = () => {
                       <p className="card-title mt-3 free-txt text-center">
 
                         {// @ts-ignore: Unreachable code error
-                          dataone.name}
+                          dataone?.name}
                       </p>
                       <p className=" mt-4 text-center free-txt2">
                         {dataonedesc}
@@ -91,17 +123,18 @@ const MonthlyPlan = () => {
                               // @ts-ignore: Unreachable code error
                               dataone?.features?.map((item, index) => (
                                 <>
-                                  <div className="d-flex">
-                                    <span className="ms-2 pt-2">
-                                      <Image src={good.src} alt={"Plan"} />
-                                    </span>
-                                    <div className='pt-2 ms-2'>
-                                      {item}
+                                  {item && item[0] && (
+                                    <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                                      <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                      <p className='m-0 free-txt4'>
+                                        {item}
+                                      </p>
                                     </div>
-                                  </div>
+                                  )}
                                 </>
                               ))
                             }
+
                           </p>
                         </div>
 
@@ -112,11 +145,18 @@ const MonthlyPlan = () => {
                         *Volunteer rewards based on 20 Deed Dollars per hour
                       </p>
                     </div>
-                    <Link className="btns d-flex justify-content-center" href={`/payment/${
-                      // @ts-ignore: Unreachable code error
-                      dataone?.id}`}>
-                      <button className="select-btn mt-4 mb-4">Select</button>
-                    </Link>
+
+                    <Button
+                      variant={'solid'}
+                      colorScheme={'orange'}
+                      size={'md'}
+                      fontSize="16px"
+                      onClick={() => handlePlanButton(dataone?.id)}
+                      w="150px"
+                      className='my-4 mx-auto'
+                    >
+                      Select
+                    </Button>
                   </div>
                 </div>
                 <div>
@@ -164,15 +204,14 @@ const MonthlyPlan = () => {
                               // @ts-ignore: Unreachable code error
                               data?.features?.map((item, index) => (
                                 <>
-                                  <div className="d-flex">
-                                    <span className="ms-2 pt-2">
-                                      <Image src={good.src} alt={"Plan"} />
-                                    </span>
-                                    <div className='pt-2 ms-2'>
-                                      {item}
-
+                                  {item && item[0] && (
+                                    <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                                      <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                      <p className='m-0 free-txt4'>
+                                        {item}
+                                      </p>
                                     </div>
-                                  </div>
+                                  )}
                                 </>
                               ))
                             }
@@ -181,20 +220,27 @@ const MonthlyPlan = () => {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="mt-3 ms-3">
-                  <p className="free-txt5">
-                    *Volunteer rewards based on 20 Deed Dollars per hour
-                  </p>
-                </div> */}
+                        {/* <div className="mt-3 ms-3">
+                      <p className="free-txt5">
+                        *Volunteer rewards based on 20 Deed Dollars per hour
+                      </p>
+                    </div> */}
 
-                    <Link className="btns d-flex justify-content-center" href={`/payment/${
-                      // @ts-ignore: Unreachable code error
-                      data?.id}`}>
-                      <button className="select-btn mt-4 mb-4">Select</button>
-                    </Link>
-                    {/* <div className="btns d-flex justify-content-center">
-                  <button onClick={()=>console.log(data?.id, "data")} className="select-btn mt-4 mb-4">Select</button>
-                </div> */}
+                    <Button
+                      variant={'solid'}
+                      colorScheme={'orange'}
+                      size={'md'}
+                      fontSize="16px"
+                      onClick={() => handlePlanButton( // @ts-ignore: Unreachable code error
+                        data?.id)}
+                      w="150px"
+                      className='my-4 mx-auto'
+                    >
+                      Select
+                    </Button>
+                        {/* <div className="btns d-flex justify-content-center">
+                      <button onClick={()=>console.log(data?.id, "data")} className="select-btn mt-4 mb-4">Select</button>
+                    </div> */}
                   </div>
                 </div>
                 <div>
@@ -238,14 +284,14 @@ const MonthlyPlan = () => {
                               // @ts-ignore: Unreachable code error
                               datatwo?.features?.map((item, index) => (
                                 <>
-                                  <div className="d-flex">
-                                    <span className="ms-2 pt-2">
-                                      <Image src={good.src} alt={"Plan"} />
-                                    </span>
-                                    <div className='pt-2 ms-2'>
-                                      {item}
+                                  {item && item[0] && (
+                                    <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                                      <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                      <p className='m-0 free-txt4'>
+                                        {item}
+                                      </p>
                                     </div>
-                                  </div>
+                                  )}
                                 </>
                               ))
                             }
@@ -254,11 +300,18 @@ const MonthlyPlan = () => {
 
                       </div>
                     </div>
-                    <Link className="btns d-flex justify-content-center" href={`/payment/${
-                      // @ts-ignore: Unreachable code error
-                      datatwo?.id}`}>
-                      <button className="select-btn mt-4 mb-4">Select</button>
-                    </Link>
+                    <Button
+                      variant={'solid'}
+                      colorScheme={'orange'}
+                      size={'md'}
+                      fontSize="16px"
+                      onClick={() => handlePlanButton( // @ts-ignore: Unreachable code error
+                        datatwo?.id)}
+                      w="150px"
+                      className='my-4 mx-auto'
+                    >
+                      Select
+                    </Button>
                   </div>
                 </div>
                 <div>
@@ -300,14 +353,14 @@ const MonthlyPlan = () => {
                           // @ts-ignore: Unreachable code error
                           datathree?.features?.map((item, index) => (
                             <>
-                              <div className="d-flex">
-                                <span className="ms-2 pt-2">
-                                  <Image src={good.src} alt={"Plan"} />
-                                </span>
-                                <div className='free-txt4 pt-2 ms-2'>
-                                  {item}
+                              {item && item[0] && (
+                                <div className="d-flex justify-content-start align-items-start mb-2" style={{ gap: '10px' }}>
+                                  <Image src={good.src} alt={"Plan"} className='pt-1' width="12px" />
+                                  <p className='m-0 free-txt4'>
+                                    {item}
+                                  </p>
                                 </div>
-                              </div>
+                              )}
                             </>
                           ))
                         }
@@ -315,12 +368,18 @@ const MonthlyPlan = () => {
 
                       </div>
                     </div>
-
-                    <Link className="btns d-flex justify-content-center" href={`/payment/${
-                      // @ts-ignore: Unreachable code error
-                      datathree?.id}`}>
-                      <button className="select-btn mt-4 mb-4">Select</button>
-                    </Link>
+                    <Button
+                      variant={'solid'}
+                      colorScheme={'orange'}
+                      size={'md'}
+                      fontSize="16px"
+                      onClick={()=> handlePlanButton( // @ts-ignore: Unreachable code error
+                        datathree?.id) }
+                      w="150px"
+                      className='my-4 mx-auto'
+                    >
+                      Select
+                    </Button>
                   </div>
                 </div>
               </div>) : (<>

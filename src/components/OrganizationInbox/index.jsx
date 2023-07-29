@@ -1,19 +1,12 @@
 import {
 	Box,
 	Flex,
-	Stack,
 	Text,
 	Avatar,
 	Image,
 	Divider,
-	InputGroup,
-	InputRightElement,
-	Input,
 	Button,
-	useColorModeValue,
 	Center,
-	Fade,
-	Select,
 	Spinner,
 	Badge,
 	Link
@@ -26,6 +19,7 @@ import { GrFormClose } from 'react-icons/gr'
 import { useRouter } from 'next/router'
 import Messages from './messages'
 import MessageBoxOrgWeb from '../Message/MessageBoxOrgWeb'
+import MessageBoxOrgMob from '../Message/MessageBoxOrgMob'
 import RateAndReviewModal from './RateAndReviewModal'
 import { ModalPopup } from '../ModalPopup'
 import { InnerSection } from '../Listing/innerSection'
@@ -78,7 +72,7 @@ const Message = (props) => {
 
 	if (typeof window !== 'undefined') {
 		var loginUser = JSON.parse(localStorage?.getItem('loggedInUser'));
-    var currentOrg = JSON.parse(localStorage?.getItem('currentOrganization'));
+		var currOrg = JSON.parse(localStorage.getItem('currentOrganization'));
 	}
 
 	const [messageInfo, setMessageInfo] = useState({
@@ -95,89 +89,48 @@ const Message = (props) => {
 	const [profileData, setProfileData] = useState([])
 	const [chatNotify, setChatNotify] = useState(0)
 	const [showChat, setShowChat] = useState(false)
-	let [loaded, setLoaded] = useState(true);
-  const [curOrganization, setCurOrganization] = useState([]);
+	let [loaded, setLoaded] = useState(true)
 
 	//	Get profile detail handler
-	const getProfileDetails = useCallback(async () => {
-		const data = await axios.get(`${baseUrl}/user/info`, {
-			headers: {
-				Authorization: "Bearer " + accessToken(),
-			},
-		});
-		if (data.status === 200) {
-			setProfileData(data.data.data)
-		}
-	}, []);
+	// const getProfileDetails = useCallback(async () => {
+	// 	const data = await axios.get(`${baseUrl}/user/info`, {
+	// 		headers: {
+	// 			Authorization: "Bearer " + accessToken(),
+	// 		},
+	// 	});
+	// 	if (data.status === 200) {
+	// 		setProfileData(data.data.data)
+	// 	}
+	// }, []);
 
 	//	Check if user is logedin handler
 	useEffect(() => {
-
-		if (!isLogin()) {
+		if (!isLogin() && currOrg === null) {
 			router.push({ pathname: '/' })
-		} else {
-			getProfileDetails()
 		}
-	}, []);
+	}, [currOrg]);
 
-	//	New chat notification handler
+	//	New chat notification handler	
     useEffect(() => {
 		Pusher.logToConsole = false;
 		var pusher = new Pusher(`${Pusher_key}`, {
 		cluster: 'mt1'
 		});
-		var channel2 = pusher.subscribe('new_chat_notification_'+userId);
-		channel2.bind('pusher:subscription_succeeded', function() {
-			channel2.bind('newChat', function(data) {
-				const newData=data.newchat
-				setChatRoom(newData);
+		if(currOrg){
+			// If new message received in the organization chat
+			var channel3 = pusher.subscribe('new_chat_organization_'+currOrg.id);
+			channel3.bind('pusher:subscription_succeeded', function() {
+				channel3.bind('newChatOrganization', function(data) {
+					const newData=data.newchat
+					if(newData && newData[0].model_type != null){
+						setChatRoom(newData);
+					}
+				});
 			});
-		});
-
-		var channel = pusher.subscribe('sender_chat_'+userId);
-		channel.bind('pusher:subscription_succeeded', function() {
-			channel.bind('sender_notify', function(data) {
-					let senderData=data.chat
-					setChatRoom(senderData);
-			});
-			});
+		}
+		
 	}, [])
 
-	//	Send message handler
-	const sendMessageHandler = async () => {
-		if (message != '') {
-			setLastMessage(message)
-
-			const data = {
-				message: message,
-				sender_id: userId,
-				listing_id: messageInfo.listing_id,
-				receiver_id: messageInfo.receiver_id,
-				chat_id: messageInfo.chat_id
-			}
-			setIsMsgLoading(true)
-			await axios
-				.post(baseUrl + '/member/chats', data, {
-					headers: {
-						'Access-Control-Allow-Origin': '*',
-						'Content-type': 'Application/json',
-						Authorization: `Bearer ${accessToken()}`
-					}
-				})
-				.then((res) => {
-					setTimeout(() => {
-						setIsMsgLoading(false)
-						scrollToBottom()
-					}, 301);
-				})
-				.catch((error) => {
-					setIsMsgLoading(false)
-
-				})
-
-		}
-	}
-console.log('aaaaaa2', lastMessage)
 	//	Message box scroll handler
 	const scrollToBottom = () => {
 		var element = document.getElementById('message-box')
@@ -185,22 +138,6 @@ console.log('aaaaaa2', lastMessage)
 			element.scrollTop = element.scrollHeight + 200
 		}
 	}
-
-  useEffect(()=>{
-    axios
-      .get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        // setLoading(true);
-        setCurOrganization(res.data[0].slug);
-      })
-      .catch((err) => {
-      });
-  },[])
 
 	//	Get message handler
 	const getMessage = async (
@@ -227,11 +164,13 @@ console.log('aaaaaa2', lastMessage)
 			setChatHeader({ name: sender.name, avatar_url: sender.avatar, username: sender.username, online_status: sender.online_status, last_seen: sender.last_seen })
 		} else if (userId === sender.id) {
 			setChatHeader({ name: receiver.name, avatar_url: receiver.avatar, username: receiver.username, online_status: receiver.online_status, last_seen: receiver.last_seen })
+		}else{
+			setChatHeader({ name: receiver.name, avatar_url: receiver.avatar, username: receiver.username, online_status: receiver.online_status, last_seen: receiver.last_seen })
 		}
-
+		
 		setConversationData([])
 		await axios
-			.get(baseUrl + '/chatrooms/'+curOrganization+'/messages/' + id, {
+			.get(baseUrl + '/chatrooms/'+currOrg.slug+'/messages/' + id, {
 				headers: {
 					Authorization: `Bearer ${accessToken()}`
 				}
@@ -256,35 +195,18 @@ console.log('aaaaaa2', lastMessage)
 			})
 			.catch((error) => {
 			})
-
-		if (!channelArray.includes('chat_' + userId + '_' + listing_id)) {
-
-			channelArray.push('chat_' + userId + '_' + listing_id);
+			
+		if (!channelArray.includes('new_message_organization_' + currOrg.id + '_' + listing_id)) {
+			
+			channelArray.push('new_message_organization_' + currOrg.id + '_' + listing_id);
 			echo = new Echo(pusher)
-			echo.private('chat_' + userId + '_' + listing_id)
-				.listen('ChatEvent', function (data) {
+			echo.private('new_message_organization_' + currOrg.id + '_' + listing_id)
+				.listen('newMessageEventOrganization', function (data) {
 
 					notificationHandler(1)
-
-					if (data.message !== null && data.message !== "") {
-						if (data.message.includes('ransferred')) {
-							setIsCreditAccepted(true);
-						} else if (data.message.includes('rating') && userId === data.sender_id) {
-							setIsDeedCompleted(true)
-						} else if (data.message.includes('ending')) {
-							getMessage(data.chat_id, data.receiver_id, data.listing_id, data.sender_id, {}, {});
-						}
-					}
-					// setIsCreditAccepted(isChatCompleted.length > 0 ? true : false)
-					if (listing_id == data.listing_id) {
+					
+					if (listing_id == data.listing_id) { 
 						setConversationData((conversationData) => conversationData.concat(data))
-						if (data.transaction_status == "Rejected") {
-							setRejectStatus(true)
-						}
-						else if (data.transaction_status != null) {
-							setRejectStatus(false)
-
-						}
 					}
 					setMessage('')
 					setTimeout(() => {
@@ -295,51 +217,25 @@ console.log('aaaaaa2', lastMessage)
 		}
 	}
 
-	// We will use this function later, for transfer of getMessage function to MessageBoxOrgWeb file.
-	// const getMessages = async (
-	// 	id,
-	// 	receiver_id,
-	// 	listing_id,
-	// 	sender_id,
-	// 	receiver = {},
-	// 	sender = {}
-	// ) => {
-
-	// 	userId != receiver_id
-	// 		? (receiver_id = receiver_id)
-	// 		: (receiver_id = sender_id)
-	// 	setChatId(id)
-
-	// 	if (userId === receiver.id) {
-	// 		setChatHeader({ name: sender.name, avatar_url: sender.avatar, username: sender.username, online_status: sender.online_status, last_seen: sender.last_seen })
-	// 	} else if (userId === sender.id) {
-	// 		setChatHeader({ name: receiver.name, avatar_url: receiver.avatar, username: receiver.username, online_status: receiver.online_status, last_seen: receiver.last_seen })
-	// 	}
-
-	// 	setTempChatData({ org_slug: currentOrganization.slug, chat_id: chatId })
-
-	// }
-
 	//	Message box onload scroll handler
 	useEffect(() => {
 		scrollToBottom();
-    // getChats();
 	}, [conversationData])
 
 	//	Get chats handler
 	const getChats = async () => {
-
-		if (!curOrganization) {
+		
+		if (!currOrg) {
 			router.push('/'); // Redirect to the home page
 		}else{
 			await axios
-				.get(baseUrl + '/chatrooms/'+curOrganization, {
+				.get(baseUrl + '/chatrooms/'+currOrg?.slug, {
 					headers: {
 						Authorization: `Bearer ${accessToken()}`
 					}
 				})
 				.then((res) => {
-
+					
 					if (listingData != undefined) {
 						removeListinData()
 						let tmpExisting = res.data.data
@@ -386,7 +282,7 @@ console.log('aaaaaa2', lastMessage)
 				}
 			}
 		}
-		getChats();
+		getChats()
 		let listingId = localStorage.getItem('listingId');
 		if (listingId != undefined && listingId != '') {
 			axios
@@ -396,7 +292,7 @@ console.log('aaaaaa2', lastMessage)
 					}
 				})
 				.then((res) => {
-
+					
 					getChats()
 					setMessageInfo({
 						chat_id: res.data.data[0].chat_id,
@@ -449,109 +345,44 @@ console.log('aaaaaa2', lastMessage)
 
 					channelArray.push('chat_' + userId + '_' + res.data.data[0].listing.id);
 
-					echo = new Echo(pusher)
-					echo.private('chat_' + userId + '_' + res.data.data[0].listing.id)
-						.listen('ChatEvent', function (data) {
-							notificationHandler(1)
-							setTransactionStatus(data.transaction_status)
-							if (data.message !== null && data.message !== "") {
-								if (data.message.includes('ransferred')) {
-									setIsCreditAccepted(true);
-								} else if (data.message.includes('rating') && userId === data.sender_id) {
-									setTransactionDetail({ transation_id: data.transation_id, bool_trasaction_type: data.transaction_type })
-									setIsDeedCompleted(true)
-								} else if (data.message.includes('ending')) {
-									getMessage(data.chat_id, data.receiver.id, data.listing_id, data.sender.id, {}, {});
-								}
-							}
-							// setIsCreditAccepted(isChatCompleted.length > 0 ? true : false)
-							if (res.data.data[0].listing.id == data.listing_id) {
-								setConversationData((conversationData) => conversationData.concat(data))
-								if (data.transaction_status == "Rejected") {
-									setRejectStatus(true)
-								}
-								else if (data.transaction_status != null) {
-									setRejectStatus(false)
+					// echo = new Echo(pusher)
+					// echo.private('chat_' + userId + '_' + res.data.data[0].listing.id)
+					// 	.listen('ChatEvent', function (data) {
+					// 		notificationHandler(1)
+					// 		setTransactionStatus(data.transaction_status)
+					// 		if (data.message !== null && data.message !== "") {
+					// 			if (data.message.includes('ransferred')) {
+					// 				setIsCreditAccepted(true);
+					// 			} else if (data.message.includes('rating') && userId === data.sender_id) {
+					// 				setTransactionDetail({ transation_id: data.transation_id, bool_trasaction_type: data.transaction_type })
+					// 				setIsDeedCompleted(true)
+					// 			} else if (data.message.includes('ending')) {
+					// 				getMessage(data.chat_id, data.receiver.id, data.listing_id, data.sender.id, {}, {});
+					// 			}
+					// 		}
+					// 		// setIsCreditAccepted(isChatCompleted.length > 0 ? true : false)
+					// 		if (res.data.data[0].listing.id == data.listing_id) {
+					// 			setConversationData((conversationData) => conversationData.concat(data))
+					// 			if (data.transaction_status == "Rejected") {
+					// 				setRejectStatus(true)
+					// 			}
+					// 			else if (data.transaction_status != null) {
+					// 				setRejectStatus(false)
 
-								}
-							}
-							setMessage('')
-							setTimeout(() => {
-								scrollToBottom()
-							}, 200);
-						})
+					// 			}
+					// 		}
+					// 		setMessage('')
+					// 		setTimeout(() => {
+					// 			scrollToBottom()
+					// 		}, 200);
+					// 	})
 				})
 				.catch((error) => {
 				})
 		}
-		Pusher.logToConsole = false
-	}, [curOrganization])
-
-	// New message notification handler
-	useEffect(() => {
-		let pusherNotification = {
-			broadcaster: 'pusher',
-			key: '877cb5c78bbdba810bf0',
-			cluster: 'mt1',
-			forceTLS: true,
-			encrypted: false,
-			authEndpoint: baseImgUrl + 'broadcasting/auth',
-			auth: {
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					Authorization: `Bearer ${accessToken()}`,
-					Accept: 'application/json'
-				}
-			}
-		}
-
-		const echoNotification = new Echo(pusherNotification)
-		echoNotification.private('new_message_notification_' + userId)
-			.listen('NewMessageNotification', function (e) {
-				// console.log("fffttt", e)
-			})
 		Pusher.logToConsole = false
 	}, [])
 
-	// Image upload handler
-	const onFileUpload = (e) => {
-		var formData = new FormData();
-		if (e.file.status === "done") {
-			setIsImgMsgLoading(true)
-
-			formData.append('sender_id', userId)
-			formData.append('listing_id', messageInfo.listing_id)
-			formData.append('receiver_id', messageInfo.receiver_id)
-			formData.append('chat_id', messageInfo.chat_id)
-			formData.append('media', e.file.originFileObj)
-
-			axios.post(`${baseUrl}/member/chats/image-upload`, formData, {
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					'Content-type': 'multipart/form-data',
-					Authorization: `Bearer ${accessToken()}`
-				}
-			}).then((res) => {
-				if (document.getElementById('chat_id_' + chatId) !== null) {
-					document.getElementById('chat_id_' + chatId).click()
-				}
-				setIsImgMsgLoading(false)
-				setTimeout(() => {
-					scrollToBottom()
-				}, 1000);
-			})
-				.catch((error) => {
-					setIsImgMsgLoading(false)
-					toast({
-						position: 'top',
-						title: 'Something went wrong',
-						status: 'error'
-					})
-				})
-		}
-
-
-	}
 
 	// Note: Unused function, Image upload handler
 	const mutation = useMutation(
@@ -584,33 +415,8 @@ console.log('aaaaaa2', lastMessage)
 			}
 		}
 	)
-
-	const closeModal = async(modal) =>{
-
-		if(modal){
-
-			if(modal === 'credits_request'){
-				setCreditsRequestModal(false);
-			}else if(modal === 'transfer_credits'){
-				setTCreditModal(false)
-			}else if(modal === 'pending_credits'){
-				setPendingCreditModal(false)
-			}else if(modal === 'credits_transferred'){
-				setCreditTransferred(false)
-			}else if(modal === 'rate_and_review'){
-				setRateAndReviewModal(false)
-			}else if(modal === 'transaction'){
-				setTransactionModal(false)
-			}else if(modal === 'on_hold_credits'){
-				setOnHoldCreditModal(false)
-			}
-			setTimeout(() => {
-				scrollToBottom()
-			}, 200)
-		}
-	}
-
-	//=========================================================RETURN==================================================================
+	
+	//=========================================================RETURN==================================================================	
 
 	return (
 		<Box
@@ -643,7 +449,6 @@ console.log('aaaaaa2', lastMessage)
 										</Text>
 										{chatRoom.length > 0 &&
 											chatRoom.map((data, index) => (
-
 												<>
 													<Flex
 														mt="20px"
@@ -671,7 +476,7 @@ console.log('aaaaaa2', lastMessage)
 															mt={'5px'}
 															ml={'7px'}
 															objectFit="cover"
-															src={data.sender.avatar_url  ? data.sender.avatar_url : NoImage.src}
+															src={data.receiver.avatar  ? data.receiver.avatar : NoImage.src}
 															alt="Dan Abramov 1"
 															borderRadius={10}
 
@@ -693,7 +498,6 @@ console.log('aaaaaa2', lastMessage)
 																	:
 																	<Badge colorScheme='red'>
 																		{
-
 																			data.new_messages
 																		}
 																	</Badge>
@@ -711,19 +515,16 @@ console.log('aaaaaa2', lastMessage)
 															<Text
 																ml={'20px'}
 																// mb="-10px"
+																whiteSpace='nowrap'
+																overflow='hidden'
+																textOverflow='ellipsis'
+																maxWidth='200px'
 																fontWeight={500}
 																fontSize={'14px'}
 																style={isMobile ? { width: '270px' } : {}}
 															>
 
-																{
-																	data.last_msg &&
-																		data.last_msg.includes('https')
-																		?
-																		'Sent an image'
-																		:
-																		data.last_msg
-																}
+																{ data.last_msg }
 															</Text>
 															<Flex
 																color={'#979797'}
@@ -759,7 +560,6 @@ console.log('aaaaaa2', lastMessage)
 										'&::-webkit-scrollbar': {
 											width: '8px',
 											borderRadius: '8px'
-											//   backgroundColor: `rgba(0, 0, 0, 0.05)`,
 										},
 										'&::-webkit-scrollbar-thumb': {
 											backgroundColor: `rgba(0, 0, 0, 0.05)`
@@ -767,7 +567,7 @@ console.log('aaaaaa2', lastMessage)
 									}}
 								>
 									<Text px={10} fontWeight={600} fontSize={22}>
-										All Chats
+										All Chats 
 									</Text>
 									{  chatRoom.length > 0 &&
 										chatRoom.map((data, index) => (
@@ -796,7 +596,7 @@ console.log('aaaaaa2', lastMessage)
 														<Image
 															boxSize="60px"
 															objectFit="cover"
-															src={ data.sender.avatar}
+															src={data.receiver.avatar  ? data.receiver.avatar : NoImage.src}
 															alt="Dan Abramov 2"
 															borderRadius={5}
 														/>
@@ -839,19 +639,12 @@ console.log('aaaaaa2', lastMessage)
 															whiteSpace='nowrap'
 															overflow='hidden'
 															textOverflow='ellipsis'
-															maxWidth='100px'
+															maxWidth='200px'
 															fontWeight={500}
 															fontSize={'14px'}
 															style={isMobile ? { width: '270px' } : { }}
 														>
-															{
-																data.last_msg &&
-																	data.last_msg.includes('https')
-																	?
-																	data.last_msg
-																	:
-																	data.last_msg
-															}
+															{data.last_msg}
 														</Text>
 														<Flex
 															color={'#979797'}
@@ -922,125 +715,21 @@ console.log('aaaaaa2', lastMessage)
 													</Link>
 												</Box>
 											</Flex>
-											<Box
-												style={{ paddingBottom: '52px' }}
-												overflow={'auto'}
-												maxH={'55%'}
-												sx={{
-													'&::-webkit-scrollbar': {
-														width: '8px',
-														borderRadius: '8px'
-														//   backgroundColor: `rgba(0, 0, 0, 0.05)`,
-													},
-													'&::-webkit-scrollbar-thumb': {
-														backgroundColor: `rgba(0, 0, 0, 0.05)`
-													}
-												}}
-												id="message-box"
-											>
-											<Messages
-												loaded={loaded}
-												setLoaded={setLoaded}
+											<MessageBoxOrgMob 
+												messages = {userChatInformation}
+												messageInfoData = {messageInfo} 
+												chatInfoData = {chatHeader}
+												organizationInfoData = {null}
 												conversation={conversationData}
-												lastMessage={lastMessage}
-												user_chat_info={userChatInformation}
+												message = {message}
 											/>
-											<div ref={messagesEndRef} />
-											</Box>
-											<Box
-												position={'absolute'}
-												bottom={0}
-												minW={'100%'}
-												px={'8px'}
-												pb={5}
-												background="#fff"
-											>
-												<Flex
-													justifyContent={'center'}
-													alignItems={'center'}
-												>
-													<Box mr={'20px'}>
-														{
-															!isImgMsgLoading ?
-																<Upload
-																	maxCount={1}
-																	name="avatar"
-																	id="output"
-																	listType="picture-card"
-																	className="chat-image-uploader"
-																	showUploadList={false}
-																	showRemoveIcon={true}
-																	onChange={(e) => {
-																		onFileUpload(e)
-																	}
-																	}
-																>
-																	<BiCamera fontSize={35} color="grey" />
-																</Upload>
-																:
-																<Spinner
-																	thickness="4px"
-																	speed="0.65s"
-																	emptyColor="orange.200"
-																	color="orange.500"
-																	size="md"
-																/>
-														}
-
-													</Box>
-													<InputGroup size="xl" width={'100%'}>
-														<Input
-															pr="4.5rem"
-															pl={'5'}
-															minH={'45px'}
-															type={'text'}
-															placeholder="Message here"
-															backgroundColor={'#fff'}
-															borderRadius={20}
-															value={message}
-															onChange={(e) => {
-																setMessage(e.target.value)
-															}}
-															onKeyPress={(e) => {
-																if (
-																	e.key === 'Enter' ||
-																	e.code === 'NumpadEnter'
-																) {
-																	!isMsgLoading &&
-																		sendMessageHandler()
-																}
-															}}
-														/>
-
-														<InputRightElement width="3.5rem" h={'100%'}>
-															{
-																!isMsgLoading ?
-																	<BsFillArrowUpCircleFill
-																		fontSize={30}
-																		color={'#E27832'}
-																		fontWeight={600}
-																		onClick={sendMessageHandler}
-																	/>
-																	:
-																	<Spinner
-																		thickness="4px"
-																		speed="0.65s"
-																		emptyColor="orange.200"
-																		color="orange.500"
-																		size="md"
-																	/>
-															}
-														</InputRightElement>
-													</InputGroup>
-												</Flex>
-											</Box>
 										</Box>
 									)
 									: null
-								: Object.keys(userChatInformation).length !== 0 && (
-									<MessageBoxOrgWeb
+								: Object.keys(userChatInformation).length !== 0 && ( 
+									<MessageBoxOrgWeb 
 										messages = {userChatInformation}
-										messageInfoData = {messageInfo}
+										messageInfoData = {messageInfo} 
 										chatInfoData = {chatHeader}
 										organizationInfoData = {null}
 										conversation={conversationData}
@@ -1069,9 +758,9 @@ console.log('aaaaaa2', lastMessage)
 											</Text>
 											<Text>
 												Chats will appear here one you have begun interacting
-												with other users.
+												with other users. Browse to look for items or services.
 											</Text>
-											{/* <Button
+											<Button
 												w={'70%'}
 												type="submit"
 												mt={'5'}
@@ -1083,8 +772,8 @@ console.log('aaaaaa2', lastMessage)
 												}}
 											>
 												Browse Offering
-											</Button> */}
-											{/* <Button
+											</Button>
+											<Button
 												w={'70%'}
 												type="submit"
 												mt={'2'}
@@ -1096,7 +785,7 @@ console.log('aaaaaa2', lastMessage)
 												}}
 											>
 												<Text color={'#E27832'}>Browse Wanted</Text>
-											</Button> */}
+											</Button>
 										</Box>
 									</Flex>
 								</Box>

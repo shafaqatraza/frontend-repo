@@ -120,13 +120,6 @@ const CheckBox = (props: any) => {
               <Image src={trash.src} />
             </span>
           </div>
-
-          {/* <button
-            // @ts-ignore: Unreachable code error
-            onClick={handleFormSubmit}
-          >
-            Submit
-          </button> */}
         </div>
       </Col>
     </Row>

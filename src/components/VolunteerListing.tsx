@@ -4,33 +4,19 @@ import viewlogo from "../assets/imgs/viewlogo.png";
 import deletelogo from "../assets/imgs/deletelogo.png";
 import edit2 from "../assets/imgs/edit2.png";
 import axios from "axios";
-import { accessToken, baseUrl } from "./Helper/index";
+import { useToast } from '@chakra-ui/toast'
+import { accessToken, baseUrl, currentOrganization } from "./Helper/index";
 
 const VolunteerListing = () => {
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [slug, setSlug] = useState([]);
   const [loading, setLoading] = useState(true);
+  const toast = useToast()
 
-  useEffect(() => {
+  const getVolunteerListings = () => {
     axios
-      .get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        setSlug(res.data[0].slug);
-        setLoading(true);
-      })
-      .catch((err) => {
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${baseUrl}/volunteer-listings/all/${slug}`, {
+      .get(`${baseUrl}/volunteer-listings/all/${ // @ts-ignore: Unreachable code error
+        currentOrganization?.slug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
@@ -43,17 +29,33 @@ const VolunteerListing = () => {
       .catch((err) => {
         setLoading(false);
       });
-  }, [slug]);
+  }
+
+  useEffect(() => {
+    if(currentOrganization){
+      setLoading(true)
+      getVolunteerListings();
+    }
+  }, [currentOrganization]);
+
   const deleteVolunteer = (charity: any) => {
+    setLoading(true)
     axios
-      .delete(`${baseUrl}/volunteer-listings/${charity}`, {
+      .delete(`${baseUrl}/volunteer-listings/${charity}/delete?org=${ // @ts-ignore: Unreachable code error
+        currentOrganization?.slug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
         },
       })
       .then((res) => {
-        setRefresh(!refresh);
+        if (res.status === 200) {
+          getVolunteerListings();
+          toast({
+            title: res.data.message,
+            status: 'success'
+          })
+        }
       })
       .catch((err) => {
       });
@@ -85,7 +87,6 @@ const VolunteerListing = () => {
                     src={
                       // @ts-ignore: Unreachable code error
                       item?.thumbnail}
-
                   />
                  </div>
                  <div>
@@ -98,22 +99,21 @@ const VolunteerListing = () => {
                     <div className="d-flex justify-content-end p-2">
                       <div className="d-flex align-items-center me-2">
 
-                      <Link href={`/volunteer-listing/${
-                        // @ts-ignore: Unreachable code error
+                      <Link href={`listings/volunteer-listing/${ // @ts-ignore: Unreachable code error
                         item?.slug}`}>
-  <a>
-    <img src={viewlogo.src} />
-  </a>
-</Link>
+                        <a>
+                          <img src={viewlogo.src} />
+                        </a>
+                      </Link>
                       </div>
                       <div className="d-flex align-items-center me-2">
-                      <Link href={`/edit-volunteer-listing/${
+                      <Link href={`listings/volunteer-listing/${
                         // @ts-ignore: Unreachable code error
-                        item?.slug}`}>
-  <a>
-    <img src={edit2.src} />
-  </a>
-</Link>
+                        item?.slug}/update`}>
+                        <a>
+                          <img src={edit2.src} />
+                        </a>
+                      </Link>
                       </div>
                       <div className="d-flex align-items-center me-2">
                         <Image

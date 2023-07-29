@@ -48,7 +48,6 @@ export const Step2Form = (props) => {
     {
       onSuccess: (data) => {
         let tmpLoginData = JSON.parse(localStorage.getItem('loggedInUser'))
-        // console.log("LmnopZq", data.data)
         tmpLoginData.user = data.data.data.user
         localStorage.setItem('loggedInUser', JSON.stringify(tmpLoginData))
         toast({
@@ -127,17 +126,17 @@ export const Step2Form = (props) => {
 
   return (
     <chakra.form
-      onSubmit={(e) => {
+      onSubmit={(e) => { 
         e.preventDefault()
         var formData = new FormData()
         formData.append('username', data.username)
         formData.append('bio', data.bio)
         formData.append('location', data.location)
         formData.append('website_url', data.website_url)
-        formData.append('avatar', data.avatar.file.originFileObj)
+        formData.append('avatar', data.avatar)
         formData.append('coordinates', latLng)
         mutation.mutate(formData)
-      }}
+      }} 
       {...props}
     >
       <Stack spacing="6" className="create-profile-form">

@@ -19,25 +19,63 @@ const UploadComponent = (props) => {
   };
 
   const beforeUpload = (file) => {
-    const isJpgOrPng = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === "image/gif" || file.type === "image/tiff" || file.type === " image/svg" || file.type === "image/ief" || file.type === "image/bmp" || file.type === "image/heic")
+    const isJpgOrPng =
+      file.type === "image/jpeg" ||
+      file.type === "image/png" ||
+      file.type === "image/gif" ||
+      file.type === "image/tiff" ||
+      file.type === " image/svg" ||
+      file.type === "image/ief" ||
+      file.type === "image/bmp" ||
+      file.type === "image/heic" ||
+      file.name.split(".").pop() === "heic";
     if (!isJpgOrPng) {
-      toast({ title: "You can only upload Image file!", status: "error" })
+      toast({ title: "You can only upload Image file!", status: "error" });
     }
-    const isLt2M = file.size / 1024 / 1024 < 600
+    const isLt2M = file.size / 1024 / 1024 < 600;
     if (!isLt2M) {
-      toast({ title: "Image must smaller than 5MB!", status: "error" })
+      toast({ title: "Image must smaller than 5MB!", status: "error" });
     }
-    return isJpgOrPng && isLt2M
-  };
-  const handleChange = (info) => {
-    setLoading(true);
-    if (info.file.status === "done") {
-      setAvatar(info);
-      getBase64(info.file.originFileObj, (imageUrl) => {
 
+    if (file.name.split(".").pop() === "heic") {
+    }
+    return isJpgOrPng && isLt2M;
+  };
+   
+  const handleChange = async (info) => {
+    setLoading(true);
+    const fileExtension = info.file.name.split(".").pop().toLowerCase();
+    if (info.file.status === "done") {
+      setAvatar(info.file.originFileObj);
+      getBase64(info.file.originFileObj, (imageUrl) => {
         setImageUrl(imageUrl);
         setLoading(false);
       });
+    } else if (fileExtension === "heic") {
+      try {
+        const heic2any = (await import("heic2any")).default;
+        const jpegImage = await heic2any({
+          blob: info.file.originFileObj,
+          toType: "image/jpeg",
+        });
+
+        const convertedFile = new File([jpegImage], info.file.name, {
+          type: "image/jpeg",
+        });
+
+        setAvatar(convertedFile);
+        getBase64(convertedFile, (imageUrl) => {
+          setImageUrl(imageUrl);
+          setLoading(false);
+        });
+      } catch (error) {
+        // console.error("Error converting HEIC to JPEG:", error);
+        setLoading(false);
+        toast({ title: "Failed to convert HEIC to JPEG", status: "error" });
+      }
+    } else {
+      setLoading(false);
+      // setImageUrl(URL.createObjectURL(info.file.originFileObj));
     }
   };
 
@@ -80,12 +118,12 @@ const UploadComponent = (props) => {
         mt={5}
         mx={4}
       >
-        Upload
+        {imageUrl ? "Replace" : "Upload"}
       </Button>
     </div>
   );
   return (
-    <ImgCrop rotate>
+    // <ImgCrop rotate>
       <Upload
         name="avatar"
         id="output"
@@ -114,13 +152,13 @@ const UploadComponent = (props) => {
               name={fullName || ""}
               src={imageUrl}
             />
+            
           </div>
-
-        ) : (
-          uploadButton
-        )}
+          
+        ): (uploadButton)}
+      
       </Upload>
-    </ImgCrop>
+    // </ImgCrop>
   );
 };
 

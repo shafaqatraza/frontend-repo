@@ -1,22 +1,22 @@
 import React, { useEffect } from "react";
-import { Footer } from "../components/Footer";
-import Navbar from "../components/Navbar";
+import { Footer } from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 import { useState } from "react";
-import user from "../assets/imgs/user.png";
-import userB from "../assets/imgs/userB.png";
-import heartB from "../assets/imgs/heartB.png";
-import heart from "../assets/imgs/heart.png";
-import home from "../assets/imgs/home.png";
-import setting from "../assets/imgs/setting.png";
-import volunteer from "../assets/imgs/volunteer.png";
-import listing from "../assets/imgs/listing.png";
-import donation from "../assets/imgs/donation.png";
-import giving from "../assets/imgs/giving.png";
+import user from "../../assets/imgs/user.png";
+import userB from "../../assets/imgs/userB.png";
+import heartB from "../../assets/imgs/heartB.png";
+import heart from "../../assets/imgs/heart.png";
+import home from "../../assets/imgs/home.png";
+import setting from "../../assets/imgs/setting.png";
+import volunteer from "../../assets/imgs/volunteer.png";
+import listing from "../../assets/imgs/listing.png";
+import donation from "../../assets/imgs/donation.png";
+import giving from "../../assets/imgs/giving.png";
 import { color, Image, Button } from "@chakra-ui/react";
-import Candadogo from "../assets/imgs/Canadogo.png";
+import Candadogo from "../../assets/imgs/Canadogo.png";
 import Link from "next/link";
-import Sidebar from "../components/Sidebar";
-import { accessToken, baseUrl } from "../components/Helper/index";
+import Sidebar from "../../components/Sidebar";
+import { accessToken, baseUrl } from "../../components/Helper/index";
 import axios from "axios";
 import { useRouter } from 'next/router'
 
@@ -28,8 +28,6 @@ const organization = () => {
   const [loading, setLoading] = useState(true);
   const [hours, setHours] = useState({});
   const router = useRouter()
-
-  console.log('fffdddss', data.length)
 
   useEffect(() => {
     axios
@@ -46,7 +44,7 @@ const organization = () => {
       .catch((err) => {
         console.log(err);
       });
-    axios
+    axios 
       .get(`${baseUrl}/organizations`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
@@ -57,7 +55,6 @@ const organization = () => {
         console.log(res.data[0]?.slug, "datatatata");
         setSlug(res.data[0]?.full_name);
         setOrganization(res.data[0]?.slug);
-        localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
       })
       .catch((err) => {
         console.log(err);
@@ -148,7 +145,7 @@ const organization = () => {
                           }
                         </p>
                         <div className="mt-3">
-                          <Link href="/organization-info">
+                          <Link href="/organization/profile">
                             <a className="orga-txt">
                               {
                                 // @ts-ignore: Unreachable code error
@@ -170,7 +167,7 @@ const organization = () => {
                           }
                         </p>
                         <div className="mt-3">
-                          <a className="orga-txt" href="/organization-info">
+                          <a className="orga-txt" href="/organization/profile">
                             Organization Setting
                           </a>
                         </div>
@@ -234,7 +231,7 @@ const organization = () => {
                         fontWeight="600"
                         width="170px"
                         maxW="100%"
-                        onClick={() => { data?.length > 1 ? router.push('/listings') : router.push('/create-listing') }}
+                        onClick={() => { data?.length > 1 ? router.push('/organization/listings') : router.push('/organization/listings/create') }}
                       >
                         View Postings
                       </Button>
@@ -270,7 +267,7 @@ const organization = () => {
                               aria-valuemax={100}
                             ></div>
                           </div>
-                          <Link href="/select-plan">
+                          <Link href="/organization/payment-plans">
                             <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
                               Upgrade
                             </button>
@@ -279,8 +276,8 @@ const organization = () => {
                       </div>
                     ) : (
                       <>
-                        <p className="text-center mt-3 p-txt2 mb-3">There is no Plan subscribed</p>
-                        <Link href="/select-plan">
+                        <p className="text-center mt-3 p-txt2 mb-3">There is no plan subscribed</p>
+                        <Link href="/organization/payment-plans">
                           <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
                             Subscribe
                           </button>

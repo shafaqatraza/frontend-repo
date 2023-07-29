@@ -25,7 +25,6 @@ const Sidebar = (props) => {
         },
       })
       .then((res) => {
-        console.log(res.data[0].slug, "datatatata");
         setSlug(res.data[0].slug);
       })
       .catch((err) => {
@@ -42,7 +41,7 @@ const Sidebar = (props) => {
         },
       })
       .then((res) => {
-        console.log(res);
+       
         setData(res.data.data);
       })
       .catch((err) => {
@@ -95,7 +94,7 @@ const Sidebar = (props) => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/organization-info">
+                    <Link href="/organization/profile">
                       <a>Profile</a>
                     </Link>
                   </div>
@@ -108,7 +107,7 @@ const Sidebar = (props) => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/listings">
+                    <Link href="/organization/listings">
                       <a>Listings</a>
                     </Link>
                   </div>
@@ -121,7 +120,7 @@ const Sidebar = (props) => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/volunteer-applications">
+                    <Link href="/organization/volunteer-applications">
                       <a>Volunteer Applications</a>
                     </Link>
                   </div>
@@ -134,7 +133,7 @@ const Sidebar = (props) => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/donation-analytics">
+                    <Link href="/organization/donation-analytics">
                       <a>Donation Analytics</a>
                     </Link>
                   </div>
@@ -147,7 +146,7 @@ const Sidebar = (props) => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/settings">
+                    <Link href="/organization/settings">
                       <a>Settings</a>
                     </Link>
                   </div>

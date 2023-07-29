@@ -47,7 +47,7 @@ const EditMember = () => {
                   </div>
 
                   <div className="ms-3">
-                    <Link href="/organization-info">
+                    <Link href="/organization/profile">
                       <a>Profile</a>
                     </Link>
                   </div>
