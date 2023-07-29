@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/createProfileModels/step2/step2Form.jsx", "src/components/onboarding/Signup/SignupForm.jsx", "src/components/onboarding/Login/LoginForm.jsx", "src/components/Sidebar.jsx", "src/pages/donation-listing.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/createProfileModels/step2/step2Form.jsx", "src/components/onboarding/Signup/SignupForm.jsx", "src/components/onboarding/Login/LoginForm.jsx", "src/components/Sidebar.jsx", "src/pages/donation-listing.jsx", "src/pages/organization/payment-plans/[id].tsx", "src/pages/organization/payment-plans/[id].tsx", "src/pages/organization/payment-plans/[id].tsx", "src/components/CheckoutForm.jsx"],
   "exclude": ["node_modules"]
 }
