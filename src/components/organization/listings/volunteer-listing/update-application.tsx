@@ -11,10 +11,7 @@ import { Select } from "antd";
 import { useToast } from '@chakra-ui/toast'
 import { useRouter } from 'next/router'
 
-interface Option {
-  label: string;
-  value: string;
-}
+
 interface Props {
   name: string;
   age: number;
@@ -26,6 +23,27 @@ interface AvailabilityState {
     evening: boolean;
   };
 }
+interface questionErrors{
+  id: string
+}
+
+interface Question {
+  is_deleted: boolean;
+  is_required: boolean;
+  is_new: boolean,
+  question_id: number;
+  question: string;
+  conditional_question?: string,
+  question_type_id: number;
+  options?: Option[];
+}
+
+interface Option {
+  id: number;
+  option: string;
+  type: 'new' | 'old';
+  is_deleted: boolean;
+}
 
 const CreateApplication = (props: Props) => {
   const [dataArray, setDataArray] = useState([]);
@@ -34,6 +52,8 @@ const CreateApplication = (props: Props) => {
     question_type_id: 0
   }]);
   const [successMessage, setSuccessMessage] = useState("");
+  const [applicationFormId, setApplicationFormId] = useState(0);
+  const [totalApplications, setTotalApplications] = useState(0);
   const toast = useToast()
   const router = useRouter()
   if (!router) {
@@ -41,11 +61,7 @@ const CreateApplication = (props: Props) => {
   }
 
   const { slug } = router.query;
-  // const [formData, setFormData] = useState({
-  //   listing_id: null,
-  //   tenant_module_id: 1,
-  //   data: [],
-  // });
+
   const [showSuccess, setShowSuccess] = useState(false);
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShowSuccess(true);
@@ -60,9 +76,8 @@ const CreateApplication = (props: Props) => {
   };
 // ===============================================================================================
   
-  const [questions, setQuestions] = useState<{ id: string; type: string; type_id:number; html: JSX.Element }[]>([]);
-  const [listingId, setListingId] = useState("");
-  const [options, setOptions] = useState<Option[]>([]);
+  const [questions, setQuestions] = useState<{ id: string; type: string; is_deleted:boolean, type_id:number; html: JSX.Element }[]>([]);
+
   const [availability, setAvailability] = useState<AvailabilityState>({
     Monday: { morning: false, afternoon: false, evening: false },
     Tuesday: { morning: false, afternoon: false, evening: false },
@@ -73,28 +88,91 @@ const CreateApplication = (props: Props) => {
     Sunday: { morning: false, afternoon: false, evening: false },
   });
   const [questionErrors, setQuestionErrors] = useState<{ [key: string]: boolean }>({});
-  const handleInputChange = (id: string) => {
-    setQuestionErrors((prevErrors) => ({
-      ...prevErrors,
-      [id]: false, // Reset the error state for the specific question ID
-    }));
-  };
+  const [previousQuestions, setPreviousQuestions] = useState<{ id: string; question: any }[]>([]);
 
   
-  useEffect(() => {
-    axios
-    .get(`${baseUrl}/volunteer-listings/all/${currOrgSlug}`, {
-      headers: {
-        Authorization: "Bearer " + accessToken(),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-    .then((res) => {
-      setVolunData(res.data.data);
-    })
-    .catch((err) => {
-    });
+  
+  const handleInputChange = (id: string, value: string) => { 
+    if(id.includes("conditional")){
+      let splitString  = id.split("conditional-");
+      id = splitString[1];
+      setPreviousQuestions((prevQuestions) => ({
+        ...prevQuestions,
+        [id]: {
+          ...prevQuestions[id],
+          conditional_question: value,
+        },
+      }));
 
+      setQuestionErrors((prevErrors) => ({
+        ...prevErrors,
+        [`conditional-${id}`]: false, // Reset the error state for the specific question ID
+      }));
+    }else if(id.includes("option")){ 
+      let splitString  = id.split("-option-");
+      id = splitString[0];
+      let optionIndex = splitString[1];
+  
+      setPreviousQuestions((prevQuestions) => {
+        const questionToUpdate = prevQuestions[id];
+        if (!questionToUpdate) {
+          return prevQuestions; // Question with the given ID not found, return the original state
+        }
+    
+        // Create a new copy of the options array
+        const updatedOptions = [...questionToUpdate.options];
+        updatedOptions[optionIndex] = {
+          ...updatedOptions[optionIndex],
+          option: value,
+        };
+    
+        // Create a new copy of the question with the updated options
+        const updatedQuestion = {
+          ...questionToUpdate,
+          options: updatedOptions,
+        };
+    
+        // Create a new copy of the previousQuestions state with the updated question
+        const updatedQuestions = {
+          ...prevQuestions,
+          [id]: updatedQuestion,
+        };
+    
+        return updatedQuestions;
+      });
+      
+      setQuestionErrors((prevErrors) => ({
+        ...prevErrors,
+        [`${id}-option-${optionIndex}`]: false, // Reset the error state for the specific question ID
+      }));
+    }else {
+      setPreviousQuestions((prevQuestions) => ({
+        ...prevQuestions,
+        [id]: {
+          ...prevQuestions[id],
+          question: value,
+        },
+      }));
+
+      setQuestionErrors((prevErrors) => ({
+        ...prevErrors,
+        [id]: false, // Reset the error state for the specific question ID
+      }));
+    }
+
+  };
+
+  const handleRequiredChange = (id: string, value:boolean) => {
+    setPreviousQuestions((prevQuestions) => ({
+      ...prevQuestions,
+      [id]: {
+        ...prevQuestions[id],
+        is_required: value,
+      },
+    }));
+  };
+  
+  useEffect(() => {
     // Get application-form data for specific listing.
     axios
       .get(`${baseUrl}/application-form/show/${slug}?org=${currOrgSlug}`, {
@@ -105,96 +183,164 @@ const CreateApplication = (props: Props) => {
       })
       .then((res) => {
         setApplicationQuestions(res.data.data)
+        setApplicationFormId(res.data.application_form_id)
+        setTotalApplications(res.data.applications)  
       })
       .catch((err) => {
       });
   }, [currOrgSlug, slug]);
 
-  
-  
-  const handleSelectChange = (value: string) => {
-    setListingId(value);
+  const handleAddOption = (id: string, previousQuestions: any) => {  // @ts-ignore: Unreachable code error
+    // First, filter the options to get only non-deleted options
+  const nonDeletedOptions = previousQuestions[id]?.options.filter(
+    (option) => !option.is_deleted
+  );
+
+  // Get the length of the filtered array
+  const nonDeletedOptionsLength = nonDeletedOptions.length;
+
+    if (nonDeletedOptionsLength < 4) { 
+      setPreviousQuestions((prevQuestions) => {
+        const questionToUpdate = prevQuestions[id];
+        if (!questionToUpdate) {
+          return prevQuestions; // Question with the given ID not found, return the original state
+        }
+    
+        // Create a new copy of the options array and add the new option
+        const updatedOptions = [...questionToUpdate.options, { id: 0, option: "", type: "new", is_deleted:false }];
+    
+        // Create a new copy of the question with the updated options
+        const updatedQuestion = {
+          ...questionToUpdate,
+          options: updatedOptions,
+        };
+    
+        // Create a new copy of the previousQuestions state with the updated question
+        const updatedQuestions = {
+          ...prevQuestions,
+          [id]: updatedQuestion,
+        };
+    
+        return updatedQuestions;
+      });
+    }
   };
 
-  const handleAddOption = (id: string, options: Option[][]) => {  // @ts-ignore: Unreachable code error
-    if (options[id] && options[id].length < 4) {  
-      setOptions((prevOptions) => {
-        // Get the existing options array for the specific question ID, or initialize an empty array
-        // @ts-ignore: Unreachable code error
-        const questionOptions = prevOptions[id] || [];
-        const newOption = { label: `Option ${questionOptions.length + 1}`, value: "" };
-    
-        // Create a new options object with the updated options array for the specific question ID
-        const updatedOptions = {
-          ...prevOptions,
-          [id]: [...questionOptions, newOption],
-        };
-    
-        return updatedOptions;
-      });
-    }
-  };
   
-  const handleOptionChange = (id: string, index: number, value: string, options: Option[][]) => { // @ts-ignore: Unreachable code error
-    if (options[id]) {
-      setOptions((prevOptions) => { // @ts-ignore: Unreachable code error
-        const questionOptions = prevOptions[id] || []; // @ts-ignore: Unreachable code error
-        const updatedQuestionOptions = questionOptions.map((option, optionIndex) => {
-          if (optionIndex === index) {
-            return { ...option, value: value };
+  const handleRemoveOption = (id: string, optionIndex: number, previousQuestions: []) => { // @ts-ignore: Unreachable code error
+    
+    setPreviousQuestions((prevQuestions) => {
+      const questionToUpdate = prevQuestions[id];
+      if (!questionToUpdate) {
+        return prevQuestions; // Question with the given ID not found, return the original state
+      }
+  
+      const options = questionToUpdate.options.map((option, index) => {
+        if (index === optionIndex) {
+          // Check the type of the option
+          if (option.type === "old") {
+            // If the type is 'old', set is_deleted to true
+            return { ...option, is_deleted: true };
+          } else {
+            // If the type is 'new', remove the option from the options array
+            return null;
           }
-          return option;
-        });
-        const updatedOptions = {
-          ...prevOptions,
-          [id]: updatedQuestionOptions,
-        };
-        return updatedOptions;
-      });
-    }
-  };
+        }
+        return option;
+      }).filter(Boolean); // Remove null values from the array (options of type 'new')
   
-  const handleRemoveOption = (id: string, index: number, options: []) => { // @ts-ignore: Unreachable code error
-    if (options[id] && options[id].length > 2) { // @ts-ignore: Unreachable code error
-      const updatedOptions = {
-        ...options, // @ts-ignore: Unreachable code error
-        [id]: options[id].filter((option, i) => i !== index)
+      // Create a new copy of the question with the updated options
+      const updatedQuestion = {
+        ...questionToUpdate,
+        options: options,
       };
-      setOptions(updatedOptions);
-    }
+  
+      // Create a new copy of the previousQuestions state with the updated question
+      const updatedQuestions = {
+        ...prevQuestions,
+        [id]: updatedQuestion,
+      };
+  
+      return updatedQuestions;
+    });
   };
   
   const handleDeleteComponent = (id: string) => {
+
+    setPreviousQuestions((prevQuestions) => {
+      const questionToDelete = prevQuestions[id];
+      if (!questionToDelete) {
+        return prevQuestions; // Question with the given ID not found, return the original state
+      }
+  
+      // If is_new is true, remove the question from the previousQuestions array
+      if (questionToDelete.is_new) {
+        const updatedQuestions = { ...prevQuestions };
+        delete updatedQuestions[id];
+        return updatedQuestions;
+      }
+  
+      // If is_new is false, update is_deleted to true for the question
+      return {
+        ...prevQuestions,
+        [id]: {
+          ...questionToDelete,
+          is_deleted: true,
+        },
+      };
+    });
+
     setQuestions((prevQuestions) => {
-      const updatedQuestions = prevQuestions.filter((question) => question.id !== id);
+      const updatedQuestions = prevQuestions.map((question) =>
+        question.id === id ? { ...question, is_deleted: true } : question
+      );
       return updatedQuestions;
     });
   };
   
   const handleResetForm = () => {
     setQuestions([]);
-    setOptions([]);
     setQuestionErrors({});
+      
+    setPreviousQuestions((prevQuestions) => {
+      const updatedQuestions = {};
+  
+      for (const key in prevQuestions) {
+        const question = prevQuestions[key];
+        if (question.is_new) {
+          // If is_new is true, skip the question (remove from previousQuestions)
+          continue;
+        }
+  
+        // If is_new is false, update is_deleted to true
+        updatedQuestions[key] = {
+          ...question,
+          is_deleted: true,
+        };
+      }
+  
+      return updatedQuestions;
+    });
+      
   }
-  console.log('qqqqqqqqqq', questions)
-  console.log('oooooooooo', options)
+
 // ===============================================================================================
-  const shortQuestionHTML = (id: string, questionErrors: []) => {
+  const shortQuestionHTML = (id: string, questionErrors: any, previousQuestions: any) => {
   return (
     <Row key={id}>
-      <Col md={6}>
+      <Col md={12}>
         <div className="card shadow p-4 mt-3">
           <p className="listing-txt">Question</p>
           <div>
             <Input
               style={{ backgroundColor: "#E8E8E8" }}
-              type="tel"
-              className={`form-control mt-2 ${// @ts-ignore: Unreachable code error
-                questionErrors[id] ? 'input-error' : ''}`}
+              type="text"
+              className={`form-control mt-2 ${questionErrors[id] ? 'input-error' : ''}`}
               id={id}
               placeholder="Question"
+              value={previousQuestions[id]?.question}
               required
-              onChange={(e) => handleInputChange(id)}
+              onChange={(e) => handleInputChange(id, e.target.value)}
             />
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
@@ -203,6 +349,8 @@ const CreateApplication = (props: Props) => {
             <input
               className="form-check-input me-3 mt-2"
               type="checkbox"
+              checked={previousQuestions[id]?.is_required == 1 ? true: false}
+              onChange={(e) => handleRequiredChange(id, e.target.checked)}
               id={`is_required-${id}`}
             />
             <label className="form-label me-3 mt-1">Required</label>
@@ -216,26 +364,28 @@ const CreateApplication = (props: Props) => {
   );
   };
 
-  const checkboxAndRadioQuestionHTML = (id: string, type_id: number, options: [], questionErrors: []) => {
+  const checkboxAndRadioQuestionHTML = (id: string, type_id: number, questionErrors: any, previousQuestions: any) => {
     return (
       <Row> 
-        <Col md={6}>
+        <Col md={12}>
           <div className="card shadow p-4 mt-3">
           <p className="listing-txt">Question</p>
             <Input
               style={{ backgroundColor: "#E8E8E8" }}
-              type="tel"
-              className={`form-control mt-2 ${// @ts-ignore: Unreachable code error
-                questionErrors[id] ? 'input-error' : ''}`}
+              type="text"
+              className={`form-control mt-2 ${questionErrors[id] ? 'input-error' : ''}`}
               id={id}
+              value={previousQuestions[id]?.question}
               placeholder="Question" // @ts-ignore: Unreachable code error
               onChange={(e) => handleInputChange(id, e.target.value)}
             />
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
             {// @ts-ignore: Unreachable code error
-            options[id] && // @ts-ignore: Unreachable code error
-              options[id].map((option, index) => (
+            previousQuestions[id] && // @ts-ignore: Unreachable code error
+            previousQuestions[id].options.reduce((acc, option, index) => {
+              if (!option.is_deleted) {
+                acc.push(
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
                     <input
@@ -247,33 +397,38 @@ const CreateApplication = (props: Props) => {
                     <input
                       id={`option-${index}`}
                       type="text"
-                      value={option.value}
+                      value={option.option}
                       style={{ width: "80%" }}
                       className={`border-bottom-input ms-3 mt-1 ${// @ts-ignore: Unreachable code error
                         questionErrors[`${id}-option-${index}`] ? 'option-error' : ''}`}
                       placeholder={`Option ${index+1}`}
                       onChange={(event) => {
-                        handleOptionChange(id, index, event.target.value, options)
-                        handleInputChange(`${id}-option-${index}`);
-                        
+                        // handleOptionChange(id, index, event.target.value, options)
+                        handleInputChange(`${id}-option-${index}`, event.target.value);
                       }}
                       required
                     />
                     <Image
                       className="ms-2 mt-2"
                       src={cros.src}
-                      onClick={() => handleRemoveOption(id, index, options)}
+                      onClick={() => handleRemoveOption(id, index, previousQuestions)}
                     />
                   </div>
                 </div>
-              ))}
+                );
+              }
+              return acc;
+              }, [])
+            }
             <div className="mt-2 mb-2">
-              <Image src={plus.src} onClick={() => handleAddOption(id, options)} />
+              <Image src={plus.src} onClick={() => handleAddOption(id, previousQuestions)} />
             </div>
             <div className="form-check form-switch d-flex justify-content-end mt-3">
               <input
                 className="form-check-input me-3 mt-2"
                 type="checkbox"
+                checked={previousQuestions[id]?.is_required ==1 ? true: false}
+                onChange={(e) => handleRequiredChange(id, e.target.checked)}
                 id={`is_required-${id}`}
               />
               <label className="form-label me-3 mt-1">Required</label>
@@ -287,11 +442,11 @@ const CreateApplication = (props: Props) => {
     );
   };
   
-  const conditionalQuestionHTML = (id: string, options: [], questionErrors: []) => {
+  const conditionalQuestionHTML = (id: string, questionErrors: [], previousQuestions: any) => {
   
     return (
       <Row> 
-        <Col md={6}>
+        <Col md={12}>
           <div className="card shadow p-4 mt-3">
           <p className="listing-txt">Question</p>
             <Input
@@ -300,13 +455,16 @@ const CreateApplication = (props: Props) => {
               className={`form-control mt-2 ${questionErrors[id] ? 'input-error' : ''}`}
               id={id}
               placeholder="Question"
-              onChange={(e) => handleInputChange(id)}
+              value={previousQuestions[id]?.question}
+              onChange={(e) => handleInputChange(id, e.target.value)}
             /> 
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
             {// @ts-ignore: Unreachable code error
-            options[id] && // @ts-ignore: Unreachable code error
-              options[id].map((option, index) => (
+            previousQuestions[id] && // @ts-ignore: Unreachable code error
+            previousQuestions[id].options.reduce((acc, option, index) => {
+              if (!option.is_deleted) {
+                acc.push(
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
                     <input
@@ -318,14 +476,13 @@ const CreateApplication = (props: Props) => {
                     <input
                       id={`option-${index}`}
                       type="text"
-                      value={option.value}
+                      value={option.option}
                       style={{ width: "80%" }}
                       className={`border-bottom-input ms-3 mt-1 ${// @ts-ignore: Unreachable code error
                         questionErrors[`${id}-option-${index}`] ? 'option-error' : ''}`}
                       placeholder={`Option ${index+1}`}
                       onChange={(event) => {
-                        handleOptionChange(id, index, event.target.value, options)
-                        handleInputChange(`${id}-option-${index}`)
+                        handleInputChange(`${id}-option-${index}`, event.target.value);
                       }}
                       required
                     />
@@ -336,7 +493,11 @@ const CreateApplication = (props: Props) => {
                     /> */}
                   </div>
                 </div>
-              ))}
+                );
+              }
+              return acc;
+              }, [])
+            }
             {/* <div className="mt-2 mb-2">
               <Image src={plus.src} onClick={() => handleAddOption(id, options)} />
             </div> */}
@@ -347,7 +508,8 @@ const CreateApplication = (props: Props) => {
                 questionErrors[`conditional-${id}`] ? 'input-error' : ''}`}
               id={`conditional-${id}`}
               placeholder="Conditional Question"
-              onChange={(e) => handleInputChange(`conditional-${id}`)}
+              value={previousQuestions[id]?.conditional_question}
+              onChange={(e) => handleInputChange(`conditional-${id}`, e.target.value)}
             />
             {// @ts-ignore: Unreachable code error
             questionErrors[`conditional-${id}`] && <p className="error-message">Please fill out the field.</p>}
@@ -355,6 +517,8 @@ const CreateApplication = (props: Props) => {
               <input
                 className="form-check-input me-3 mt-2"
                 type="checkbox"
+                checked={previousQuestions[id]?.is_required == 1 ? true: false}
+                onChange={(e) => handleRequiredChange(id, e.target.checked)}
                 id={`is_required-${id}`}
               />
               <label className="form-label me-3 mt-1">Required</label>
@@ -368,16 +532,18 @@ const CreateApplication = (props: Props) => {
     );
   };
 
-  const askAvailabilityHTML = (id: string, options: []) => {
+  const askAvailabilityHTML = (id: string, previousQuestions: any) => {
     return (
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <p className="listing-txt mt-2">Availability</p>
           <div className="card shadow p-4 mt-3">
             <p className="fw-bold">* I am available and agree to commit to:</p>
             {// @ts-ignore: Unreachable code error
-            options[id] && // @ts-ignore: Unreachable code error
-              options[id].map((option, index) => (
+            previousQuestions[id] && // @ts-ignore: Unreachable code error
+            previousQuestions[id].options.reduce((acc, option, index) => {
+              if (!option.is_deleted) {
+                acc.push(
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
                     
@@ -388,17 +554,21 @@ const CreateApplication = (props: Props) => {
                       disabled
                     />
                     <span style={// @ts-ignore: Unreachable code error
-                      {"font-size": "16px"} }>{option.value}</span>
+                      {"font-size": "16px"} }>{option.option}</span>
                   </div>
                 </div>
-              ))}
+                );
+              }
+              return acc;
+              }, [])
+            }
             <div className="form-check form-switch d-flex justify-content-end mt-3">
             <input
               className="form-check-input me-3 mt-2"
               type="checkbox"
+              checked={previousQuestions[id]?.is_required == 1 ? true: false}
+              onChange={(e) => handleRequiredChange(id, e.target.checked)}
               id={`is_required-${id}`}
-              checked
-              disabled
             />
             <label className="form-label me-3 mt-1">Required</label>
             <span className="mt-1 index" onClick={() => handleDeleteComponent(id)}>
@@ -422,7 +592,7 @@ const CreateApplication = (props: Props) => {
             <div>
               <p className="fw-bold fs-5 mt-2">*Availability to</p>
             </div>
-            <form className="mt-4">
+            <div className="mt-4">
               <table className="col-md-12">
                 <thead>
                   <tr>
@@ -436,43 +606,25 @@ const CreateApplication = (props: Props) => {
                   {Object.entries(availability).map(([day, times]) => (
                     <tr key={day}>
                       <td>{day}</td>
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={times.morning}
-                          disabled
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={times.afternoon}
-                          disabled
-                        />
-                      </td>
-                      <td className="ms-5">
-                        <input
-                          type="checkbox"
-                          checked={times.evening}
-                          disabled
-                        />
-                      </td>
+                      <td> <input type="checkbox" checked={times.morning} disabled /></td>
+                      <td> <input type="checkbox" checked={times.afternoon} disabled /></td>
+                      <td className="ms-5"> <input type="checkbox" checked={times.evening} disabled /></td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </form>
+            </div>
           </div>
         </Col>
       </Row>  
     );
   };
 
-  const workExperienceHTML = (id: string, options: [], questionErrors: []) => {
+  const workExperienceHTML = (id: string, questionErrors: [], previousQuestions: any) => {
     return(
       <>
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <p className="listing-txt mt-4">Previous Work or Volunteer Experience</p>
           <div className="card shadow p-4 mt-4 mb-4">
             <div className="row">
@@ -484,18 +636,21 @@ const CreateApplication = (props: Props) => {
                   type="text" 
                   style={{ backgroundColor: "#E8E8E8" }} 
                   placeholder="Begin Typing here" 
-                  id={`work-experience-${id}`} // @ts-ignore: Unreachable code error
-                  className={`${questionErrors[`work-experience-${id}`] ? 'input-error' : ''}`}
-                  onChange={(e) => handleInputChange(`work-experience-${id}`)}
+                  id={id} // @ts-ignore: Unreachable code error
+                  value={previousQuestions[id]?.question}
+                  className={`${questionErrors[id] ? 'input-error' : ''}`}
+                  onChange={(e) => handleInputChange(id, e.target.value)}
                 />
               </div>
               {// @ts-ignore: Unreachable code error
-              questionErrors[`work-experience-${id}`] && <p className="error-message">Please fill out the field.</p>}
+              questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
             </div>
             
             {// @ts-ignore: Unreachable code error
-            options[id] && // @ts-ignore: Unreachable code error
-              options[id].map((option, index) => (
+             previousQuestions[id] && // @ts-ignore: Unreachable code error
+             previousQuestions[id].options.reduce((acc, option, index) => {
+               if (!option.is_deleted) {
+                 acc.push(
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
                     
@@ -506,17 +661,21 @@ const CreateApplication = (props: Props) => {
                       disabled
                     />
                     <span style={// @ts-ignore: Unreachable code error
-                      {"font-size": "16px"} }>{option.value}</span>
+                      {"font-size": "16px"} }>{option.option}</span>
                   </div>
                 </div>
-              ))}
+                );
+              }
+              return acc;
+              }, [])
+            }
             <div className="form-check form-switch d-flex justify-content-end mt-3">
             <input
               className="form-check-input me-3 mt-2"
               type="checkbox"
+              checked={previousQuestions[id]?.is_required == 1 ? true: false}
+              onChange={(e) => handleRequiredChange(id, e.target.checked)}
               id={`is_required-${id}`}
-              checked
-              disabled
             />
             <label className="form-label me-3 mt-1">Required</label>
             <span className="mt-1 index" onClick={() => handleDeleteComponent(id)}>
@@ -527,7 +686,7 @@ const CreateApplication = (props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <div className="card shadow pt-4">
             <p className="listing-txt ms-4">Prior Work Experience</p>
             <div className="d-flex">
@@ -548,14 +707,23 @@ const CreateApplication = (props: Props) => {
           </div>
         </Col>
       </Row>
+      </>
+    );
+  };
+
+  const askVaccinationHTML = (id: string, questionErrors: [], previousQuestions: any) => {
+    return(
+      <>
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <div className="card shadow pt-4 p-4 mt-4">
           <p className="fw-bold">* Are you fully vacination against COVID-19 (2 doses)</p>
             <div className="checkbox-container d-flex flex-column mt-3 ms-3">
             {// @ts-ignore: Unreachable code error
-            options[id] && // @ts-ignore: Unreachable code error
-              options[id].map((option, index) => (
+            previousQuestions[id] && // @ts-ignore: Unreachable code error
+            previousQuestions[id].options.reduce((acc, option, index) => {
+              if (!option.is_deleted) {
+                acc.push(
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
                     
@@ -566,113 +734,146 @@ const CreateApplication = (props: Props) => {
                       disabled
                     />
                     <span style={// @ts-ignore: Unreachable code error
-                      {"font-size": "16px"} }>{option.value}</span>
+                      {"font-size": "16px"} }>{option.option}</span>
                   </div>
                 </div>
-              ))}
+                );
+              }
+              return acc;
+              }, [])
+            }
             </div>
+            <div className="form-check form-switch d-flex justify-content-end mt-3">
+            <input
+              className="form-check-input me-3 mt-2"
+              type="checkbox"
+              checked={previousQuestions[id]?.is_required == 1 ? true: false}
+              onChange={(e) => handleRequiredChange(id, e.target.checked)}
+              id={`is_required-${id}`}
+            />
+            <label className="form-label me-3 mt-1">Required</label>
+            <span className="mt-1 index" onClick={() => handleDeleteComponent(id)}>
+              <Image src={trash.src} />
+            </span>
+          </div>
           </div>
         </Col>
       </Row>
       </>
     );
   };
-
   
 // ===============================================================================================
 
-const handleAddQuestion = (type: string, question_length: number) => {
+const handleAddQuestion = (type: string, question_length: number, is_new:boolean) => {
   const id = 'question-' + question_length;
-  
-  console.log('cccccccc', id)
   let newQuestion: JSX.Element;
   let type_id: number;
 
   // Check if the question type is AskAvailability or WorkExperience
   if (type === 'AskAvailability' || type === 'WorkExperience') {
     // Check if the question already exists in the questions array
-    const exists = questions.some((question) => question.type === type);
+    const exists = questions.some((question) => question.type === type && !question.is_deleted);
     if (exists) {
       toast({ position: "top", title: `You cannot add ${type === 'AskAvailability' ? '(Ask Availability)' : '(Work Experience)'} more than once.`, status: "warning" });
       return;
     }
   }
+  // Define the newComponent object
+  const newComponent: { [key: string]: Question } = {
+    [id]: {
+      is_deleted: false,
+      is_required: false,
+      is_new: is_new,
+      question_id: 0,
+      question_type_id: 0,
+      question: "",
+    },
+  };
 
   switch (type) {
     case 'ShortQuestion':
       type_id = 1; // @ts-ignore: Unreachable code error
-      newQuestion = (questionErrors) => shortQuestionHTML(id, questionErrors);
+      newQuestion = (questionErrors, previousQuestions) => shortQuestionHTML(id, questionErrors, previousQuestions);
+      newComponent[id].question_type_id = type_id;
       break;
     case 'CheckboxQuestion':
       type_id = 2; // @ts-ignore: Unreachable code error
-      newQuestion = (options, questionErrors) => checkboxAndRadioQuestionHTML(id, type_id, options, questionErrors);
-
-      setOptions((prevOptions) => ({
-        ...prevOptions,
-        [id]: [
-          { label: 'Option 1', value: '' },
-          { label: 'Option 2', value: '' },
-        ],
-      }));
+      newQuestion = (questionErrors, previousQuestions) => checkboxAndRadioQuestionHTML(id, type_id, questionErrors, previousQuestions);
+      newComponent[id].question_type_id = type_id;
+      newComponent[id].options = [
+        { id: 0, option: '', type: 'new', is_deleted: false },
+        { id: 0, option: '', type: 'new', is_deleted: false },
+      ];
       break;
     case 'RadioButtonQuestion':
       type_id = 3; // @ts-ignore: Unreachable code error
-      newQuestion = (options, questionErrors) => checkboxAndRadioQuestionHTML(id, type_id, options, questionErrors);
-
-      setOptions((prevOptions) => ({
-        ...prevOptions,
-        [id]: [
-          { label: 'Option 1', value: '' },
-          { label: 'Option 2', value: '' },
-        ],
-      }));
+      newQuestion = (questionErrors, previousQuestions) => checkboxAndRadioQuestionHTML(id, type_id, questionErrors, previousQuestions);
+      newComponent[id].question_type_id = type_id;
+      newComponent[id].options = [
+        { id: 0, option: '', type: 'new', is_deleted: false },
+        { id: 0, option: '', type: 'new', is_deleted: false },
+      ];
       break;
     case 'ConditionalQuestion':
       type_id = 4; // @ts-ignore: Unreachable code error
-      newQuestion = (options, questionErrors) => conditionalQuestionHTML(id, options, questionErrors);
+      newQuestion = (questionErrors, previousQuestions) => conditionalQuestionHTML(id, questionErrors, previousQuestions);
+      newComponent[id].question_type_id = type_id;
+      newComponent[id].conditional_question = "";
 
-      setOptions((prevOptions) => ({
-        ...prevOptions,
-        [id]: [
-          { label: 'Option 1', value: '' },
-          { label: 'Option 2', value: '' },
-        ],
-      }));
+      newComponent[id].options = [
+        { id: 0, option: '', type: 'new', is_deleted: false },
+        { id: 0, option: '', type: 'new', is_deleted: false },
+      ];
       break;
     case 'AskAvailability':
       type_id = 5; // @ts-ignore: Unreachable code error
-      newQuestion = (options) => askAvailabilityHTML(id, options);
-
-      setOptions((prevOptions) => ({
-        ...prevOptions,
-        [id]: [
-          { label: 'Yes', value: 'Yes' },
-          { label: 'No', value: 'No' },
-        ],
-      }));
+      newQuestion = (previousQuestions) => askAvailabilityHTML(id, previousQuestions);
+      newComponent[id].question_type_id = type_id;
+      newComponent[id].options = [
+        { id: 0, option: 'Yes', type: 'new', is_deleted: false },
+        { id: 0, option: 'No', type: 'new', is_deleted: false },
+      ];
       break;
     case 'WorkExperience':
       type_id = 6; // @ts-ignore: Unreachable code error
-      newQuestion = (options, questionErrors) => workExperienceHTML(id, options, questionErrors);
-
-      setOptions((prevOptions) => ({
-        ...prevOptions,
-        [id]: [
-          { label: 'Yes', value: 'Yes' },
-          { label: 'No', value: 'No' },
-        ],
-      }));
+      newQuestion = (questionErrors, previousQuestions) => workExperienceHTML(id, questionErrors, previousQuestions);
+      newComponent[id].question_type_id = type_id;
+      newComponent[id].options = [
+        { id: 0, option: 'Yes', type: 'new', is_deleted: false },
+        { id: 0, option: 'No', type: 'new', is_deleted: false },
+      ];
+      break;
+    case 'AskVaccination':
+      type_id = 7; // @ts-ignore: Unreachable code error
+      newQuestion = (questionErrors, previousQuestions) => askVaccinationHTML(id, questionErrors, previousQuestions);
+      newComponent[id].question_type_id = type_id;
+      newComponent[id].question = 'Are you fully vacination against COVID-19 (2 doses)';
+      newComponent[id].options = [
+        { id: 0, option: 'Yes', type: 'new', is_deleted: false },
+        { id: 0, option: 'No', type: 'new', is_deleted: false },
+      ];
       break;
     default:
       return;
   }
-
+  
+  
   const question = {
     id: id,
     type: type,
+    is_deleted: false,
     type_id: type_id,
     html: newQuestion,
   };
+
+  if(is_new){
+    //Add the new component to the previousQuestions array
+    setPreviousQuestions((prevQuestions) => ({
+      ...prevQuestions,
+      ...newComponent,
+    }));
+  }
 
   setQuestions((prevQuestions) => [...prevQuestions, question]);
 };
@@ -682,173 +883,91 @@ const handleAddQuestion = (type: string, question_length: number) => {
     event.preventDefault();
     let hasErrors = false; // Validate the form and set error states for questions with empty values
 
-    if (!listingId) {
-      setQuestionErrors((prevErrors) => ({
-        ...prevErrors,
-        ['listing_id']: true, // Set the error if listing_id empty.
-      }));
-      hasErrors = true;
-    }
-    
-    // Create an array to store the short question data
-    const allQuestions: { question_type_id: number; question: string; is_required: number }[] = [];
     // Iterate over each question
-    questions.forEach((question, index) => {
-      if (question.type === 'ShortQuestion') { 
-        // Get the question input field value
-        const questionInput = document.getElementById(question.id) as HTMLInputElement;
-        const questionValue = questionInput ? questionInput.value : '';
+    Object.keys(previousQuestions).forEach((questionId) => {
+      const question = previousQuestions[questionId];
+      if (question.question_type_id === 1) { 
 
-        // Get the is_required checkbox value
-        const requiredCheckbox = document.getElementById(`is_required-${question.id}`) as HTMLInputElement;
-        const isRequired = requiredCheckbox.checked ? 1 : 0 ;
-
-        if (!questionValue) {
+        if (!question.question) {
           setQuestionErrors((prevErrors) => ({
             ...prevErrors,
-            [question.id]: true, // Set the error state for the specific question ID
+            [questionId]: true, // Set the error state for the specific question ID
           }));
           hasErrors = true;
         }
+      }else if (question.question_type_id === 2 || question.question_type_id === 3) { 
     
-        // Create an object for the short question data
-        const questionData = {
-          question_type_id: question.type_id,
-          question: questionValue,
-          is_required: isRequired,
-        };
-        
-        // Add the short question data to the array
-        allQuestions.push(questionData);
-      }else if (question.type === 'CheckboxQuestion' || question.type === 'RadioButtonQuestion') { 
-        // Get the question input field value
-        const questionInput = document.getElementById(question.id) as HTMLInputElement;
-        const questionValue = questionInput ? questionInput.value : '';
-
-        if (!questionValue) {
+        if (!question.question) {
           setQuestionErrors((prevErrors) => ({
             ...prevErrors,
-            [question.id]: true, // Set the error state for the specific question ID
+            [questionId]: true, // Set the error state for the specific question ID
           }));
           hasErrors = true;
         }
 
-        // Get the is_required checkbox value
-        const requiredCheckbox = document.getElementById(`is_required-${question.id}`) as HTMLInputElement;
-        const isRequired = requiredCheckbox.checked ? 1 : 0 ;
-
-        // Get the checkbox options
-        // @ts-ignore: Unreachable code error
-        const optionsArr = options[`${question.id}`]? options[`${question.id}`] : [];
+        const optionsArr = question.options? question.options : [];
         // @ts-ignore: Unreachable code error
         optionsArr.forEach((option, optIndex) => {
-          if (!option['value']) {
+          if (!option.option) {
             setQuestionErrors((prevErrors) => ({
               ...prevErrors,
-              [`${question.id}-option-${optIndex}`]: true, 
+              [`${questionId}-option-${optIndex}`]: true, 
             }));
             hasErrors = true;
           }
         });
 
-        // Create an object for the short question data
-        const questionData = {
-          question_type_id: question.type_id,
-          question: questionValue,
-          is_required: isRequired,
-          options:optionsArr
-        };
-        
-        // Add the short question data to the array
-        allQuestions.push(questionData);
-      }else if (question.type === 'ConditionalQuestion') {
-        // Get the question input field value
-        const questionInput = document.getElementById(question.id) as HTMLInputElement;
-        const questionValue = questionInput ? questionInput.value : '';
+      }else if (question.question_type_id === 4) {
 
-        // Get the conditional question input field value
-        const conditionalQuestionInput = document.getElementById(`conditional-${question.id}`) as HTMLInputElement;
-        const conditionalQuestionValue = conditionalQuestionInput ? conditionalQuestionInput.value : '';
-        
-        // Get the is_required checkbox value
-        const requiredCheckbox = document.getElementById(`is_required-${question.id}`) as HTMLInputElement;
-        const isRequired = requiredCheckbox.checked ? 1 : 0 ;
+        if (!question.question) {
+          setQuestionErrors((prevErrors) => ({
+            ...prevErrors,
+            [questionId]: true, // Set the error state for the specific question ID
+          }));
+          hasErrors = true;
+        }
 
-        // Get the checkbox options
+        if (!question.conditional_question) {
+          setQuestionErrors((prevErrors) => ({
+            ...prevErrors,
+            [`conditional-${questionId}`]: true, // Set the error state for the specific question ID
+          }));
+          hasErrors = true;
+        }
+
         // @ts-ignore: Unreachable code error
-        const optionsArr = options[`${question.id}`]? options[`${question.id}`] : [];
-
-        if (!questionValue) {
-          setQuestionErrors((prevErrors) => ({
-            ...prevErrors,
-            [question.id]: true, // Set the error state for the specific question ID
-          }));
-          hasErrors = true;
-        }
-
-        if (!conditionalQuestionValue) {
-          setQuestionErrors((prevErrors) => ({
-            ...prevErrors,
-            [`conditional-${question.id}`]: true, // Set the error state for the specific question ID
-          }));
-          hasErrors = true;
-        }
+        const optionsArr = question.options? question.options : [];
         // @ts-ignore: Unreachable code error
         optionsArr.forEach((option, optIndex) => {
-          if (!option['value']) {
+          if (!option.option) {
             setQuestionErrors((prevErrors) => ({
               ...prevErrors,
-              [`${question.id}-option-${optIndex}`]: true, 
+              [`${questionId}-option-${optIndex}`]: true, 
             }));
             hasErrors = true;
           }
         });
 
-        // Create an object for the short question data
-        const questionData = {
-          question_type_id: question.type_id,
-          question: questionValue,
-          is_required: isRequired,
-          options:optionsArr,
-          conditional_question: conditionalQuestionValue
-        };
-        
-        // Add the short question data to the array
-        allQuestions.push(questionData);
-      }else if (question.type === 'AskAvailability' || question.type === 'WorkExperience') { 
-        // Get the question input field value
-        let completeQuestion;
-        if(question.type === 'WorkExperience'){
-          const questionInput = document.getElementById(`work-experience-${question.id}`) as HTMLInputElement;
-          const questionValue = questionInput ? questionInput.value : '';
-          completeQuestion = `Do you have experience working with ${questionValue}`;
-          
-          if (!questionValue) {
+      }else if (question.question_type_id === 5 || question.question_type_id === 6) { 
+          if (!question.question) {
             setQuestionErrors((prevErrors) => ({
               ...prevErrors,
-              [`work-experience-${question.id}`]: true, // Set the error state for the specific question ID
+              [questionId]: true, // Set the error state for the specific question ID
             }));
             hasErrors = true;
           }
 
-        }else{
-          completeQuestion = 'I am available and agree to commit to:';
-        }
-
-        // Get the checkbox options
+        const optionsArr = question.options? question.options : [];
         // @ts-ignore: Unreachable code error
-        const optionsArr = options[`${question.id}`]? options[`${question.id}`] : [];
-
-        // Create an object for the short question data
-        const questionData = {
-          question_type_id: question.type_id,
-          question: completeQuestion,
-          is_required: 1,
-          options:optionsArr
-        };
-        
-        // Add the short question data to the array
-        allQuestions.push(questionData);
+        optionsArr.forEach((option, optIndex) => {
+          if (!option.option) {
+            setQuestionErrors((prevErrors) => ({
+              ...prevErrors,
+              [`${questionId}-option-${optIndex}`]: true, 
+            }));
+            hasErrors = true;
+          }
+        });
       }
     });
 
@@ -859,15 +978,12 @@ const handleAddQuestion = (type: string, question_length: number) => {
     }
 
     const formData = {
-      listing_id: listingId,
-      data: allQuestions
+      listing_id: slug,
+      data: previousQuestions
     }
-    
 
-    console.log('dddddd', formData)
-    
     axios
-      .post(`${baseUrl}/application-form/store?org=${currOrgSlug}`, formData, {
+      .post(`${baseUrl}/application-form/update/${applicationFormId}?org=${currOrgSlug}`, formData, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
@@ -877,11 +993,11 @@ const handleAddQuestion = (type: string, question_length: number) => {
         // setSuccessMessage(response.data.message);
         // setShowSuccess(true);
         toast({ position: "top", title: response.data.message, status: "success" })
-        router.push('/organization/listings');
+        // router.push('/organization/listings');
       })
       .catch((error) => { 
         // Handle error here
-        toast({ position: "top", title: "Something went wrong, please try again.", status: "error" })
+        // toast({ position: "top", title: "Something went wrong, please try again.", status: "error" })
       });
 
   };
@@ -890,22 +1006,35 @@ const handleAddQuestion = (type: string, question_length: number) => {
 	
       if(applicationQuestions.length > 0){ 
 			setQuestions([]); 
-			setOptions([]);
 			setQuestionErrors({});
+      
 			applicationQuestions.forEach((question, index) => {
+        let id = index+1;
+        let key = 'question-'+id;
 				let type = question.question_type_id;
+        setPreviousQuestions((prevQuestions) => ({ 
+          ...prevQuestions,  
+          [key]: {
+            ...question,
+            is_deleted: false,
+            is_new: false,
+          },
+        }));
+
 				if(type === 1){
-					handleAddQuestion("ShortQuestion", index+1)
+					handleAddQuestion("ShortQuestion", id, false)
 				}else if(type === 2){
-					handleAddQuestion("CheckboxQuestion", index+1)
+					handleAddQuestion("CheckboxQuestion", id, false)
 				}else if(type === 3){
-					handleAddQuestion("RadioButtonQuestion", index+1)
+					handleAddQuestion("RadioButtonQuestion", id, false)
 				}else if(type === 4){
-					handleAddQuestion("ConditionalQuestion", index+1)
+					handleAddQuestion("ConditionalQuestion", id, false)
 				}else if(type === 5){
-					handleAddQuestion("AskAvailability", index+1)
+					handleAddQuestion("AskAvailability", id, false)
 				}else if(type === 6){
-					handleAddQuestion("WorkExperience", index+1)
+					handleAddQuestion("WorkExperience", id, false)
+				}else if(type === 7){
+					handleAddQuestion("AskVaccination", id, false)
 				}
 				
 			});
@@ -927,126 +1056,99 @@ const handleAddQuestion = (type: string, question_length: number) => {
           </button>
         </div>
       </Modal>
-      <div className="d-flex justify-content-between col-md-8">
-        <p className="listing-txt mt-5 ms-3"></p>
-        <button className="update-v-btn mt-5" onClick={handleResetForm}>Reset</button>
-      </div>
-      <div>
+      
       <Row>
-        <Col md={6}>
-          <div className="card shadow mt-3 p-4">
-            <div className="mt-2">
-              <label
-                style={{
-                  fontWeight: "500",
-                  fontSize: "20px",
-                  lineHeight: "24px",
-                }}
-                className="form-label"
-              > Select Volunteer </label>
-              <div className="col-md-12">
-                <Select
-                  showSearch
-                  style={{ width: "100%" }}
-                  className={`form-control mt-2 ${questionErrors["listing_id"] ? 'input-error' : ''}`}
-                  placeholder="Search volunteer listing"
-                  optionFilterProp="children"
-                  value={listingId}
-                  id="listing_id"
-                  onChange={(e) => {
-                    handleSelectChange(e);
-                    handleInputChange('listing_id');
-                  }}
-                  filterOption={(input, option) => // @ts-ignore: Unreachable code error
-                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {volundata.map((item) => ( // @ts-ignore: Unreachable code error
-                    <Option key={item.id} value={item.id}>
-                      {// @ts-ignore: Unreachable code error
-                      item.title}
-                    </Option>
-                  ))}
-                </Select>
+        <Col md="6">
+          <form onSubmit={handleSubmit}>
+              {questions.map((question, index) => (
+                <div key={question.id} className="component-container">
+                
+                {   !question.is_deleted && question.type === 'ShortQuestion' ? ( // @ts-ignore: Unreachable code error
+                    question.html(questionErrors, previousQuestions)
+                ) : !question.is_deleted &&  question.type === 'CheckboxQuestion' ? ( // @ts-ignore: Unreachable code error
+                    question.html(questionErrors, previousQuestions)
+                ) : !question.is_deleted &&  question.type === 'RadioButtonQuestion' ? ( // @ts-ignore: Unreachable code error
+                    question.html(questionErrors, previousQuestions)
+                ) : !question.is_deleted &&  question.type === 'ConditionalQuestion' ? ( // @ts-ignore: Unreachable code error
+                    question.html(questionErrors, previousQuestions)
+                ) : !question.is_deleted &&  question.type === 'AskAvailability' ? ( // @ts-ignore: Unreachable code error
+                    question.html(previousQuestions)
+                ) : !question.is_deleted &&  question.type === 'WorkExperience' ? ( // @ts-ignore: Unreachable code error
+                  question.html(questionErrors, previousQuestions)
+                ) : !question.is_deleted &&  question.type === 'AskVaccination' ? ( // @ts-ignore: Unreachable code error
+                  question.html(questionErrors, previousQuestions)
+                ) : null }
               </div>
-              {questionErrors["listing_id"] && <p className="error-message">Please select volunteer listing.</p>}
-            </div>
-          </div>
-        </Col>
-        <Col md={6}>
-          <div className="d-flex">
-            <div
-              style={{ width: "27px", height: "117px" }}
-              className="card shadow mt-3"
-            >
-              <div className="d-flex justify-content-center align-items-center mt-3">
-                <Image src={plus.src} style={{ width: "16px", height: "16px" }} />
-              </div>
-              <div className="d-flex justify-content-center align-items-center mt-3">
-                <Image
-                  src={plustwo.src}
-                  style={{ width: "16px", height: "16px" }}
-                />
-              </div>
-            </div>
-            <div className="mt-3 col-md-8">
-              <button
-                onClick={handleButtonClick}
-                className="add-question ms-3"
-                type="button"
-              >
-                Add Question
-              </button>
-              {showCard && (
-                <div
-                  style={{ width: "250px", height: "226px" }}
-                  className="card ques-card shadow mt-2"
-                >
-                  <button onClick={()=> handleAddQuestion("ShortQuestion", questions.length+1)} className="ques-card-button"> Short Question </button>
-                  <button onClick={()=> handleAddQuestion("CheckboxQuestion", questions.length+1)} className="ques-card-button" > Checkbox Question </button>
-                  <button onClick={()=> handleAddQuestion("RadioButtonQuestion", questions.length+1)} className="ques-card-button"> Radio Button Question</button>
-                  <button onClick={()=> handleAddQuestion("ConditionalQuestion", questions.length+1)} className="ques-card-button">Conditional Question </button>
-                  <button onClick={()=> handleAddQuestion("AskAvailability", questions.length+1)} className="ques-card-button"> Ask Availability </button>
-                  <button onClick={()=> handleAddQuestion("WorkExperience", questions.length+1)} className="ques-card-button"> Work Experience </button>
+              ))}
+              {totalApplications == 0? (
+                  <button
+                    type="submit"
+                    className="update-v-btn mb-5 mt-5 col-md-2 ms-3"
+                    onClick={handleSubmit}
+                    disabled={questions.length === 0}
+                  >
+                    Update
+                  </button>
+              ): (
+                <div className="mb-10 mt-3">
+                  <span>You can't update the the form.</span>
                 </div>
               )}
+              
+          </form>
+        </Col>
+        <Col md="6">
+          <Row>
+            <Col md="12">
+              <div className="d-flex justify-content-left col-md-8">
+                <p className="listing-txt ms-3"></p>
+                <button className="update-v-btn" onClick={handleResetForm}>Reset</button>
+              </div>
+            </Col>
+            <Col md="12">
+            <div className="d-flex">
+              <div
+                style={{ width: "27px", height: "117px" }}
+                className="card shadow mt-3"
+              >
+                <div className="d-flex justify-content-center align-items-center mt-3">
+                  <Image src={plus.src} style={{ width: "16px", height: "16px" }} />
+                </div>
+                <div className="d-flex justify-content-center align-items-center mt-3">
+                  <Image
+                    src={plustwo.src}
+                    style={{ width: "16px", height: "16px" }}
+                  />
+                </div>
+              </div>
+              <div className="mt-3 col-md-8">
+                <button
+                  onClick={handleButtonClick}
+                  className="add-question ms-3"
+                  type="button"
+                >
+                  Add Question
+                </button>
+                {showCard && (
+                  <div
+                    style={{ width: "250px", height: "262px" }}
+                    className="card ques-card shadow mt-2"
+                  >
+                    <button onClick={()=> handleAddQuestion("ShortQuestion", Object.keys(previousQuestions).length+1, true)} className="ques-card-button"> Short Question </button>
+                    <button onClick={()=> handleAddQuestion("CheckboxQuestion", Object.keys(previousQuestions).length+1, true)} className="ques-card-button" > Checkbox Question </button>
+                    <button onClick={()=> handleAddQuestion("RadioButtonQuestion", Object.keys(previousQuestions).length+1, true)} className="ques-card-button"> Radio Button Question</button>
+                    <button onClick={()=> handleAddQuestion("ConditionalQuestion", Object.keys(previousQuestions).length+1, true)} className="ques-card-button">Conditional Question </button>
+                    <button onClick={()=> handleAddQuestion("AskAvailability", Object.keys(previousQuestions).length+1, true)} className="ques-card-button"> Ask Availability </button>
+                    <button onClick={()=> handleAddQuestion("WorkExperience", Object.keys(previousQuestions).length+1, true)} className="ques-card-button"> Work Experience </button>
+                    <button onClick={()=> handleAddQuestion("AskVaccination", Object.keys(previousQuestions).length+1, true)} className="ques-card-button">Ask Vaccination </button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+            </Col>
+          </Row>
         </Col>
       </Row>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <Row>
-          <Col md={12}>
-          {questions.map((question, index) => (
-            <div key={question.id} className="component-container">
-           
-            {question.type === 'ShortQuestion' ? ( // @ts-ignore: Unreachable code error
-                question.html(questionErrors)
-            ) : question.type === 'CheckboxQuestion' ? ( // @ts-ignore: Unreachable code error
-                question.html(options, questionErrors)
-            ) : question.type === 'RadioButtonQuestion' ? ( // @ts-ignore: Unreachable code error
-                question.html(options, questionErrors)
-            ) : question.type === 'ConditionalQuestion' ? ( // @ts-ignore: Unreachable code error
-                question.html(options, questionErrors)
-            ) : question.type === 'AskAvailability' ? ( // @ts-ignore: Unreachable code error
-                question.html(options)
-            ) : question.type === 'WorkExperience' ? ( // @ts-ignore: Unreachable code error
-              question.html(options, questionErrors)
-            ) : null }
-          </div>
-          ))}
-          <button
-            type="submit"
-            className="update-v-btn mb-5 mt-5 col-md-2 ms-3"
-            onClick={handleSubmit}
-            disabled={questions.length === 0}
-          >
-            Submit
-          </button>
-          </Col>
-        </Row>
-      </form>
     </>
   );
 };

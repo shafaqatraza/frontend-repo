@@ -29,8 +29,6 @@ const organization = () => {
   const [hours, setHours] = useState({});
   const router = useRouter()
 
-  console.log('fffdddss', data.length)
-
   useEffect(() => {
     axios
       .get(`${baseUrl}/profile/info`, {
@@ -46,7 +44,7 @@ const organization = () => {
       .catch((err) => {
         console.log(err);
       });
-    axios
+    axios 
       .get(`${baseUrl}/organizations`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
@@ -57,7 +55,6 @@ const organization = () => {
         console.log(res.data[0]?.slug, "datatatata");
         setSlug(res.data[0]?.full_name);
         setOrganization(res.data[0]?.slug);
-        localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
       })
       .catch((err) => {
         console.log(err);

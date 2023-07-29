@@ -169,7 +169,7 @@ const CreateApplication = (props: Props) => {
   const shortQuestionHTML = (id: string, questionErrors: []) => {
   return (
     <Row key={id}>
-      <Col md={6}>
+      <Col md={12}>
         <div className="card shadow p-4 mt-3">
           <p className="listing-txt">Question</p>
           <div>
@@ -206,7 +206,7 @@ const CreateApplication = (props: Props) => {
   const checkboxAndRadioQuestionHTML = (id: string, type_id: number, options: [], questionErrors: []) => {
     return (
       <Row> 
-        <Col md={6}>
+        <Col md={12}>
           <div className="card shadow p-4 mt-3">
           <p className="listing-txt">Question</p>
             <Input
@@ -279,7 +279,7 @@ const CreateApplication = (props: Props) => {
   
     return (
       <Row> 
-        <Col md={6}>
+        <Col md={12}>
           <div className="card shadow p-4 mt-3">
           <p className="listing-txt">Question</p>
             <Input
@@ -361,7 +361,7 @@ const CreateApplication = (props: Props) => {
   const askAvailabilityHTML = (id: string, options: []) => {
     return (
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <p className="listing-txt mt-2">Availability</p>
           <div className="card shadow p-4 mt-3">
             <p className="fw-bold">* I am available and agree to commit to:</p>
@@ -463,7 +463,7 @@ const CreateApplication = (props: Props) => {
     return(
       <>
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <p className="listing-txt mt-4">Previous Work or Volunteer Experience</p>
           <div className="card shadow p-4 mt-4 mb-4">
             <div className="row">
@@ -505,23 +505,23 @@ const CreateApplication = (props: Props) => {
                 </div>
               ))}
             <div className="form-check form-switch d-flex justify-content-end mt-3">
-            <input
-              className="form-check-input me-3 mt-2"
-              type="checkbox"
-              id={`is_required-${id}`}
-              checked
-              disabled
-            />
-            <label className="form-label me-3 mt-1">Required</label>
-            <span className="mt-1 index" onClick={() => handleDeleteComponent(id)}>
-              <Image src={trash.src} />
-            </span>
-          </div>
+              <input
+                className="form-check-input me-3 mt-2"
+                type="checkbox"
+                id={`is_required-${id}`}
+                checked
+                disabled
+              />
+              <label className="form-label me-3 mt-1">Required</label>
+              <span className="mt-1 index" onClick={() => handleDeleteComponent(id)}>
+                <Image src={trash.src} />
+              </span>
+            </div>
           </div>
         </Col>
       </Row>
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <div className="card shadow pt-4">
             <p className="listing-txt ms-4">Prior Work Experience</p>
             <div className="d-flex">
@@ -542,8 +542,15 @@ const CreateApplication = (props: Props) => {
           </div>
         </Col>
       </Row>
+      </>
+    );
+  };
+
+  const askVaccinationHTML = (id: string, options: []) => {
+    return(
+      <>
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <div className="card shadow pt-4 p-4 mt-4">
           <p className="fw-bold">* Are you fully vacination against COVID-19 (2 doses)</p>
             <div className="checkbox-container d-flex flex-column mt-3 ms-3">
@@ -565,6 +572,17 @@ const CreateApplication = (props: Props) => {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="form-check form-switch d-flex justify-content-end mt-3">
+              <input
+                className="form-check-input me-3 mt-2"
+                type="checkbox"
+                id={`is_required-${id}`}
+              />
+              <label className="form-label me-3 mt-1">Required</label>
+              <span className="mt-1 index" onClick={() => handleDeleteComponent(id)}>
+                <Image src={trash.src} />
+              </span>
             </div>
           </div>
         </Col>
@@ -647,6 +665,18 @@ const handleAddQuestion = (type: string) => {
     case 'WorkExperience':
       type_id = 6; // @ts-ignore: Unreachable code error
       newQuestion = (options, questionErrors) => workExperienceHTML(id, options, questionErrors);
+
+      setOptions((prevOptions) => ({
+        ...prevOptions,
+        [id]: [
+          { label: 'Yes', value: 'Yes' },
+          { label: 'No', value: 'No' },
+        ],
+      }));
+      break;
+    case 'AskVaccination':
+      type_id = 7; // @ts-ignore: Unreachable code error
+      newQuestion = (options) => askVaccinationHTML(id, options);
 
       setOptions((prevOptions) => ({
         ...prevOptions,
@@ -872,9 +902,6 @@ const handleAddQuestion = (type: string) => {
       data: allQuestions
     }
     
-
-    console.log('dddddd', formData, organization)
-    
     axios
       .post(`${baseUrl}/application-form/store?org=${organization}`, formData, {
         headers: {
@@ -894,10 +921,6 @@ const handleAddQuestion = (type: string) => {
       });
 
   };
-
-
-
-
 
   useEffect(() => {
     axios
@@ -928,13 +951,9 @@ const handleAddQuestion = (type: string) => {
           </button>
         </div>
       </Modal>
-      <div className="d-flex justify-content-between col-md-8">
-        <p className="listing-txt mt-5 ms-3"></p>
-        <button className="update-v-btn mt-5" onClick={handleResetForm}>Reset</button>
-      </div>
-      <div>
+
       <Row>
-        <Col md={6}>
+        <Col className="md-6">
           <div className="card shadow mt-3 p-4">
             <div className="mt-2">
               <label
@@ -975,81 +994,93 @@ const handleAddQuestion = (type: string) => {
               {questionErrors["listing_id"] && <p className="error-message">Please select volunteer listing.</p>}
             </div>
           </div>
-        </Col>
-        <Col md={6}>
-          <div className="d-flex">
-            <div
-              style={{ width: "27px", height: "117px" }}
-              className="card shadow mt-3"
-            >
-              <div className="d-flex justify-content-center align-items-center mt-3">
-                <Image src={plus.src} style={{ width: "16px", height: "16px" }} />
+          <form onSubmit={handleSubmit}>
+            <Row>
+              <Col md={12}>
+              {questions.map((question, index) => (
+                <div key={question.id} className="component-container">
+              
+                {question.type === 'ShortQuestion' ? ( // @ts-ignore: Unreachable code error
+                    question.html(questionErrors)
+                ) : question.type === 'CheckboxQuestion' ? ( // @ts-ignore: Unreachable code error
+                    question.html(options, questionErrors)
+                ) : question.type === 'RadioButtonQuestion' ? (// @ts-ignore: Unreachable code error
+                    question.html(options, questionErrors)
+                ) : question.type === 'ConditionalQuestion' ? (// @ts-ignore: Unreachable code error
+                    question.html(options, questionErrors)
+                ) : question.type === 'AskAvailability' ? (// @ts-ignore: Unreachable code error
+                    question.html(options)
+                ) : question.type === 'WorkExperience' ? (// @ts-ignore: Unreachable code error
+                  question.html(options, questionErrors)
+                ) : question.type === 'AskVaccination' ? (// @ts-ignore: Unreachable code error
+                  question.html(options)
+                ) : null }
               </div>
-              <div className="d-flex justify-content-center align-items-center mt-3">
-                <Image
-                  src={plustwo.src}
-                  style={{ width: "16px", height: "16px" }}
-                />
-              </div>
-            </div>
-            <div className="mt-3 col-md-8">
+              ))}
               <button
-                onClick={handleButtonClick}
-                className="add-question ms-3"
-                type="button"
+                type="submit"
+                className="update-v-btn mb-5 mt-5 col-md-2 ms-3"
+                onClick={handleSubmit}
+                disabled={questions.length === 0}
               >
-                Add Question
+                Submit
               </button>
-              {showCard && (
+              </Col>
+            </Row>
+          </form>
+        </Col>
+        <Col className="md-6">
+          <Row>
+            <Col md="12">
+              <div className="d-flex justify-content-left col-md-8">
+                <p className="listing-txt ms-3"></p>
+                <button className="update-v-btn" onClick={handleResetForm}>Reset</button>
+              </div>
+            </Col>
+            <Col className="md-12">
+              <div className="d-flex">
                 <div
-                  style={{ width: "250px", height: "226px" }}
-                  className="card ques-card shadow mt-2"
+                  style={{ width: "27px", height: "117px" }}
+                  className="card shadow mt-3"
                 >
-                  <button onClick={()=> handleAddQuestion("ShortQuestion")} className="ques-card-button"> Short Question </button>
-                  <button onClick={()=> handleAddQuestion("CheckboxQuestion")} className="ques-card-button" > Checkbox Question </button>
-                  <button onClick={()=> handleAddQuestion("RadioButtonQuestion")} className="ques-card-button"> Radio Button Question</button>
-                  <button onClick={()=> handleAddQuestion("ConditionalQuestion")} className="ques-card-button">Conditional Question </button>
-                  <button onClick={()=> handleAddQuestion("AskAvailability")} className="ques-card-button"> Ask Availability </button>
-                  <button onClick={()=> handleAddQuestion("WorkExperience")} className="ques-card-button"> Work Experience </button>
+                  <div className="d-flex justify-content-center align-items-center mt-3">
+                    <Image src={plus.src} style={{ width: "16px", height: "16px" }} />
+                  </div>
+                  <div className="d-flex justify-content-center align-items-center mt-3">
+                    <Image
+                      src={plustwo.src}
+                      style={{ width: "16px", height: "16px" }}
+                    />
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
+                <div className="mt-3 col-md-8">
+                  <button
+                    onClick={handleButtonClick}
+                    className="add-question ms-3"
+                    type="button"
+                  >
+                    Add Question
+                  </button>
+                  {showCard && (
+                    <div
+                      style={{ width: "250px", height: "262px" }}
+                      className="card ques-card shadow mt-2"
+                    >
+                      <button onClick={()=> handleAddQuestion("ShortQuestion")} className="ques-card-button"> Short Question </button>
+                      <button onClick={()=> handleAddQuestion("CheckboxQuestion")} className="ques-card-button" > Checkbox Question </button>
+                      <button onClick={()=> handleAddQuestion("RadioButtonQuestion")} className="ques-card-button"> Radio Button Question</button>
+                      <button onClick={()=> handleAddQuestion("ConditionalQuestion")} className="ques-card-button">Conditional Question </button>
+                      <button onClick={()=> handleAddQuestion("AskAvailability")} className="ques-card-button"> Ask Availability </button>
+                      <button onClick={()=> handleAddQuestion("WorkExperience")} className="ques-card-button"> Work Experience </button>
+                      <button onClick={()=> handleAddQuestion("AskVaccination")} className="ques-card-button"> Ask Vaccination </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Col>
+          </Row>
         </Col>
       </Row>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <Row>
-          <Col md={12}>
-          {questions.map((question, index) => (
-            <div key={question.id} className="component-container">
-           
-            {question.type === 'ShortQuestion' ? ( // @ts-ignore: Unreachable code error
-                question.html(questionErrors)
-            ) : question.type === 'CheckboxQuestion' ? ( // @ts-ignore: Unreachable code error
-                question.html(options, questionErrors)
-            ) : question.type === 'RadioButtonQuestion' ? (// @ts-ignore: Unreachable code error
-                question.html(options, questionErrors)
-            ) : question.type === 'ConditionalQuestion' ? (// @ts-ignore: Unreachable code error
-                question.html(options, questionErrors)
-            ) : question.type === 'AskAvailability' ? (// @ts-ignore: Unreachable code error
-                question.html(options)
-            ) : question.type === 'WorkExperience' ? (// @ts-ignore: Unreachable code error
-              question.html(options, questionErrors)
-            ) : null }
-          </div>
-          ))}
-          <button
-            type="submit"
-            className="update-v-btn mb-5 mt-5 col-md-2 ms-3"
-            onClick={handleSubmit}
-            disabled={questions.length === 0}
-          >
-            Submit
-          </button>
-          </Col>
-        </Row>
-      </form>
     </>
   );
 };

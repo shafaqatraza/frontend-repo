@@ -45,6 +45,7 @@ const CompletedApplication = () => {
       });
 
   },[currentOrganization, application])
+  console.log('appli', applicationData)
   useEffect(() => {
     if (receiverId) {
       setFormData((prevFormData) => ({
@@ -111,48 +112,79 @@ const CompletedApplication = () => {
           <div style={{backgroundColor:"#D9D9D9", height:"800px"}} className="col-md-10 mt-5 ms-5 mb-5">
             <p className='pt-5' style={{fontSize:"96px", textAlign:"center", fontWeight:"600", lineHeight:"117px"}}>Application</p>
             <div className='ms-4 mt-5'>
-            <div>
-        <p style={questionStyle}>Applicant Name</p>
-        <p style={answerStyle}>{applicationData?.applicant?.full_name}</p>
-      </div>
+              <div>
+                <p>
+                  <span style={questionStyle}>Name: </span>
+                  <span style={answerStyle}>{applicationData?.applicant?.full_name}</span>
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span style={questionStyle}>Email: </span>
+                  <span style={answerStyle}>{applicationData?.applicant?.email}</span>
+                </p>
+              </div> 
+              { applicationData &&
+                applicationData.application && applicationData.application.map((question, index) => (
+                  <>
+                  
+                    {question?.question_type == "Short Question" &&
+                      <div>
+                        <p style={questionStyle}>Q: {question?.question}</p>
+                        <p style={answerStyle}>A: {question?.answer}</p>
+                      </div>
+                    }
+                    {question?.question_type === "Checkbox Question" && (
+                      <div>
+                        <p style={questionStyle}>Q: {question?.question}</p>
+                        {question.selected_options && Object.values(question.selected_options).length > 0 ? (
+                          <p style={answerStyle}>
+                            Options: {Object.values(question.selected_options).map((option, i) => option).join(", ")}
+                          </p>
+                        ) : (
+                          <p>No options selected.</p>
+                        )}
+                      </div>
+                    )}
+                    {question?.question_type === "Radio Button Question" && (
+                      <div>
+                        <p style={questionStyle}>Q: {question?.question}</p>
+                        {question.selected_option? (
+                          <p style={answerStyle}> Options: {question.selected_option}</p>
+                        ) : (
+                          <p>No options selected.</p>
+                        )}
+                      </div>
+                    )}
 
-      <div>
-        <p style={questionStyle}>Applicant Email</p>
-        <p style={answerStyle}>{applicationData?.applicant?.email}</p>
-      </div>
+                    {question?.question_type === "Conditional Question" && (
+                      <div>
+                        <p style={questionStyle}>Q: {question?.question}</p>
+                        {question.selected_option? (
+                          <p style={answerStyle}> Options: {question.selected_option}</p>
+                        ) : (
+                          <p>No options selected.</p>
+                        )}
+                        <p style={questionStyle}>QQ: {question?.conditional_question}</p>
+                        <p style={answerStyle}>QA: {question?.conditional_answer}</p>
+                      </div>
+                    )}
 
-      <div>
-        <p style={questionStyle}>Q: Date(s) of volunteer?</p>
-        <p style={answerStyle}>A: June 15 - June 30, 2023</p>
-      </div>
+                    {question?.question_type == "Avaiability" &&
+                      <div>
+                        <p style={questionStyle}>Q: {question?.question}</p>
+                        <p style={answerStyle}>A: {question?.answer}</p>
+                      </div>
+                    }
 
-      <div>
-        <p style={questionStyle}>Q: Total Hours Completed?</p>
-        <p style={answerStyle}>A: 50 hours</p>
-      </div>
+                  </>
+              ))}
 
-      <div>
-        <p style={questionStyle}>Q: Description of act?</p>
-        <p style={answerStyle}>A: As a volunteer, I actively participated in organizing <span className='d-block'>and conducting community cleanup campaigns.</span></p>
-      </div>
+              
 
-      {/* <div>
-        <p style={questionStyle}>Q: Supervisor Full Name?</p>
-        <p style={answerStyle}>A: Jane Smith</p>
-      </div> */}
-
-      {/* <div>
-        <p style={questionStyle}>Q: Supervisor Email?</p>
-        <p style={answerStyle}>A: janesmith@example.com</p>
-      </div> */}
-
-      <div>
-        <p style={questionStyle}>Q: Organization Name?</p>
-        <p style={answerStyle}>A: Humane Society</p>
-      </div>
+            
             </div>
           </div>
-
         </div>
 
     </Sidebar>

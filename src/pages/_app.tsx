@@ -21,18 +21,18 @@ function MyApp ({ Component, pageProps }: AppProps) {
   });
 
   const router = useRouter();
-  useEffect(() => {
-    const handleRouteChange = () => {
-      // Check if the current route is not an organization-related route
-      if (!router.asPath.startsWith('/organization')) {
-        // Remove the `currentOrganization` local storage variable
-        // @ts-ignore: Unreachable code error
-        localStorage.setItem('currentOrganization', null);
-      }
-    };
-    handleRouteChange();
+  // useEffect(() => {
+  //   const handleRouteChange = () => {
+  //     // Check if the current route is not an organization-related route
+  //     if (!router.asPath.startsWith('/organization')) {
+  //       // Remove the `currentOrganization` local storage variable
+  //       // @ts-ignore: Unreachable code error
+  //       localStorage.setItem('currentOrganization', null);
+  //     }
+  //   };
+  //   handleRouteChange();
 
-  }, [router, currentOrganization]);
+  // }, [router, currentOrganization]);
 
   return (
     <>
