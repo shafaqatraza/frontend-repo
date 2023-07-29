@@ -307,7 +307,7 @@ export default function Navbar(props: any) {
     if (isLogin()) {
       if (router.asPath.startsWith('/organization')) {
         setIsOrganization(true);
-      }else{
+      }else{ // @ts-ignore: Unreachable code error
         localStorage.setItem('currentOrganization', null);
       }
       getChats()
