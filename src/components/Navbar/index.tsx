@@ -429,7 +429,7 @@ export default function Navbar(props: any) {
                     justifyContent: "center",
                     paddingTop: "10px",
                   }}>
-                    <Link href="/">
+                    <Link href="/" className="texr-center">
                       <Image src={logo} alt="GoodDeeds" width={49} height={49} />
                     </Link>
                   </div>
@@ -712,7 +712,7 @@ export default function Navbar(props: any) {
               <Button
                 variant={'solid'}
                 colorScheme={'orange'}
-                style={{ borderRadius: 50 }}
+                style={{ borderRadius: 50, width:"105px"}}
                 size={'md'}
                 ml={4}
                 onClick={() => {

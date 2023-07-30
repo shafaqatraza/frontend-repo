@@ -1807,6 +1807,9 @@ color: #E27832;
   }
 }
 @media (max-width: 600px) {
+  .css-4ce5xf {
+    padding: 5px 15px;
+  }
   .container.banner {
     margin-top: 6px;
     padding: 0 28px;
