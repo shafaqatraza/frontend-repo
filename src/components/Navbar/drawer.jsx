@@ -14,9 +14,9 @@ import {
   import { isMobile } from 'react-device-detect';
   
   import Image from "next/image";
-  import { footerLinks, links, socialLinks } from "./FooterData";
+  import { footerLinks, links, socialLinks } from "../Footer/FooterData";
   import logo from "../../assets/imgs/footer-logo.png";
-  import { SocialButton } from "./SocialButton";
+  import { SocialButton } from "../Footer/SocialButton";
   export const Footer = () => (
 	<Box as="footer" bg="secondary.100" color="white" pb="30px" pt="20px">
 	  <Box maxW="8xl" px="8" mx="auto">
