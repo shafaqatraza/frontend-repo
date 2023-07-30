@@ -1,371 +1,134 @@
-import { ChevronRightIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import {
 	Box,
-	Button,
-	Drawer,
-	DrawerBody,
-	DrawerCloseButton,
-	DrawerContent,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerOverlay,
+	Divider,
 	Flex,
-	Input,
-	InputGroup,
-	InputRightAddon,
+	HStack,
+	SimpleGrid,
+	Stack,
 	Text,
-	useDisclosure,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
-import { isLogin, Logout } from './../Helper/index';
-import { InputBlock } from "../inputblock/InputBlock";
-import { useRouter } from "next/router";
-import Link from 'next/link';
-import { useMediaQuery } from '@chakra-ui/react';
-
-export const NavbarDrawer = (props) => {
-	let {
-		setShowModel,
-		show
-	} = props
-	const router = useRouter();
-	const [type, setType] = useState('offering');
-	const [isSmallerThan450] = useMediaQuery('(max-width: 450px)');
-
-	const drawerBodyStyles = isSmallerThan450 && {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'end',
-		marginBottom: 0,
-	}
-
-	// const { isOpen, onOpen, onClose } = useDisclosure();
-
-	return (
-		<>
-			<HamburgerIcon
-				onClick={() => {
-					let dubShow = { ...show }
-					dubShow.drawer = true
-					setShowModel(dubShow)
-				}}
-				style={{
-					marginRight: "70px",
-					marginLeft: 5,
-					color: "main.100",
-					fontSize: 37,
-					padingRight: 5,
-					zIndex: 10
-				}}
-			/>
-			{
-				show.drawer &&
-				<Drawer isOpen={show.drawer}
-					onClose={() => {
-						let dubShow = { ...show }
-						dubShow.drawer = false
-						setShowModel(dubShow)
-					}} placement="left" size={isSmallerThan450 ? "full" : "xs"}>
-					<DrawerOverlay />
-					<DrawerContent>
-
-						<DrawerHeader borderBottomWidth='1px' pb={8}>
-							<DrawerCloseButton left={3} />
-						</DrawerHeader>
-						<DrawerBody>
-							<InputBlock
-								type={type}
-								setType={(e) => setType(e)}
-								show={show}
-								setShowModel={setShowModel}
-							/>
-
-							{/* <Box
-								py={4}
-								px={1}
-								style={{
-									flexDirection: "row",
-									justifyContent: "space-between",
-									display: "inline",
-								}}
-							>
-								<Text
-									fontSize="2xl"
-									fontWeight="500"
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="space-between"
-									cursor={"pointer"}
-									_hover={{
-										textDecoration: "underline"
-									}}
-									onClick={() => {
-										let dubShow = { ...show }
-										dubShow.drawer = false;
-										setShowModel(dubShow);
-										router.push("/browse?type=wanted")
-									}}>
-									Wanted
-									<ChevronRightIcon
-										style={{ float: "right" }}
-									/>
-								</Text>
+	Wrap,
+	WrapItem,
+  } from "@chakra-ui/react";
+  import * as React from "react";
+  import Link from 'next/link';
+  import { isMobile } from 'react-device-detect';
+  
+  import Image from "next/image";
+  import { footerLinks, links, socialLinks } from "./FooterData";
+  import logo from "../../assets/imgs/footer-logo.png";
+  import { SocialButton } from "./SocialButton";
+  export const Footer = () => (
+	<Box as="footer" bg="secondary.100" color="white" pb="30px" pt="20px">
+	  <Box maxW="8xl" px="8" mx="auto">
+		<Flex
+		  direction={{ base: "column", lg: "row" }}
+		  justify="space-between"
+		  pb="7"
+		  align="flex-start"
+		  id="top"
+		>
+		  <Box
+			mb="0"
+			display="flex"
+			flexDirection={{ base: "row", sm: "column" }}
+			alignItems={{ base: "center", sm: "start" }}
+		  >
+			<Box ml={{ base: "0em", xl: "3.5em", sm:"1em" }}>
+			  <Image src={logo} alt="GoodDeeds" width={68} height={120} />
+			</Box>
+			<Text
+			  fontSize={{ base: "10px", sm: "10px" }}
+			  fontWeight="600" color={"#E27832"}
+			  mb={{ base: "20px", sm: "0" }}
+			  ms={{ base: "30px", sm: "0" }}
+			>
+			  {" "}
+			  Do Good. Get Rewarded.
+			</Text>
+		  </Box>
+		  <SimpleGrid
+			w="full"
+			maxW={{ base: "unset", lg: "5xl" }}
+			columns={{ base: 1, lg: 4, sm: 1 }}
+			spacing={{ base: "4", md: "2" }}
+			fontSize="10px"
+			fontWeight="600"
+		  >
+			{links.map((group, idx) => (
+			  <Box key={idx}>
+				<Text fontWeight="medium" mb="2" mt="4" textAlign="left" textTransform="uppercase">
+  
+				  {/* <Link href={group.href}> */}
+				  {group.title}
+				  {/* </Link> */}
+				</Text>
+				<Stack as="ul" listStyleType="none" textAlign="left">
+				  {group.links.map((link, idx) => (
+					<Box as="li" key={idx}>
+					  <Link href={link.href}>
+						<Box
+						  as="a"
+						  href={link.href}
+						  _hover={{ textDecor: "underline" }}
+						  fontSize="14px"
+						  fontWeight="600"
+						>
+						  {link.label}
+						  {link.badge && (
+							<Box as="span" marginStart="2">
+							  {link.badge}
 							</Box>
-
-							<Box
-								py={4}
-								px={1}
-								style={{
-									flexDirection: "row",
-									justifyContent: "space-between",
-									display: "inline",
-								}}
-							>
-								<Text
-									fontSize="2xl"
-									fontWeight="500"
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="space-between"
-									cursor={"pointer"}
-									_hover={{
-										textDecoration: "underline"
-									}}
-									onClick={() => {
-										let dubShow = { ...show }
-										dubShow.drawer = false;
-										setShowModel(dubShow);
-										router.push("/browse?type=offering")
-									}}>
-									Offering <ChevronRightIcon style={{ textAlign: "right" }} />
-								</Text>
-							</Box> */}
-
-							<Box
-								py={4}
-								px={1}
-								style={{
-									flexDirection: "row",
-									justifyContent: "space-between",
-									display: "inline",
-								}}
-							>
-								<Text
-									fontSize="2xl"
-									fontWeight="500"
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="space-between"
-									cursor={"pointer"}
-									_hover={{
-										textDecoration: "underline"
-									}}
-									onClick={() => {
-										let dubShow = { ...show }
-										dubShow.drawer = false;
-										setShowModel(dubShow);
-										router.push("#")
-									}}>
-									Items
-								</Text>
-							</Box>
-							<Box
-								py={4}
-								px={1}
-								style={{
-									flexDirection: "row",
-									justifyContent: "space-between",
-									display: "inline",
-								}}
-							>
-								<Text
-									fontSize="2xl"
-									fontWeight="500"
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="space-between"
-									cursor={"pointer"}
-									_hover={{
-										textDecoration: "underline"
-									}}
-									onClick={() => {
-										let dubShow = { ...show }
-										dubShow.drawer = false;
-										setShowModel(dubShow);
-										router.push("#")
-									}}>
-									Services
-								</Text>
-							</Box>
-							<Box
-								py={4}
-								px={1}
-								style={{
-									flexDirection: "row",
-									justifyContent: "space-between",
-									display: "inline",
-								}}
-							>
-								<Text
-									fontSize="2xl"
-									fontWeight="500"
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="space-between"
-									cursor={"pointer"}
-									_hover={{
-										textDecoration: "underline"
-									}}
-									onClick={() => {
-										let dubShow = { ...show }
-										dubShow.drawer = false;
-										setShowModel(dubShow);
-										router.push("#")
-									}}>
-									Donate
-								</Text>
-							</Box>
-							<Box
-								py={4}
-								px={1}
-								style={{
-									flexDirection: "row",
-									justifyContent: "space-between",
-									display: "inline",
-								}}
-							>
-								<Text
-									fontSize="2xl"
-									fontWeight="500"
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="space-between"
-									cursor={"pointer"}
-									_hover={{
-										textDecoration: "underline"
-									}}
-									onClick={() => {
-										let dubShow = { ...show }
-										dubShow.drawer = false;
-										setShowModel(dubShow);
-										router.push("#")
-									}}>
-									Volunteer
-								</Text>
-							</Box>
-
-							<Box mb={isSmallerThan450 ? 50 : 0}>
-								<Box
-									as="a"
-									cursor={"pointer"}
-									_hover={{ textDecor: "underline" }}
-									py={3} px={1}>
-									<Link href={'/about'}><Text fontSize="md" fontWeight="500">About</Text></Link>
-								</Box>
-								<Box as="a"
-									cursor={"pointer"}
-									_hover={{ textDecor: "underline" }} py={3} px={1}>
-									<Link href={'/how-to-use'}><Text fontSize="md" fontWeight="500">How to Use</Text></Link>
-								</Box>
-								<Box as="a"
-									cursor={"pointer"}
-									_hover={{ textDecor: "underline" }} py={3} px={1}>
-									<Link href={'#'}><Text fontSize="md" fontWeight="500">40 Hours Program</Text></Link>
-								</Box>
-								<Box as="a"
-									cursor={"pointer"}
-									_hover={{ textDecor: "underline" }} py={3} px={1}>
-									<Link href={'#'}><Text fontSize="md" fontWeight="500">Charity/ Non-Profit</Text></Link>
-								</Box>
-								<Box as="a"
-									cursor={"pointer"}
-									_hover={{ textDecor: "underline" }} py={3} px={1}>
-									<Link href={'/community'}><Text fontSize="md" fontWeight="500">Community Guidelines</Text></Link>
-								</Box>
-								<Box as="a"
-									cursor={"pointer"}
-									_hover={{ textDecor: "underline" }} py={3} px={1}>
-									<Link href={'/blog'}>
-										<Text fontSize="md" fontWeight="500">Blog</Text>
-									</Link>
-								</Box>
-								<Box as="a"
-									cursor={"pointer"}
-									_hover={{ textDecor: "underline" }} py={3} px={1}>
-									<Link href={'/contact-us'}>
-										<Text fontSize="md" fontWeight="500">Contact Us</Text>
-									</Link>
-								</Box>
-							</Box>
-
-							<Flex mt={15} px={1}>
-								{isLogin() &&
-									<>
-										<FaSignOutAlt size={23} fontSize={"24px"} />
-										<Text onClick={() => {
-											let dubShow = { ...show }
-											Logout();
-											dubShow.drawer = false;
-											setShowModel(dubShow);
-											router.push("/");
-										}} ml={3} style={{ cursor: "pointer", fontWeight: 500 }}>
-											Logout
-										</Text>
-									</>
-								}
-								{!isLogin() &&
-									<>
-										<FaUserCircle size={23} fontSize={"24px"} />
-										<Text onClick={() => {
-											let dubShow = { ...show }
-											dubShow.login = true;
-											dubShow.drawer = false;
-											setShowModel(dubShow)
-										}} ml={3} style={{ cursor: "pointer", fontWeight: 500 }}>
-											Sign Up or Login
-										</Text>
-									</>
-								}
-							</Flex>
-							<Button mt={10} mb={10} type="submit" w={"100%"} bg="orange.500" color="white" height="51px" borderRadius="25px"
-								onClick={() => {
-									if (isLogin()) {
-										router.push("/listing/create");
-									} else {
-										let dubShow = { ...show };
-										dubShow.login = true;
-										setShowModel(dubShow);
-									}
-								}}
-							>
-								Create a Listing
-							</Button>
-						</DrawerBody>
-
-						{/* <DrawerFooter className="drawer-footer">
-							<Button mt={10} type="submit" w={"100%"} bg="orange.500" color="white" height="51px" borderRadius="25px"
-								onClick={() => {
-									if (isLogin()) {
-										router.push("/listing/create");
-									} else {
-										let dubShow = { ...show };
-										dubShow.login = true;
-										setShowModel(dubShow);
-									}
-								}}
-							>
-								Create a Listing
-							</Button>
-						</DrawerFooter> */}
-					</DrawerContent>
-				</Drawer>}
-		</>
-	);
-};
+						  )}
+						</Box>
+					  </Link>
+					</Box>
+				  ))}
+				</Stack>
+			  </Box>
+			))}
+		  </SimpleGrid>
+		  {/* <HStack spacing="2" mt="8" as="ul">
+			{socialLinks.map((link, idx) => (
+			  <SocialButton key={idx} href={link.href}>
+				<Box srOnly>{link.label}</Box>
+				{link.icon}
+			  </SocialButton>
+			))}
+		  </HStack> */}
+		</Flex>
+		<Divider mb={{ base: "1", sm: "6" }} borderColor="grey.100" />
+		<Flex
+		  direction="row"
+		  align={{ base: "flex-start", lg: "center" }}
+		  justify="space-between"
+		  fontSize="sm"
+		>
+		  <Wrap
+			id="bottom"
+			spacing={{ base: "4", lg: "8" }}
+			mt={{ base: "4", lg: "0" }}
+		  >
+			<WrapItem>
+			  <Box whiteSpace="nowrap" fontSize={{ base: "10px", sm: "10px" }} fontWeight="400">&copy; 2023 Good Deeds</Box>
+			</WrapItem>
+		  </Wrap>
+		  <Wrap
+			id="bottom"
+			spacing={{ base: "4", lg: "8" }}
+			mt={{ base: "4", lg: "0" }}
+		  >
+			{footerLinks.map((link, idx) => (
+			  <WrapItem key={idx} width={{ base: "100%", sm: "auto" }}>
+				<Link href={link.href}>
+				  <Box cursor="pointer" textAlign="right" width="100%" fontSize={{ base: "10px", sm: "10px" }} fontWeight="400">
+					{link.label}
+				  </Box>
+				</Link>
+			  </WrapItem>
+			))}
+		  </Wrap>
+		</Flex>
+	  </Box>
+	</Box>
+  );
+  
