@@ -241,8 +241,13 @@ a {
   justify-content: center;
   align-items: center;
 }
+.container.banner {
+  margin-top: 29px;
+}
 
-
+.banner .good-deeds{
+  font-size: 57px;
+}
 
 .autocomplete-dropdown-container {
   line-height: 2;
@@ -677,7 +682,7 @@ margin-bottom: 24px;
 .card-text{
   font-size: clamp(16px, 18px, 20px);
   font-weight: 700;
-  line-height: clamp(18px, 2.5vw, 24px);
+  line-height: 1.3;
 }
 .card-txt{
   font-size: 14px;
@@ -936,11 +941,12 @@ margin-bottom: 24px;
   }
   .high-school-btn{
     width: 100%;
-    height: 30px;
+    height: 46px;
     font-size: 12px;
   }
   .main-volunteer-section{
     margin-top: 40px;
+    padding: 0;
   }
   .charities-wrapper{
     justify-content: center;
@@ -953,7 +959,7 @@ margin-bottom: 24px;
     font-size: 12px; /* Decrease font size for smaller screens */
   }
   .step-image{
-    display: none;
+    /* display: none; */
     justify-content: center;
   }
 }
@@ -966,14 +972,21 @@ margin-bottom: 24px;
   font-weight: 600;
   color: #E27832;
   line-height: 27px;
-  margin-top: 5rem;
+  margin-top: 2rem;
 }
 .partners-img{
   background-color: #DEE3E6;
 }
+.partners-img .slick-prev:before {
+  display: none;
+}
+.partners-img .slick-next:before {
+  display: none;
+}
 .main-volunteer-section{
   background-color: rgba(222, 227, 230, 0.5);
-  margin-top: 120px;
+  margin-top: 90px;
+  padding: 12px 0 25px 0;
 }
 .volun-txt{
   color: #E27832;
@@ -1086,6 +1099,12 @@ font-weight: 700;
   line-height: 14px;
   color: #212121;
 }
+.social{
+  padding: 80px 0 90px 0;
+}
+.social .good-deeds{
+  font-weight: 600;
+}
 .donate-btn{
   width: 197px;
   height: 48px;
@@ -1123,6 +1142,12 @@ font-weight: 700;
     font-weight: 700;
     color:#183553;
 }
+.deed-dollars {
+  padding: 70px 0 85px 0;
+}
+.make-money{
+  padding: 45px 0 65px 0;
+}
 .make-money-card{
   border: 2px solid #000000;
 }
@@ -1138,6 +1163,9 @@ font-weight: 700;
   line-height: 11px;
   font-weight: 700;
   color: #183553;
+}
+.review-section{
+  padding: 100px 0;
 }
 .review-txt{
   font-size: 30px;
@@ -1159,6 +1187,7 @@ color: #E27832;
 }
 
 .star {
+  font-size: 32px;
   display: inline-block;
   margin-right: 5px;
 }
@@ -1761,21 +1790,108 @@ color: #E27832;
   width: 470px;
   max-width: 100%;
 }
+.facility {
+  padding: 25px 0;
+}
+.popular-category .slick-next:before {
+  display: none;
+}
+.popular-category .slick-prev:before {
+ display: none;
+}
 
+
+@media screen and (max-width:1199px){
+  .nop-btn{
+    font-size: 14px;
+  }
+}
 @media (max-width: 600px) {
+  .container.banner {
+    margin-top: 6px;
+    padding: 0 28px;
+  }
+  .facility {
+    padding: 0;
+  }
+  .facility-card p:first-child{
+    font-size: 32px !important;
+  }
   .cust-button {
     width: calc(100% - 24px);
     max-width: none;
     padding: 12px 24px;
     font-size: 16px;
   }
+  .main-volunteer-section .good-deeds{
+    font-weight: 600;
+  }
+  .main-volunteer-section {
+    margin-top: 40px;
+    padding: 0;
+  }
+  .deed-dollars {
+    padding: 45px 17px 45px 17px;
+  }
+  .card-social{
+    border-radius: 0;
+  }
+  .card-social p:first-child{
+    font-size: 40px !important;
+  }
+  .make-money{
+    padding: 15px 0 50px 0;
+  }
+  .make-money p:last-child{
+    color: #183553 !important;
+    line-height: 1.3 !important;
+  }
+  .make-money-card p:last-child{
+    color: #183553 !important;
+    line-height: 1.3 !important;
+  }
+  .make-money-card p:first-child{
+    font-size: 30px !important;
+  }
+  .our-platform {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .nop img{
+    width: 240px;
+  }
+  .social {
+    padding: 53px 0 16px 0;
+  }
+  .good-deeds{
+    font-size: 30px;
+    line-height: 1.3;
+  }
+  .social img{
+    width: 47px;
+  }
 }
 
 @media (max-width: 768px){
+  .banner .good-deeds{
+    font-size: 30px;
+    font-weight: 600;
+  }
+  .start-txt {
+    font-size: 32px;
+  }
+  .ndollar-txt{
+    font-size: 32px;
+    text-align: center;
+  }
+  .css-z7ff2d {
+    margin-top: 31px;
+  }
   .step1-txt{
-    font-size: 16px;
+    font-size: 22px;
     line-height: 17px;
-    font-weight: 700;
+    font-weight: 500;
     color: #212121;
   }
   .hiw-box-leftWrap{
@@ -1799,8 +1915,8 @@ color: #E27832;
     max-width: 100%;
   }
   .step1-txt2{
-    font-size: 11px;
-    line-height: 13.5px;
+    font-size: 14px;
+    line-height: 1.2;
     font-weight: 600;
     color: #212121;
     width: 100%;

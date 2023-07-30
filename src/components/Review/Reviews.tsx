@@ -9,16 +9,16 @@ const Reviews = () => {
   return (
     <>
       <div
-        className="mt-5"
+        className="mt-5 review-section"
         style={{ backgroundColor: "rgba(222, 227, 230, 0.5)" }}
       >
         <Container>
           <div className="text-center">
-            <p className="review-txt pt-5">
+            <p className="review-txt">
               Hear What Our Partners and Users Have to Say
             </p>
           </div>
-          <Row className="mt-5 pb-5">
+          <Row className="mt-5 ">
             <Col className="rev-col" md={4}>
 
               <div>
@@ -44,9 +44,9 @@ const Reviews = () => {
                         border: '2px solid #E27832'
                       }}
                     />
-                    <div className="ms-3">
+                    <div className="ms-2">
                       <p className="rev-txt1">Laina Mercer</p>
-                      <p className="rev-txt2">Barrie, Ontario</p>
+                      <p className="rev-txt2 fw-bold">Barrie, Ontario</p>
                     </div>
                   </div>
                 </div>
@@ -77,9 +77,9 @@ const Reviews = () => {
                         border: '2px solid #E27832'
                       }}
                     />
-                    <div className="ms-3">
+                    <div className="ms-2">
                       <p className="rev-txt1">Jake Masic</p>
-                      <p className="rev-txt2">Brampton, Ontario</p>
+                      <p className="rev-txt2 fw-bold">Brampton, Ontario</p>
                     </div>
                   </div>
                 </div>
@@ -109,9 +109,9 @@ const Reviews = () => {
                         border: '2px solid #E27832'
                       }}
                     />
-                    <div className="ms-3">
+                    <div className="ms-2">
                       <p className="rev-txt1">Abe Evreniadis</p>
-                      <p className="rev-txt2">Geneva Centre for Autism</p>
+                      <p className="rev-txt2 fw-bold">Geneva Centre for Autism</p>
                     </div>
                   </div>
                 </div>

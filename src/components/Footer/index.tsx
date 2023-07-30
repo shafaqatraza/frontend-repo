@@ -33,11 +33,11 @@ export const Footer = () => (
           flexDirection={{ base: "row", sm: "column" }}
           alignItems={{ base: "center", sm: "start" }}
         >
-          <Box ml={{ base: "0em", sm: "3.5em" }}>
+          <Box ml={{ base: "0em", xl: "3.5em", sm:"1em" }}>
             <Image src={logo} alt="GoodDeeds" width={68} height={120} />
           </Box>
           <Text
-            fontSize={{ base: "10px", sm: "sm" }}
+            fontSize={{ base: "10px", sm: "10px" }}
             fontWeight="600" color={"#E27832"}
             mb={{ base: "20px", sm: "0" }}
             ms={{ base: "30px", sm: "0" }}
@@ -96,7 +96,7 @@ export const Footer = () => (
           ))}
         </HStack> */}
       </Flex>
-      <Divider my={{ base: "1", sm: "10" }} borderColor="grey.100" />
+      <Divider mb={{ base: "1", sm: "6" }} borderColor="grey.100" />
       <Flex
         direction="row"
         align={{ base: "flex-start", lg: "center" }}
@@ -109,7 +109,7 @@ export const Footer = () => (
           mt={{ base: "4", lg: "0" }}
         >
           <WrapItem>
-            <Box whiteSpace="nowrap" fontSize={{ base: "10px", sm: "14px" }} fontWeight="400">&copy; 2023 Good Deeds</Box>
+            <Box whiteSpace="nowrap" fontSize={{ base: "10px", sm: "10px" }} fontWeight="400">&copy; 2023 Good Deeds</Box>
           </WrapItem>
         </Wrap>
         <Wrap
@@ -120,7 +120,7 @@ export const Footer = () => (
           {footerLinks.map((link, idx) => (
             <WrapItem key={idx} width={{ base: "100%", sm: "auto" }}>
               <Link href={link.href}>
-                <Box cursor="pointer" textAlign="right" width="100%" fontSize={{ base: "10px", sm: "14px" }} fontWeight="400">
+                <Box cursor="pointer" textAlign="right" width="100%" fontSize={{ base: "10px", sm: "10px" }} fontWeight="400">
                   {link.label}
                 </Box>
               </Link>
