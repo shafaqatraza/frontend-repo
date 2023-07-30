@@ -10,7 +10,8 @@ import { Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { accessToken, baseUrl, currentOrganization } from "../../../components/Helper/index";
-
+import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
 const calculateHST = (price: number): number => {
   const hst = parseFloat(price.toString()) * 0.13;
   return hst; // Round to 2 decimal places
@@ -21,8 +22,9 @@ const calculateTotalPrice = (price: number, calculatedHST: number): number => {
   const tempPrice = parseFloat(price.toString()) + parseFloat(calculatedHST.toString());
   return tempPrice;
 };
+const stripePromise = loadStripe('pk_test_51MzNd8HXctCE4qHqr1vcficqBBBYQp6cFwZxDFefUmKIx6C11wm0pHZCG52m4NYghl36riJi7TZZbZ1ACNg8vJAZ00XFHi92vG');
 
-const Payment = () => {
+const StripeForm = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -94,8 +96,57 @@ const Payment = () => {
     setTotalPrice(calculatedTotalPrice);
   }, [hst])
 
-  const handleSubmit = (event:any) =>{
+  const stripe = useStripe();
+  const elements = useElements();
+  
+
+  const handleSubmit = async (event:any) =>{
     event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      // Handle error, CardElement is not available
+      return;
+    }
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: {
+        name: formData.full_name,
+        address: {
+          line1: formData.address,
+          country: formData.country,
+          postal_code: formData.postal_code,
+          state: formData.state,
+          city: formData.city,
+        },
+        email: formData.email,
+        phone: formData.phone_number,
+      },
+    });
+
+    // Check for errors
+    if (error) {
+      // Handle the payment error
+      console.log(error);
+      return; // or perform any necessary error handling
+    }
+
+    // Check if paymentMethod is defined
+    if (!paymentMethod) {
+      // Handle the case where paymentMethod is undefined
+      console.log("Payment method is undefined");
+      return; // or perform any necessary error handling
+    }
+
+    // Get the payment method ID
+    const paymentToken = paymentMethod.id;
+
     const form = new FormData();
     // @ts-ignore: Unreachable code error
     form.append("package_id", id);
@@ -103,7 +154,9 @@ const Payment = () => {
     form.append("address", formData.address);
     form.append("country", formData.country);
     form.append("email", formData.email);
-    form.append("payment_token", formData.payment_token);
+    // Append the payment_token to the form data
+    form.append("payment_token", paymentToken);
+
     form.append("postal_code", formData.postal_code);
     form.append("state", formData.state);
     form.append("city", formData.city);
@@ -113,6 +166,7 @@ const Payment = () => {
     form.append("card_number", formData.card_detail.card_number);
     form.append("expiry_date", formData.card_detail.expiry_date);
     form.append("cvv", formData.card_detail.cvv);
+    
 
     axios.post(`${baseUrl}/organization/subscriptions/payment?org=${ // @ts-ignore: Unreachable code error
       currentOrganization?.slug}`, form,  {
@@ -168,7 +222,9 @@ const Payment = () => {
             </div>
             <form>
             <Row>
-
+              <div>
+                <CardElement  />
+              </div>
                 <div className="mb-3 mt-3">
                   <label className="form-label fw-bold">Full Name</label>
                   <Input
@@ -342,30 +398,6 @@ const Payment = () => {
                   </div>
                 </Col>
               </Row>
-              {/* <div>
-                <label className="fs-5 fw-bold">Payment Plan</label>
-              </div> */}
-              {/* <div className="mt-3">
-                <label className="switch ms-2">
-                  <input type="radio" />
-                  <span className="slider round"></span>
-                </label>
-                <span className="fs-6" style={{ marginLeft: "10px" }}>
-                  Monthly
-                </span>
-              </div>
-              <div>
-                <label className="switch ms-2">
-                  <input type="radio" />
-                  <span className="slider round"></span>
-                </label>
-                <span className="fs-6" style={{ marginLeft: "10px" }}>
-                  Anually
-                </span>
-                <span className="fs-6 fw-bold ms-5" style={{ marginLeft: "10px", color:"#E27832" }}>
-                Save 20% Annually
-                </span>
-              </div> */}
               {isSubmitting ? (
             <div
               style={{ color: "#E27832" }}
@@ -413,39 +445,6 @@ const Payment = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="card shadow mt-5">
-              <div>
-                <p className="modal-txt text-center py-4">Invoices</p>
-                <div className="float-right me-5 mt-3">
-                <p style={{fontSize:"13px", lineHeight:"16px", fontWeight:"500"}}>Download Invoice</p>
-                </div>
-              </div>
-              <div className="d-flex col-md-9 mt-5 justify-content-between">
-                <div className="ms-5">
-                <input type="checkbox" />
-                <span className="ms-2" style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>May 2023</span>
-                </div>
-                <div>
-                <input type="checkbox" />
-                <span className="ms-2" style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>May 2023</span>
-                </div>
-              </div>
-              <div className="d-flex col-md-9 justify-content-between">
-                <div className="ms-5">
-                <input type="checkbox" />
-                <span className="ms-2" style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>June 2023</span>
-                </div>
-                <div>
-                <input type="checkbox" />
-                <span className="ms-2" style={{fontSize:"16px", lineHeight:"20px", fontWeight:"500", color:"#979797"}}>June 2023</span>
-                </div>
-              </div>
-              <div>
-                <p className="p-5" style={{fontSize:"13px", lineHeight:"16px", fontWeight:"500"}}>
-                Filter: by range (month/day/year)
-                </p>
-              </div>
-            </div> */}
           </Col>
         </Row>
       </Sidebar>
@@ -454,4 +453,12 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+const PaymentPage = () => {
+  return (
+    <Elements stripe={stripePromise}>
+      <StripeForm />
+    </Elements>
+  );
+};
+
+export default PaymentPage;
