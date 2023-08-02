@@ -28,6 +28,9 @@ import { useToast } from '@chakra-ui/toast'
 import { useRouter } from "next/router";
 import { Popover } from 'antd';
 import Reviews from "../components/Review/Reviews";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const StudentLanding = () => {
   const [companyName, setCompanyName] = useState('')
@@ -338,6 +341,34 @@ const StudentLanding = () => {
       </Text>
     </Box>
   );
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplay: true, 
+    autoplaySpeed: 10000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 1,
+        },
+      },
+    ],
+  };
 
   return (
     <>
@@ -412,35 +443,27 @@ const StudentLanding = () => {
       </div>
       {/* Partners */}
       <div className="container">
-        <div>
+        <div className='pt-md-5 pt-3 pb-3 pb-md-0'>
           <p className="text-center part-txt">Our Partners</p>
         </div>
-        <div className="partners-img mt-5">
-          <div className="row">
-            <div className="col-md-3 d-flex justify-content-center">
-              <Image className="mb-3 mt-3" src={part1.src} alt={"Partner1"} />
-            </div>
-            <div className="col-md-3 d-flex justify-content-center">
-              <Image className="mb-3 mt-3" src={part2.src} alt={"Partner2"} />
-            </div>
-            <div className="col-md-4 d-flex justify-content-center">
-              <Image
-                style={{ width: "320px" }}
-                className="mb-3 mt-3 img-fluid"
-                src={part3.src}
-                alt={"Partner3"}
-              />
-            </div>
-            <div className="col-md-2 d-flex justify-content-center">
-              <Image
-                className="mb-3 mt-3 me-0 me-md-3"
-                src={part4.src}
-                alt={"Partner4"}
-              />
-            </div>
-          </div>
+        <div className="partners-img mt-4 p-3 pe-0 mb-md-5 mb-4">
+            <Slider {...settings}>
+              
+                <div  className="pe-3">
+                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 pe-md-0">
+                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 ps-md-3 w-100 ms-auto d-flex align-items-end">
+                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+
+            </Slider>
         </div>
-        <div></div>
       </div>
       {/* Volunteer */}
       <div className="container mt-5">
@@ -534,7 +557,7 @@ const StudentLanding = () => {
                 }}
               >
                 <div>
-                  <p style={{ color: "white" }} className="text-center mt-5">Fund Raising</p>
+                  <p style={{ color: "white" }} className="text-center mt-5">Fundraising</p>
                 </div>
               </div>
             </Popover>

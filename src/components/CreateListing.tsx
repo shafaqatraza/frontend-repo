@@ -133,6 +133,8 @@ const CreateListing = () => {
     } else if (formData.thumbnail) {
       form.append("thumbnail", formData.thumbnail);
     }
+    console.log('xxxxx', formData)
+    return
     axios.post(`${baseUrl}/volunteer-listings/store/${slug}`, form, {
       headers: {
         Authorization: 'Bearer ' + accessToken(),

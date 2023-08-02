@@ -468,14 +468,18 @@ margin-bottom: 24px;
   color: #000;
   font-weight: 500;
 }
-.values-wrap{
+.values-wrap {
   flex-basis: 100%;
-  padding: 80px 0 40px;
+  box-shadow: 0 0 5px #0000005e;
+  width: 80%;
+  border-radius: 8px;
+  margin: auto;
+  padding: 35px 35px 25px 35px;
 }
 .values-icons{
-  width: 70%;
+  width: 100%;
   margin: 0 auto;
-  padding-bottom: 64px;
+  padding: 40px 0 64px 0;
 }
 .values-icons img{
   width: 102px;
@@ -592,12 +596,12 @@ margin-bottom: 24px;
     width: 100%;
     text-align: center;
   }
-  .values-wrap{
+  /* .values-wrap{
     padding: 60px 0 40px;
-  }
+  } */
   .values-icons{
     flex-direction: column;
-    margin-top: 40px;
+    margin-top: 0px;
     padding-bottom: 0;
   }
   .values-icons img{
@@ -1799,14 +1803,68 @@ color: #E27832;
 .popular-category .slick-prev:before {
  display: none;
 }
+.what-and-who h1{
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 23px;
+}
+.what-and-who p{
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom:20px ;
+}
+.mission-vision{
+  width: 80%;
+  margin: auto;
+}
+.mission-card{
+  box-shadow: 0 0 5px #0000005e;
+  border-radius: 8px;
+  padding: 35px 35px 25px 35px;
+}
+.value-heading{
+  font-size: 36px;
+  color: #E27832;
+}
+.value-para{
+  font-size: 22px;
+}
+
 
 
 @media screen and (max-width:1199px){
   .nop-btn{
     font-size: 14px;
   }
+  .values-wrap {
+    width: 90%;
+  }
+  .mission-vision{
+    width: 90%;
+  }
 }
 @media (max-width: 600px) {
+  .value-heading{
+    font-size: 32px !important;
+  }
+  .value-para{
+    font-size: 16px !important;
+    line-height: 1.2;
+  }
+  .values-wrap {
+    width: 84%;
+  }
+  .mission-vision{
+    width: 84%;
+  }
+  .what-and-who p {
+    font-size: 16px;
+  } 
+  .what-and-who h1 {
+    font-size: 30px;
+    margin-bottom: 45px;
+  }
   .css-4ce5xf {
     padding: 5px 15px;
   }
@@ -1877,6 +1935,12 @@ color: #E27832;
 }
 
 @media (max-width: 768px){
+  .about-good-deed img{
+    width: 75%;
+  }
+  .about-good-deed .good-deeds{
+    font-weight: 600;
+  }
   .banner .good-deeds{
     font-size: 30px;
     font-weight: 600;
@@ -1889,7 +1953,7 @@ color: #E27832;
     text-align: center;
   }
   .css-z7ff2d {
-    margin-top: 31px;
+    margin-top: 31px !important;
   }
   .step1-txt{
     font-size: 22px;

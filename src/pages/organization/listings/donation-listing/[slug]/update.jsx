@@ -3,7 +3,7 @@ import Navbar from "../../../../../components/Navbar";
 import Sidebar from "../../../../../components/Sidebar.jsx";
 import { Image, Input, Textarea } from "@chakra-ui/react";
 import { Form } from "react-bootstrap";
-import { Radio, Select, Space } from "antd";
+import { Radio, Select, Space, Upload } from "antd";
 import { useState } from "react";
 import "antd/dist/antd.css";
 import axios from "axios";
@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { Modal } from "react-bootstrap";
 import camera from "../../../../../assets/imgs/camera.png";
 import { Footer } from "../../../../../components/Footer";
+import { CUIAutoComplete } from 'chakra-ui-autocomplete'
 
 const myData = [
   { value: "apple", label: "Volunteer" },
@@ -38,7 +39,9 @@ const EditDonationListing = () => {
   const handleCloseError = () => setShowError(false);
   const handleShowError = () => setShowError(true);
   const [donError, setDonError] = useState([]);
-
+  const [pickerItems, setPickerItems] = useState([])
+  const [selectedItems, setSelectedItems] = useState([])
+  const [hover, setHover] = useState(false); // Track the hover state
   if (!router) {
     return null;
   }
@@ -90,6 +93,25 @@ const EditDonationListing = () => {
         )
         .then((res) => {
           setFormData(res.data.data);
+          let data = res.data.data;
+          
+          setFormData({
+            title: data.title,
+            description: data.description,
+            url_to_donate:data.url_to_donate,
+            category_id: data.category_id,
+            keywords: [],
+            thumbnail: "",
+            old_thumbnail: data.thumbnail
+          });
+          let tmpKeywords = []
+          
+          if (res.data.data.keywords !== null && res.data.data.keywords.length > 0) {
+            res.data.data.keywords.map((i) =>
+              tmpKeywords.push({ label: i.name, value: i.id })
+            )
+          }
+          setSelectedItems(tmpKeywords)
         })
         .catch((err) => {
           console.log(err);
@@ -109,9 +131,44 @@ const EditDonationListing = () => {
         });
     }
   },[slug, currentOrganization])
+console.log('xxxxx', formData)
+
+const getBase64 = (img, callback) => {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+};
+
+const handleFileChange = (info) => {
+  
+    const file = info.file.originFileObj;
+    if (file) {
+      // Update the formData with the new thumbnail file
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        thumbnail: info.file.originFileObj,
+      }));
+      getBase64(file, (imageUrl) => {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          old_thumbnail: imageUrl, // Show the new thumbnail preview
+        }));
+      });
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      keywords: [],
+    }));
+    
+    selectedItems.map((i) => // @ts-ignore: Unreachable code error
+      formData.keywords.push(i.value)
+    )
+
     const form = new FormData();
     // setFormData({ ...formData, category_id: inputValue });
     setIsSubmitting(true);
@@ -181,6 +238,19 @@ const EditDonationListing = () => {
       [name]: value,
     }));
   };
+
+  // @ts-ignore: Unreachable code error
+  const handleCreateItem = (item) => { // @ts-ignore: Unreachable code error
+    setPickerItems((curr) => [...curr, item]) // @ts-ignore: Unreachable code error
+    setSelectedItems((curr) => [...curr, item])
+  }
+ // @ts-ignore: Unreachable code error
+  const handleSelectedItemsChange = (selectedItems) => {
+    if (selectedItems) {
+      setSelectedItems(selectedItems)
+    }
+  }
+
   return (
     <>
       <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
@@ -306,36 +376,28 @@ const EditDonationListing = () => {
               </label>
 
               <div className="col-md-12">
-                <Select
-                  showSearch
-                  style={{ width: "100%" }}
-                  placeholder="Select category"
-                  optionFilterProp="children"
-                  value={formData.category || ""}
-                  onChange={(value) =>
-                    setFormData({ ...formData, category_id: value })
-                  }
-                  // @ts-ignore: Unreachable code error
-                  name="category_id"
-                  onSearch={(value) => setInputValue(value)}
-                  filterOption={(input, option) =>
-                    // @ts-ignore: Unreachable code error
-                    option.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                  size="large"
-                >
-                  {data.map((item) => (
-                    // @ts-ignore: Unreachable code error
-                    <Option key={item.id} value={item.id}>
-                      {
-                        // @ts-ignore: Unreachable code error
-                        item.name
-                      }
-                    </Option>
-                  ))}
-                </Select>
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                placeholder="Select category"
+                optionFilterProp="children"
+                value={formData.category_id || undefined} // Use undefined to show the placeholder when no category is selected
+                onChange={(value) =>
+                  setFormData({ ...formData, category_id: value })
+                }
+                onSearch={(value) => setInputValue(value)} // Make sure you have setInputValue defined in your code
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                size="large"
+              >
+                {data.map((item) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
+              </Select>
+
               </div>
             </div>
           </div>
@@ -350,27 +412,19 @@ const EditDonationListing = () => {
             >
               Keywords
             </label>
-            <Select
-              mode="multiple"
-              size={size}
-              placeholder="Please select"
-              // defaultValue={["Volunteer", "Animals"]}
-              onChange={(selectedOptions) => {
-                const selectedValues = selectedOptions.map(
-                  (option) => option && option
-                );
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  keywords: selectedValues, // update keywords field with selected values
-                }));
-              }}
-              value={formData.selectedValues}
-              style={{
-                width: "100%",
-              }}
-              options={options}
-            />
+            <CUIAutoComplete
+            hideToggleButton={true}
+            label="Select a min of 3, max of 6"
+            placeholder=""
+            onCreateItem={handleCreateItem}
+            items={pickerItems}
+            selectedItems={selectedItems}
+            onSelectedItemsChange={(changes) =>
+              handleSelectedItemsChange(changes.selectedItems)
+            }
+          />
           </div>
+          <div>
           <label
             style={{
               fontWeight: "500",
@@ -381,16 +435,62 @@ const EditDonationListing = () => {
           >
             Upload a thumbnail picture
           </label>
-          <div className="upload-pic d-flex justify-content-center align-items-center">
-            {thumbnail ? (
-              <Image src={thumbnail} width={200} height={200} />
-            ) : (
-              <Image
-                src={camera.src}
-                onClick={handleThumbnailClick}
-                alt="Thumbnail placeholder"
-              />
-            )}
+          </div>
+          <div>
+          <Upload
+            accept="image/*"
+            customRequest={() => {}}
+            onChange={(e) =>{handleFileChange(e)}}
+            showUploadList={false}
+          >
+            <div
+              className="upload-pic d-flex justify-content-center align-items-center"
+              style={{ // @ts-ignore: Unreachable code error
+                border: formData.new_thumbnail
+                  ? '2px solid #007BFF'
+                  : '2px solid transparent',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s',
+                position: 'relative',
+              }}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+            >
+              {formData.old_thumbnail ? (
+                <img
+                  src={formData.old_thumbnail}
+                  width={200}
+                  height={200}
+                  alt="Previous Thumbnail"
+                />
+              ) : (
+                <img src={camera.src} alt="Thumbnail placeholder" />
+              )}
+
+              {hover && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: '#fff',
+                    fontSize: '16px',
+                  }}
+                >
+                  Upload
+                </div>
+              )}
+            </div>
+          </Upload>
           </div>
           {isSubmitting ? (
             <div

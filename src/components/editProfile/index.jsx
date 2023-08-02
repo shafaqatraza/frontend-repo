@@ -113,6 +113,7 @@ const EditProfileForm = (props) => {
       formData.append('verified_email', true)
       formData.append('website_url', website)
       formData.append('avatar', avatar)
+
       // if (Object.keys(avatar).length > 0) {  
       //   formData.append('avatar', avatar)
       // }
@@ -124,6 +125,8 @@ const EditProfileForm = (props) => {
 
   const mutation = useMutation(
     (formData) => {
+      console.log('wwwww', formData)
+    
       setIsSubmitLoading(true)
       return axios.post(`${baseUrl}/profile/update`, formData, {
         headers: {
