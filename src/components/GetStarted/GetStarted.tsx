@@ -216,12 +216,12 @@ const GetStarted = () => {
                 <Row>
                   <Col md={10}>
                     <div className="hiw-box-leftWrap">
-                      <div className='d-flex d-md-block mt-3 mt-md-0'>
-                        <p className="step1-txt text-md-center mt-3 mt-md-0">
+                      <div className='d-flex d-md-block mt-3 mt-md-0 me-auto me-md-0'>
+                        <p className="step1-txt text-md-center mt-3 mt-md-0 me-4 me-md-0">
                           Step 1
                         </p>
                         <img
-                          className="mt-md-3 step-image"
+                          className="mt-md-3 step-image ms-2 ms-md-0"
                           src={signupmob.src}
                           alt="signupmob"
                           style={{ marginRight: '15px' }}

@@ -20,7 +20,8 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   PopoverAnchor,
-  usePopoverContext
+  usePopoverContext,
+  background
 } from '@chakra-ui/react'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
@@ -43,9 +44,9 @@ import jordan from '../assets/imgs/jordan-fiksenbaum.png'
 import team from '../assets/imgs/about/team.png'
 import social from '../assets/imgs/about/social.png'
 import comunity from '../assets/imgs/about/comunity.png'
-import icon1 from '../assets/imgs/equality.png'
-import icon2 from '../assets/imgs/kindness.png'
-import icon3 from '../assets/imgs/respect.png'
+import icon1 from '../assets/imgs/about/equality.png'
+import icon2 from '../assets/imgs/about/trust.png'
+import icon3 from '../assets/imgs/about/respect.png'
 import bannerImage from '../assets/imgs/do-good-feel-better-get-rewarded.jpg'
 import bannerImageMb from '../assets/imgs/do-good-feel-better-get-rewarded-mb.jpg'
 import CommunityImage from '../assets/imgs/community-focused.jpg'
@@ -55,6 +56,13 @@ import { baseUrl } from '../components/Helper/index'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import part1 from "../assets/imgs/part1.png";
+import part2 from "../assets/imgs/part2.png";
+import part3 from "../assets/imgs/part3.png";
+import part4 from "../assets/imgs/part4.png";
+import banner from "../assets/imgs/about/banner.png"
+import whatsdo from "../assets/imgs/about/what-we-do.png"
+import whowe from "../assets/imgs/about/who-we-are.png"
 
 const About = () => {
 
@@ -136,27 +144,32 @@ const About = () => {
   }, [])
 
   const settings = {
-    dots: true,
-    infinite: false,
+    dots: false,
+    infinite: true,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 4000,
+    autoplay: true, 
+    autoplaySpeed: 10000,
     responsive: [
       {
-        breakpoint: 480,
-        settings: { slidesToShow: 1, slidesToScroll: 1, infinite: false, autoplay: true, autoplaySpeed: 3000 }
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
       },
       {
         breakpoint: 768,
-        settings: { slidesToShow: 2, slidesToScroll: 2, infinite: false, autoplay: true, autoplaySpeed: 3000 }
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 1,
+        },
       },
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 3, slidesToScroll: 3, infinite: false, autoplay: true, autoplaySpeed: 4000 }
-      }
-    ]
+    ],
   };
 
 
@@ -198,159 +211,73 @@ const About = () => {
         />
       </Head>
       <Navbar />
-      <AboutSection1 title="About Good Deeds" />
-      <Container className='about-container'>
+      <div className='container my-5 py-4 px-0'>
+        <div className='d-flex align-items-center justify-content-center flex-column flex-md-row about-good-deed'>
+          <h1 className='good-deeds'>This is <span style={{color:"#E27832"}}>Good Deeds.</span></h1>
+          <img src={banner.src} className='mt-5 mt-md-0' alt="banner" />
+        </div>
+      </div>
+      <Box style={{background:"rgb(222,227,230,50%)"}}>
+          <div className='container py-md-5 pb-5 pt-1 what-and-who px-0'>
+            <div className='row mt-md-4 mx-0 px-4 px-md-0'>
+              <div className='col-lg-9 col-md-8 order-2 order-md-1  pe-md-5 pe-2'>
+                <h1 className='d-none d-md-block'><span style={{color:"#E27832"}} >What</span> we do?</h1>
+                <p>Good Deeds is the first online platform that rewards kindness by inspiring a cycle of giving. You earn exclusive Deed Dollars in exchange for donations and volunteer services, which you can exchange for goods and services within the Good Deeds marketplace. </p>
+                <p>We believe that a non-monetized society can help shape a friendlier and better world. Additionally, our collective efforts encourage a reduction in waste and pollution, promoting a sustainable Earth for physical and mental well-being. </p>
+                <p>We welcome everyone to join our vibrant community as we do good and feel better together!</p>
+              </div>
+              <div className='col-lg-3 col-md-4 order-1 order-md-2 flex-column justify-content-center justify-content-md-end  py-5 d-flex'>
+              <h1 className='d-block d-md-none text-center'><span style={{color:"#E27832"}} >What</span> we do?</h1>
+                <img src={whatsdo.src} className='px-2 px-md-0' alt="what we do" />
+              </div>
+            </div>
+            <div className='row mt-md-5 mt-4 pt-md-5 mb-md-5 mx-0 px-4 px-md-0'>
+              <div className='col-lg-3 col-md-4 d-flex pb-5 pb-md-0 justify-content-center flex-column pt-4'>
+              <h1 className='text-center d-block d-md-none'><span style={{color:"#E27832"}}>Who</span> we are?</h1>
+                <img src={whowe.src} className='px-2 px-md-0' alt="who we are" />
+              </div>
+              <div className='col-lg-9 col-md-8 ps-md-5'>
+                <h1 className='text-end me-5 d-none d-md-block'><span style={{color:"#E27832"}}>Who</span> we are?</h1>
+                <p>We empower communities to help others without ulterior motives or seeking monetary gains in return.</p>
+                <p>Our community aims to progress occasional acts of giving into everyday practice. In doing so, we can work together to minimize poverty and provide support to those who need it most.</p>
+                <p> Let's build a healthy cycle that goes beyond monetary limitations for a kinder and more sustainable lifestyle.</p>
+              </div>
+            </div>
+          </div>
+      </Box>
 
-        <Box className='section-1'>
-          <Flex className='inner-wrap'>
-            <Box flexBasis="100%" background={'primary.300'}>
-              <Text
-                className='section1-heading'
-              >
-                Do Good. <br />
-                Feel Better. <br />
-                Get Rewarded.
-              </Text>
-            </Box>
-            <Box flexBasis="100%" textAlign={'center'}>
-              <Image
-                height={'100%'}
-                width={'100%'}
-                src={bannerImage.src}
-                alt={'Do Good Feel Better Get Rewarded'}
-                draggable="false"
-                fallback={<Skeleton />}
-                cursor={'pointer'}
-                className='for-desk'
-              />
-              <Image
-                height={'100%'}
-                width={'100%'}
-                src={bannerImageMb.src}
-                alt={'Do Good Feel Better Get Rewarded'}
-                draggable="false"
-                fallback={<Skeleton />}
-                cursor={'pointer'}
-                className='for-mb'
-              />
+      <div className='container pt-3 pb-md-3 px-0'>
+        <div className="d-flex flex-column flex-md-row mission-vision mt-5">
+          <div className='mission-card me-md-4 mb-2 mb-md-0 text-center text-md-start'>
+            <h1 className='value-heading fw-bold mb-4'>Mission</h1>
+            <p className='value-para mb-5'>We’re on a mission to build stronger more sustainable communities, one good deed at a time</p>
+          </div>
+          <div className='mission-card mb-2 mb-md-0 mt-4 mt-md-0 text-center text-md-start'>
+            <h1 className='value-heading fw-bold mb-4'>Vision</h1>
+            <p className='value-para mb-5 '>Our vision is to make the world and better, happier place for all mankind.</p>
+          </div>
+        </div>
 
-            </Box>
-          </Flex>
-        </Box>
-
-        <Text
-          className="heading-section2"
-        >
-          Marketplace of Opportunity
-        </Text>
-
-        <Text
-          margin={'0 auto 50px'}
-          color={'black'}
-          className="content-section2"
-          fontWeight={400}
-        >
-
-          Good Deeds is a platform where contributions are rewarded by encouraging reciprocity through the offering of goods and services. In exchange for donating things that you no longer need or providing services, you earn virtual deed dollars that can be used in the marketplace. We believe that a good deed should be rewarded and that a non-monetized society can help shape communities and beyond. Good Deeds is the world’s first 100% free-to-use marketplace that promotes and recompenses the act of giving. By giving
-          away things we may no longer need, we create a cycle of kindness + reward that help reduce the environmental impact on the planet, while also promoting mental and physical  benefits, nurturing relationships and expanding our social influence.
-
-        </Text>
-
-
-
-        <Box className='community-section-wrap'>
-          <Flex className='community-section'>
-            <Box flexBasis="100%" >
-
-              <Image
-                height={'100%'}
-                objectFit={'cover'}
-                width={'100%'}
-                src={CommunityImage.src}
-                alt={'Community Focused'}
-                draggable="false"
-                fallback={<Skeleton />}
-                cursor={'pointer'}
-              />
-            </Box>
-            <Box className='community-content-wrap' py={10} background={'blue.900'}>
-              <Image
-                display={'block'}
-                margin={'0 auto'}
-                src={comunity.src}
-                alt={'Community Focused '}
-                draggable="false"
-                fallback={<Skeleton />}
-                cursor={'pointer'}
-                width={'50px'}
-                height={'50px'}
-              />
-              <Text
-                className='community-heading'
-              >
-                Community-Focused
-              </Text>
-
-              <Text
-                className='community-content for-desk'
-              >
-                We are passionate about empowering communities to look within and share resources without any monetary requirements.
-                Our goal is that our donation movement extends from an occasional occurrence to a continuous lifestyle, by working on
-                minimizing poverty and supporting our communities. It is a universal truth, when we engage in good deeds, we help
-                others and we also reduce our own stress. We encourage our community to do good (and feel better themselves) by
-                creating a cycle that benefits them beyond monetary reward and into a more adaptable, kind and sustainable way of life.
-              </Text>
-              <Text
-                className='community-content for-mb'
-              >
-                We are passionate about empowering communities to look within and share resources without any monetary requirements.
-                Our goal is that our donation movement extends from an occasional occurrence to a continuous lifestyle, by working on
-                minimizing poverty and supporting our communities.
-              </Text>
-
-            </Box>
-          </Flex>
-        </Box>
-
-        <Box className='mission-wrap'>
-          <Flex className='mission-inner-wrap'>
-            <Box flexBasis={'100%'} bg='primary.300'>
-              <Text
-                className='mission-heading'
-              >
-                Mission
-              </Text>
-            </Box>
-            <Box flexBasis={'100%'} bg='white'>
-              <Text
-                className='mission-content'
-              >
-                Our mission is to work on encouraging a sustainable future as part of the good deeds journey by reducing waste and
-                nurturing  communities. We believe in buying less and sharing more, and that moving away from a consumerist culture
-                by lessening our environmental impact ensures the path to earth’s longevity.
-              </Text>
-            </Box>
-          </Flex>
-        </Box>
-
-        <Box className='values-wrap' background={'blue.900'} >
+        <Box className='values-wrap my-md-5 mb-5 mt-4' background={'white'}>
           <Text
-            fontWeight="500"
-            fontSize="40px"
-            textAlign={'center'}
-            color="white"
+            fontWeight="700"
+            fontSize="36px"
+            color="#E27832"
+            width={'100%'}
+            margin={'0 auto'}
+            className='text-center text-md-start value-heading'
           >
             Values
           </Text>
           <Text
-            fontSize={"16px"}
-            width={'80%'}
+            fontSize={"22px"}
+            width={'100%'}
             margin={'0 auto'}
-            textAlign={'center'}
-            color='white'
+            color='#183553'
             fontWeight={400}
-            py={20}
-            className='for-desk'
+            pb={20}
+            py={7}
+            className='for-desk text-center text-md-start d-block value-para'
           >
             Our values are what guides us. We cultivate a diverse and inclusive environment through equality, kindness, respect, trust
             and compassion for all.
@@ -359,32 +286,45 @@ const About = () => {
           <Flex className='values-icons'>
             <Box w='33%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
               <Image src={icon1.src} alt='Equality' />
-              <Text fontSize={24} color={'white'}>Equality</Text>
+              <Text fontSize={20} fontWeight={'bold'} color={'#183553'}>Equality</Text>
             </Box>
             <Spacer />
             <Box w='33%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
               <Image src={icon2.src} alt='Kindness' />
-              <Text fontSize={24} color={'white'}>Kindness</Text>
+              <Text fontSize={20} fontWeight={'bold'} color={'#183553'}>Kindness</Text>
             </Box>
             <Spacer />
             <Box w='33%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
               <Image src={icon3.src} alt='Respect' />
-              <Text fontSize={24} color={'white'}>Respect</Text>
+              <Text fontSize={20} fontWeight={'bold'} color={'#183553'} className='mt-3'>Respect</Text>
+            </Box>
+            <Spacer />
+            <Box w='33%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
+              <Image src={icon2.src} alt='Respect' />
+              <Text fontSize={20} fontWeight={'bold'} color={'#183553'}>Trust</Text>
+            </Box>
+            <Spacer />
+            <Box w='33%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
+              <Image src={icon3.src} alt='Respect' />
+              <Text fontSize={20} fontWeight={'bold'} color={'#183553'} className='mt-3'>Empathy</Text>
             </Box>
 
           </Flex>
 
         </Box>
 
-        <Box className='for-desk' background={'primary.300'} flexBasis="100%" pt={10} pb={20} px={30}>
+      </div>
+      <div style={{background:"rgb(222,227,230,50%)"}}>
+      <Container className='about-container'>
+        <Box className='for-desk' flexBasis="100%" pt={10} pb={20} px={30}>
           <Text
-            fontWeight="500"
-            fontSize="40px"
-            textAlign={'center'}
-            color="white"
+            fontWeight="700"
+            fontSize="36px"
+            // textAlign={'center'}
+            color="#183553"
             pb={10}
           >
-            Our Team
+            Our <span style={{color:"#E27832",}}>Team</span>
           </Text>
           <Flex width={'70%'} margin={'0 auto'}>
             <Box w='25%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
@@ -407,8 +347,8 @@ const About = () => {
                   </PopoverBody>
                 </PopoverContent>
               </Popover>
-              <Text fontSize={14} color={'white'} fontWeight="500" mt={2}>Amber Yakutchik</Text>
-              <Text fontSize={14} color={'white'} fontWeight="light">Founder and CEO</Text>
+              <Text fontSize={20} color={'#183553'} fontWeight="700" textAlign={'center'} mt={2}>Amber Yakutchik</Text>
+              <Text fontSize={16} color={'#183553'} fontWeight="600" textAlign={'center'}>Founder and CEO</Text>
             </Box>
             <Spacer />
             <Box w='25%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
@@ -433,8 +373,8 @@ const About = () => {
               </Popover>
 
 
-              <Text fontSize={14} color={'white'} fontWeight="500" mt={2}>Paula Festas</Text>
-              <Text fontSize={14} color={'white'} fontWeight="light">Board Director, Operations</Text>
+              <Text fontSize={20} color={'#183553'} fontWeight="700" textAlign={'center'} mt={2}>Paula Festas</Text>
+              <Text fontSize={16} color={'#183553'} fontWeight="600" textAlign={'center'}>Board Director, Operations</Text>
             </Box>
             <Spacer />
             <Box w='25%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
@@ -457,10 +397,10 @@ const About = () => {
                   </PopoverBody>
                 </PopoverContent>
               </Popover>
-              <Text fontSize={14} color={'white'} fontWeight="500" mt={2}>Alex Christopoulos</Text>
-              <Text fontSize={14} color={'white'} fontWeight="light">Board Treasurer, CFO</Text>
+              <Text fontSize={20} color={'#183553'} fontWeight="700" textAlign={'center'} mt={2}>Alex Christopoulos</Text>
+              <Text fontSize={16} color={'#183553'} fontWeight="600" textAlign={'center'}>Board Treasurer, CFO</Text>
             </Box>
-            <Box w='25%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
+            {/* <Box w='25%' display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
               <Popover trigger={"hover"} placement='right-start'>
                 <PopoverTrigger >
                   <Image borderRadius='full' boxSize='219px' src={jordan.src} alt='Jordan Fiksenbaum' />
@@ -480,21 +420,21 @@ const About = () => {
               </Popover>
               <Text fontSize={14} color={'white'} fontWeight="500" mt={2}>Jordan Fiksenbaum</Text>
               <Text fontSize={14} color={'white'} fontWeight="light">Chief Visionary Officer</Text>
-            </Box>
+            </Box> */}
 
           </Flex>
 
         </Box>
 
-        <Box className='for-mb' background={'primary.300'} flexBasis="100%" pt={10} pb={20} px={30}>
+        <Box className='for-mb' flexBasis="100%" pt={10} pb={20} px={30}>
           <Text
-            fontWeight="500"
-            fontSize="24px"
+            fontWeight="600"
+            fontSize="30px"
             textAlign={'center'}
-            color="white"
+            color="#183553"
             pb={4}
           >
-            Our Team
+            Our <span style={{color:"#E27832"}}>Team</span>
           </Text>
           <Flex margin={'0 auto'} flexDirection='column'>
             <Box w='100%' mb={6} display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
@@ -517,8 +457,8 @@ const About = () => {
                   </PopoverBody>
                 </PopoverContent>
               </Popover>
-              <Text fontSize={14} color={'white'} fontWeight="500">Amber Yakutchik</Text>
-              <Text fontSize={14} color={'white'} fontWeight="light">Founder and CEO</Text>
+              <Text fontSize={20} color={'#183553'} fontWeight="700">Amber Yakutchik</Text>
+              <Text fontSize={16} color={'#183553'} fontWeight="600">Founder and CEO</Text>
             </Box>
             <Spacer />
             <Box w='100%' mb={6} display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
@@ -543,8 +483,8 @@ const About = () => {
               </Popover>
 
 
-              <Text fontSize={14} color={'white'} fontWeight="500">Paula Festas</Text>
-              <Text fontSize={14} color={'white'} fontWeight="light">Board Director, Operations</Text>
+              <Text fontSize={20} color={'#183553'} fontWeight="700">Paula Festas</Text>
+              <Text fontSize={16} color={'#183553'} fontWeight="600">Board Director, Operations</Text>
             </Box>
             <Spacer />
             <Box w='100%' mb={6} display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
@@ -567,10 +507,10 @@ const About = () => {
                   </PopoverBody>
                 </PopoverContent>
               </Popover>
-              <Text fontSize={14} color={'white'} fontWeight="500">Alex Christopoulos</Text>
-              <Text fontSize={14} color={'white'} fontWeight="light">Board Treasurer, CFO</Text>
+              <Text fontSize={20} color={'#183553'} fontWeight="700">Alex Christopoulos</Text>
+              <Text fontSize={16} color={'#183553'} fontWeight="600">Board Treasurer, CFO</Text>
             </Box>
-            <Box w='100%' mb={6} display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
+            {/* <Box w='100%' mb={6} display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} >
               <Popover trigger={"hover"} placement='bottom'>
                 <PopoverTrigger >
                   <Image borderRadius='full' boxSize='219px' src={jordan.src} alt='Jordan Fiksenbaum' />
@@ -590,90 +530,37 @@ const About = () => {
               </Popover>
               <Text fontSize={14} color={'white'} fontWeight="500">Jordan Fiksenbaum</Text>
               <Text fontSize={14} color={'white'} fontWeight="light">Chief Visionary Officer</Text>
-            </Box>
+            </Box> */}
 
           </Flex>
 
         </Box>
 
-
-        <Text
-          mt={10}
-          mb={10}
-          fontSize={'40px'}
-          color="black"
-          fontWeight={500}
-          style={{ textAlign: 'center' }}
-        >
-          Partners
-        </Text>
-
-        <div style={{ marginBottom: '2.5rem' }} >
-          {isLoading &&
-            <Center h='500px' >
-              <Spinner
-                thickness='4px'
-                speed='0.65s'
-                emptyColor='orange.200'
-                color='orange.500'
-                size='xl'
-              />
-            </Center>
-          }
-
-          {!isLoading && partnerData &&
-            <Slider {...settings}>
-              {partnerData.filter(data => data.type === 'Partner').map((data, id) => (
-                <div key={id}>
-                  <a href={data.website_url} target="_blank" style={{ display: 'block', width: '150px', margin: '0 auto' }}>
-                    <img src={data.logo} alt={data.company_name} />
-                  </a>
-                </div>
-              ))}
-            </Slider>
-          }
-
-        </div>
-
-        <Text
-          mt={10}
-          mb={10}
-          fontSize={'40px'}
-          color="black"
-          fontWeight={500}
-          style={{ textAlign: 'center' }}
-        >
-          Sponsors
-        </Text>
-
-        <div style={{ marginBottom: '2.5rem' }} >
-          {isLoading &&
-            <Center h='500px' >
-              <Spinner
-                thickness='4px'
-                speed='0.65s'
-                emptyColor='orange.200'
-                color='orange.500'
-                size='xl'
-              />
-            </Center>
-          }
-
-          {!isLoading && partnerData &&
-            <Slider {...settings}>
-              {partnerData.filter(data => data.type === 'Sponsor').map((data, id) => (
-                <div key={id}>
-                  <a href={data.website_url} target="_blank" style={{ display: 'block', width: '150px', margin: '0 auto' }}>
-                    <img src={data.logo} alt={data.company_name} />
-                  </a>
-                </div>
-              ))}
-            </Slider>
-          }
-
-        </div>
-
       </Container>
+      </div>
+      <div className='container pb-5 mb-md-5 px-0'>
+        <div className='pt-md-5 pt-3 pb-3 pb-md-0'>
+          <p className="text-center part-txt">Our Partners</p>
+        </div>
+        <div className="partners-img mt-4 p-3 pe-0 mb-md-5 mb-4">
+            <Slider {...settings}>
+              
+                <div  className="pe-3">
+                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 pe-md-0">
+                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 ps-md-3 w-100 ms-auto d-flex align-items-end">
+                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+
+            </Slider>
+          </div>
+        </div>
       <Footer />
     </Box >
   )

@@ -17,26 +17,20 @@ import { useRouter } from 'next/router'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useRef, useEffect } from "react";
+
 
 const ourPartners = () => {
   const toast = useToast()
   const router = useRouter()
-  const sliderRef = useRef(null);
 
-  useEffect(() => {
-    const autoplayInterval = setInterval(() => {
-      sliderRef.current.slickNext();
-    }, 10000);
-
-    return () => clearInterval(autoplayInterval);
-  }, []);
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
+    autoplay: true, 
+    autoplaySpeed: 10000,
     responsive: [
       {
         breakpoint: 1024,
@@ -90,7 +84,7 @@ const ourPartners = () => {
             </div>
           </div> */}
           <div>
-            <Slider ref={sliderRef} {...settings}>
+            <Slider {...settings}>
               
                 <div  className="pe-3">
                   <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
@@ -176,7 +170,7 @@ const ourPartners = () => {
                   </div>
                   <div className="card-body facility-card">
                     <p
-                      className="mt-3"
+                      className="mt-3 mb-4 mt-3"
                       style={{
                         fontSize: "clamp(24px, 4vw, 32px)",
                         lineHeight: "clamp(20px, 3.5vw, 30px)",
@@ -184,7 +178,6 @@ const ourPartners = () => {
                         color: "#183553",
                         textAlign: "center",
                       }}
-                      className="mb-4 mt-3"
                     >
                       Earn
                     </p>

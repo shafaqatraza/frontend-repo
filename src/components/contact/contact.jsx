@@ -14,6 +14,7 @@ import {
     Input,
     Textarea,
     Button,
+    Select,
     FormErrorMessage
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useCallback } from "react";
@@ -40,6 +41,7 @@ const Contact = (props) => {
         first_name: '',
         last_name: '',
         email: '',
+        inquiry: '',
         message: ''
     })
     const [phone, setPhone] = useState()
@@ -67,6 +69,11 @@ const Contact = (props) => {
                 title: 'Phone is required.',
                 status: 'error'
             })
+        } else if (contactForm.inquiry == '') {
+            toast({
+                title: 'inquiry is required.',
+                status: 'error'
+            })
         } else if (contactForm.message == '') {
             toast({
                 title: 'Message is required.',
@@ -91,6 +98,7 @@ const Contact = (props) => {
                     last_name: '',
                     email: '',
                     phone: '',
+                    inquiry: '',
                     message: ''
                 })
                 createCaptcha();
@@ -202,10 +210,27 @@ const Contact = (props) => {
                         </FormControl>
                     </SimpleGrid>
 
-                    <FormControl mt="8" id="description" isRequired>
+                    <SimpleGrid columns={1} spacing={10}>
+                    <FormControl mt="8" id="inquiry" isRequired>
+                    <FormLabel color="gray.500">Inquiry</FormLabel>
+                    <Select placeholder="Inquiry Type" variant="filled" className="inquiry-select" value={contactForm.inquiry} onChange={(e) => setContactForm({ ...contactForm, inquiry: e.target.value })} >
+                        <option value="General" >General Inquiry</option>
+                        <option value="Technical" style={{background:"#F6F6F6"}}>Technical</option>
+                        <option value="Dispute">Dispute/Resolution</option>
+                        <option value="Billing" style={{background:"#F6F6F6"}}>Billing and Payments</option>
+                        <option value="Media">Media Relations</option>
+                        <option value="Volunteer" style={{background:"#F6F6F6"}}>Volunteer Inquiry</option>
+                        <option value="Donations">Donations Inquiry</option>
+                        <option value="Careers" style={{background:"#F6F6F6"}}>Careers</option>
+                        <option value="other">Other</option>
+                    </Select>
+                    </FormControl>
+                    
+                    <FormControl mt="1" id="description" isRequired>
                         <FormLabel color="gray.500">Message</FormLabel>
                         <Textarea variant="filled" rows={5} name="Message" value={contactForm.message} onChange={event => setContactForm({ ...contactForm, message: event.currentTarget.value })} placeholder="message" type="text" maxLength={1000} />
                     </FormControl>
+                    </SimpleGrid>
 
                     <SimpleGrid columns={1} spacing={10}>
                         <FormControl mt="8" id="captcha" isRequired>
