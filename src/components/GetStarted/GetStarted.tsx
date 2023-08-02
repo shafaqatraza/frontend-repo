@@ -46,6 +46,7 @@ const GetStarted = () => {
       <div className="mt-5 container" id="how_it_works">
         <p className="start-txt text-center">How it Works</p>
       </div>
+      {/* GetStarted section start */}
       <Container>
         <Box marginTop="90px">
           <Tabs>
@@ -411,6 +412,7 @@ const GetStarted = () => {
 
 
       </Container>
+      {/* GetStarted section end */}
     </>
   );
 };
