@@ -168,7 +168,7 @@ export const NavbarDrawer = (props) => {
 										let dubShow = { ...show }
 										dubShow.drawer = false;
 										setShowModel(dubShow);
-										router.push("#")
+										router.push("/browse?type=offering&activeTab=0")
 									}}>
 									Items
 								</Text>
@@ -197,7 +197,7 @@ export const NavbarDrawer = (props) => {
 										let dubShow = { ...show }
 										dubShow.drawer = false;
 										setShowModel(dubShow);
-										router.push("#")
+										router.push("/browse?type=offering&activeTab=1")
 									}}>
 									Services
 								</Text>
@@ -226,7 +226,7 @@ export const NavbarDrawer = (props) => {
 										let dubShow = { ...show }
 										dubShow.drawer = false;
 										setShowModel(dubShow);
-										router.push("#")
+										router.push("/browse?type=offering&activeTab=3")
 									}}>
 									Donate
 								</Text>
@@ -255,7 +255,7 @@ export const NavbarDrawer = (props) => {
 										let dubShow = { ...show }
 										dubShow.drawer = false;
 										setShowModel(dubShow);
-										router.push("#")
+										router.push("/browse?type=offering&activeTab=2")
 									}}>
 									Volunteer
 								</Text>
