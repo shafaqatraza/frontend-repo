@@ -39,6 +39,9 @@ import { useMediaQuery } from '@chakra-ui/react'
 import { Popover } from 'antd';
 import { useRouter } from 'next/router'
 import Reviews from '../components/Review/Reviews';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Charities = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -242,7 +245,34 @@ const Charities = () => {
       </Text>
     </Box>
   );
-
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplay: true, 
+    autoplaySpeed: 10000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 1,
+        },
+      },
+    ],
+  };
   return (
     <>
       <Head>
@@ -302,6 +332,29 @@ const Charities = () => {
       </div>
       {/* Our Partners Section */}
       <div className="container">
+        <div className='pt-md-5 pt-3 pb-3 pb-md-0'>
+          <p className="text-center part-txt">Our Partners</p>
+        </div>
+        <div className="partners-img mt-4 p-3 pe-0 mb-md-5 mb-4">
+            <Slider {...settings}>
+              
+                <div  className="pe-3">
+                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 pe-md-0">
+                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 ps-md-3 w-100 ms-auto d-flex align-items-end">
+                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+
+            </Slider>
+        </div>
+      </div>
+      {/* <div className="container">
         <div>
           <p className="text-center part-txt">Our Partners</p>
         </div>
@@ -457,7 +510,7 @@ const Charities = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Volunteer Categories */}
       <div className="main-volunteer-section mt-5">
         <div className="container">
@@ -653,11 +706,11 @@ const Charities = () => {
           <Col md={10}>
             <div className="d-flex align-items-center justify-content-center mt-5">
               <div>
-                <p className="step1-txt">Step 1</p>
+                <p className="step1-txt mb-5 mb-md-0">Step 1</p>
                 <img className="img-fluid" src={step1.src} alt="example" />
               </div>
               <div>
-                <p className="mt-5 mb-2 step1-txt">Sign up</p>
+                <p className="mt-5 mb-2 step1-txt">Register</p>
                 <hr className="hr-step1" style={{ height: "5px" }} />
                 <p className="step1-txt2 mt-2">
                   Sign up and create a Good Deeds User account, linked to your organization portal. Ensure you possess the necessary credentials to open an account on behalf of your charity or nonprofit organization.

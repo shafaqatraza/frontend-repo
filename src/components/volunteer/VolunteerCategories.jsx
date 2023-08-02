@@ -315,7 +315,7 @@ const VolunteerCategories = () => {
             </div>
             <div className="d-flex row">
               <div className="col-md-7">
-                <p className="our-platform mt-md-3 mt-4 mb-5 px-3">High school students in Ontario need to complete 40 hours of voluntary service before graduation. Good Deeds provides a <span className="d-md-inline d-lg-block">remote and convenient solution for accumulating your <span className="d-md-inline d-lg-block">community hours.</span></span></p>
+                <p className="our-platform mt-md-3 mt-4 mb-5 px-3">High school students in Ontario need to complete 40 hours of volunteer service before graduation. Good Deeds provides a <span className="d-md-inline d-lg-block">remote and convenient solution for accumulating your <span className="d-md-inline d-lg-block">community hours.</span></span></p>
               </div>
               <div className="col-md-5 d-flex justify-content-center align-items-center">
                 <button className="high-school-btn mb-5" onClick={() => { router.push('/students-landing') }}>High School Students Click Here</button>
