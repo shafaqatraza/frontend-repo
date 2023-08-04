@@ -349,7 +349,7 @@ const StudentLanding = () => {
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true, 
-    autoplaySpeed: 10000,
+    autoplaySpeed: 3000,
     responsive: [
       {
         breakpoint: 1024,
@@ -357,6 +357,8 @@ const StudentLanding = () => {
           slidesToShow: 3,
           slidesToScroll: 1,
           infinite: true,
+          autoplay: true, 
+          autoplaySpeed: 3000,
           dots: false,
         },
       },
@@ -366,6 +368,8 @@ const StudentLanding = () => {
           slidesToShow: 2,
           slidesToScroll: 1,
           initialSlide: 1,
+          autoplay: true, 
+          autoplaySpeed: 3000,
         },
       },
     ],
@@ -456,10 +460,22 @@ const StudentLanding = () => {
                 <div  className="pe-3">
                   <img src={part2.src} className="" style={{height:"150px",}} alt="" />
                 </div>
-                <div className="pe-3 pe-md-0">
+                <div className="pe-3 ">
                   <img src={part3.src} className="" style={{height:"150px",}} alt="" />
                 </div>
-                <div className="pe-3 ps-md-3 w-100 ms-auto d-flex align-items-end">
+                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
+                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3">
+                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
                   <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
                 </div>
 
