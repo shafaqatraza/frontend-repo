@@ -1830,12 +1830,25 @@ color: #E27832;
 .value-para{
   font-size: 22px;
 }
+.parental{
+  font-size: 64px;
+  line-height: 1.3;
+}
+.deeds-review{
+  background-color:rgba(222, 227, 230, 0.5) ;
+}
+.student-landing-review .deeds-review{
+  background-color:white;
+}
 
 
 
 @media screen and (max-width:1199px){
   .nop-btn{
     font-size: 14px;
+  }
+  .parental{
+    font-size: 54px;
   }
   .values-wrap {
     width: 90%;
@@ -1845,8 +1858,17 @@ color: #E27832;
   }
 }
 @media (max-width: 600px) {
+  .student-landing-review .deeds-review{
+    padding-top: 0 !important;
+  }
   .value-heading{
     font-size: 32px !important;
+  }
+  .parental{
+    font-size: 30px;
+  }
+  .parental-para{
+    font-size: 16px !important;
   }
   .value-para{
     font-size: 16px !important;
