@@ -42,6 +42,7 @@ import Reviews from '../components/Review/Reviews';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import fav from "../assets/imgs/favicon.ico"
 
 const Charities = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -278,7 +279,7 @@ const Charities = () => {
       <Head>
         {/* <title>Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={fav.src}  />
         <meta name="title" content="A marketplace of opportunity" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />

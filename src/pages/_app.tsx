@@ -10,6 +10,7 @@ import 'tailwindcss/tailwind.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { accessToken, baseUrl, currentOrganization } from "../components/Helper/index";
 import axios from "axios";
+import fav from "../assets/imgs/favicon.ico"
 
 function MyApp ({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({
@@ -37,7 +38,7 @@ function MyApp ({ Component, pageProps }: AppProps) {
   return (
     <>
     <head >
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href={fav.src}/>
     </head>
     <ChakraProvider theme={customTheme}>
       <QueryClientProvider client={queryClient}>
