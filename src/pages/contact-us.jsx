@@ -15,6 +15,7 @@ import HeadingAndText from '../components/headingAndText'
 import { isMobile } from 'react-device-detect'
 import gdlogopegiun from "../assets/imgs/gdlogopegiun.png";
 import { useMediaQuery } from '@chakra-ui/react'
+import fav from "../assets/imgs/favicon.ico"
 
 
 const ContactUs = () => {
@@ -24,7 +25,7 @@ const ContactUs = () => {
       <Head>
         {/* <title>Good Deeds | Contact Us</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={fav.src}  />
         <meta name="title" content="A marketplace of opportunity" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />

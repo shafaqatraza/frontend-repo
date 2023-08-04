@@ -22,6 +22,7 @@ import GetStarted from "../components/GetStarted/GetStarted";
 import SocialServices from "../components/SocialServices/SocialServices";
 import Plan from "../components/Plan/Plan";
 import Reviews from "../components/Review/Reviews";
+import fav from "../assets/imgs/favicon.ico"
 
 
 const Home: NextPage = () => {
@@ -133,7 +134,7 @@ const Home: NextPage = () => {
       <Head>
         {/* <title>Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={fav.src} />
         <meta name="title" content="A marketplace of opportunity" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />

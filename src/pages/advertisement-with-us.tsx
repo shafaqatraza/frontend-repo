@@ -9,6 +9,7 @@ import { Section1 } from "../components/howToUse/section1";
 
 // import advertiseWithUsImg from '../assets/imgs/advertise-with-us.jpg';
 import aboutadvertise from '../assets/imgs/about/aboutadvertise.jpg';
+import fav from "../assets/imgs/favicon.ico"
 
 
 const advertisement = () => {
@@ -17,7 +18,7 @@ const advertisement = () => {
       <Head>
         {/* <title>Good Deeds | Advertise With Us</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={fav.src} />
         <meta name="title" content="A marketplace of opportunity" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />

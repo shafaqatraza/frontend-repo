@@ -27,6 +27,7 @@ import Navbar from '../components/Navbar'
 import { Section1 } from '../components/howToUse/section1'
 import HeadingAndText from '../components/headingAndText'
 import { isMobile } from 'react-device-detect'
+import fav from "../assets/imgs/favicon.ico"
 
 const PrivacyPolicy = () => {
   return (
@@ -34,7 +35,7 @@ const PrivacyPolicy = () => {
       <Head>
         {/* <title>Good Deeds | PrivacyPolicy Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={fav.src} />
         <meta name="title" content="A marketplace of opportunity" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />
