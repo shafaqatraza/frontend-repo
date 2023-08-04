@@ -253,7 +253,7 @@ const Charities = () => {
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true, 
-    autoplaySpeed: 10000,
+    autoplaySpeed: 3000,
     responsive: [
       {
         breakpoint: 1024,
@@ -262,6 +262,8 @@ const Charities = () => {
           slidesToScroll: 1,
           infinite: true,
           dots: false,
+          autoplay: true, 
+          autoplaySpeed: 3000,
         },
       },
       {
@@ -270,6 +272,8 @@ const Charities = () => {
           slidesToShow: 2,
           slidesToScroll: 1,
           initialSlide: 1,
+          autoplay: true, 
+          autoplaySpeed: 3000,
         },
       },
     ],
@@ -345,10 +349,22 @@ const Charities = () => {
                 <div  className="pe-3">
                   <img src={part2.src} className="" style={{height:"150px",}} alt="" />
                 </div>
-                <div className="pe-3 pe-md-0">
+                <div className="pe-3">
                   <img src={part3.src} className="" style={{height:"150px",}} alt="" />
                 </div>
-                <div className="pe-3 ps-md-3 w-100 ms-auto d-flex align-items-end">
+                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
+                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3">
+                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
                   <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
                 </div>
 
