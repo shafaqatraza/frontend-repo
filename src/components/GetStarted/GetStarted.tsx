@@ -142,7 +142,7 @@ const GetStarted = () => {
                   <Col md={10}>
                     <div className="hiw-box-rightWrap">
                       <div className="col-md-6">
-                        <p className="mb-2 mt-5 step1-txt text-right d-none d-md-block">CONNECT AND EXCHANGE</p>
+                        <p className="mb-2 mt-5 step1-txt text-end d-none d-md-block">CONNECT AND EXCHANGE</p>
                         <p className="mb-2 mt-3 step1-txt text-center d-block d-md-none fw-bold" style={{fontSize:"32px"}}>CONTACT SELLER</p>
                         <div className='px-4 px-md-0'>
                           <span className='hiw-divider '></span>
@@ -256,7 +256,7 @@ const GetStarted = () => {
                   <Col md={10}>
                     <div className="hiw-box-rightWrap">
                       <div className="col-md-6">
-                        <p className="mb-2 mt-5 step1-txt text-right d-none d-md-block">MAKE AN IMPACT</p>
+                        <p className="mb-2 mt-5 step1-txt text-end d-none d-md-block">MAKE AN IMPACT</p>
                         <p className="mb-2 mt-4 step1-txt text-center d-block d-md-none fw-bold" style={{fontSize:"32px"}}>LIST IT</p>
                         <div className='px-5 px-md-0'>
                           <span className='hiw-divider'></span>
@@ -332,7 +332,7 @@ const GetStarted = () => {
                   <Col md={10}>
                     <div className="hiw-box-rightWrap">
                       <div className="col-md-6">
-                        <p className="mb-2 mt-5 step1-txt text-right d-none d-md-block">CONNECT AND ENGAGE</p>
+                        <p className="mb-2 mt-5 step1-txt text-end d-none d-md-block">CONNECT AND ENGAGE</p>
                         <p className="mb-2 mt-3 step1-txt text-center d-block d-md-none lh-sm fw-bold" style={{fontSize:"32px"}}>START A <br /> CONVERSATION</p>
                         <div className='px-5 px-md-0'>
                           <span className='hiw-divider'></span>

@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import Browse from "../components/Browse/browse";
 import { isLogin } from "../components/Helper/index";
 import Router from "next/router";
+import fav from "../assets/imgs/favicon.ico"
 
 function Profile() {
   const router = useRouter();
@@ -30,7 +31,7 @@ function Profile() {
       <Head>
         {/* <title>Good Deeds | My Favoirits Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={fav.src}  />
         <meta name="title" content="A marketplace of opportunity" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />

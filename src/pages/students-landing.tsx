@@ -31,6 +31,7 @@ import Reviews from "../components/Review/Reviews";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import fav from "../assets/imgs/favicon.ico"
 
 const StudentLanding = () => {
   const [companyName, setCompanyName] = useState('')
@@ -348,7 +349,7 @@ const StudentLanding = () => {
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true, 
-    autoplaySpeed: 10000,
+    autoplaySpeed: 3000,
     responsive: [
       {
         breakpoint: 1024,
@@ -356,6 +357,8 @@ const StudentLanding = () => {
           slidesToShow: 3,
           slidesToScroll: 1,
           infinite: true,
+          autoplay: true, 
+          autoplaySpeed: 3000,
           dots: false,
         },
       },
@@ -365,6 +368,8 @@ const StudentLanding = () => {
           slidesToShow: 2,
           slidesToScroll: 1,
           initialSlide: 1,
+          autoplay: true, 
+          autoplaySpeed: 3000,
         },
       },
     ],
@@ -375,7 +380,7 @@ const StudentLanding = () => {
       <Head>
         {/* <title>Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={fav.src} />
         <meta name="title" content="A marketplace of opportunity" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />
@@ -455,10 +460,22 @@ const StudentLanding = () => {
                 <div  className="pe-3">
                   <img src={part2.src} className="" style={{height:"150px",}} alt="" />
                 </div>
-                <div className="pe-3 pe-md-0">
+                <div className="pe-3 ">
                   <img src={part3.src} className="" style={{height:"150px",}} alt="" />
                 </div>
-                <div className="pe-3 ps-md-3 w-100 ms-auto d-flex align-items-end">
+                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
+                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3">
+                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
                   <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
                 </div>
 
@@ -803,12 +820,14 @@ const StudentLanding = () => {
       </div>
 
       {/* Reviews  */}
-      <Reviews />
+      <div className="student-landing-review mb-5">
+        <Reviews />
+      </div>
 
       <div style={{ backgroundColor: "rgba(222, 227, 230, 0.5)" }}>
         <div className="container">
-          <div className="row">
-            <div className="col-md-4 py-16" >
+          <div className="row pt-3 pt-md-0">
+            <div className="col-md-4 py-md-5 py-4 px-5 px-md-3" >
               <Image src={partner1.src} alt={"icon"} style={{ margin: '0 auto' }} />
               <Text
                 fontSize="24px"
@@ -828,7 +847,7 @@ const StudentLanding = () => {
               >Free access to Good Deed's ever-expanding database of volunteer opportunities that match your preferences or support your future goals.
               </Text>
             </div>
-            <div className="col-md-4 py-16" >
+            <div className="col-md-4 py-md-5 py-4 px-5 px-md-3" >
               <Image src={partner2.src} alt={"icon"} style={{ margin: '0 auto' }} />
               <Text
                 fontSize="24px"
@@ -850,7 +869,7 @@ const StudentLanding = () => {
 
               </Text>
             </div>
-            <div className="col-md-4 py-16" >
+            <div className="col-md-4 py-md-5 py-4 px-5 px-md-3" >
               <Image src={partner4.src} alt={"icon"} style={{ margin: '0 auto' }} />
               <Text
                 fontSize="24px"
@@ -875,7 +894,7 @@ const StudentLanding = () => {
         </div>
       </div>
 
-      <div className="container py-20">
+      <div className="container py-5 mt-md-5">
         <p
           style={{ fontSize: '36px', lineHeight: '44px', color: '#183553', fontWeight: '700', textAlign: 'center' }}
         >How the <span style={{ color: '#E27832' }}>40 Hour</span> Volunteer <span style={{ color: '#E27832' }}>Program</span> Works
@@ -977,7 +996,7 @@ const StudentLanding = () => {
                 <Image src={explorepegiun.src} className="step-image" alt={"Image"} />
               </div>
               <div className="col-md-6">
-                <p className="mt-5 mb-2 step1-txt">Browse For Rewards</p>
+                <p className="mt-5 mb-2 step1-txt lh-sm">Browse For Rewards</p>
                 <hr />
                 <p className="step1-txt2 mt-2">
                   Now you can browse the marketplace to find items and services that you want.
@@ -991,25 +1010,25 @@ const StudentLanding = () => {
       </div>
 
       <div style={{ backgroundColor: "rgba(222, 227, 230, 0.5)" }}>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-5 py-16" >
+        <div className="container py-4 px-4 px-md-2">
+          <div className="row py-sm-5 pt-3 pb-4 px-2 px-md-0">
+            <div className="col-lg-5" >
               <Text
-                fontSize="64px"
-                lineHeight="76px"
                 color="#183553"
                 fontWeight="700"
+                className="parental mb-4 mb-lg-0"
               >
                 Parental <Text color="#E27832" display="inline-block">Concerns</Text> and
                 Volunteering Opportunities
               </Text>
             </div>
-            <div className="col-md-7 py-20">
+            <div className="col-lg-7 d-flex flex-column justify-content-center">
               <Text
                 fontSize="22px"
                 lineHeight="26px"
                 color="#212121"
                 fontWeight="600"
+                className="parental-para"
               >
                 Are you worried about your child's volunteering progress? The Good Deeds platform makes it effortless to track the details of your teens assigned volunteering activities from the convenience of your mobile device. We highly encourage parents to join in the process of giving with a quick and easy sign-up.
               </Text>

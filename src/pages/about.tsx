@@ -63,6 +63,7 @@ import part4 from "../assets/imgs/part4.png";
 import banner from "../assets/imgs/about/banner.png"
 import whatsdo from "../assets/imgs/about/what-we-do.png"
 import whowe from "../assets/imgs/about/who-we-are.png"
+import fav from "../assets/imgs/favicon.ico"
 
 const About = () => {
 
@@ -150,7 +151,7 @@ const About = () => {
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true, 
-    autoplaySpeed: 10000,
+    autoplaySpeed: 3000,
     responsive: [
       {
         breakpoint: 1024,
@@ -159,6 +160,8 @@ const About = () => {
           slidesToScroll: 1,
           infinite: true,
           dots: false,
+          autoplay: true, 
+          autoplaySpeed: 3000,
         },
       },
       {
@@ -167,6 +170,8 @@ const About = () => {
           slidesToShow: 2,
           slidesToScroll: 1,
           initialSlide: 1,
+          autoplay: true, 
+          autoplaySpeed: 3000,
         },
       },
     ],
@@ -178,7 +183,7 @@ const About = () => {
       <Head>
         {/* <title>Good Deeds | About Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={fav.src} />
         <meta name="title" content="A marketplace of opportunity" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />
@@ -551,10 +556,22 @@ const About = () => {
                 <div  className="pe-3">
                   <img src={part2.src} className="" style={{height:"150px",}} alt="" />
                 </div>
-                <div className="pe-3 pe-md-0">
+                <div className="pe-3">
                   <img src={part3.src} className="" style={{height:"150px",}} alt="" />
                 </div>
-                <div className="pe-3 ps-md-3 w-100 ms-auto d-flex align-items-end">
+                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
+                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                </div>
+                <div  className="pe-3">
+                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3">
+                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                </div>
+                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
                   <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
                 </div>
 
