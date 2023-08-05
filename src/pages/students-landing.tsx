@@ -32,6 +32,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import fav from "../assets/imgs/favicon.ico"
+import rev1 from "../assets/imgs/student_rev_1.png";
+
 
 const StudentLanding = () => {
   const [companyName, setCompanyName] = useState('')
@@ -415,9 +417,9 @@ const StudentLanding = () => {
       </Head>
       <Navbar />
       <div className="container">
-        <div className="row">
-          <div className="col-md-8 mt-5">
-            <p className="good-deeds">
+        <div className="row ">
+          <div className="col-md-8 mt-5 pe-md-0 future-bright">
+            <p className="good-deeds px-4 px-md-0">
               <span style={{ color: "#183553" }}>Your</span>{" "}
               <span style={{ color: "#E27832" }}>future</span>{" "}
               <span style={{ color: "#183553" }}>Looks brighter with</span>{" "}
@@ -425,21 +427,24 @@ const StudentLanding = () => {
               {/* <span className="you-motivated">with good deeds</span>{" "} */}
               {/* <span className="volunteers">with Good Deeds</span>{" "} */}
             </p>
-            <div className="mt-2 mb-2 col-md-9">
-              <p className="our-platform">
-                Browse a broad range of online or in-person volunteer
-                opportunities. Help causes that matter most to you while
-                completing your 40 hours and earning exclusive Deed Dollars to
-                help you get the stuff you need.
+            <Image src={penstu.src} className="d-block d-md-none my-4" alt={"Charity"} />
+            <div className="mt-3 mb-2 col-md-10">
+              <p className="our-platform d-none d-md-block">
+              Explore a wide range of online and in-person volunteer opportunities. Make a significant impact on the causes that matter to you, fulfill your 40-hour graduation requirement and earn exclusive Deed Dollars to get the things you need. 
               </p>
+              <p className="our-platform mt-3 d-none d-md-block">Get engaged, create a positive change, and enjoy the benefits.</p>
+              <p className="our-platform mt-3 d-block d-md-none px-4 px-md-2" style={{fontWeight:600,}}>Browse a broad range of online or in-person volunteer opportunities. Help causes that matter most to you while completing your 40 hours and earning exclusive Deed Dollars to help you get the stuff you need.</p>
             </div>
-            <div className="mt-3 mb-3">
-              <button className="try-button">
-                Start Earning Rewards Today!
+            <div className="mt-4 mb-3 px-4 px-md-0 ">
+              <button className="try-button d-none d-md-block">
+               Start Earning Rewards Today!
+              </button>
+              <button className="try-button d-block d-md-none" style={{height:"50px", width:"300px"}}>
+               Sign up and get 100 FREE Deed Dollars!
               </button>
             </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 align-items-center ps-md-0 d-none d-md-flex">
             <div className="mt-5">
               <Image src={penstu.src} alt={"Charity"} />
             </div>
@@ -483,12 +488,12 @@ const StudentLanding = () => {
         </div>
       </div>
       {/* Volunteer */}
-      <div className="container mt-5">
-        <div className="main-volunteer-section">
+      <div className="main-volunteer-section">
+        <div className="container mt-5">
           <div className="mt-3">
             <p
               style={{ color: "#183553" }}
-              className="volun-txt text-center p-4"
+              className="volun-txt text-md-center p-md-4 pt-4 ps-4 volunteer-opportunity"
             >
               Discover Volunteer Opportunities
             </p>
@@ -663,20 +668,33 @@ const StudentLanding = () => {
       </div>
       {/* Next Section */}
 
-      <div className="container pb-5">
+      <div className="container pb-5 px-3 px-md-2 ">
         <div className="volunteer-form-wrap">
-          <div className="mt-3 py-4">
+          <div className="mt-5 pt-md-4 px-3 px-md-0">
             <p
               style={{ color: "#183553", fontSize: "40px", fontWeight: "700", lineHeight: "49.5px" }}
-              className="text-center"
+              className="text-center d-none d-md-block"
             >
-              Is there a specific <span style={{ color: "#E27832" }}>company</span> where you would like to contribute your <span style={{ color: "#E27832" }}>volunteer services?</span>
+              Do you have a preferred <span style={{ color: "#E27832" }}>company</span> to volunteer for?
+            </p>
+            <p
+              style={{ color: "#183553", fontSize: "30px", fontWeight: "700", lineHeight: "1.3" }}
+              className="d-block d-md-none mb-4"
+            >
+              Is there a specific  <span style={{ color: "#E27832" }}>company</span> where you would like to contribute your <span style={{ color: "#E27832" }}>volunteer services</span>?
             </p>
           </div>
-          <div className="mt-3 py-4">
+          <Image src={conversation.src} className="d-block d-md-none"/>
+          <div className="mt-3 py-4 px-3 px-md-0">
             <p
               style={{ color: "#183553", fontSize: "24px", fontWeight: "700", lineHeight: "29.5px" }}
-              className="text-center "
+              className="text-md-center d-none d-md-block"
+            >
+              Let us know which organization you'd like to contribute to or see on our Good Deeds platform. Keep checking back often as we add new volunteer opportunities weekly. Join us in making a difference!
+            </p>
+            <p
+              style={{ color: "#183553", fontSize: "16px", fontWeight: "600", lineHeight: "1.3" }}
+              className="text-md-center  d-block d-md-none"
             >
               Share your request along with details about the company you’d like to join or wish to see on the Good Deeds platform. Don’t forget to check back often as we strive to add volunteer opportunities each week.
             </p>
@@ -755,7 +773,7 @@ const StudentLanding = () => {
               </form>
             </div>
             <div className="col-md-5 d-flex justify-center items-center flex-column">
-              <Image src={conversation.src} />
+              <Image src={conversation.src} className="d-none d-md-block"/>
               <Button
                 variant={'solid'}
                 colorScheme={'orange'}
@@ -774,22 +792,41 @@ const StudentLanding = () => {
       </div>
 
       <div className="container">
-        <div className="row">
-          <div className="col-md-6 py-16" >
-            <Image src={studentAbout.src} alt={"about us"} style={{ width: '550px', maxWidth: '100%' }} />
-          </div>
-          <div className="col-md-6 py-20">
-            <Text
+        <div className="row px-4 px-md-0">
+          <div className="col-md-6 py-md-5 pb-0" >
+          <Text
               fontSize="22px"
               lineHeight="26px"
               color="#E27832"
               fontWeight="600"
+              className="d-block d-md-none"
             >About Us</Text>
             <Text
               fontSize="40px"
               lineHeight="48px"
               color="#183553"
               fontWeight="700"
+              mt="18px"
+              className="d-block d-md-none mb-5"
+            >
+              More People, More <Text color="#E27832" display="inline-block">Impact</Text>
+            </Text>
+            <Image src={studentAbout.src} alt={"about us"} style={{ width: '550px', maxWidth: '100%' }} />
+          </div>
+          <div className="col-md-6 py-md-5">
+            <Text
+              fontSize="22px"
+              lineHeight="26px"
+              color="#E27832"
+              fontWeight="600"
+              className="d-none d-md-block"
+            >About Us</Text>
+            <Text
+              fontSize="40px"
+              lineHeight="48px"
+              color="#183553"
+              fontWeight="700"
+              className="d-none d-md-block"
               mt="18px"
             >
               More People, More <Text color="#E27832" display="inline-block">Impact</Text>
@@ -800,6 +837,7 @@ const StudentLanding = () => {
               color="#212121"
               fontWeight="600"
               mt="100px"
+              className="ms-md-5 about-more-people"
             >
               Good Deeds is a digital platform that directly delivers meaningful opportunities to you.  Volunteer with Good Deeds today and earn Deed Dollars for every volunteer hour you contribute.
             </Text>
@@ -810,8 +848,10 @@ const StudentLanding = () => {
               size={'md'}
               display="block"
               minW="320px"
+              height="50px"
               m="20px auto 0"
               onClick={() => router.push("/blog")}
+              className="mt-5 "
             >
               Learn more about Good Deeds
             </Button>
@@ -821,13 +861,121 @@ const StudentLanding = () => {
 
       {/* Reviews  */}
       <div className="student-landing-review mb-5">
-        <Reviews />
+      <div
+        className="mt-5 deeds-review"
+        
+      >
+        <Container>
+          <div className="text-center">
+            <p className="review-txt pt-5">
+              Hear What Our Volunteers Have to Say
+            </p>
+          </div>
+          <Row className="mt-5 pb-5">
+            <Col className="rev-col" md={4}>
+
+              <div>
+                <div className="card-review">
+                  <div className="stars d-flex justify-content-center">
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                  </div>
+                  <p className="review">
+                  Good Deeds made it super easy for me to find volunteer opportunities that were meaningful and enjoyable. Honestly, I missed some sleep because of the community service projects at school, but not anymore. I recommend giving it a shot!
+                  </p>
+                  <div className="d-flex align-items-center justify-content-center mt-4">
+                    <Image
+                      src={rev1.src}
+                      alt={"Review"}
+                      style={{
+                        width: '83px',
+                        height: '90px',
+                        borderRadius: '50px',
+                      }}
+                    />
+                    <div className="">
+                      <p className="rev-txt1">Nina Harlowe (student)</p>
+                      <p className="rev-txt2">Toronto, Ontario</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Col>
+            <Col className="rev-col" md={4}>
+
+              <div>
+                <div className="card-review">
+                  <div className="stars d-flex justify-content-center">
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                  </div>
+                  <p className="review">
+                  I loveee animals and I’ve always wanted to volunteer at a local shelter. But it’s such a challenge finding the PERFECT opportunity, and there are always a million steps involved. Good Deeds connected me with a shelter in a few simple clicks on my phone. Would you believe that? I still can’t.
+                  </p>
+                  <div className="d-flex align-items-center justify-content-center mt-2">
+                    <Image
+                      src={rev1.src}
+                      alt={"Review"}
+                      style={{
+                        width: '83px',
+                        height: '90px',
+                        borderRadius: '50px',
+                      }}
+                    />
+                    <div >
+                      <p className="rev-txt1">Meg Randall (student)</p>
+                      <p className="rev-txt2">Mississauga, Ontario</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Col>
+            <Col className="rev-col" md={4}>
+              <div>
+                <div className="card-review">
+                  <div className="stars d-flex justify-content-center">
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                  </div>
+                  <p className="review">
+                  My dad took me through the volunteer signup on Good Deeds. He said it was easier than the TikTok stuff. It’s a lot coming from him. Now we’re both pretty involved in the local community. Thanks, guys, much appreciated!
+                  </p>
+                  <div className="d-flex align-items-center justify-content-center mt-4">
+                    <Image
+                      src={rev1.src}
+                      alt={"Review"}
+                      style={{
+                        width: '83px',
+                        height: '90px',
+                        borderRadius: '50px',
+                      }}
+                    />
+                    <div>
+                      <p className="rev-txt1">Frank Russo (student)</p>
+                      <p className="rev-txt2">North York, Ontario</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
       </div>
 
       <div style={{ backgroundColor: "rgba(222, 227, 230, 0.5)" }}>
-        <div className="container">
-          <div className="row pt-3 pt-md-0">
-            <div className="col-md-4 py-md-5 py-4 px-5 px-md-3" >
+        <div className="container pb-4 pb-md-0">
+          <div className="row pt-3 pt-md-0 px-md-5">
+            <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-4" >
               <Image src={partner1.src} alt={"icon"} style={{ margin: '0 auto' }} />
               <Text
                 fontSize="24px"
@@ -836,7 +984,7 @@ const StudentLanding = () => {
                 fontWeight="700"
                 textAlign="center"
                 mt="60px"
-              >About Us</Text>
+              >Convenient Access</Text>
               <Text
                 fontSize="20px"
                 lineHeight="24px"
@@ -847,7 +995,7 @@ const StudentLanding = () => {
               >Free access to Good Deed's ever-expanding database of volunteer opportunities that match your preferences or support your future goals.
               </Text>
             </div>
-            <div className="col-md-4 py-md-5 py-4 px-5 px-md-3" >
+            <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-4" >
               <Image src={partner2.src} alt={"icon"} style={{ margin: '0 auto' }} />
               <Text
                 fontSize="24px"
@@ -869,7 +1017,7 @@ const StudentLanding = () => {
 
               </Text>
             </div>
-            <div className="col-md-4 py-md-5 py-4 px-5 px-md-3" >
+            <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-4" >
               <Image src={partner4.src} alt={"icon"} style={{ margin: '0 auto' }} />
               <Text
                 fontSize="24px"
@@ -894,7 +1042,7 @@ const StudentLanding = () => {
         </div>
       </div>
 
-      <div className="container py-5 mt-md-5">
+      <div className="container py-5 mt-md-5 fourty-hours">
         <p
           style={{ fontSize: '36px', lineHeight: '44px', color: '#183553', fontWeight: '700', textAlign: 'center' }}
         >How the <span style={{ color: '#E27832' }}>40 Hour</span> Volunteer <span style={{ color: '#E27832' }}>Program</span> Works

@@ -1019,6 +1019,18 @@ margin-bottom: 24px;
 }
 .volunteer-card-row1{
   display: flex;
+  justify-content: space-around;
+  padding: 50px;
+  gap: 2rem !important;
+}
+.main-volunteer-section .volunteer-card-row1{
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 0 50px 0;
+  gap: 0.7rem !important;
+}
+.passionate-vol .volunteer-card-row1{
+  display: flex;
     justify-content: space-around;
     padding: 50px 0 50px 0;
     gap: 1.4rem !important;
@@ -1060,6 +1072,10 @@ font-weight: 700;
   justify-content: space-between;
   align-items: center;
   padding: 17px 20px 35px;
+}
+.fourty-hours hr{
+    border-top-width: 3px;
+    opacity: 1;
 }
 .hiw-divider{
   display: block;
@@ -1840,14 +1856,44 @@ color: #E27832;
 .student-landing-review .deeds-review{
   background-color:white;
 }
+.future-bright .good-deeds{
+  font-size: 58px;
+}
+.charity-card{
+  text-align: center;
+  padding: 20px 10px 20px 10px;
+  border: 1px solid black;
+  width: 300px;
+  min-height: 517px;
+}
+.charity-card h1{
+  font-size: 24px;
+  font-weight: bold;
+}
+.charity-card p{
+  font-size: 20px;
+  font-weight: 600;
+}
 
 @media screen and (min-width:1400px){
-  .volunteer-card-row1{
+  .passionate-vol .volunteer-card-row1{
       padding: 50px;
       gap: 2rem !important;
   }
+  .main-volunteer-section .volunteer-card-row1{
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 0 50px 0;
+    gap: 2rem !important;
+  }
+  .charity-card {
+    min-height: 458px;
+}
 }
 @media screen and (max-width:1199px){
+  .charity-card {
+    min-height: auto;
+  }
   .nop-btn{
     font-size: 14px;
   }
@@ -1865,8 +1911,32 @@ color: #E27832;
   .student-landing-review .deeds-review{
     padding-top: 0 !important;
   }
+  .c-single-card {
+    padding: 14px 41px 128px;
+  }
+  .charity-card {
+    width: 280px;
+  }
+  .future-bright .good-deeds{
+    font-size: 30px;
+  }
+  .c-card-wrapper {
+    gap: 36px;
+    margin-top: 34px;
+  }
+  .plans-wrap {
+    margin: 47px 0;
+  }
+  .volunteer-opportunity{
+    font-size: 30px;
+    line-height: 1.3;
+  }
   .value-heading{
     font-size: 32px !important;
+  }
+  .about-more-people{
+    font-size: 16px !important;
+    margin-top: 50px !important;
   }
   .parental{
     font-size: 30px;
