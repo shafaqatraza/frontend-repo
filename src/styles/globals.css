@@ -1020,8 +1020,8 @@ margin-bottom: 24px;
 .volunteer-card-row1{
   display: flex;
     justify-content: space-around;
-    padding: 50px;
-    gap: 2rem !important;
+    padding: 50px 0 50px 0;
+    gap: 1.4rem !important;
 }
 .volunteer-btn{
   max-width: 376px;
@@ -1841,8 +1841,12 @@ color: #E27832;
   background-color:white;
 }
 
-
-
+@media screen and (min-width:1400px){
+  .volunteer-card-row1{
+      padding: 50px;
+      gap: 2rem !important;
+  }
+}
 @media screen and (max-width:1199px){
   .nop-btn{
     font-size: 14px;
