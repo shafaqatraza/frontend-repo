@@ -141,13 +141,13 @@ const GetStarted = () => {
                 <Row className='mt-5'>
                   <Col md={10}>
                     <div className="hiw-box-rightWrap">
-                      <div className="col-md-6">
-                        <p className="mb-2 mt-5 step1-txt text-end d-none d-md-block">CONNECT AND EXCHANGE</p>
+                      <div className="col-md-7 ps-md-5">
+                        <p className="mb-2 mt-5 step1-txt text-end d-none d-md-block me-md-4 pe-xxl-2">CONNECT AND EXCHANGE</p>
                         <p className="mb-2 mt-3 step1-txt text-center d-block d-md-none fw-bold" style={{fontSize:"32px"}}>CONTACT SELLER</p>
                         <div className='px-4 px-md-0'>
-                          <span className='hiw-divider '></span>
+                          <span className='hiw-divider ms-md-2'></span>
                         </div>
-                        <p className="step1-txt2 mt-2 d-none d-md-block">
+                        <p className="step1-txt2 mt-2 d-none d-md-block ps-md-4">
                           Found something you desire? Take action by reaching out to the generous giver. Simply click the "contact" button and utilize our secure messaging system to arrange the details of your exchange. Forge connections, fulfill your wishes, and embrace the transformative power of giving and receiving.
                         </p>
                         <p className="step1-txt2 mt-2 d-block d-md-none px-5">
@@ -328,11 +328,11 @@ const GetStarted = () => {
                   </Col>
                 </Row> */}
 
-                <Row className='mt-5'>
+                <Row className='mt-5  ms-xl-5 ps-xxl-3'>
                   <Col md={10}>
                     <div className="hiw-box-rightWrap">
-                      <div className="col-md-6">
-                        <p className="mb-2 mt-5 step1-txt text-end d-none d-md-block">CONNECT AND ENGAGE</p>
+                      <div className="col-md-7">
+                        <p className="mb-2 mt-5 step1-txt text-end d-none d-md-block me-3 ps-1">CONNECT AND ENGAGE</p>
                         <p className="mb-2 mt-3 step1-txt text-center d-block d-md-none lh-sm fw-bold" style={{fontSize:"32px"}}>START A <br /> CONVERSATION</p>
                         <div className='px-5 px-md-0'>
                           <span className='hiw-divider'></span>
@@ -343,7 +343,7 @@ const GetStarted = () => {
                         <p className="step1-txt2 mt-2 d-block d-md-none px-5">
                         Good Deeds’ encrypted messaging service allows you to communicate with another seller or recipient in privacy. Here, you can safely propose your interest and discuss the details of your Good Deeds transaction before finalizing an offer.</p>
                       </div>
-                      <div className='position-relative'>
+                      <div className='position-relative col-md-3'>
                         <p className="step1-txt text-center d-none d-md-block">Step 4</p>
                         <p className="step1-txt text-center d-block d-md-none position-absolute">Step 4</p>
                         <img
