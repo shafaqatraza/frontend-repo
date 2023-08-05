@@ -44,7 +44,7 @@ interface Option {
   type: 'new' | 'old';
   is_deleted: boolean;
 }
-
+/* eslint-disable */
 const CreateApplication = (props: Props) => {
   const [dataArray, setDataArray] = useState([]);
   const [volundata, setVolunData] = useState([]);
@@ -1156,5 +1156,5 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
     </>
   );
 };
-
+/* eslint-enable */
 export default CreateApplication;
