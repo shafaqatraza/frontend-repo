@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useForm } from 'react-hook-form';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete'
 import useValidator from '../../../ListingEdit/useValidator'
+import { useToast } from '@chakra-ui/toast'
 // @ts-ignore: Unreachable code error
 const myData = [
   { value: "apple", label: "Volunteer" },
@@ -20,6 +21,27 @@ const options = myData.map(item => ({
   value: item.value,
   label: item.label,
 }));
+
+interface FormErrors {
+  title:boolean,
+  description:boolean, 
+  credit_amount:boolean, 
+  category_id:boolean,
+  level_id:boolean
+  keywords:boolean,
+  thumbnail:boolean, 
+}
+
+const initialFormErrors: FormErrors = {
+  title: false,
+  description:false, 
+  credit_amount:false, 
+  category_id:false,
+  level_id:false,
+  keywords:false,
+  thumbnail:false,
+};
+
 const EditVolunteerListing = () => {
   const [size, setSize] = useState("middle");
   const [image, setImage] = useState(null);
@@ -64,6 +86,10 @@ const EditVolunteerListing = () => {
   const [selectedItems, setSelectedItems] = useState([])
   const [validator, showValidationMessage] = useValidator()
   const [hover, setHover] = useState(false); // Track the hover state
+  const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
+  const toast = useToast()
+
+
   useEffect(()=>{
     if(slug !== undefined){
       axios
@@ -85,7 +111,7 @@ const EditVolunteerListing = () => {
             description: data.description,
             credit_amount: data.credit_amount,
             category_id: data.category_id,
-            keywords: [],
+            keywords: res.data.data.keywords.map((keyword) => keyword.id),
             thumbnail: "",
             level_id: data.level_id, 
             old_thumbnail: data.thumbnail
@@ -137,7 +163,7 @@ const EditVolunteerListing = () => {
   };
 
  
-  const handleFileChange = (info: any) => { console.log('uuuuuuuuuu', info.file.originFileObj) 
+  const handleFileChange = (info: any) => { 
   
     const file = info.file.originFileObj;
     if (file) {
@@ -157,13 +183,73 @@ const EditVolunteerListing = () => {
   
   const handleSubmit = (e:any) =>{
     e.preventDefault();
+
+    let hasErrors = false;
+
+    if (!formData.title) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['title']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.description) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['description']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.credit_amount) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['credit_amount']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.category_id) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['category_id']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    
+    if (!formData.level_id) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['level_id']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.keywords.length) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['keywords']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    // If there are errors, prevent form submission
+    if (hasErrors) {
+      toast({ position: "top", title: 'Please fill out the complete form.', status: "warning" })
+      return;
+    }
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       keywords: [],
     }));
+
     selectedItems.map((i:string) => // @ts-ignore: Unreachable code error
       formData.keywords.push(i.value)
     )
+    
     
     const form = new FormData();
     form.append("title", formData.title);
@@ -176,7 +262,6 @@ const EditVolunteerListing = () => {
     }
     formData.keywords.forEach((keyword) => form.append("keywords[]", keyword));
     
-    
       // @ts-ignore: Unreachable code error
       axios.post(`${baseUrl}/volunteer-listings/${slug}/update?org=${currentOrganization?.slug}`, form, {
         headers: {
@@ -184,8 +269,8 @@ const EditVolunteerListing = () => {
         }
       })
       .then((response) => {
-        // router.push("/listings");
-        setShowSuccess(true);
+        router.push("/organization/listings");
+        toast({ position: "top", title: 'Volunteer listing has been updated successfully.', status: "success" })
         // @ts-ignore: Unreachable code error
         setIsSubmitting(false);
         // Handle response data here
@@ -210,26 +295,72 @@ const EditVolunteerListing = () => {
 
   }
 
-  const handleInputChange = (event:any) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+  const handleInputChange = (event: any, type:string) => {
+    if(type == 'title'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['title']: false,
+      }));
+      setFormData({ ...formData, title: event.target.value })
+    }else if(type == 'description'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['description']: false,
+      }));
+      setFormData({ ...formData, description: event.target.value })
+    }else if(type == 'credit_amount'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['credit_amount']: false,
+      }));
+      setFormData({ ...formData, credit_amount: event.target.value })
+    }else if(type == 'category_id'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['category_id']: false,
+      }));
+      setFormData({ ...formData, category_id: event.target.value })
+    }else if(type == 'level_id'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['level_id']: false,
+      }));
+      setFormData({ ...formData, level_id: event.target.value })
+    }
   };
 // @ts-ignore: Unreachable code error
   const handleCreateItem = (item) => { // @ts-ignore: Unreachable code error
     setPickerItems((curr) => [...curr, item]) // @ts-ignore: Unreachable code error
     setSelectedItems((curr) => [...curr, item])
+    
   }
  // @ts-ignore: Unreachable code error
-  const handleSelectedItemsChange = (selectedItems) => {
-    if (selectedItems) {
-      setSelectedItems(selectedItems)
-    }
+ const handleSelectedItemsChange = (changes) => {
+  if (changes.selectedItems) {
+    setSelectedItems(changes.selectedItems);
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      keywords: false,
+    }));
   }
 
+  const newKeywords = changes.selectedItems
+    .filter((item) => item.isNew) // Filter newly created keywords
+    .map((item) => item.value);
 
+  // Update the formData.keywords array with both the selected keywords and new keywords
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    keywords: [
+      ...changes.selectedItems.map((item) => item.value), // Selected keywords
+      ...newKeywords, // Newly created keywords
+    ],
+  }));
+};
+
+
+  console.log('éeeeeeee', formData)
+  console.log('éeeeeeee', formErrors)
   return (
     <div>
         <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
@@ -278,12 +409,13 @@ const EditVolunteerListing = () => {
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
               value={formData.title}
-            onChange={handleInputChange}
-            name="title"
-              className="form-control mt-2"
+              onChange={(e)=> (handleInputChange(e, 'title'))}
+              name="title"
+              className={`form-control mt-2 ${formErrors['title'] ? 'input-error' : ''}`}
               placeholder="Title"
               required
             />
+            {formErrors['title'] && <p className="error-message">Please fill out the field.</p>}
           </div>
           <div className="mb-3 mt-4 col-md-6">
             <label
@@ -299,15 +431,15 @@ const EditVolunteerListing = () => {
             </label>
             <Textarea
               style={{ backgroundColor: "#E8E8E8" }}
-              // type="tel"
-              className="form-control mt-2"
+              className={`form-control mt-2 ${formErrors['description'] ? 'input-error' : ''}`}
               value={formData.description}
-            onChange={handleInputChange}
-            name="description"
+              onChange={(e)=> (handleInputChange(e, 'description'))}
+              name="description"
               placeholder="Listing Description"
               rows={4}
               required
             />
+            {formErrors['description'] && <p className="error-message">Please fill out the field.</p>}
           </div>
           <div className="mb-3 mt-3 col-md-3">
             <label
@@ -323,13 +455,14 @@ const EditVolunteerListing = () => {
             <Input
               style={{ backgroundColor: "#E8E8E8", height: "50px" }}
               type="number"
-              className="form-control mt-2"
+              className={`form-control mt-2 ${formErrors['credit_amount'] ? 'input-error' : ''}`}
               value={formData.credit_amount}
-            onChange={handleInputChange}
-            name="credit_amount"
+              onChange={(e)=> (handleInputChange(e, 'credit_amount'))}
+              name="credit_amount"
               placeholder="Credit amount"
               required
             />
+            {formErrors['credit_amount'] && <p className="error-message">Please fill out the field.</p>}
           </div>
           <div className="mb-3 mt-3 col-md-4">
         <div className="mt-2">
@@ -351,10 +484,9 @@ const EditVolunteerListing = () => {
               placeholder="Select category"
               optionFilterProp="children"
               // @ts-ignore: Unreachable code error
-              value={preFormData.category || ""}
-              onChange={(value) =>
-                setFormData({ ...formData, category_id: value })
-              }
+              value={formData.category_id}
+              className={`form-control mt-2 ${formErrors['category_id'] ? 'input-error' : ''}`}
+              onChange={(value) => handleInputChange({ target: { value } }, "category_id")}
               // @ts-ignore: Unreachable code error
               name="category_id"
               onSearch={(value) => setInputValue(value)}
@@ -374,6 +506,7 @@ const EditVolunteerListing = () => {
                 </Option>
               ))}
             </Select>
+            {formErrors['category_id'] && <p className="error-message">Please select the category.</p>}
           </div>
         </div>
           </div>
@@ -393,14 +526,13 @@ const EditVolunteerListing = () => {
               className="form-control mt-2"
               placeholder="Name on card"
               required
-              onChange={(e) => // @ts-ignore: Unreachable code error
-                setFormData({ ...formData, level_id: e.target.value })
-              }
+              onChange={(e) => handleInputChange(e, "level_id")}
             >
               {levels && levels.map((level) =>( // @ts-ignore: Unreachable code error
-                <option value={level.id} selected={level.id == formData.category_id? 'selected': null}>{level.name}</option>
+                <option value={level.id} selected={level.id == formData.level_id? 'selected': null}>{level.name}</option>
               ))}
             </Form.Select>
+            {formErrors['level_id'] && <p className="error-message">Please select the level.</p>}
           </div>
           <div className="mb-3 mt-3 col-md-4">
           <label
@@ -415,27 +547,17 @@ const EditVolunteerListing = () => {
           </label>
           <CUIAutoComplete
             hideToggleButton={true}
+            className={`${formErrors['keywords'] ? 'input-error' : ''}`}
             label="Select a min of 3, max of 6"
             placeholder=""
             onCreateItem={handleCreateItem}
             items={pickerItems}
             selectedItems={selectedItems}
             onSelectedItemsChange={(changes) =>
-              handleSelectedItemsChange(changes.selectedItems)
+              handleSelectedItemsChange(changes)
             }
           />
-          {// @ts-ignore: Unreachable code error
-          validator.message(
-            'selectedItems',
-            selectedItems,
-            'required|limit',
-            {
-              messages: {
-                required: 'This is a required field',
-                limit: 'Select a min of 3, max of 6'
-              }
-            }
-          )}
+          {formErrors['keywords'] && <p className="error-message">Please add at least 3 keywords.</p>}
           </div>
           <Upload
             accept="image/*"

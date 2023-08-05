@@ -9,8 +9,8 @@ const Reviews = () => {
   return (
     <>
       <div
-        className="mt-5"
-        style={{ backgroundColor: "rgba(222, 227, 230, 0.5)" }}
+        className="mt-5 deeds-review"
+        
       >
         <Container>
           <div className="text-center">

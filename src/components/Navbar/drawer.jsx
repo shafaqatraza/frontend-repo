@@ -277,7 +277,7 @@ export const NavbarDrawer = (props) => {
 								<Box as="a"
 									cursor={"pointer"}
 									_hover={{ textDecor: "underline" }} py={3} px={1}>
-									<Link href={'#'}><Text fontSize="md" fontWeight="500">40 Hours Program</Text></Link>
+									<Link href={'../../students-landing'}><Text fontSize="md" fontWeight="500">40 Hours Program</Text></Link>
 								</Box>
 								<Box as="a"
 									cursor={"pointer"}
