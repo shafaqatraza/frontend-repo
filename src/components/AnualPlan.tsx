@@ -1,4 +1,4 @@
-import { Image, Link, Button } from '@chakra-ui/react';
+import { Image, Link, Button, Input } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from "react-bootstrap";
 import good from "../assets/imgs/good.png";
@@ -138,7 +138,7 @@ const AnualPlan = () => {
                         </p>
                       </div>
                       <div className="btns d-flex justify-content-center">
-                        <Button
+                      <Button
                           variant={'solid'}
                           colorScheme={'orange'}
                           size={'md'}

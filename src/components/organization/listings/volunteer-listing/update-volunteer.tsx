@@ -106,6 +106,7 @@ const EditVolunteerListing = () => {
         .then((res) => {
           setPreFormData(res.data.data);
           let data = res.data.data;
+          
           setFormData({
             title: data.title,
             description: data.description,
@@ -153,7 +154,7 @@ const EditVolunteerListing = () => {
           setLevels(res.data.data)
         })
     }
-
+    
   },[slug, currentOrganization])
 
   const getBase64 = (img: any, callback: any) => {
@@ -359,8 +360,6 @@ const EditVolunteerListing = () => {
 };
 
 
-  console.log('éeeeeeee', formData)
-  console.log('éeeeeeee', formErrors)
   return (
     <div>
         <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
@@ -426,7 +425,8 @@ const EditVolunteerListing = () => {
               }}
               className="form-label"
             >
-              Listing Description
+              Listing Description{" "}
+            <span className="ms-3">(List # of hours needed)</span>
             
             </label>
             <Textarea
