@@ -2038,3 +2038,16 @@ color: #E27832;
     width: 100%;
   }
 } */
+
+.input-error {
+  border: 1px solid red !important;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+}
+
+.payment-error-message {
+  color: red;
+}

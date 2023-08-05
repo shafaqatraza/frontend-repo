@@ -125,8 +125,7 @@ const EditProfileForm = (props) => {
 
   const mutation = useMutation(
     (formData) => {
-      console.log('wwwww', formData)
-    
+  
       setIsSubmitLoading(true)
       return axios.post(`${baseUrl}/profile/update`, formData, {
         headers: {
