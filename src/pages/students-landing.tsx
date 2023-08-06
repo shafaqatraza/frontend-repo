@@ -1042,23 +1042,23 @@ const StudentLanding = () => {
         </div>
       </div>
 
-      <div className="container py-5 mt-md-5 fourty-hours">
+      <div className="container py-5 mt-md-5 fourty-hours px-5 px-md-2">
         <p
-          style={{ fontSize: '36px', lineHeight: '44px', color: '#183553', fontWeight: '700', textAlign: 'center' }}
+          style={{ fontSize: '36px', lineHeight: '44px', color: '#183553', fontWeight: '700',}} className="text-md-center "
         >How the <span style={{ color: '#E27832' }}>40 Hour</span> Volunteer <span style={{ color: '#E27832' }}>Program</span> Works
         </p>
-        <Row>
+        <Row >
           <Col md={12}>
-            <p className="step1-txt mt-5 col-md-4 d-flex justify-content-center">
+            <p className="step1-txt mt-5 col-md-4 d-flex justify-content-md-center">
               Step 1
             </p>
-            <div className="d-flex justify-content-center mt-4">
+            <div className="d-flex justify-content-center flex-column flex-md-row mt-4 px-2 px-md-0">
               <div>
-                <Image src={pennysearchpegiun.src} alt={"Image"} className="step-image" />
+                <Image src={pennysearchpegiun.src}  alt={"Image"} className="step-image m-auto m-md-0" />
               </div>
-              <div className="col-md-6">
-                <p className="mt-4 mb-2 step1-txt">Search</p>
-                <hr />
+              <div className="col-md-6 fourty-hours-content">
+                <p className="mt-4 mb-2 step1-txt text-center text-md-start">Search</p>
+                <hr style={{marginLeft:"-30px"}}/>
                 <p className="step1-txt2 mt-2">
                   Use the search tool to find the perfect volunteer opportunity.
                 </p>
@@ -1067,24 +1067,22 @@ const StudentLanding = () => {
           </Col>
         </Row>
 
-        <Row>
+        <Row className="justify-content-end">
           <Col md={10}>
-            <p className="step1-txt text-center text-lg-end mt-5">Step 2</p>
-            <div className="d-flex justify-content-end container">
-              <div className="col-md-6">
-                <p className="mb-2 mt-4 step1-txt text-right">
+            <p className="step1-txt text-md-center text-lg-end mt-5 me-5">Step 2</p>
+            <div className="d-flex justify-content-end align-items-end flex-column flex-md-row container">
+              <div className="col-md-6 order-2 order-md-1 fourty-hours-content">
+                <p className="mb-2 mt-4 step1-txt text-md-end text-center" style={{marginRight:"-20px"}}>
                   APPLY
                 </p>
-                <hr className="hr-step2" style={{ height: "5px" }} />
-                <div className="col-md-12">
-                  <p className="step1-txt2 mt-2">
+                <hr className="hr-step2" style={{ height: "5px",marginRight:"-41px" }} />
+                  <p className="step1-txt2 mt-2 ms-md-4 mb-5">
                     Click the apply button of your preferred volunteer opportunity, fill out the application, and hit submit.
 
                   </p>
-                </div>
               </div>
-              <div>
-                <Image src={pennyWithCheckMark.src} alt="example" className="img-fluid step-image" />
+              <div className="m-auto m-md-0 order-1 order-md-2">
+                <Image src={pennyWithCheckMark.src} alt="example"  className="img-fluid step-image  " />
               </div>
             </div>
           </Col>
@@ -1092,17 +1090,17 @@ const StudentLanding = () => {
 
         <Row>
           <Col md={12}>
-            <p className="step1-txt mt-5 col-md-4 d-flex justify-content-center">
+            <p className="step1-txt mt-5 col-md-4 d-flex justify-content-md-center ms-md-5 ps-md-4">
               Step 3
             </p>
-            <div className="d-flex justify-content-center mt-4">
+            <div className="d-flex justify-content-center mt-4 flex-column flex-md-row px-2 px-md-0">
               <div>
-                <Image src={pennyTeachingstudent.src} alt={"Image"} className="step-image" />
+                <Image src={pennyTeachingstudent.src} alt={"Image"} className="step-image m-auto m-md-0" />
               </div>
-              <div className="col-md-6">
-                <p className="mt-4 mb-2 step1-txt">ONBOARD</p>
-                <hr />
-                <p className="step1-txt2 mt-2">
+              <div className="col-md-6 mt-4 fourty-hours-content">
+                <p className="mt-4 mb-2 step1-txt text-center text-md-start">ONBOARD</p>
+                <hr style={{marginLeft:"-20px"}}/>
+                <p className="step1-txt2 mt-2 pe-3">
                   Once your application has been approved you will receive detailed instructions on the next steps in the onboarding process.
                 </p>
               </div>
@@ -1110,20 +1108,18 @@ const StudentLanding = () => {
           </Col>
         </Row>
 
-        <Row>
-          <Col md={10}>
-            <p className="step1-txt text-center text-lg-end mt-5">Step 4</p>
-            <div className="d-flex justify-content-end container mt-5">
-              <div className="col-md-6">
-                <p className="mb-2 mt-4 step1-txt text-right">YOU DID IT!!</p>
-                <hr className="hr-step2" style={{ height: "5px" }} />
-                <div className="col-md-12">
-                  <p className="step1-txt2 mt-2">
+        <Row className="justify-content-end">
+          <Col md={11} className="ps-md-5">
+            <p className="step1-txt text-md-center text-lg-end mt-5 me-5 pe-5">Step 4</p>
+            <div className="d-flex justify-content-end flex-column flex-md-row container mt-5">
+              <div className="col-md-6 mt-4 order-2 order-md-1 fourty-hours-content">
+                <p className="mb-2 mt-4 step1-txt text-md-end text-center">YOU DID IT!!</p>
+                <hr className="hr-step2" style={{ height: "5px", marginRight:"-33px" }} />
+                  <p className="step1-txt2 mt-2 ms-md-5">
                     Once you’ve accumulated 40 hours of volunteer work, you will receive an official certificate of completion signed by your volunteer coordinator. You can proceed to submit the certificate to your school as official proof of your community contributions.
                   </p>
-                </div>
               </div>
-              <div>
+              <div className="order-1 order-md-2 m-auto m-md-0">
                 <Image
                   src={goodDeedsCertificate.src}
                   alt="example"
@@ -1136,18 +1132,21 @@ const StudentLanding = () => {
 
         <Row>
           <Col md={12}>
-            <p className="step1-txt mt-5 col-md-4 d-flex justify-content-center">
+            <p className="step1-txt mt-5 col-md-4 d-flex justify-content-md-center ms-md-5 ps-md-5">
               Step 5
             </p>
-            <div className="d-flex justify-content-center mt-4">
+            <div className="d-flex justify-content-center flex-column flex-md-row  mt-4 px-2 px-md-0">
               <div>
                 <Image src={explorepegiun.src} className="step-image" alt={"Image"} />
               </div>
-              <div className="col-md-6">
-                <p className="mt-5 mb-2 step1-txt lh-sm">Browse For Rewards</p>
+              <div className="col-md-6 d-flex flex-column justify-content-end fourty-hours-step-five fourty-hours-content" style={{marginLeft:"-70px"}}>
+                <p className="mt-5 mb-md-2 step1-txt lh-sm ms-md-4 text-center text-md-start">Browse For Rewards</p>
                 <hr />
-                <p className="step1-txt2 mt-2">
+                <p className="step1-txt2 mt-2 m-md-5 pe-5 d-none d-md-block">
                   Now you can browse the marketplace to find items and services that you want.
+                </p>
+                <p className="step1-txt2 mt-2 m-md-5d-block d-md-none">
+                Once you’ve accumulated 40 hours of volunteer work, you will receive an official certificate of completion signed by your volunteer coordinator. You can proceed to submit the certificate to your school as official proof of your community contributions. 
                 </p>
               </div>
             </div>

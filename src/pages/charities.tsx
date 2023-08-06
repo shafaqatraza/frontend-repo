@@ -745,17 +745,17 @@ const Charities = () => {
       <div className="mt-5 container">
         <p className="start-txt text-center">How to Get Started</p>
       </div>
-      <Container>
+      <Container className='charities-steps'>
         <Row>
           <Col md={10}>
-            <div className="d-flex align-items-center justify-content-center mt-5">
+            <div className="d-flex align-items-center justify-content-center flex-column flex-md-row mt-5 px-5 px-md-0">
               <div>
-                <p className="step1-txt mb-5 mb-md-0">Step 1</p>
+                <p className="step1-txt mb-md-0 ms-md-5">Step 1</p>
                 <img className="img-fluid" src={step1.src} alt="example" />
               </div>
-              <div>
-                <p className="mt-5 mb-2 step1-txt">Register</p>
-                <hr className="hr-step1" style={{ height: "5px" }} />
+              <div className='charities-stpe-content'>
+                <p className="mt-md-5 mb-2 text-center text-md-start step1-txt">Register</p>
+                <hr className="hr-step1" style={{ height: "5px", marginLeft:"-40px"}} />
                 <p className="step1-txt2 mt-2">
                   Sign up and create a Good Deeds User account, linked to your organization portal. Ensure you possess the necessary credentials to open an account on behalf of your charity or nonprofit organization.
                 </p>
@@ -764,20 +764,20 @@ const Charities = () => {
           </Col>
         </Row>
 
-        <Row>
-          <Col md={10}>
-            <p className="step1-txt text-end mt-3">Step 2</p>
-            <div className="d-flex align-items-center justify-content-end container mt-5">
-              <div>
-                <p className="mb-2 step1-txt">Add An Organization</p>
+        <Row className='justify-content-center'>
+          <Col md={11} className='px-5 px-md-2'>
+            <p className="step1-txt text-md-end mt-3 me-md-5 mt-5 mt-md-0">Step 2</p>
+            <div className="d-flex align-items-center justify-content-end container mt-md-5 flex-column flex-md-row ">
+              <div className='ms-md-4 mt-md-4 order-2 order-md-1 charities-stpe-content'>
+                <p className="mb-2 step1-txt ms-md-5 ps-md-5 text-center text-md-start">Add An Organization</p>
 
-                <hr className="hr-step2" style={{ height: "5px" }} />
+                <hr className="hr-step2 ms-md-5" style={{ height: "5px", marginRight:'-70px' }} />
 
-                <p className="step1-txt2 mt-2">
-                  To list volunteer opportunities or set up a donor page on the Good Deeds portal, simply add and create an organization profile.
+                <p className="step1-txt2 mt-2 ms-md-5 ps-md-4">
+                  Create or Add and Organization to being creating listings for volunteers or donations!
                 </p>
               </div>
-              <div>
+              <div className='order-1 order-md-2'>
                 <img
                   src={step2.src}
                   alt="example"
@@ -791,17 +791,16 @@ const Charities = () => {
 
         <Row>
           <Col md={10}>
-            <div className="d-flex align-items-center justify-content-center mt-5">
+            <div className="d-flex align-items-center justify-content-center mt-5 flex-column flex-md-row px-5 px-md-0">
               <div>
                 <p className="step1-txt ms-0 ms-md-5 mt-4">Step 3</p>
-                <img className="mt-5" src={gooddeedspegiun2.src} alt="example" />
+                <img className="mt-md-5" src={gooddeedspegiun2.src} alt="example" />
               </div>
-              <div className="mt-5">
-                <p className="mt-5 mb-2 step1-txt">Set Up Your Dashboard</p>
-                <hr className="hr-step1" style={{ height: "5px" }} />
+              <div className="mt-md-5 charities-stpe-content">
+                <p className="mt-5 mb-2 step1-txt text-center text-md-start">Set Up Your Dashboard</p>
+                <hr className="hr-step1 me-5" style={{ height: "5px", marginLeft:'-58px' }} />
                 <p className="step1-txt2 mt-2">
-                  Create volunteer applications, advertise volunteer roles, and establish a donor page. The dashboard offers vital insights to effectively oversee volunteers and donors.
-
+                  Organize your dashboard for easy visibility and management of user donations and volunteer applications.
                 </p>
               </div>
             </div>
@@ -820,19 +819,19 @@ const Charities = () => {
           </Col>
         </Row>
         <Row>
-          <Col md={10}>
-            <p className="step1-txt text-end mt-3">Step 4</p>
-            <div className="d-flex align-items-center justify-content-end container mt-5">
-              <div>
-                <p className="mb-2 step1-txt">Recruit Your Volunteer </p>
+          <Col md={10} className='px-5 px-md-2'>
+            <p className="step1-txt text-md-end mt-3 me-md-4">Step 4</p>
+            <div className="d-flex align-items-center justify-content-end container mt-5 flex-column flex-md-row ">
+              <div className='order-2 order-md-1 charities-stpe-content'>
+                <p className="mb-2 step1-txt ms-md-5 ps-md-5 mt-3 m4-md-0 text-center text-md-start">Recruit Your Volunteer </p>
 
-                <hr className="hr-step2" style={{ height: "5px" }} />
+                <hr className="hr-step2 ms-md-4" style={{ height: "5px",marginRight:'-25px' }} />
 
-                <p className="step1-txt2 mt-2">
+                <p className="step1-txt2 mt-2 ms-md-5 ps-md-4">
                   Follow up with a selected volunteer application and start collaborating on your campaign!
                 </p>
               </div>
-              <div>
+              <div className='order-1 order-md-2'>
                 <img
                   src={pennysearching2.src}
                   alt="example"

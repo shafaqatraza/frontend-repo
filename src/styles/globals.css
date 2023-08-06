@@ -1874,6 +1874,10 @@ color: #E27832;
   font-size: 20px;
   font-weight: 600;
 }
+.charities-steps hr{
+  border-top-width: 2px;
+  opacity: 1;
+}
 
 @media screen and (min-width:1400px){
   .passionate-vol .volunteer-card-row1{
@@ -2031,11 +2035,36 @@ color: #E27832;
 }
 
 @media (max-width: 768px){
+  .charities-stpe-content p:first-child{
+    font-size: 32px !important;
+    font-weight: bold !important;
+    line-height: 1.2;
+  }
+  .charities-steps hr{
+    margin: 0 !important;
+  }
+  .fourty-hours-content p:first-child{
+    font-weight: bold ;
+    font-size: 32px ;
+    margin-bottom: 20px !important;
+  }
+  .fourty-hours-content p:last-child{
+    margin-top: 20px !important;
+  }
   .about-good-deed img{
     width: 75%;
   }
   .about-good-deed .good-deeds{
     font-weight: 600;
+  }
+  .fourty-hours hr{
+    margin: 0 !important;
+  }
+  .fourty-hours{
+    overflow:hidden ;
+  }
+  .fourty-hours-step-five{
+    margin: 0 !important;
   }
   .banner .good-deeds{
     font-size: 30px;
