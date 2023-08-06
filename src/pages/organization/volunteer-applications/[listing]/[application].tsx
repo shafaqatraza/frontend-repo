@@ -3,7 +3,7 @@ import Navbar from "../../../../components/Navbar";
 import { Footer } from "../../../../components/Footer";
 import Sidebar from '../../../../components/Sidebar';
 import back from "../../../../assets/imgs/back.png";
-import { Image } from '@chakra-ui/react';
+import { Center, Image } from '@chakra-ui/react';
 import Link from "next/link";
 import axios from "axios";
 import { accessToken, baseUrl, currentOrganization } from "../../../../components/Helper/index";
@@ -135,7 +135,11 @@ const CompletedApplication = () => {
                   </p>
                 </div>
               </>
-            ) : null}
+            ) : (
+              <div style={{ color: "#E27832", display: "flex", justifyContent: "center", alignItems: "center" }} className='mb-3'>
+                <div className="spinner-border"></div>
+              </div>
+            )}
               
               { applicationData &&
                 applicationData.application && applicationData.application.map((question, index) => (
@@ -153,7 +157,7 @@ const CompletedApplication = () => {
                         {question.selected_options && Object.values(question.selected_options).length > 0 ? (
                         
                         <span>
-                          {Object.values(question.selected_options).map((option, i) => (
+                          {Object.values(question.selected_options).map((option, i) => ( // @ts-ignore: Unreachable code error
                             <p style={answerStyle}>{i+1}: {option}</p>  
                             ))}
                         </span>
