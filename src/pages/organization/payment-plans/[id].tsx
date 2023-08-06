@@ -153,7 +153,7 @@ const StripeForm = () => {
       });
     }
   };
-console.log('xcccccc', formData)
+
 
   const handleSubmit = async (event:any) =>{
     setIsLoading(true);
