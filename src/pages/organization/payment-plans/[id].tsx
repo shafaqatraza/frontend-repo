@@ -10,11 +10,11 @@ import { Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { accessToken, baseUrl, currentOrganization } from "../../../components/Helper/index";
-import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
-import { CardNumberElement, CardCvcElement, CardExpiryElement} from '@stripe/react-stripe-js';
-import { loadStripe } from "@stripe/stripe-js";
+// import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
+// import { CardNumberElement, CardCvcElement, CardExpiryElement} from '@stripe/react-stripe-js';
+// import { loadStripe } from "@stripe/stripe-js";
 import { useToast } from '@chakra-ui/toast'
-import { GoogleMap, Autocomplete } from '@react-google-maps/api';
+// import { GoogleMap, Autocomplete } from '@react-google-maps/api';
 
 const calculateHST = (price: number): number => {
   const hst = parseFloat(price.toString()) * 0.13;
@@ -26,7 +26,7 @@ const calculateTotalPrice = (price: number, calculatedHST: number): number => {
   const tempPrice = parseFloat(price.toString()) + parseFloat(calculatedHST.toString());
   return tempPrice;
 };
-const stripePromise = loadStripe('pk_test_51MzNd8HXctCE4qHqr1vcficqBBBYQp6cFwZxDFefUmKIx6C11wm0pHZCG52m4NYghl36riJi7TZZbZ1ACNg8vJAZ00XFHi92vG');
+// const stripePromise = loadStripe('pk_test_51MzNd8HXctCE4qHqr1vcficqBBBYQp6cFwZxDFefUmKIx6C11wm0pHZCG52m4NYghl36riJi7TZZbZ1ACNg8vJAZ00XFHi92vG');
 
 const StripeForm = () => {
   const toast = useToast()
@@ -127,8 +127,8 @@ const StripeForm = () => {
   }, [hst])
 
 
-  const stripe = useStripe();
-  const elements = useElements();
+  // const stripe = useStripe();
+  // const elements = useElements();
   const [message, setMessage] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
@@ -155,129 +155,129 @@ const StripeForm = () => {
   };
 
 
-  const handleSubmit = async (event:any) =>{
-    setIsLoading(true);
-    event.preventDefault();
+  // const handleSubmit = async (event:any) =>{
+  //   setIsLoading(true);
+  //   event.preventDefault();
 
-    if (!stripe || !elements) {
-      toast({ position: 'top', title: 'Please fill in the card details!', status: 'info' })
-      setIsLoading(false);
-      return;
-    }
+  //   if (!stripe || !elements) {
+  //     toast({ position: 'top', title: 'Please fill in the card details!', status: 'info' })
+  //     setIsLoading(false);
+  //     return;
+  //   }
 
-    if (!stripePromise) {
-      return;
-    }
+  //   if (!stripePromise) {
+  //     return;
+  //   }
 
-    const cardNumberElement = elements.getElement(CardNumberElement);
-    const cardExpiryElement = elements.getElement(CardExpiryElement);
-    const cardCvcElement = elements.getElement(CardCvcElement);
+  //   // const cardNumberElement = elements.getElement(CardNumberElement);
+  //   // const cardExpiryElement = elements.getElement(CardExpiryElement);
+  //   // const cardCvcElement = elements.getElement(CardCvcElement);
 
-    // Check if card details are filled
-    if (!cardNumberElement || !cardExpiryElement || !cardCvcElement) {
-      // Handle error, Card elements are not available
-      toast({ position: 'top', title: 'Something went wrong, please try again later.', status: 'error' })
-      setIsLoading(false);
-      return;
-    }
+  //   // Check if card details are filled
+  //   if (!cardNumberElement || !cardExpiryElement || !cardCvcElement) {
+  //     // Handle error, Card elements are not available
+  //     toast({ position: 'top', title: 'Something went wrong, please try again later.', status: 'error' })
+  //     setIsLoading(false);
+  //     return;
+  //   }
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardNumberElement,
-      billing_details: {
-        name: formData.first_name + ' ' + formData.last_name,
-        address: {
-          line1: formData.address_line1,
-          line2: formData.address_line2,
-          country: formData.country_short_name,
-          postal_code: formData.postal_code,
-        },
-        email: formData.email,
-        phone: formData.phone_number,
-      },
-    });
+  //   const { error, paymentMethod } = await stripe.createPaymentMethod({
+  //     type: 'card',
+  //     card: cardNumberElement,
+  //     billing_details: {
+  //       name: formData.first_name + ' ' + formData.last_name,
+  //       address: {
+  //         line1: formData.address_line1,
+  //         line2: formData.address_line2,
+  //         country: formData.country_short_name,
+  //         postal_code: formData.postal_code,
+  //       },
+  //       email: formData.email,
+  //       phone: formData.phone_number,
+  //     },
+  //   });
 
-    // Check for errors
-    if (error) {
-      // Handle the payment error
-      // console.log(error);
-      toast({ position: 'top', title: 'Please fill in the card details!', status: 'info' })
-      setIsLoading(false);
-      return;
-    }
+  //   // Check for errors
+  //   if (error) {
+  //     // Handle the payment error
+  //     // console.log(error);
+  //     toast({ position: 'top', title: 'Please fill in the card details!', status: 'info' })
+  //     setIsLoading(false);
+  //     return;
+  //   }
 
-    // Check if paymentMethod is defined
-    if (!paymentMethod) {
-      // Handle the case where paymentMethod is undefined
-      // console.log("Payment method is undefined");
-      toast({ position: 'top', title: 'Payment method is undefined!', status: 'error' })
-      setIsLoading(false);
-      return; 
-    }
+  //   // Check if paymentMethod is defined
+  //   if (!paymentMethod) {
+  //     // Handle the case where paymentMethod is undefined
+  //     // console.log("Payment method is undefined");
+  //     toast({ position: 'top', title: 'Payment method is undefined!', status: 'error' })
+  //     setIsLoading(false);
+  //     return; 
+  //   }
 
-    // Get the payment method ID
-    const paymentToken = paymentMethod.id;
+  //   // Get the payment method ID
+  //   const paymentToken = paymentMethod.id;
 
-    const form = new FormData();
-    // @ts-ignore: Unreachable code error
-    form.append("package_id", id);
-    form.append("first_name", formData.first_name);
-    form.append("last_name", formData.last_name);
-    form.append("address_line1", formData.address_line1);
-    form.append("address_line2", formData.address_line2);
-    form.append("country", formData.country);
-    form.append("email", formData.email);
-    // Append the payment_token to the form data
-    form.append("payment_token", paymentToken);
+  //   const form = new FormData();
+  //   // @ts-ignore: Unreachable code error
+  //   form.append("package_id", id);
+  //   form.append("first_name", formData.first_name);
+  //   form.append("last_name", formData.last_name);
+  //   form.append("address_line1", formData.address_line1);
+  //   form.append("address_line2", formData.address_line2);
+  //   form.append("country", formData.country);
+  //   form.append("email", formData.email);
+  //   // Append the payment_token to the form data
+  //   form.append("payment_token", paymentToken);
 
-    form.append("postal_code", formData.postal_code);
-    form.append("state", formData.state);
-    form.append("city", formData.city);
-    form.append("phone_number", formData.phone_number);
-    //Append card details
-    form.append("name_on_card", formData.card_detail.name_on_card);
-    form.append("card_number", formData.card_detail.card_number);
-    form.append("expiry_date", formData.card_detail.expiry_date);
-    form.append("cvv", formData.card_detail.cvv);
+  //   form.append("postal_code", formData.postal_code);
+  //   form.append("state", formData.state);
+  //   form.append("city", formData.city);
+  //   form.append("phone_number", formData.phone_number);
+  //   //Append card details
+  //   form.append("name_on_card", formData.card_detail.name_on_card);
+  //   form.append("card_number", formData.card_detail.card_number);
+  //   form.append("expiry_date", formData.card_detail.expiry_date);
+  //   form.append("cvv", formData.card_detail.cvv);
     
     
     
-    axios.post(`${baseUrl}/organization/subscriptions/payment?org=${ // @ts-ignore: Unreachable code error
-      currentOrganization?.slug}`, form,  {
-      headers: {
-        Authorization: "Bearer " + accessToken(),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },}).then((res)=>{
-        if(res.status == 200){
-          setIsLoading(false);
-          // setPaymentStatus('success')
-          setMessage(res.data.message)
-          toast({ position: "top", title: res.data.message, status: "success" })
-          router.push("/organization")
-          handleShowModal();
-        }
-      // router.push("/organization");
-    }).catch((error)=>{
+  //   axios.post(`${baseUrl}/organization/subscriptions/payment?org=${ // @ts-ignore: Unreachable code error
+  //     currentOrganization?.slug}`, form,  {
+  //     headers: {
+  //       Authorization: "Bearer " + accessToken(),
+  //       "Content-Type": "application/x-www-form-urlencoded",
+  //     },}).then((res)=>{
+  //       if(res.status == 200){
+  //         setIsLoading(false);
+  //         // setPaymentStatus('success')
+  //         setMessage(res.data.message)
+  //         toast({ position: "top", title: res.data.message, status: "success" })
+  //         router.push("/organization")
+  //         handleShowModal();
+  //       }
+  //     // router.push("/organization");
+  //   }).catch((error)=>{
      
-      setPaymentStatus('failed')
-      if (error.response) {
-        // Handle API response errors
-        const { data } = error.response;
-        setIsLoading(false);
-        // Extract the error message from the API response
-        if (data && data.message) {
-          setErrorMessage(data.message)
-          // toast({ position: "top", title: data.message, status: "error" })
-        } else {
-          toast({ position: "top", title: 'An error occurred. Please try again later.', status: "error" })
-        }
-      } else {
-        // Handle other types of errors (e.g., network errors)
-        toast({ position: "top", title: 'An error occurred. Please try again later.', status: "error" })
-      }
-    })
+  //     setPaymentStatus('failed')
+  //     if (error.response) {
+  //       // Handle API response errors
+  //       const { data } = error.response;
+  //       setIsLoading(false);
+  //       // Extract the error message from the API response
+  //       if (data && data.message) {
+  //         setErrorMessage(data.message)
+  //         // toast({ position: "top", title: data.message, status: "error" })
+  //       } else {
+  //         toast({ position: "top", title: 'An error occurred. Please try again later.', status: "error" })
+  //       }
+  //     } else {
+  //       // Handle other types of errors (e.g., network errors)
+  //       toast({ position: "top", title: 'An error occurred. Please try again later.', status: "error" })
+  //     }
+  //   })
 
-  }
+  // }
 
   const goToDashboard = () =>{
     handleCloseModal()
@@ -314,7 +314,7 @@ const StripeForm = () => {
             <div className="mt-5">
               <p className="modal-txt">Billing Information</p>
             </div>
-            <form id="payment-form" onSubmit={handleSubmit}>
+            <form id="payment-form" >
             <Row>
               
                 <Col md={6}>
@@ -374,7 +374,7 @@ const StripeForm = () => {
                 <Col md={6}>
                   <div className="mb-3">
                     <label className="form-label fw-bold">Country</label>
-                    <Autocomplete // @ts-ignore: Unreachable code error
+                    {/* <Autocomplete // @ts-ignore: Unreachable code error
                       onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
                       onPlaceChanged={() => {
                         // @ts-ignore: Unreachable code error
@@ -391,7 +391,7 @@ const StripeForm = () => {
                         onChange={(event) => setFormData({ ...formData, country: event.target.value })}
                         placeholder="Search a country"
                       />
-                    </Autocomplete>
+                    </Autocomplete> */}
 
 
                   </div>
@@ -441,19 +441,19 @@ const StripeForm = () => {
               <Col md={12}>
                 <div className="mb-3" style={{ backgroundColor: 'white'}}>
                   <label className="form-label fw-bold">Card Number</label>
-                  <CardNumberElement className="form-control" id="cardNumber" options={cardElementOptions} />
+                  {/* <CardNumberElement className="form-control" id="cardNumber" options={cardElementOptions} /> */}
                 </div>
               </Col>
               <Col md={4}>
                 <div className="mb-3">
                   <label className="form-label fw-bold">Expiry Date</label>
-                  <CardExpiryElement className="form-control" id="expiryDate" options={cardElementOptions}/>
+                  {/* <CardExpiryElement className="form-control" id="expiryDate" options={cardElementOptions}/> */}
                 </div>
               </Col> 
               <Col md={4}>
                 <div className="mb-3">
                   <label className="form-label fw-bold">CVC</label>
-                  <CardCvcElement className="form-control" id="cvc" options={cardElementOptions}/>
+                  {/* <CardCvcElement className="form-control" id="cvc" options={cardElementOptions}/> */}
                 </div>
               </Col>
               <Col md={4}>
@@ -476,11 +476,11 @@ const StripeForm = () => {
                 </div>
               </Col>
               {/* <div className="col-md-6"></div> */}
-              <button disabled={isLoading || !stripe || !elements} id="submit" className="sub-btn mt-5 mb-5">
+              {/* <button disabled={isLoading || !stripe || !elements} id="submit" className="sub-btn mt-5 mb-5">
                 <span id="button-text">
                   {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Pay now"}
                 </span>
-              </button>
+              </button> */}
             </Row>
             {/* Show any error or success messages */}
             {message && <div id="payment-message">{message}</div>}
@@ -531,9 +531,9 @@ const StripeForm = () => {
 
 const PaymentPage = () => {
   return (
-    <Elements stripe={stripePromise}>
+    // <Elements stripe={stripePromise}>
       <StripeForm />
-    </Elements>
+    // </Elements>
   );
 };
 
