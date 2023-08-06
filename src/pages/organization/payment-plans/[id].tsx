@@ -14,7 +14,7 @@ import { CardElement, Elements, useStripe, useElements } from '@stripe/react-str
 import { CardNumberElement, CardCvcElement, CardExpiryElement} from '@stripe/react-stripe-js';
 import { loadStripe } from "@stripe/stripe-js";
 import { useToast } from '@chakra-ui/toast'
-import { GoogleMap, Autocomplete } from '@react-google-maps/api';
+// import { GoogleMap, Autocomplete } from '@react-google-maps/api';
 
 const calculateHST = (price: number): number => {
   const hst = parseFloat(price.toString()) * 0.13;
@@ -374,7 +374,7 @@ const StripeForm = () => {
                 <Col md={6}>
                   <div className="mb-3">
                     <label className="form-label fw-bold">Country</label>
-                    <Autocomplete // @ts-ignore: Unreachable code error
+                    {/* <Autocomplete // @ts-ignore: Unreachable code error
                       onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
                       onPlaceChanged={() => {
                         // @ts-ignore: Unreachable code error
@@ -391,7 +391,7 @@ const StripeForm = () => {
                         onChange={(event) => setFormData({ ...formData, country: event.target.value })}
                         placeholder="Search a country"
                       />
-                    </Autocomplete>
+                    </Autocomplete> */}
 
 
                   </div>
