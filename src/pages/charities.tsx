@@ -532,7 +532,7 @@ const Charities = () => {
         </div>
       </div> */}
       <div className="container px-0 py-5">
-        <div className="flex flex-column flex-lg-row align-items-center">
+        <div className="d-flex flex-column flex-lg-row align-items-center">
           <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
             <img src={partner1.src} className='m-auto mb-4' alt="" />
             <h1 className='mb-4'>Convenient Access</h1>
