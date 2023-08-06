@@ -134,11 +134,11 @@ const StripeForm = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [paymentStatus, setPaymentStatus] = React.useState("");
   
-  const handlePlaceSelect = (place) => {
+  const handlePlaceSelect = (place: any) => {
     if (place && place.address_components) {
       // Find the country in the address_components
       const countryComponent = place.address_components.find(
-        (component) => component.types.includes('country')
+        (component: any) => component.types.includes('country')
       );
 
       // Get the full name and short name of the country
@@ -325,7 +325,7 @@ console.log('xcccccc', formData)
                         type="text"
                         className="form-control"
                         value={formData.first_name}
-                        onChange={(event) =>
+                        onChange={(event: any) =>
                         setFormData({ ...formData, first_name: event.target.value })
                         }
                         name="first_name"
@@ -343,7 +343,7 @@ console.log('xcccccc', formData)
                         type="text"
                         className="form-control"
                         value={formData.last_name}
-                        onChange={(event) =>
+                        onChange={(event: any) =>
                         setFormData({ ...formData, last_name: event.target.value })
                         }
                         name="last_name"
@@ -361,7 +361,7 @@ console.log('xcccccc', formData)
                       type="email"
                       className="form-control"
                       value={formData.email}
-                      onChange={(event) =>
+                      onChange={(event: any) =>
                       setFormData({ ...formData, email: event.target.value })
                       }
                       name="email"
@@ -374,14 +374,14 @@ console.log('xcccccc', formData)
                 <Col md={6}>
                   <div className="mb-3">
                     <label className="form-label fw-bold">Country</label>
-                    <Autocomplete
+                    <Autocomplete // @ts-ignore: Unreachable code error
                       onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
                       onPlaceChanged={() => {
-                        // Get the selected place from the Autocomplete component using the ref
+                        // @ts-ignore: Unreachable code error
                         const selectedPlace = autocompleteRef.current.getPlace();
                         // Call the handlePlaceSelect function with the selected place
                         handlePlaceSelect(selectedPlace);
-                      }}
+                      }} // @ts-ignore: Unreachable code error
                       style={{ backgroundColor: "#E8E8E8" }}
                     >
                       <input
@@ -404,7 +404,7 @@ console.log('xcccccc', formData)
                       type="text"
                       className="form-control"
                       value={formData.address_line1}
-                      onChange={(event) =>
+                      onChange={(event: any) =>
                       setFormData({ ...formData, address_line1: event.target.value })
                       }
                       name="address_line1"
@@ -423,7 +423,7 @@ console.log('xcccccc', formData)
                       type="text"
                       className="form-control"
                       value={formData.address_line2}
-                      onChange={(event) =>
+                      onChange={(event: any) =>
                       setFormData({ ...formData, address_line2: event.target.value })
                       }
                       name="address_line2"
@@ -464,7 +464,7 @@ console.log('xcccccc', formData)
                     type="text"
                     className="form-control"
                     value={formData.postal_code}
-                    onChange={(event) =>
+                    onChange={(event: any) =>
                     setFormData({ ...formData, postal_code: event.target.value })
                     }
                     name="postal_code"

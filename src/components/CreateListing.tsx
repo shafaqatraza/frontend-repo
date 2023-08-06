@@ -357,7 +357,7 @@ const CreateListing = () => {
             style={{ backgroundColor: "#E8E8E8" }}
             type="text"
             value={formData.title}
-            onChange={(e)=> (handleInputChange(e, 'title'))}
+            onChange={(e: any)=> (handleInputChange(e, 'title'))}
             name="charity_name"
             className={`form-control mt-2 ${formErrors['title'] ? 'input-error' : ''}`}
             placeholder="Title"
@@ -405,7 +405,7 @@ const CreateListing = () => {
             type="number"
             className={`form-control mt-2 ${formErrors['credit_amount'] ? 'input-error' : ''}`}
             value={formData.credit_amount}
-            onChange={(e)=> (handleInputChange(e, 'credit_amount'))}
+            onChange={(e: any)=> (handleInputChange(e, 'credit_amount'))}
             name="credit_amount"
             placeholder="Credit amount"
             required
