@@ -1169,7 +1169,16 @@ font-weight: 700;
   padding: 45px 0 65px 0;
 }
 .make-money-card{
-  border: 2px solid #000000;
+  border: 1.7px solid #000000;
+}
+.give-earn .card{
+  box-shadow: 0 4px 4px rgba(0,0,0,.15)!important;
+}
+.preferred-company{
+  padding: 1.375rem .75rem;
+}
+.nav-login-btn{
+  width: 145px !important;
 }
 .select-btn{
   width: 163px;
@@ -1861,10 +1870,10 @@ color: #E27832;
 }
 .charity-card{
   text-align: center;
-  padding: 20px 10px 20px 10px;
+  padding: 20px 7px 20px 7px;
   border: 1px solid black;
   width: 300px;
-  min-height: 517px;
+  min-height: 491px;
 }
 .charity-card h1{
   font-size: 24px;
@@ -1912,6 +1921,9 @@ color: #E27832;
   }
 }
 @media (max-width: 600px) {
+  .nav-login-btn{
+    width: 100px !important;
+  }
   .student-landing-review .deeds-review{
     padding-top: 0 !important;
   }

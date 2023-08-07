@@ -444,7 +444,7 @@ const StudentLanding = () => {
               </button>
             </div>
           </div>
-          <div className="col-md-4 align-items-center ps-md-0 d-none d-md-flex">
+          <div className="col-md-4 align-items-center ps-md-0 pe-md-0 d-none d-md-flex">
             <div className="mt-5">
               <Image src={penstu.src} alt={"Charity"} />
             </div>
@@ -668,7 +668,7 @@ const StudentLanding = () => {
       </div>
       {/* Next Section */}
 
-      <div className="container pb-5 px-3 px-md-2 ">
+      <div className="container pb-5 px-3 px-md-2 preferred-company">
         <div className="volunteer-form-wrap">
           <div className="mt-5 pt-md-4 px-3 px-md-0">
             <p
@@ -714,7 +714,7 @@ const StudentLanding = () => {
                     Company Name
                   </label>
                   <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
+                    style={{ backgroundColor: "#F6F6F6" }}
                     type="tel"
                     className="form-control mt-1"
                     id="phone-number"
@@ -736,7 +736,7 @@ const StudentLanding = () => {
                     Department/Area of Expertise
                   </label>
                   <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
+                    style={{ backgroundColor: "#F6F6F6" }}
                     type="tel"
                     className="form-control mt-1"
                     id="phone-number"
@@ -758,9 +758,9 @@ const StudentLanding = () => {
                     Description
                   </label>
                   <textarea
-                    style={{ backgroundColor: "#E8E8E8" }}
+                    style={{ backgroundColor: "#F6F6F6" }}
                     cols={10}
-                    rows={8}
+                    rows={5}
                     onChange={(e) => setDescription(e.target.value)}
                     className="form-control mt-1"
                     id="phone-number"
@@ -772,7 +772,7 @@ const StudentLanding = () => {
 
               </form>
             </div>
-            <div className="col-md-5 d-flex justify-center items-center flex-column">
+            <div className="col-md-5 d-flex mt-md-5 align-items-center flex-column">
               <Image src={conversation.src} className="d-none d-md-block"/>
               <Button
                 variant={'solid'}
@@ -783,6 +783,7 @@ const StudentLanding = () => {
                 mt="56px"
                 onClick={submitForm}
                 minW="285px"
+                className="ms-md-5"
               >
                 Submit a Volunteer Request
               </Button>
@@ -819,7 +820,7 @@ const StudentLanding = () => {
               lineHeight="26px"
               color="#E27832"
               fontWeight="600"
-              className="d-none d-md-block"
+              className="d-none d-md-block ms-md-5"
             >About Us</Text>
             <Text
               fontSize="40px"
@@ -875,7 +876,7 @@ const StudentLanding = () => {
             <Col className="rev-col" md={4}>
 
               <div>
-                <div className="card-review">
+                <div className="card-review pb-md-0">
                   <div className="stars d-flex justify-content-center">
                     <span className="star">&#9733;</span>
                     <span className="star">&#9733;</span>
@@ -907,7 +908,7 @@ const StudentLanding = () => {
             <Col className="rev-col" md={4}>
 
               <div>
-                <div className="card-review">
+                <div className="card-review pb-md-0">
                   <div className="stars d-flex justify-content-center">
                     <span className="star">&#9733;</span>
                     <span className="star">&#9733;</span>
@@ -938,7 +939,7 @@ const StudentLanding = () => {
             </Col>
             <Col className="rev-col" md={4}>
               <div>
-                <div className="card-review">
+                <div className="card-review pb-md-0">
                   <div className="stars d-flex justify-content-center">
                     <span className="star">&#9733;</span>
                     <span className="star">&#9733;</span>
@@ -975,7 +976,7 @@ const StudentLanding = () => {
       <div style={{ backgroundColor: "rgba(222, 227, 230, 0.5)" }}>
         <div className="container pb-4 pb-md-0">
           <div className="row pt-3 pt-md-0 px-md-5">
-            <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-4" >
+            <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-5" >
               <Image src={partner1.src} alt={"icon"} style={{ margin: '0 auto' }} />
               <Text
                 fontSize="24px"
@@ -995,7 +996,7 @@ const StudentLanding = () => {
               >Free access to Good Deed's ever-expanding database of volunteer opportunities that match your preferences or support your future goals.
               </Text>
             </div>
-            <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-4" >
+            <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-5" >
               <Image src={partner2.src} alt={"icon"} style={{ margin: '0 auto' }} />
               <Text
                 fontSize="24px"
@@ -1004,7 +1005,8 @@ const StudentLanding = () => {
                 fontWeight="700"
                 textAlign="center"
                 mt="60px"
-              >Optimized
+                className="mt-md-4 pt-md-1"
+              >Optimized <br className="d-none d-md-block"/>
                 Security and Safety</Text>
               <Text
                 fontSize="20px"
@@ -1017,7 +1019,7 @@ const StudentLanding = () => {
 
               </Text>
             </div>
-            <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-4" >
+            <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-5" >
               <Image src={partner4.src} alt={"icon"} style={{ margin: '0 auto' }} />
               <Text
                 fontSize="24px"
@@ -1049,7 +1051,7 @@ const StudentLanding = () => {
         </p>
         <Row >
           <Col md={12}>
-            <p className="step1-txt mt-5 col-md-4 d-flex justify-content-md-center">
+            <p className="step1-txt ms-md-5 mt-5 col-md-4 d-flex justify-content-md-center">
               Step 1
             </p>
             <div className="d-flex justify-content-center flex-column flex-md-row mt-4 px-2 px-md-0">

@@ -118,11 +118,11 @@ const VolunteerCategories = () => {
   }, []);
 
   const sliderData = [
-    { id: 1, imageUrl: Rec1.src, title: 'Spa & Beauty' },
-    { id: 2, imageUrl: Rect2.src, title: 'Health & Wellness' },
-    { id: 3, imageUrl: Re3.src, title: 'Electronics' },
-    { id: 4, imageUrl: Rect4.src, title: 'Clothing & Apparel' },
-    { id: 5, imageUrl: Rect.src, title: 'Home Decor' },
+    { id: 1, imageUrl: Rec1.src, title: 'Spa & Wellness Services' },
+    { id: 2, imageUrl: Rect2.src, title: 'Charity Giving' },
+    { id: 3, imageUrl: Re3.src, title: 'Electronics & Mobile Devices' },
+    { id: 4, imageUrl: Rect4.src, title: 'Fashion & Apparel' },
+    { id: 5, imageUrl: Rect.src, title: 'Video Games' },
   ];
 
   const settings = {
@@ -309,16 +309,16 @@ const VolunteerCategories = () => {
               <div className="col-md-7">
                 <p className="good-deeds mb-4 mb-md-0 px-3"><span style={{ color: "#183553" }}>Seeking</span> <span style={{ color: "#E27832" }}>Volunteer</span> <span style={{ color: "#183553" }}>Hours for</span> <span style={{ color: "#E27832" }}>High</span> <span className="d-md-inline d-lg-block" style={{ color: "#E27832" }}>School graduation?</span></p>
               </div>
-              <div className="col-md-5 d-flex align-items-end align-items-xxl-start">
-                <Image src={pennyandstudents.src} alt="Image" />
+              <div className="col-md-5 px-md-0 d-flex align-items-end align-items-xxl-start">
+                <Image src={pennyandstudents.src} className="ms-md-3" alt="Image" />
               </div>
             </div>
             <div className="d-flex row">
               <div className="col-md-7">
-                <p className="our-platform mt-md-3 mt-4 mb-5 px-3">High school students in Ontario need to complete 40 hours of volunteer service before graduation. Good Deeds provides a <span className="d-md-inline d-lg-block">remote and convenient solution for accumulating your <span className="d-md-inline d-lg-block">community hours.</span></span></p>
+                <p className="our-platform mt-md-3 mt-4 mb-5 px-3">High school students in Ontario need to complete 40 hours of volunteer service before graduation. Good Deeds provides a <span className="d-md-inline">remote and convenient solution for accumulating your <span className="d-md-inline ">community hours.</span></span></p>
               </div>
-              <div className="col-md-5 d-flex justify-content-center align-items-center">
-                <button className="high-school-btn mb-5" onClick={() => { router.push('/students-landing') }}>High School Students Click Here</button>
+              <div className="col-md-5 d-flex justify-content-center align-items-center mt-md-5 mt-xxl-4 ">
+                <button className="high-school-btn mb-5 ms-md-5" onClick={() => { router.push('/students-landing') }}>High School Students Click Here</button>
               </div>
             </div>
           </div>

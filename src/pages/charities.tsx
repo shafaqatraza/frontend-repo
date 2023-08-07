@@ -35,6 +35,7 @@ import charityLogo2 from "../assets/imgs/geneva-center-logo.png";
 import charityLogo3 from "../assets/imgs/habitat-logo.png";
 import MonthlyPlan from "../components/MonthlyPlan";
 import AnualPlan from "../components/AnualPlan";
+import healthcare from "../assets/imgs/hospital-healthcare.png"
 import { useMediaQuery } from '@chakra-ui/react'
 import { Popover } from 'antd';
 import { useRouter } from 'next/router'
@@ -321,7 +322,7 @@ const Charities = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-8 mt-5">
-            <p className="good-deeds ms-3 ms-md-0 and">Good Deeds <span className="donors"> connects</span> <span className="you-motivated">you with motivated</span> <span className="volunteers">volunteers</span> <span className="and">and</span> <span className="donors">donors</span></p>
+            <p className="good-deeds ms-3 ms-md-0 and">Good Deeds <span className="donors"> connects</span> <span >you with motivated</span> <span className="volunteers">volunteers</span> <span className="and">and</span> <span className="donors">donors</span></p>
             <Image src={Charity.src} className='d-block d-md-none px-5' alt={"Charity"} />
             <div className="mt-2 mb-2">
               <p className="our-platform px-4 px-md-0" style={{fontWeight:"600"}}>Our platform makes it effortless to manage and reward your donors and volunteers in one convenient place.</p>
@@ -536,7 +537,7 @@ const Charities = () => {
           <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
             <img src={partner1.src} className='m-auto mb-4' alt="" />
             <h1 className='mb-4'>Convenient Access</h1>
-            <p className='px-3'>Access Good Deeds’s diverse and growing database of volunteers with varying levels of unique skills and expertise based on your project needs.</p>
+            <p className='px-xxl-4 px-3'>Access Good Deeds’s diverse and growing database of volunteers with varying levels of unique skills and expertise based on your project needs.</p>
           </div>
           <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
             <img src={partner2.src} className='m-auto mb-4' alt="" />
@@ -557,9 +558,9 @@ const Charities = () => {
       </div>
       {/* Volunteer Categories */}
       <div className="main-volunteer-section mt-5 passionate-vol">
-        <div className="container pt-2 pt-md-0">
+        <div className="container pt-2 pt-md-0 pb-md-5">
           <div className="mt-3">
-            <p className="volun-txt text-center p-4">Volunteer Categories</p>
+            <p className="volun-txt text-center pb-md-5 pt-md-0 p-4">Volunteer Categories</p>
           </div>
           <div>
             <p className="text-center volun-txt2">
@@ -709,8 +710,9 @@ const Charities = () => {
                 <div className="volunteer-card-body d-flex justify-content-center align-items-center flex-column">
                   <Image
                     style={{ width: "130px" }}
-                    src={pennyevent.src}
+                    src={healthcare.src}
                     alt={"Skilled Workers"}
+                    className='mt-3'
                   />
                   <span className="text-center mb-2 skill-txt">
                     Hospital/ Senior Care

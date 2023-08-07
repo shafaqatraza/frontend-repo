@@ -119,11 +119,11 @@ const ourPartners = () => {
           </div>
         </div>
         <div>
-          <div className="row mt-5 facility">
+          <div className="row mt-5 facility give-earn">
             <div className="col-md-4 part-card">
               <div className="d-flex justify-content-center">
                 <div
-                  className="card  shadow border-0"
+                  className="card  border-0"
                   style={{ height: "450px", width: "309px", borderRadius: "10px" }}
                 >
                   <div className="d-flex justify-content-center mt-3 mb-3s">
@@ -146,7 +146,7 @@ const ourPartners = () => {
                     >
                       Give
                     </p>
-                    <p style={{ color: "#183553"}} className="card-text text-center mt-3 mb-3">
+                    <p style={{ color: "#183553"}} className="card-text text-center mt-3 mb-3 px-md-3">
                       Make a real difference in your community by listing your unwanted stuff or by providing a service.
                     </p>
                     <div className="d-flex justify-content-center mt-4">
@@ -175,7 +175,7 @@ const ourPartners = () => {
             <div className="col-md-4 part-card">
               <div className="d-flex justify-content-center">
                 <div
-                  className="card shadow border-0"
+                  className="card border-0"
                   style={{ height: "450px", width: "309px", borderRadius: "10px" }}
                 >
                   <div className="d-flex justify-content-center mt-3 mb-3s">
@@ -223,7 +223,7 @@ const ourPartners = () => {
             <div className="col-md-4 part-card">
               <div className="d-flex justify-content-center">
                 <div
-                  className="card shadow border-0"
+                  className="card border-0"
                   style={{ height: "450px", width: "309px", borderRadius: "10px" }}
                 >
                   <div style={{ height: "180px" }} className="d-flex justify-content-center">
@@ -246,7 +246,7 @@ const ourPartners = () => {
                     >
                       Shop
                     </p>
-                    <p style={{ color: "#183553" }} className="card-text text-center mt-4 mb-3">
+                    <p style={{ color: "#183553" }} className="card-text text-center mt-4 mb-3 px-md-2">
                       Exchange your Deed Dollars for items or services in the marketplace.
                     </p>
                     <div style={{ marginTop: "3.7rem" }} className="d-flex justify-content-center">

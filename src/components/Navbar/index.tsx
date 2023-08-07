@@ -649,8 +649,9 @@ export default function Navbar(props: any) {
                 <Image
                   src={logoHorizontal}
                   alt="GoodDeeds"
-                  width={206}
+                  width={150}
                   height={80}
+                  className="py-3"
                 />
               </Link>
             </Center>
@@ -715,6 +716,7 @@ export default function Navbar(props: any) {
                 style={{ borderRadius: 50 }}
                 size={'md'}
                 ml={4}
+                className="nav-login-btn"
                 onClick={() => {
                   let dubShow = { ...showModel }
                   dubShow.login = true
