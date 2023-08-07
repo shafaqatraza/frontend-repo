@@ -19,7 +19,7 @@ const SocialServices = () => {
         id="need_more_credits"
       >
         <div className="container deed-dollars">
-          <p className="paragraph ms-xxl-5 ms-md-4">
+          <p className="paragraph ms-xxl-5 ms-md-4 mb-md-5">
             <span className="good-deeds">
               <span style={{ color: "#183553" }}>Need more</span>{" "}
               <span style={{ color: "#E27832" }}>credits</span>
@@ -120,7 +120,7 @@ const SocialServices = () => {
         </div>
         <div className="row m-0">
           <div className="col-md-6">
-            <div className="make-money-card pb-2">
+            <div className="make-money-card pb-2 pb-md-0">
               <p
                 className="text-center mt-sm-4 mb-sm-3 my-5"
                 style={{

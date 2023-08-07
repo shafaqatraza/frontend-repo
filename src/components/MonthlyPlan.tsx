@@ -44,6 +44,7 @@ const MonthlyPlan = () => {
     axios
       .get(`${baseUrl}/public/organization/subscriptions/plans`)
       .then((res) => {
+        
         setData(res.data.data[0]?.packages[0])
         setDataDesc(res.data.data[0]?.packages[0]?.description)
         setDataOne(res.data.data[0]?.packages[1])
