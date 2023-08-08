@@ -820,7 +820,7 @@ margin-bottom: 24px;
 }
 .good-deeds-blog {
   color: #183553;
-  font-size: clamp(24px, 5vw, 64px);
+  font-size: clamp(30px, 5vw, 64px);
   font-weight: 700;
   line-height: clamp(48px, 8vw, 78px);
   margin-top: 3rem;
@@ -1887,6 +1887,9 @@ color: #E27832;
   border-top-width: 2px;
   opacity: 1;
 }
+.blog-card-shadow{
+  box-shadow: 0 4px 5px rgba(0,0,0,.15)!important;
+}
 
 @media screen and (min-width:1400px){
   .passionate-vol .volunteer-card-row1{
@@ -1921,11 +1924,17 @@ color: #E27832;
   }
 }
 @media (max-width: 600px) {
+  .view-blog-btn {
+    width: 312px;
+  }
   .nav-login-btn{
     width: 100px !important;
   }
   .student-landing-review .deeds-review{
     padding-top: 0 !important;
+  }
+  .blog-cards{
+    height: 479px !important;
   }
   .c-single-card {
     padding: 14px 41px 128px;

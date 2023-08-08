@@ -127,10 +127,10 @@ export const BlogCard = () => {
       )} */}
        <div className="d-flex justify-content-center flex-wrap mt-5 container">
       {goodDeeds.map((deed) => (
-        <div className="col-md-4 mt-3 mb-5 part-card">
+        <div className="col-xl-4 col-md-6 mt-3 mb-5 pb-xxl-5 part-card">
         <div className="d-flex justify-content-center">
           <div
-            className="card shadow border-2"
+            className="card blog-card-shadow blog-cards border-0"
             style={{ height: "525px", width: "326px", borderRadius:"10px" }}
           >
             <div className="d-flex justify-content-center mb-3s">
@@ -143,9 +143,10 @@ export const BlogCard = () => {
             <div className="card-body">
               <p
                 style={{
-                  fontSize: "clamp(14px, 4vw, 24px)",
-                  lineHeight: "clamp(18px, 3.5vw, 29px)",
+                  fontSize: "clamp(20px, 4vw, 24px)",
+                  lineHeight: "1.3",
                   color: "#E27832",
+                  fontWeight:"500"
                 }}
               >
                 {deed?.goodDeed}
@@ -163,7 +164,7 @@ export const BlogCard = () => {
       </div>
       ))}
       <div>
-        <button className='view-blog-btn mb-5'>View more</button>
+        <button className='view-blog-btn mb-md-5 mt-md-5'>View more</button>
       </div>
     </div>
     </>
