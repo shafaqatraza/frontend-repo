@@ -44,7 +44,7 @@ interface Option {
   type: 'new' | 'old';
   is_deleted: boolean;
 }
-
+/* eslint-disable */
 const CreateApplication = (props: Props) => {
   const [dataArray, setDataArray] = useState([]);
   const [volundata, setVolunData] = useState([]);
@@ -344,7 +344,7 @@ const CreateApplication = (props: Props) => {
               placeholder="Question"
               value={previousQuestions[id]?.question}
               required
-              onChange={(e) => handleInputChange(id, e.target.value)}
+              onChange={(e: any) => handleInputChange(id, e.target.value)}
             />
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
@@ -460,7 +460,7 @@ const CreateApplication = (props: Props) => {
               id={id}
               placeholder="Question"
               value={previousQuestions[id]?.question}
-              onChange={(e) => handleInputChange(id, e.target.value)}
+              onChange={(e: any) => handleInputChange(id, e.target.value)}
             /> 
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
@@ -513,7 +513,7 @@ const CreateApplication = (props: Props) => {
               id={`conditional-${id}`}
               placeholder="Conditional Question"
               value={previousQuestions[id]?.conditional_question}
-              onChange={(e) => handleInputChange(`conditional-${id}`, e.target.value)}
+              onChange={(e: any) => handleInputChange(`conditional-${id}`, e.target.value)}
             />
             {// @ts-ignore: Unreachable code error
             questionErrors[`conditional-${id}`] && <p className="error-message">Please fill out the field.</p>}
@@ -643,7 +643,7 @@ const CreateApplication = (props: Props) => {
                   id={id} // @ts-ignore: Unreachable code error
                   value={previousQuestions[id]?.question} // @ts-ignore: Unreachable code error
                   className={`${questionErrors[id] ? 'input-error' : ''}`}
-                  onChange={(e) => handleInputChange(id, e.target.value)}
+                  onChange={(e:any) => handleInputChange(id, e.target.value)}
                 />
               </div>
               {// @ts-ignore: Unreachable code error
@@ -1156,5 +1156,5 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
     </>
   );
 };
-
+/* eslint-enable */
 export default CreateApplication;

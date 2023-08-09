@@ -3,7 +3,7 @@ import Navbar from "../../../../../components/Navbar";
 import Sidebar from "../../../../../components/Sidebar.jsx";
 import { Image, Input, Textarea } from "@chakra-ui/react";
 import { Form } from "react-bootstrap";
-import { Radio, Select, Space } from "antd";
+import { Radio, Select, Space, Upload } from "antd";
 import { useState } from "react";
 import "antd/dist/antd.css";
 import axios from "axios";
@@ -12,6 +12,8 @@ import { useRouter } from "next/router";
 import { Modal } from "react-bootstrap";
 import camera from "../../../../../assets/imgs/camera.png";
 import { Footer } from "../../../../../components/Footer";
+import { CUIAutoComplete } from 'chakra-ui-autocomplete'
+import { useToast } from '@chakra-ui/toast'
 
 const myData = [
   { value: "apple", label: "Volunteer" },
@@ -38,6 +40,11 @@ const EditDonationListing = () => {
   const handleCloseError = () => setShowError(false);
   const handleShowError = () => setShowError(true);
   const [donError, setDonError] = useState([]);
+  const [pickerItems, setPickerItems] = useState([])
+  const [selectedItems, setSelectedItems] = useState([])
+  const [hover, setHover] = useState(false); // Track the hover state
+  const [formErrors, setFormErrors] = useState({});
+  const toast = useToast()
 
   if (!router) {
     return null;
@@ -90,6 +97,25 @@ const EditDonationListing = () => {
         )
         .then((res) => {
           setFormData(res.data.data);
+          let data = res.data.data;
+          
+          setFormData({
+            title: data.title,
+            description: data.description,
+            url_to_donate:data.url_to_donate,
+            category_id: data.category_id,
+            keywords: res.data.data.keywords.map((keyword) => keyword.id),
+            thumbnail: "",
+            old_thumbnail: data.thumbnail
+          });
+          let tmpKeywords = []
+          
+          if (res.data.data.keywords !== null && res.data.data.keywords.length > 0) {
+            res.data.data.keywords.map((i) =>
+              tmpKeywords.push({ label: i.name, value: i.id })
+            )
+          }
+          setSelectedItems(tmpKeywords)
         })
         .catch((err) => {
           console.log(err);
@@ -110,11 +136,89 @@ const EditDonationListing = () => {
     }
   },[slug, currentOrganization])
 
+
+const getBase64 = (img, callback) => {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+};
+
+const handleFileChange = (info) => {
+  
+    const file = info.file.originFileObj;
+    if (file) {
+      // Update the formData with the new thumbnail file
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        thumbnail: info.file.originFileObj,
+      }));
+      getBase64(file, (imageUrl) => {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          old_thumbnail: imageUrl, // Show the new thumbnail preview
+        }));
+      });
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = new FormData();
-    // setFormData({ ...formData, category_id: inputValue });
+    let hasErrors = false;
+    
+    if (!formData.title) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['title']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.description) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['description']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.url_to_donate) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['url_to_donate']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.category_id) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['category_id']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.keywords.length) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['keywords']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    // If there are errors, prevent form submission
+    if (hasErrors) {
+      toast({ position: "top", title: 'Please fill out the complete form.', status: "warning" })
+      return;
+    }
+
+    selectedItems.map((i) => // @ts-ignore: Unreachable code error
+      formData.keywords.push(i.value)
+    )
+
+    
     setIsSubmitting(true);
+    const form = new FormData();
+
     form.append("title", formData.title);
     form.append("description", formData.description);
     form.append("url_to_donate", formData.url_to_donate);
@@ -139,7 +243,7 @@ const EditDonationListing = () => {
       })
       .then((response) => {
         setShowSuccess(true);
-        router.push("/listings");
+        router.push("/organization/listings");
         setIsSubmitting(false);
         setFormData({
           title: "",
@@ -174,13 +278,61 @@ const EditDonationListing = () => {
       });
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event, type) => {
+    
     const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+
+    if(type == 'title'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['title']: false, // Reset the error state for the specific question ID
+      }));
+    }else if(type == 'description'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['description']: false, // Reset the error state for the specific question ID
+      }));
+    }else if(type == 'url_to_donate'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['url_to_donate']: false, // Reset the error state for the specific question ID
+      }));
+    }
   };
+
+  // @ts-ignore: Unreachable code error
+  const handleCreateItem = (item) => { // @ts-ignore: Unreachable code error
+    setPickerItems((curr) => [...curr, item]) // @ts-ignore: Unreachable code error
+    setSelectedItems((curr) => [...curr, item])
+  }
+ // @ts-ignore: Unreachable code error
+ const handleSelectedItemsChange = (changes) => {
+  if (changes.selectedItems) {
+    setSelectedItems(changes.selectedItems);
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      keywords: false,
+    }));
+  }
+
+  const newKeywords = changes.selectedItems
+    .filter((item) => item.isNew) // Filter newly created keywords
+    .map((item) => item.value);
+
+  // Update the formData.keywords array with both the selected keywords and new keywords
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    keywords: [
+      ...changes.selectedItems.map((item) => item.value), // Selected keywords
+      ...newKeywords, // Newly created keywords
+    ],
+  }));
+};
+console.log('éeeeeeee', formData)
   return (
     <>
       <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
@@ -236,16 +388,17 @@ const EditDonationListing = () => {
             >
               Charity Name
             </label>
-            <Input
+            <Input 
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
-              className="form-control mt-2"
+              className={`form-control mt-2 ${formErrors['title'] ? 'input-error' : ''}`}
               value={formData.title || ""}
-             onChange={handleInputChange}
+              onChange={(e)=> (handleInputChange(e, 'title'))}
               name="title"
               placeholder="Charity Name"
               required
             />
+            {formErrors['title'] && <p className="error-message">Please fill out the field.</p>}
           </div>
           <div className="mb-3 mt-4 col-md-5">
             <label
@@ -261,14 +414,15 @@ const EditDonationListing = () => {
             <Textarea
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
-              className="form-control mt-2"
+              className={`form-control mt-2 ${formErrors['description'] ? 'input-error' : ''}`}
               value={formData.description || ""}
-              onChange={handleInputChange}
+              onChange={(e)=> (handleInputChange(e, 'description'))}
               name="description"
               placeholder="Description"
               rows={6}
               required
             />
+            {formErrors['description'] && <p className="error-message">Please fill out the field.</p>}
           </div>
           <div className="mb-3 mt-4 col-md-5">
             <label
@@ -284,13 +438,14 @@ const EditDonationListing = () => {
             <Input
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
-              className="form-control mt-2"
+              className={`form-control mt-2 ${formErrors['url_to_donate'] ? 'input-error' : ''}`}
               value={formData.url_to_donate || ""}
-              onChange={handleInputChange}
+              onChange={(e)=> (handleInputChange(e, 'url_to_donate'))}
               name="url_to_donate"
               placeholder="URL"
               required
             />
+            {formErrors['url_to_donate'] && <p className="error-message">Please fill out the field.</p>}
           </div>
           <div className="mb-3 mt-3 col-md-4">
             <div className="mt-2">
@@ -306,36 +461,29 @@ const EditDonationListing = () => {
               </label>
 
               <div className="col-md-12">
-                <Select
-                  showSearch
-                  style={{ width: "100%" }}
-                  placeholder="Select category"
-                  optionFilterProp="children"
-                  value={formData.category || ""}
-                  onChange={(value) =>
-                    setFormData({ ...formData, category_id: value })
-                  }
-                  // @ts-ignore: Unreachable code error
-                  name="category_id"
-                  onSearch={(value) => setInputValue(value)}
-                  filterOption={(input, option) =>
-                    // @ts-ignore: Unreachable code error
-                    option.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                  size="large"
-                >
-                  {data.map((item) => (
-                    // @ts-ignore: Unreachable code error
-                    <Option key={item.id} value={item.id}>
-                      {
-                        // @ts-ignore: Unreachable code error
-                        item.name
-                      }
-                    </Option>
-                  ))}
-                </Select>
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                placeholder="Select category"
+                optionFilterProp="children"
+                className={`${formErrors['category_id'] ? 'input-error' : ''}`}
+                value={formData.category_id || undefined} // Use undefined to show the placeholder when no category is selected
+                onChange={(value) =>
+                  setFormData({ ...formData, category_id: value })
+                }
+                onSearch={(value) => setInputValue(value)} // Make sure you have setInputValue defined in your code
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                size="large"
+              >
+                {data.map((item) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
+              </Select>
+              {formErrors['category_id'] && <p className="error-message">Please select category.</p>}
               </div>
             </div>
           </div>
@@ -350,27 +498,21 @@ const EditDonationListing = () => {
             >
               Keywords
             </label>
-            <Select
-              mode="multiple"
-              size={size}
-              placeholder="Please select"
-              // defaultValue={["Volunteer", "Animals"]}
-              onChange={(selectedOptions) => {
-                const selectedValues = selectedOptions.map(
-                  (option) => option && option
-                );
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  keywords: selectedValues, // update keywords field with selected values
-                }));
-              }}
-              value={formData.selectedValues}
-              style={{
-                width: "100%",
-              }}
-              options={options}
+            <CUIAutoComplete
+              hideToggleButton={true}
+              className={`${formErrors['keywords'] ? 'input-error' : ''}`}
+              label="Select a min of 3, max of 6"
+              placeholder=""
+              onCreateItem={handleCreateItem}
+              items={pickerItems}
+              selectedItems={selectedItems}
+              onSelectedItemsChange={(changes) =>
+                handleSelectedItemsChange(changes)
+              }
             />
+          {formErrors['keywords'] && <p className="error-message">Please add at least 3 keywords.</p>}
           </div>
+          <div>
           <label
             style={{
               fontWeight: "500",
@@ -381,16 +523,62 @@ const EditDonationListing = () => {
           >
             Upload a thumbnail picture
           </label>
-          <div className="upload-pic d-flex justify-content-center align-items-center">
-            {thumbnail ? (
-              <Image src={thumbnail} width={200} height={200} />
-            ) : (
-              <Image
-                src={camera.src}
-                onClick={handleThumbnailClick}
-                alt="Thumbnail placeholder"
-              />
-            )}
+          </div>
+          <div>
+          <Upload
+            accept="image/*"
+            customRequest={() => {}}
+            onChange={(e) =>{handleFileChange(e)}}
+            showUploadList={false}
+          >
+            <div
+              className="upload-pic d-flex justify-content-center align-items-center"
+              style={{ // @ts-ignore: Unreachable code error
+                border: formData.new_thumbnail
+                  ? '2px solid #007BFF'
+                  : '2px solid transparent',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s',
+                position: 'relative',
+              }}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+            >
+              {formData.old_thumbnail ? (
+                <img
+                  src={formData.old_thumbnail}
+                  width={200}
+                  height={200}
+                  alt="Previous Thumbnail"
+                />
+              ) : (
+                <img src={camera.src} alt="Thumbnail placeholder" />
+              )}
+
+              {hover && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: '#fff',
+                    fontSize: '16px',
+                  }}
+                >
+                  Upload
+                </div>
+              )}
+            </div>
+          </Upload>
           </div>
           {isSubmitting ? (
             <div

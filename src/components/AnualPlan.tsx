@@ -1,4 +1,4 @@
-import { Image, Link, Button } from '@chakra-ui/react';
+import { Image, Link, Button, Input } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from "react-bootstrap";
 import good from "../assets/imgs/good.png";
@@ -143,7 +143,8 @@ const AnualPlan = () => {
                           colorScheme={'orange'}
                           size={'md'}
                           fontSize="16px"
-                          onClick={() => handlePlanButton(dataone?.id)}
+                          onClick={ // @ts-ignore: Unreachable code error
+                            () => handlePlanButton(dataone?.id)}
                           w="150px"
                           className='my-4 mx-auto'
                         >
