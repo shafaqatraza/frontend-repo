@@ -101,7 +101,7 @@ const AnualPlan = () => {
                           style={{
                             color: "#183553",
                             fontSize: "11px",
-                            fontWeight: "700",
+                            fontWeight: "bold", 
                             lineHeight: "12px",
                           }}
                         >
@@ -138,7 +138,7 @@ const AnualPlan = () => {
                         </p>
                       </div>
                       <div className="btns d-flex justify-content-center">
-                      <Button
+                        <Button 
                           variant={'solid'}
                           colorScheme={'orange'}
                           size={'md'}
