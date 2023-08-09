@@ -46,12 +46,13 @@ const Blog = () => {
                 />
             </Head>
             <Navbar />
-            {/* <Section1 title="Good Deeds Community Updates" /> */}\
+            {/* <Section1 title="Good Deeds Community Updates" /> */}
 
-              <p className="good-deeds-blog container text-center">Good Deeds <span style={{color:"#E27832"}}>Blog</span> </p>
-              <p className="good-deeds-bl">Discover How You Can Make A Difference</p>
-
-            <BlogCard />
+              <p className="good-deeds-blog container text-center pt-md-5">Good Deeds <span style={{color:"#E27832"}}>Blog</span> </p>
+              <p className="good-deeds-bl mt-3 mt-md-5">Discover How You Can Make A Difference</p>
+            <div className="mb-5 pb-5">
+                <BlogCard />
+            </div>
             <Footer />
         </Box>
     );

@@ -138,7 +138,8 @@ export default function Navbar(props: any) {
   const [thumbnail, setThumbnail] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
-  
+  const [isOrganization, setIsOrganization] = useState(false);
+
   const [showModel, setShowModel] = useState<ModelType>({
     login: false,
     forgotPassword: false,
@@ -301,8 +302,12 @@ export default function Navbar(props: any) {
 
 
   useEffect(() => {
-
     if (isLogin()) {
+      if (router.asPath.startsWith('/organization')) {
+        setIsOrganization(true);
+      }else{
+        localStorage.setItem('currentOrganization', null);
+      }
       getChats()
       axios.get(`${baseUrl}/organizations`, {
         headers: {
@@ -310,9 +315,17 @@ export default function Navbar(props: any) {
         }
       }).then((res) => {
         setOrgData(res.data);
+        if (router.asPath.startsWith('/organization')) {
+          if(!currOrgSlug){
+            localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
+          }
+        }
+
       }).catch((err) => {
         // console.log(err);
       })
+    }else{
+      router.push("/");
     }
 
     if(currOrgId){
@@ -649,8 +662,9 @@ export default function Navbar(props: any) {
                 <Image
                   src={logoHorizontal}
                   alt="GoodDeeds"
-                  width={206}
+                  width={150}
                   height={80}
+                  className="py-3"
                 />
               </Link>
             </Center>
@@ -715,6 +729,7 @@ export default function Navbar(props: any) {
                 style={{ borderRadius: 50 }}
                 size={'md'}
                 ml={4}
+                className="nav-login-btn"
                 onClick={() => {
                   let dubShow = { ...showModel }
                   dubShow.login = true
@@ -787,7 +802,7 @@ export default function Navbar(props: any) {
 
                   <Menu>
 
-                    {currOrgId?
+                    {isOrganization?
                     <MenuButton
                       as={Button}
                       rounded={'full'}

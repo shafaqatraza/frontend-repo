@@ -13,10 +13,10 @@ const Plan = () => {
     <>
       <div className="container-fluid" style={{ backgroundColor: "#DEE3E680" }}>
         <div className="container nop">
-          <div className="row pb-5">
+          <div className="row pb-5 pt-md-3">
             <div className="col-lg-4">
             <p className="good-deeds d-block d-lg-none mt-5 ms-1"><span style={{ color: "#183553" }}>Calling all</span> <span style={{ color: "#E27832" }}>Charities</span> and <span style={{ color: "#E27832" }}>NPO’s</span><span style={{ color: "#183553" }}>:<br/> Need donations or volunteers?</span></p>
-              <Image src={charity.src} className="m-auto m-lg-0 mt-lg-5 mt-xl-0" alt={"Image"} />
+              <Image src={charity.src} className="m-auto m-lg-0 mt-lg-5 mt-xl-0 pt-md-4" alt={"Image"} />
               <Button
                 className="d-none d-lg-block nop-btn"
                 variant={'solid'}
