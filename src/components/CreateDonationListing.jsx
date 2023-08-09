@@ -240,7 +240,6 @@ const CreateDonationListing = () => {
 
 
     const form = new FormData();
-    // setFormData({ ...formData, category_id: inputValue });
     setIsSubmitting(true);
     form.append("title", formData.title);
     form.append("description", formData.description);
@@ -264,16 +263,10 @@ const CreateDonationListing = () => {
         },
       })
       .then((response) => {
-        setShowSuccess(true);
+        // setShowSuccess(true);
         router.push("/organization/listings");
+        toast({ position: "top", title: 'Donation listing has been created successfully.', status: "success" })
         setIsSubmitting(false);
-        setFormData({
-          title: "",
-          description: "",
-          url_to_donate: "",
-          keywords: [],
-        });
-        // Handle response data here
       })
       .catch((error) => {
         setShowError(true);
@@ -287,13 +280,6 @@ const CreateDonationListing = () => {
           console.error('An unknown error occurred:', error);
         }
         setIsSubmitting(false);
-        setFormData({
-          title: "",
-          description: "",
-          url_to_donate: "",
-          keywords: [],
-        });
-        // Handle error here
       });
   };
   console.log('eeeee', formErrors)
