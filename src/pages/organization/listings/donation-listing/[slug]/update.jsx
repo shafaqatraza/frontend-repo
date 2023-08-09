@@ -466,7 +466,7 @@ console.log('éeeeeeee', formData)
                 style={{ width: "100%" }}
                 placeholder="Select category"
                 optionFilterProp="children"
-                className={`${formErrors['category'] ? 'input-error' : ''}`}
+                className={`${formErrors['category_id'] ? 'input-error' : ''}`}
                 value={formData.category_id || undefined} // Use undefined to show the placeholder when no category is selected
                 onChange={(value) =>
                   setFormData({ ...formData, category_id: value })
@@ -483,7 +483,7 @@ console.log('éeeeeeee', formData)
                   </Option>
                 ))}
               </Select>
-              {formErrors['category'] && <p className="error-message">Please select category.</p>}
+              {formErrors['category_id'] && <p className="error-message">Please select category.</p>}
               </div>
             </div>
           </div>

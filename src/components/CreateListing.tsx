@@ -36,7 +36,7 @@ const initialFormErrors: FormErrors = {
   keywords:false,
   thumbnail:false,
 };
-
+ 
 const options = myData.map(item => ({
   value: item.value,
   label: item.label,
