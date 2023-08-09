@@ -35,6 +35,7 @@ import charityLogo2 from "../assets/imgs/geneva-center-logo.png";
 import charityLogo3 from "../assets/imgs/habitat-logo.png";
 import MonthlyPlan from "../components/MonthlyPlan";
 import AnualPlan from "../components/AnualPlan";
+import healthcare from "../assets/imgs/hospital-healthcare.png"
 import { useMediaQuery } from '@chakra-ui/react'
 import { Popover } from 'antd';
 import { useRouter } from 'next/router'
@@ -43,6 +44,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import fav from "../assets/imgs/favicon.ico"
+import rev1 from "../assets/imgs/student_rev_1.png";
 
 const Charities = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -320,15 +322,16 @@ const Charities = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-8 mt-5">
-            <p className="good-deeds">Good Deeds connects <span className="you-motivated">you with motivated</span> <span className="volunteers">volunteers</span> <span className="and">and</span> <span className="donors">donors</span></p>
+            <p className="good-deeds ms-3 ms-md-0 and">Good Deeds <span className="donors"> connects</span> <span >you with motivated</span> <span className="volunteers">volunteers</span> <span className="and">and</span> <span className="donors">donors</span></p>
+            <Image src={Charity.src} className='d-block d-md-none px-5' alt={"Charity"} />
             <div className="mt-2 mb-2">
-              <p className="our-platform">Our platform makes it effortless to manage and reward your donors and volunteers in one convenient place.</p>
+              <p className="our-platform px-4 px-md-0" style={{fontWeight:"600"}}>Our platform makes it effortless to manage and reward your donors and volunteers in one convenient place.</p>
             </div>
-            <div className="mt-3 mb-3">
-              <button className="try-button">Try for free for 30 days</button>
+            <div className="mt-3 mb-3 px-4 px-md-0">
+              <button className="try-button mt-3" style={{height:'40px'}}>Try for free for 30 days</button>
             </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 d-none d-md-block">
             <div className="mt-5">
               <Image src={Charity.src} alt={"Charity"} />
             </div>
@@ -336,8 +339,8 @@ const Charities = () => {
         </div>
       </div>
       {/* Our Partners Section */}
-      <div className="container">
-        <div className='pt-md-5 pt-3 pb-3 pb-md-0'>
+      <div className="container px-0 px-md-2">
+        <div className='pt-md-5 pb-3 pb-md-0'>
           <p className="text-center part-txt">Our Partners</p>
         </div>
         <div className="partners-img mt-4 p-3 pe-0 mb-md-5 mb-4">
@@ -371,6 +374,7 @@ const Charities = () => {
             </Slider>
         </div>
       </div>
+
       {/* <div className="container">
         <div>
           <p className="text-center part-txt">Our Partners</p>
@@ -528,11 +532,35 @@ const Charities = () => {
           </div>
         </div>
       </div> */}
+      <div className="container px-0 py-5">
+        <div className="d-flex flex-column flex-lg-row align-items-center">
+          <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
+            <img src={partner1.src} className='m-auto mb-4' alt="" />
+            <h1 className='mb-4'>Convenient Access</h1>
+            <p className='px-xxl-4 px-3'>Access Good Deeds’s diverse and growing database of volunteers with varying levels of unique skills and expertise based on your project needs.</p>
+          </div>
+          <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
+            <img src={partner2.src} className='m-auto mb-4' alt="" />
+            <h1 className='mb-4'>Optimized <br /> Security and Safety</h1>
+            <p className='px-3'>Provide your volunteers with access to a reliable and secure platform to connect with vetted and age-suitable volunteer opportunities.</p>
+          </div>
+          <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
+            <img src={partner3.src} className='m-auto mb-4' alt="" />
+            <h1 className='mb-4'>Trusted Quality</h1>
+            <p className='px-3'>Our rate and review feature maintains trusted standards in reliability, transparency, and accountability.</p>
+          </div>
+          <div className=" charity-card">
+            <img src={partner4.src} className='m-auto mb-4' alt="" />
+            <h1 className='mb-4'>Engaging <br /> Reward System</h1>
+            <p className='px-3'>Improve your volunteer engagement and retention with a reward system where volunteers earn Deed Dollars for their invaluable contributions. </p>
+          </div>
+        </div>
+      </div>
       {/* Volunteer Categories */}
-      <div className="main-volunteer-section mt-5">
-        <div className="container">
+      <div className="main-volunteer-section mt-5 passionate-vol">
+        <div className="container pt-2 pt-md-0 pb-md-5">
           <div className="mt-3">
-            <p className="volun-txt text-center p-4">Volunteer Categories</p>
+            <p className="volun-txt text-center pb-md-5 pt-md-0 p-4">Volunteer Categories</p>
           </div>
           <div>
             <p className="text-center volun-txt2">
@@ -682,8 +710,9 @@ const Charities = () => {
                 <div className="volunteer-card-body d-flex justify-content-center align-items-center flex-column">
                   <Image
                     style={{ width: "130px" }}
-                    src={pennyevent.src}
+                    src={healthcare.src}
                     alt={"Skilled Workers"}
+                    className='mt-3'
                   />
                   <span className="text-center mb-2 skill-txt">
                     Hospital/ Senior Care
@@ -709,8 +738,8 @@ const Charities = () => {
               </Popover>
             </div>
           </div>
-          <div className="mt-5 pb-5 text-center">
-            <button className="try-button">Get Started</button>
+          <div className="mt-md-4  pb-5 text-center">
+            <button className="try-button" style={{height:"50px", width:"320px"}}>Get Started</button>
           </div>
         </div>
       </div>
@@ -718,17 +747,17 @@ const Charities = () => {
       <div className="mt-5 container">
         <p className="start-txt text-center">How to Get Started</p>
       </div>
-      <Container>
+      <Container className='charities-steps'>
         <Row>
           <Col md={10}>
-            <div className="d-flex align-items-center justify-content-center mt-5">
+            <div className="d-flex align-items-center justify-content-center flex-column flex-md-row mt-5 px-5 px-md-0">
               <div>
-                <p className="step1-txt mb-5 mb-md-0">Step 1</p>
+                <p className="step1-txt mb-md-0 ms-md-5">Step 1</p>
                 <img className="img-fluid" src={step1.src} alt="example" />
               </div>
-              <div>
-                <p className="mt-5 mb-2 step1-txt">Register</p>
-                <hr className="hr-step1" style={{ height: "5px" }} />
+              <div className='charities-stpe-content'>
+                <p className="mt-md-5 mb-2 text-center text-md-start step1-txt">Register</p>
+                <hr className="hr-step1" style={{ height: "5px", marginLeft:"-40px"}} />
                 <p className="step1-txt2 mt-2">
                   Sign up and create a Good Deeds User account, linked to your organization portal. Ensure you possess the necessary credentials to open an account on behalf of your charity or nonprofit organization.
                 </p>
@@ -737,20 +766,20 @@ const Charities = () => {
           </Col>
         </Row>
 
-        <Row>
-          <Col md={10}>
-            <p className="step1-txt text-end mt-3">Step 2</p>
-            <div className="d-flex align-items-center justify-content-end container mt-5">
-              <div>
-                <p className="mb-2 step1-txt">Add An Organization</p>
+        <Row className='justify-content-center'>
+          <Col md={11} className='px-5 px-md-2'>
+            <p className="step1-txt text-md-end mt-3 me-md-5 mt-5 mt-md-0">Step 2</p>
+            <div className="d-flex align-items-center justify-content-end container mt-md-5 flex-column flex-md-row ">
+              <div className='ms-md-4 mt-md-4 order-2 order-md-1 charities-stpe-content'>
+                <p className="mb-2 step1-txt ms-md-5 ps-md-5 text-center text-md-start">Add An Organization</p>
 
-                <hr className="hr-step2" style={{ height: "5px" }} />
+                <hr className="hr-step2 ms-md-5" style={{ height: "5px", marginRight:'-70px' }} />
 
-                <p className="step1-txt2 mt-2">
-                  To list volunteer opportunities or set up a donor page on the Good Deeds portal, simply add and create an organization profile.
+                <p className="step1-txt2 mt-2 ms-md-5 ps-md-4">
+                  Create or Add and Organization to being creating listings for volunteers or donations!
                 </p>
               </div>
-              <div>
+              <div className='order-1 order-md-2'>
                 <img
                   src={step2.src}
                   alt="example"
@@ -764,17 +793,16 @@ const Charities = () => {
 
         <Row>
           <Col md={10}>
-            <div className="d-flex align-items-center justify-content-center mt-5">
+            <div className="d-flex align-items-center justify-content-center mt-5 flex-column flex-md-row px-5 px-md-0">
               <div>
                 <p className="step1-txt ms-0 ms-md-5 mt-4">Step 3</p>
-                <img className="mt-5" src={gooddeedspegiun2.src} alt="example" />
+                <img className="mt-md-5" src={gooddeedspegiun2.src} alt="example" />
               </div>
-              <div className="mt-5">
-                <p className="mt-5 mb-2 step1-txt">Set Up Your Dashboard</p>
-                <hr className="hr-step1" style={{ height: "5px" }} />
+              <div className="mt-md-5 charities-stpe-content">
+                <p className="mt-5 mb-2 step1-txt text-center text-md-start">Set Up Your Dashboard</p>
+                <hr className="hr-step1 me-5" style={{ height: "5px", marginLeft:'-58px' }} />
                 <p className="step1-txt2 mt-2">
-                  Create volunteer applications, advertise volunteer roles, and establish a donor page. The dashboard offers vital insights to effectively oversee volunteers and donors.
-
+                  Organize your dashboard for easy visibility and management of user donations and volunteer applications.
                 </p>
               </div>
             </div>
@@ -793,19 +821,19 @@ const Charities = () => {
           </Col>
         </Row>
         <Row>
-          <Col md={10}>
-            <p className="step1-txt text-end mt-3">Step 4</p>
-            <div className="d-flex align-items-center justify-content-end container mt-5">
-              <div>
-                <p className="mb-2 step1-txt">Recruit Your Volunteer </p>
+          <Col md={10} className='px-5 px-md-2'>
+            <p className="step1-txt text-md-end mt-3 me-md-4">Step 4</p>
+            <div className="d-flex align-items-center justify-content-end container mt-5 flex-column flex-md-row ">
+              <div className='order-2 order-md-1 charities-stpe-content'>
+                <p className="mb-2 step1-txt ms-md-5 ps-md-5 mt-3 m4-md-0 text-center text-md-start">Recruit Your Volunteer </p>
 
-                <hr className="hr-step2" style={{ height: "5px" }} />
+                <hr className="hr-step2 ms-md-4" style={{ height: "5px",marginRight:'-25px' }} />
 
-                <p className="step1-txt2 mt-2">
+                <p className="step1-txt2 mt-2 ms-md-5 ps-md-4">
                   Follow up with a selected volunteer application and start collaborating on your campaign!
                 </p>
               </div>
-              <div>
+              <div className='order-1 order-md-2'>
                 <img
                   src={pennysearching2.src}
                   alt="example"
@@ -818,99 +846,98 @@ const Charities = () => {
       </Container>
 
       <div className="main-volunteer-section py-5 mt-5">
-        <Container>
-          <Text
-            fontSize={isSmallerThan767 ? "24px" : "30px"}
-            fontWeight="700"
-            lineHeight="36px"
-            textAlign="center"
-            color="#212121"
-          >
-            More people, more <span style={{ color: '#E27832' }}>impact.</span>
-          </Text>
-          <div className="c-card-wrapper">
-            <div className="c-single-card">
-              <div className="tag-btn mb-2">SOCIAL Servies</div>
-              <Image src={charityLogo1.src} alt={"Donate"} width={'211px'} height={'211px'} />
-              <div className="d-flex flex-column justify-content-between">
-                <Text fontSize="14px" fontWeight="700" lineHeight="17px" color="#000000" mt={'15px'}>Boys & Girls Club of Canada</Text>
-                <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
-                  Our mission is to provide a safe, supportive place where children and youth can experience new opportunities, overcome barriers, build positive relationships and develop confidence and skills for life.
-                </Text>
-                <Button
-                  variant={'solid'}
-                  colorScheme={'orange'}
-                  className='c-donate-btn'
-                  size={'md'}
-                  fontSize="16px"
-                  m="20px auto 0"
-                  display="block"
-                  // onClick={submitForm}
-                  w="150px"
-                >
-                  Donate
-                </Button>
+        <div className='my-md-3'>
+          <Container>
+            <Text
+              fontSize={isSmallerThan767 ? "30px" : "30px"}
+              fontWeight="700"
+              lineHeight="36px"
+              color="#212121"
+              className='text-md-center px-4 px-md-0'
+            >
+              More people, more <span style={{ color: '#E27832' }}>impact.</span>
+            </Text>
+            <div className="c-card-wrapper">
+              <div className="c-single-card">
+                <div className="tag-btn mb-2">SOCIAL Servies</div>
+                <Image src={charityLogo1.src} alt={"Donate"} width={'211px'} height={'211px'} />
+                <div className="d-flex flex-column justify-content-between">
+                  <Text fontSize="14px" fontWeight="700" lineHeight="17px" color="#000000" mt={'15px'}>Boys & Girls Club of Canada</Text>
+                  <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
+                    Our mission is to provide a safe, supportive place where children and youth can experience new opportunities, overcome barriers, build positive relationships and develop confidence and skills for life.
+                  </Text>
+                  <Button
+                    variant={'solid'}
+                    colorScheme={'orange'}
+                    className='c-donate-btn mb-5 mb-md-0'
+                    size={'md'}
+                    fontSize="16px"
+                    display="block"
+                    // onClick={submitForm}
+                    w="150px"
+                  >
+                    Donate
+                  </Button>
+                </div>
+              </div>
+              <div className="c-single-card">
+                <div className="tag-btn mb-2">SOCIAL Servies</div>
+                <Image src={charityLogo3.src} alt={"Donate"} width={'211px'} height={'211px'} />
+                <div className="d-flex flex-column justify-content-between">
+                  <Text fontSize="14px" fontWeight="700" lineHeight="17px" color="#000000" mt={'15px'}>Habitat for Humanity</Text>
+                  <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
+                    Our mission is to bring communities together to help families build strength, stability and independence through affordable home ownership.
+                  </Text>
+                  <Button
+                    variant={'solid'}
+                    colorScheme={'orange'}
+                    className='c-donate-btn mb-5 mb-md-0'
+                    size={'md'}
+                    fontSize="16px"
+                    display="block"
+                    // onClick={submitForm}
+                    w="150px"
+                  >
+                    Donate
+                  </Button>
+                </div>
+              </div>
+              <div className="c-single-card">
+                <div className="tag-btn mb-2">PUBLIC BENEFIT</div>
+                <Image src={charityLogo2.src} alt={"Donate"} width={'211px'} height={'211px'} />
+                <div className="d-flex flex-column justify-content-between">
+                  <Text fontSize="14px" fontWeight="700" lineHeight="17px" color="#000000" mt={'15px'}>Geneva Centre for Auism</Text>
+                  <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
+                    Our mission is to empower individuals with Autism Spectrum Disorder, and their families, to fully participate in their communities. We do this by providing direct support for families as well as professional training to share best practices around the world.
+                  </Text>
+                  <Button
+                    variant={'solid'}
+                    colorScheme={'orange'}
+                    className='c-donate-btn mb-5 mb-md-0'
+                    size={'md'}
+                    fontSize="16px"
+                    display="block"
+                    // onClick={submitForm}
+                    w="150px"
+                  >
+                    Donate
+                  </Button>
+                </div>
               </div>
             </div>
-            <div className="c-single-card">
-              <div className="tag-btn mb-2">SOCIAL Servies</div>
-              <Image src={charityLogo3.src} alt={"Donate"} width={'211px'} height={'211px'} />
-              <div className="d-flex flex-column justify-content-between">
-                <Text fontSize="14px" fontWeight="700" lineHeight="17px" color="#000000" mt={'15px'}>Habitat for Humanity</Text>
-                <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
-                  Our mission is to bring communities together to help families build strength, stability and independence through affordable home ownership.
-                </Text>
-                <Button
-                  variant={'solid'}
-                  colorScheme={'orange'}
-                  className='c-donate-btn'
-                  size={'md'}
-                  fontSize="16px"
-                  m="20px auto 0"
-                  display="block"
-                  // onClick={submitForm}
-                  w="150px"
-                >
-                  Donate
-                </Button>
-              </div>
-            </div>
-            <div className="c-single-card">
-              <div className="tag-btn mb-2">PUBLIC BENEFIT</div>
-              <Image src={charityLogo2.src} alt={"Donate"} width={'211px'} height={'211px'} />
-              <div className="d-flex flex-column justify-content-between">
-                <Text fontSize="14px" fontWeight="700" lineHeight="17px" color="#000000" mt={'15px'}>Geneva Centre for Auism</Text>
-                <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
-                  Our mission is to empower individuals with Autism Spectrum Disorder, and their families, to fully participate in their communities. We do this by providing direct support for families as well as professional training to share best practices around the world.
-                </Text>
-                <Button
-                  variant={'solid'}
-                  colorScheme={'orange'}
-                  className='c-donate-btn'
-                  size={'md'}
-                  fontSize="16px"
-                  m="20px auto 0"
-                  display="block"
-                  // onClick={submitForm}
-                  w="150px"
-                >
-                  Donate
-                </Button>
-              </div>
-            </div>
-          </div>
-          <Button
-            fontSize="22px"
-            fontWeight="600"
-            m="60px auto 0"
-            display="block"
-            _hover={{ background: 'none' }}
-            _focus={{ background: 'none' }}
-            onClick={() => router.push('/browse?type=offering&activeTab=3')}
-          >
-            See more
-          </Button>
-        </Container>
+            <Button
+              fontSize="22px"
+              fontWeight="600"
+              m="60px auto 0"
+              display="block"
+              _hover={{ background: 'none' }}
+              _focus={{ background: 'none' }}
+              onClick={() => router.push('/browse?type=offering&activeTab=3')}
+            >
+              See more
+            </Button>
+          </Container>
+        </div>
       </div>
 
 
@@ -918,18 +945,18 @@ const Charities = () => {
       <div className="plans-wrap">
         <Container>
           <Text
-            fontSize={isSmallerThan767 ? "32px" : "64px"}
+            fontSize={isSmallerThan767 ? "30px" : "64px"}
             fontWeight="700"
             lineHeight={isSmallerThan767 ? "40px" : "76px"}
-            textAlign="center"
             color="#183553"
-          >Find the Right Plan For Your <br /> Organization</Text>
-          <div className="d-flex my-5 justify-content-center align-items-center flex-wrap">
+            className='text-md-center px-3 px-md-0'
+          >Find the Right Plan For Your <br className='d-none d-md-block'/> Organization</Text>
+          <div className="d-flex my-md-5 mt-5 mb-3 justify-content-center align-items-center flex-wrap">
             <div className="btn-list d-flex">
               <button onClick={handleClickOne} className={selectedButton === 1 ? 'donate-btn2 shadow' : 'donatee-btn'}>Monthly</button>
               <button onClick={handleClickTwo} className={selectedButton === 2 ? 'donate-btn2 shadow' : 'donatee-btn'}>Annual</button>
             </div>
-            <p className="save-txt">Save 20% anually</p>
+            <p className="save-txt mt-4 mt-md-0">Save 20% anually</p>
           </div>
           {selectedButton === 1 ? <MonthlyPlan /> : <AnualPlan />}
         </Container>
@@ -937,7 +964,115 @@ const Charities = () => {
 
       {/* testimonials */}
 
-      <Reviews />
+      <div
+        className="mt-5 deeds-review"
+        
+      >
+        <Container>
+          <div className="text-center">
+            <p className="review-txt pt-5">
+            Hear What Our Partners Have to Say
+            </p>
+          </div>
+          <Row className="mt-5 pb-5">
+            <Col className="rev-col" md={4}>
+
+              <div>
+                <div className="card-review">
+                  <div className="stars d-flex justify-content-center">
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                  </div>
+                  <p className="review">
+                  I was initially skeptical about a platform for giving. After trying it for a few days, I realized how user-friendly it was. I recommended Good Deeds to my daughter so she could round up her 40 hours of community service without the fuss. She loved it.
+                  </p>
+                  <div className="d-flex align-items-center justify-content-center mt-4">
+                    <Image
+                      src={rev1.src}
+                      alt={"Review"}
+                      style={{
+                        width: '83px',
+                        height: '90px',
+                        borderRadius: '50px',
+                      }}
+                    />
+                    <div className="">
+                      <p className="rev-txt1">Laina Mercer</p>
+                      <p className="rev-txt2">Habitat for Humanity Canada</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Col>
+            <Col className="rev-col" md={4}>
+
+              <div>
+                <div className="card-review">
+                  <div className="stars d-flex justify-content-center">
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                  </div>
+                  <p className="review">
+                  Thank you, Good Deeds Canada for joining the Partner for Life program. As it can often take more than one donor to save a life, Partners for Life brings people together with the common goal of supporting the most vulnerable people in our communities.
+                  </p>
+                  <div className="d-flex align-items-center justify-content-center mt-4">
+                    <Image
+                      src={rev1.src}
+                      alt={"Review"}
+                      style={{
+                        width: '83px',
+                        height: '90px',
+                        borderRadius: '50px',
+                      }}
+                    />
+                    <div >
+                      <p className="rev-txt1">Simran Dulay</p>
+                      <p className="rev-txt2">Canadian Blood Services</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Col>
+            <Col className="rev-col" md={4}>
+              <div>
+                <div className="card-review">
+                  <div className="stars d-flex justify-content-center">
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                    <span className="star">&#9733;</span>
+                  </div>
+                  <p className="review">
+                  Our experience with Good Deeds has been nothing short of amazing. The partnership redefined the donation and volunteering process, setting the stage for new fundraising possibilities. We truly look forward to many more good years with Good Deeds.
+                  </p>
+                  <div className="d-flex align-items-center justify-content-center mt-4">
+                    <Image
+                      src={rev1.src}
+                      alt={"Review"}
+                      style={{
+                        width: '83px',
+                        height: '90px',
+                        borderRadius: '50px',
+                      }}
+                    />
+                    <div>
+                      <p className="rev-txt1">Abe Evreniadis</p>
+                      <p className="rev-txt2">Geneva Centre for Autism</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
 
 
       <Footer />
