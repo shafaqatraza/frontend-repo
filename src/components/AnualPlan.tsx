@@ -143,7 +143,8 @@ const AnualPlan = () => {
                           colorScheme={'orange'}
                           size={'md'}
                           fontSize="16px"
-                          onClick={() => handlePlanButton(dataone?.id)}
+                          onClick={ // @ts-ignore: Unreachable code error
+                            () => handlePlanButton(dataone?.id)}
                           w="150px"
                           className='my-4 mx-auto'
                         >
