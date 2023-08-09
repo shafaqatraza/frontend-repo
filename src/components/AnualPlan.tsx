@@ -101,7 +101,8 @@ const AnualPlan = () => {
                           style={{
                             color: "#183553",
                             fontSize: "11px",
-                            fontWeight: "700", // @ts-ignore: Unreachable code error
+                            // @ts-ignore: Unreachable code error
+                            fontWeight: "700", 
                             lineHeight: "12px",
                           }}
                         >
