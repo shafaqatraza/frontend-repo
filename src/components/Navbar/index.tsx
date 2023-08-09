@@ -305,7 +305,8 @@ export default function Navbar(props: any) {
     if (isLogin()) {
       if (router.asPath.startsWith('/organization')) {
         setIsOrganization(true);
-      }else{
+      }else{ 
+        //@ts-ignore
         localStorage.setItem('currentOrganization', null);
       }
       getChats()
