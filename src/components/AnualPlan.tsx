@@ -139,7 +139,7 @@ const AnualPlan = () => {
                         </p>
                       </div>
                       <div className="btns d-flex justify-content-center">
-                        <Button // @ts-ignore: Unreachable code error
+                      // @ts-ignore: Unreachable code error <Button 
                           variant={'solid'}
                           colorScheme={'orange'}
                           size={'md'}
