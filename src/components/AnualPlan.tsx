@@ -101,8 +101,7 @@ const AnualPlan = () => {
                           style={{
                             color: "#183553",
                             fontSize: "11px",
-                            // @ts-ignore: Unreachable code error
-                            fontWeight: "700", 
+                            fontWeight: "bold", 
                             lineHeight: "12px",
                           }}
                         >
@@ -139,7 +138,7 @@ const AnualPlan = () => {
                         </p>
                       </div>
                       <div className="btns d-flex justify-content-center">
-                      // @ts-ignore: Unreachable code error <Button 
+                        <Button 
                           variant={'solid'}
                           colorScheme={'orange'}
                           size={'md'}
