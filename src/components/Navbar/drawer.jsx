@@ -143,7 +143,7 @@ export const NavbarDrawer = (props) => {
 									Offering <ChevronRightIcon style={{ textAlign: "right" }} />
 								</Text>
 							</Box> */}
-
+							{/* mobile navigation */}
 							<Box
 								py={4}
 								px={1}
