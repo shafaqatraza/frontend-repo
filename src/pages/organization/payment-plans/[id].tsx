@@ -239,9 +239,6 @@ const StripeForm = () => {
     form.append("card_number", formData.card_detail.card_number);
     form.append("expiry_date", formData.card_detail.expiry_date);
     form.append("cvv", formData.card_detail.cvv);
-    
-    
-    
     axios.post(`${baseUrl}/organization/subscriptions/payment?org=${ // @ts-ignore: Unreachable code error
       currentOrganization?.slug}`, form,  {
       headers: {
