@@ -69,7 +69,7 @@ const CreateDonationListing = () => {
   const [data, setData] = useState([]);
   const [donationCategoryList, setDonationCategoryList] = useState([]);
   const [donError, setDonError] = useState([]);
-
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleInputChange = (event, type) => {
  
@@ -181,7 +181,7 @@ const CreateDonationListing = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    setIsSubmitting(true);
     let hasErrors = false;
     
     if (!formData.title) {
@@ -235,12 +235,13 @@ const CreateDonationListing = () => {
     // If there are errors, prevent form submission
     if (hasErrors) {
       toast({ position: "top", title: 'Please fill out the complete form.', status: "warning" })
+      setIsSubmitting(false);
       return;
     }
 
 
     const form = new FormData();
-    setIsSubmitting(true);
+    
     form.append("title", formData.title);
     form.append("description", formData.description);
     form.append("url_to_donate", formData.url_to_donate);
@@ -265,7 +266,7 @@ const CreateDonationListing = () => {
       .then((response) => {
         // setShowSuccess(true);
         router.push("/organization/listings");
-        toast({ position: "top", title: 'Donation listing has been created successfully.', status: "success" })
+        toast({ position: "top", title: response.data.message, status: "success" })
         setIsSubmitting(false);
       })
       .catch((error) => {
@@ -286,36 +287,6 @@ const CreateDonationListing = () => {
   console.log('eeeee2', formData)
   return (
     <>
-      <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
-        <div className="p-3">
-          <p className="modal-txt text-center p-5 mt-3">
-            Donation Listing Created Successfully
-          </p>
-        </div>
-        <div className="d-flex justify-content-center pb-5">
-          <button onClick={handleCloseSuccess} className="modal-btn">
-            Got it
-          </button>
-        </div>
-      </Modal>
-
-      <Modal show={showError} onHide={handleCloseError} closeButton>
-        <div className="p-3">
-          <p className="modal-txt text-center p-5 mt-3">
-          <ul>
-          {donError.map((errorMessage, index) => (
-            <li key={index}>{errorMessage}</li>
-          ))}
-        </ul>
-          </p>
-        </div>
-        <div className="d-flex justify-content-center pb-5">
-          <button onClick={handleCloseError} className="modal-btn">
-            Got it
-          </button>
-        </div>
-      </Modal>
-
       <div className="d-flex justify-content-between col-md-8">
         <p className="listing-txt mt-5 ms-3">Donation Listings</p>
       </div>
@@ -530,20 +501,11 @@ const CreateDonationListing = () => {
           </div>
           </div>
           {formErrors['thumbnail'] && <p className="error-message">Please upload the thumbnail.</p>}
-          {isSubmitting ? (
-            <div
-              style={{ color: "#E27832" }}
-              className="spinner-border mt-5"
-            ></div>
-          ) : (
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="update-v-btn mt-5 mb-5"
-            >
-              Create
-            </button>
-          )}
+          <button type="submit" onClick={handleSubmit} disabled={isSubmitting} id="submit" className="update-v-btn mt-5 mb-5">
+            <span id="button-text">
+              {isSubmitting ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Create"}
+            </span>
+          </button>
         </form>
       </div>
     </>
