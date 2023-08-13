@@ -87,6 +87,7 @@ const EditVolunteerListing = () => {
   const [validator, showValidationMessage] = useValidator()
   const [hover, setHover] = useState(false); // Track the hover state
   const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
+  const [isLoading, setIsLoading] = React.useState(false);
   const toast = useToast()
 
 
@@ -112,7 +113,11 @@ const EditVolunteerListing = () => {
             description: data.description,
             credit_amount: data.credit_amount,
             category_id: data.category_id, // @ts-ignore: Unreachable code error
-            keywords: res.data.data.keywords.map((keyword) => keyword.id),
+            keywords: res.data.data.keywords.map((keyword) => ({
+              id: keyword.id,
+              is_new: false,
+              is_deleted: false,
+            })),
             thumbnail: "",
             level_id: data.level_id, 
             old_thumbnail: data.thumbnail
@@ -181,10 +186,100 @@ const EditVolunteerListing = () => {
       });
     }
   };
+
+  const handleInputChange = (event: any, type:string) => {
+    if(type == 'title'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['title']: false,
+      }));
+      setFormData({ ...formData, title: event.target.value })
+    }else if(type == 'description'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['description']: false,
+      }));
+      setFormData({ ...formData, description: event.target.value })
+    }else if(type == 'credit_amount'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['credit_amount']: false,
+      }));
+      setFormData({ ...formData, credit_amount: event.target.value })
+    }else if(type == 'category_id'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['category_id']: false,
+      }));
+      setFormData({ ...formData, category_id: event.target.value })
+    }else if(type == 'level_id'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['level_id']: false,
+      }));
+      setFormData({ ...formData, level_id: event.target.value })
+    }
+  };
+
+  const handleCreateItem = (item:any) => { // @ts-ignore:
+    setSelectedItems((curr) => [...curr, item]);
+    
+    // Check if the item is new or already in the keywords list
+    const isNew = formData.keywords.every( // @ts-ignore:
+      (keyword) => keyword.id !== item.value || keyword.is_deleted
+    );
+    
+    const updatedKeywords = isNew
+      ? [
+          ...formData.keywords,
+          { id: item.value, is_new: true, is_deleted: false },
+        ]
+      : formData.keywords;
+    // @ts-ignore:
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      keywords: updatedKeywords,
+    }));
+    
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      keywords: false,
+    }));
+  };
   
+  const handleSelectedItemsChange = (changes: any) => {
+    if (changes.selectedItems) {
+      setSelectedItems(changes.selectedItems);
+  
+      const removedKeywords = formData.keywords.filter(
+        (keyword) => // @ts-ignore:
+          !changes.selectedItems.some((item) => item.value === keyword.id)
+      );
+  
+      const updatedKeywords = formData.keywords.map((keyword) => { // @ts-ignore:
+        if (removedKeywords.some((removedKeyword) => removedKeyword.id === keyword.id)) { // @ts-ignore:
+          if (!keyword.is_new) {
+            return { // @ts-ignore:
+              ...keyword,
+              is_deleted: true,
+            };
+          }else{
+            return null
+          }
+        }
+        return keyword;
+      }).filter(keyword => keyword !== null); // Remove null values
+      // @ts-ignore
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        keywords: updatedKeywords,
+      }));
+    }
+  };
+  console.log('form data', formData)
   const handleSubmit = (e:any) =>{
     e.preventDefault();
-
+    setIsLoading(true);
     let hasErrors = false;
 
     if (!formData.title) {
@@ -239,126 +334,50 @@ const EditVolunteerListing = () => {
     // If there are errors, prevent form submission
     if (hasErrors) {
       toast({ position: "top", title: 'Please fill out the complete form.', status: "warning" })
+      setIsLoading(false);
       return;
     }
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      keywords: [],
-    }));
-
-    selectedItems.map((i:string) => // @ts-ignore: Unreachable code error
-      formData.keywords.push(i.value)
-    )
-    
     
     const form = new FormData();
     form.append("title", formData.title);
     form.append("description", formData.description);
     form.append("credit_amount", formData.credit_amount);
-    form.append("category_id", formData.category_id); // @ts-ignore: Unreachable code error
+    form.append("category_id", formData.category_id); // @ts-ignore:
     form.append("level_id", formData.level_id);
+    const keywordsString = JSON.stringify(formData.keywords);
+    form.append("keywords", keywordsString);
     if(formData.thumbnail){
       form.append("thumbnail", formData.thumbnail);
     }
-    formData.keywords.forEach((keyword) => form.append("keywords[]", keyword));
     
-      // @ts-ignore: Unreachable code error
+      // @ts-ignore:
       axios.post(`${baseUrl}/volunteer-listings/${slug}/update?org=${currentOrganization?.slug}`, form, {
         headers: {
           Authorization: 'Bearer ' + accessToken(),
         }
       })
       .then((response) => {
-        router.push("/organization/listings");
-        toast({ position: "top", title: 'Volunteer listing has been updated successfully.', status: "success" })
-        // @ts-ignore: Unreachable code error
-        setIsSubmitting(false);
-        // Handle response data here
+        router.push("/organization/listings#Volunteer Listing");
+        setIsLoading(false);
+        toast({ position: "top", title: response.data.message, status: "success" })
       })
       .catch((error) => {
         console.error(error);
-        // setShowSuccess(true);
-        setShowError(true);
         if (error.response && error.response.data && error.response.data.errors) {
           const errorMessages = error.response.data.errors;
           console.error('An error occurred:', errorMessages);
-
-          // Set errors in state
-          // @ts-ignore: Unreachable code error
+          // @ts-ignore:
           setDonError(Object.values(errorMessages).flat());
         } else {
           console.error('An unknown error occurred:', error);
         }
-        setIsSubmitting(false);
-        // Handle error here
+        setIsLoading(false);
       });
 
   }
 
-  const handleInputChange = (event: any, type:string) => {
-    if(type == 'title'){
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        ['title']: false,
-      }));
-      setFormData({ ...formData, title: event.target.value })
-    }else if(type == 'description'){
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        ['description']: false,
-      }));
-      setFormData({ ...formData, description: event.target.value })
-    }else if(type == 'credit_amount'){
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        ['credit_amount']: false,
-      }));
-      setFormData({ ...formData, credit_amount: event.target.value })
-    }else if(type == 'category_id'){
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        ['category_id']: false,
-      }));
-      setFormData({ ...formData, category_id: event.target.value })
-    }else if(type == 'level_id'){
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        ['level_id']: false,
-      }));
-      setFormData({ ...formData, level_id: event.target.value })
-    }
-  };
-// @ts-ignore: Unreachable code error
-  const handleCreateItem = (item) => { // @ts-ignore: Unreachable code error
-    setPickerItems((curr) => [...curr, item]) // @ts-ignore: Unreachable code error
-    setSelectedItems((curr) => [...curr, item])
-    
-  }
- // @ts-ignore: Unreachable code error
- const handleSelectedItemsChange = (changes) => {
-  if (changes.selectedItems) {
-    setSelectedItems(changes.selectedItems);
-    setFormErrors((prevErrors) => ({
-      ...prevErrors,
-      keywords: false,
-    }));
-  }
+  
 
-  const newKeywords = changes.selectedItems // @ts-ignore: Unreachable code error
-    .filter((item) => item.isNew) // @ts-ignore: Unreachable code error
-    .map((item) => item.value);
-
-  // Update the formData.keywords array with both the selected keywords and new keywords
-  // @ts-ignore: Unreachable code error
-  setFormData((prevFormData) => ({ 
-    ...prevFormData,
-    keywords: [ // @ts-ignore: Unreachable code error
-      ...changes.selectedItems.map((item) => item.value), // Selected keywords
-      ...newKeywords, // Newly created keywords
-    ],
-  }));
-};
 
 
   return (
@@ -405,7 +424,7 @@ const EditVolunteerListing = () => {
             </label>
               </div>
             </div>
-            <Input
+            <Input 
               style={{ backgroundColor: "#E8E8E8" }}
               type="text"
               value={formData.title} // @ts-ignore: Unreachable code error
@@ -547,14 +566,14 @@ const EditVolunteerListing = () => {
             Keywords
           </label>
           <CUIAutoComplete
-            hideToggleButton={true} // @ts-ignore: Unreachable code error
+            hideToggleButton={true} // @ts-ignore
             className={`${formErrors['keywords'] ? 'input-error' : ''}`}
             label="Select a min of 3, max of 6"
             placeholder=""
             onCreateItem={handleCreateItem}
-            items={pickerItems}
-            selectedItems={selectedItems}
-            onSelectedItemsChange={(changes) =>
+            items={selectedItems}
+            selectedItems={selectedItems} // @ts-ignore
+            onSelectedItemsChange={(changes) => // @ts-ignore
               handleSelectedItemsChange(changes)
             }
           />
@@ -615,9 +634,13 @@ const EditVolunteerListing = () => {
             </div>
           </Upload>
           <div className="mb-5 mt-4">
-          <div>
-              {isSubmitting ? <div style={{color:"#E27832"}} className="spinner-border"></div> : <button type='submit' onClick={handleSubmit} className='update-v-btn'>Update</button>}
-              </div>
+            <div>
+              <button type="submit" onClick={handleSubmit} disabled={isLoading} id="submit" className="update-v-btn mt-5 mb-5">
+                <span id="button-text">
+                  {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Update"}
+                </span>
+              </button>
+            </div>
           </div>
         </form>
     </div>
