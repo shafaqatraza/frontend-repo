@@ -303,6 +303,16 @@ export default function Navbar(props: any) {
 
   useEffect(() => {
 
+      if(orgData.length == 0){
+        axios.get(`${baseUrl}/organizations`, {
+          headers: {
+            Authorization: 'Bearer ' + accessToken(),
+          }
+        }).then((res) => {
+          setOrgData(res.data);
+        })
+      }
+
       if (router.asPath.startsWith('/organization')) {
         if (isLogin()) {
           setIsOrganization(true);
@@ -311,7 +321,7 @@ export default function Navbar(props: any) {
               Authorization: 'Bearer ' + accessToken(),
             }
           }).then((res) => {
-            setOrgData(res.data);
+            
             if (router.asPath.startsWith('/organization')) {
               if(!currOrgSlug){
                 localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
