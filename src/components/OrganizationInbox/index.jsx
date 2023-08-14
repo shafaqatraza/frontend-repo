@@ -773,19 +773,6 @@ const Message = (props) => {
 											>
 												Browse Offering
 											</Button>
-											<Button
-												w={'70%'}
-												type="submit"
-												mt={'2'}
-												colorScheme="transparent"
-												size="md"
-												fontSize="md"
-												onClick={() => {
-													router.push("/browse?type=wanted")
-												}}
-											>
-												<Text color={'#E27832'}>Browse Wanted</Text>
-											</Button>
 										</Box>
 									</Flex>
 								</Box>
