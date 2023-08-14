@@ -10,55 +10,41 @@ import { Modal } from "react-bootstrap";
 import "antd/dist/antd.css";
 import Link from "next/link";
 import axios from "axios";
-import { accessToken, baseUrl } from "../../../components/Helper/index";
+import { accessToken, baseUrl, currOrgSlug } from "../../../components/Helper/index";
 import { useRouter } from "next/router";
+import { useToast } from '@chakra-ui/toast'
 
 const VolunteerApplicants = () => {
-  const [volunteerData, setVolunteerData] = useState([]);
-  const [applicantName, setApplicantName] = useState([]);
-  const [organizationSlug, setOrganizationSlug] = useState([]);
-  const [buttonData, setButtonData] = useState([]);
-  const [showCard, setShowcard] = useState(false);
-  const [applicationID, setApplicationID] = useState(null);
-  const [applicantID, setApplicantID] = useState(null);
-  const [statusId, setStatusId] = useState(null);
-
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [applicationsData, setApplicationsData] = useState([]);
+  const [applicationStatuses, setApplicationStatuses] = useState([]);
+  const [showCard, setShowCard] = useState(false);
   const router = useRouter();
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
+  const [updatingRowIndex, setUpdatingRowIndex] = useState<number | null>(null);
+  const toast = useToast()
+
   const { listing } = router.query;
   const [formData, setFormData] = useState({
     number_of_hours: "",
     number_of_credits: "",
   });
-  const filteredButtonData = [...buttonData]; // Create a copy of the original array
+  const filteredButtonData = [...applicationStatuses]; // Create a copy of the original array
   filteredButtonData.splice(1, 1);
   interface Applicant {
     key: string;
+    id: number;
     name: string;
     email: string;
     skillLevel: string;
     status: any;
+    status_id: number;
   }
-  useEffect(() => {
-    axios
-      .get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        console.log(res.data[0]?.slug, "datatatata");
-        setOrganizationSlug(res.data[0]?.slug);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+  const getApplicationsData = () => {
     axios
       .get(
-        `${baseUrl}/volunteer-applications/applicants/${organizationSlug}?listing=${listing}`,
+        `${baseUrl}/volunteer-applications/applicants/${currOrgSlug}?listing=${listing}`,
         {
           headers: {
             Authorization: "Bearer " + accessToken(),
@@ -68,18 +54,16 @@ const VolunteerApplicants = () => {
       )
       .then((res) => {
         console.log(res);
-        setVolunteerData(res.data);
-        setApplicantName(res.data);
+        setApplicationsData(res.data);
+        setUpdatingRowIndex(null);
       })
       .catch((err) => {});
-  }, [organizationSlug]);
+  }
 
-  const handleClickdown = (index: number) => {
-    setSelectedRowIndex(selectedRowIndex === index ? -1 : index);
-    setShowcard(!showCard);
+  useEffect(() => {
     axios
       .get(
-        `${baseUrl}/volunteer-applications/${organizationSlug}/statuses/all`,
+        `${baseUrl}/volunteer-applications/${currOrgSlug}/statuses/all`,
         {
           headers: {
             Authorization: "Bearer " + accessToken(),
@@ -88,28 +72,34 @@ const VolunteerApplicants = () => {
         }
       )
       .then((res) => {
-        console.log(res.data.data);
-        setButtonData(res.data.data);
+        setApplicationStatuses(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
+
+      getApplicationsData();
+
+  }, [currOrgSlug, listing]);
+
+  const handleClickdown = (index: number) => {
+    if (selectedRowIndex === index) {
+      setSelectedRowIndex(-1);
+      setShowCard(false);
+    } else {
+      setSelectedRowIndex(index);
+      setShowCard(true);
+    }
   };
 
-  useEffect(() => {
-    // @ts-ignore: Unreachable code error
-    applicantName?.applications?.map((appl) => (setApplicantID(appl.id), setApplicationID(appl.applying_user_id) , setStatusId(appl?.status_id) )
-    );
-    console.log(applicationID,"appppppp");
-  }, [applicantName, applicationID]);
 
-  const handleStatus = (statusId: number) => {
-    setIsUpdating(true);
+  const handleStatus = (statusId: number, applicationId: number, rowIndex: number) => { 
+    setUpdatingRowIndex(rowIndex);
     axios
       .post(
-        `${baseUrl}/volunteer-applications/${applicantID}/status/update`,
+        `${baseUrl}/volunteer-applications/${applicationId}/status/update`,
         {
-          org: organizationSlug,
+          org: currOrgSlug,
           status_id: statusId,
         },
         {
@@ -120,24 +110,25 @@ const VolunteerApplicants = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
-        setIsUpdating(false);
-        // @ts-ignore: Unreachable code error
-        setStatusId(statusId);
-        // do something after successful POST request
+        toast({ position: "top", title: res.data.message, status: "success" })
+        getApplicationsData();
       })
       .catch((err) => {
-        setIsUpdating(false);
+        setUpdatingRowIndex(null);
         console.log(err);
-        // handle error
       });
   };
   const handleRowClick = (record: any) => {
-    setSelectedUserId(record);
     router.push(`/organization/volunteer-applications/${listing}/${record}`);
     // console.log(listing, record);
   };
-
+  const statusButtonMapping = {
+    5: { className: "fi-btn", label: "Contacted" },
+    6: { className: "sec-btn", label: "New" },
+    7: { className: "f-btn", label: "Rejected" },
+    8: { className: "tir-btn", label: "Approved" },
+    9: { className: "pen-btn", label: "Pending" },
+  }
   const columns = [
     {
       title: 'Full Name',
@@ -146,7 +137,6 @@ const VolunteerApplicants = () => {
       onCell: (record:any, rowIndex:any) => ({
         onClick: () => {
           handleRowClick(record.id);
-          handleClickdown(rowIndex);
         },
       }),
       render: (text:any, record:any, index:any) => (
@@ -169,25 +159,21 @@ const VolunteerApplicants = () => {
       dataIndex: "status",
       key: "status",
       render: (text: string, record: Applicant, rowIndex: number) => {
+        const isCurrentlyUpdating = updatingRowIndex === rowIndex;
         return (
           <div className="d-flex align-items-center">
             {/* Status buttons */}
-            {isUpdating ? (
-              <div className="spinner-border"></div>
-            ) : statusId === 5 ? (
-              <button className="fi-btn">Contacted</button>
-            ) : statusId === 6 ? (
-              <button className="sec-btn">New</button>
-            ) : statusId === 7 ? (
-              <button className="f-btn">Rejected</button>
-            ) : statusId === 8 ? (
-              <button onClick={handleShow} className="tir-btn">
-                Approved
+            {statusButtonMapping[record.status_id as keyof typeof statusButtonMapping] && (
+              <button
+                onClick={() => handleClickdown(rowIndex)}
+                className={statusButtonMapping[record.status_id as keyof typeof statusButtonMapping].className}
+              >
+                {isCurrentlyUpdating ? 
+                  <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> 
+                  : statusButtonMapping[record.status_id as keyof typeof statusButtonMapping].label
+                }
+
               </button>
-            ) : statusId === 9 ? (
-              <button className="pen-btn">Pending</button>
-            ) : (
-              <></>
             )}
 
             <div className="ms-2">
@@ -201,10 +187,10 @@ const VolunteerApplicants = () => {
             {showCard && selectedRowIndex === rowIndex && (
               <div className="card-wrapper">
                 <div className="carded ques-card mt-2">
-                  {buttonData.slice(0, 5).map((item, buttonIndex) => {
+                  {applicationStatuses.slice(0, 5).map((status: any, buttonIndex) => {
                       let color;
                       // @ts-ignore: Unreachable code error
-                      switch (item.name) {
+                      switch (status.name) {
                         case "Contacted":
                           color = "fi-btn";
                           break;
@@ -226,21 +212,11 @@ const VolunteerApplicants = () => {
 
                     return (
                       <button
-                        onClick={() => handleStatus(
-                          // @ts-ignore: Unreachable code error
-                          item.id
-                          )
-                        }
+                        onClick={() => handleStatus(status.id, record.id, rowIndex) }
                         className={color}
-                        key={
-                          // @ts-ignore: Unreachable code error
-                          item.id
-                        }
+                        key={status.id}
                       >
-                        {
-                        // @ts-ignore: Unreachable code error
-                        item.name
-                        }
+                        {status.name}
                       </button>
                     );
                   })}
@@ -256,55 +232,18 @@ const VolunteerApplicants = () => {
 
 const dataSource =
   // @ts-ignore: Unreachable code error
-applicantName?.applications?.map((application) => {
+  applicationsData?.applications?.map((application) => {
   return {
     // key: application.id,
     id:application.id,
     full_name: application.application_user.full_name,
     email: application.application_user.email,
     phone_number: application?.application_user?.phone_number,
-    applying_user_id: application?.applying_user_id,
+    applying_user_id: application?.application_user.id,
+    status_id: application?.status_id
   };
 });
 
-
-  const data: Applicant[] = [
-    {
-      key: "1",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      skillLevel: "Intermediate",
-      status: "Active",
-    },
-    {
-      key: "2",
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      skillLevel: "Expert",
-      status: "Inactive",
-    },
-    {
-      key: "3",
-      name: "Bob Johnson",
-      email: "bob.johnson@example.com",
-      skillLevel: "Pending",
-      status: "Inactive",
-    },
-    {
-      key: "4",
-      name: "Alice Brown",
-      email: "alice.brown@example.com",
-      skillLevel: "Advanced",
-      status: "Inactive",
-    },
-    {
-      key: "5",
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      skillLevel: "Beginner",
-      status: "Inactive",
-    },
-  ];
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -320,7 +259,7 @@ applicantName?.applications?.map((application) => {
     event.preventDefault();
     axios
       .post(
-        `${baseUrl}/organization/subscriptions/approve-applicant?org=${organizationSlug}`,
+        `${baseUrl}/organization/subscriptions/approve-applicant?org=${currOrgSlug}`,
         formData,
         {
           headers: {
@@ -411,20 +350,17 @@ applicantName?.applications?.map((application) => {
             height={297}
             className="img-fluid"
             // @ts-ignore: Unreachable code error
-            src={applicantName?.thumbnail?.path}
+            src={applicationsData?.thumbnail?.path}
           />
           <p className="ms-4 fw-bold fs-4">
             {
               // @ts-ignore: Unreachable code error
-              applicantName?.listing_title
+              applicationsData?.listing_title
             }
           </p>
         </div>
         <div className="mt-3">
-
-          <Table
-          // @ts-ignore: Unreachable code error
-          columns={columns} dataSource={dataSource} />
+          <Table columns={columns} dataSource={dataSource} />
         </div>
       </Sidebar>
       <Footer />

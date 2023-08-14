@@ -302,32 +302,33 @@ export default function Navbar(props: any) {
 
 
   useEffect(() => {
-    if (isLogin()) {
+
       if (router.asPath.startsWith('/organization')) {
-        setIsOrganization(true);
+        if (isLogin()) {
+          setIsOrganization(true);
+          axios.get(`${baseUrl}/organizations`, {
+            headers: {
+              Authorization: 'Bearer ' + accessToken(),
+            }
+          }).then((res) => {
+            setOrgData(res.data);
+            if (router.asPath.startsWith('/organization')) {
+              if(!currOrgSlug){
+                localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
+              }
+            }
+  
+          }).catch((err) => {
+            // console.log(err);
+          })
+        }else{
+          router.push("/");
+        }
       }else{ 
         //@ts-ignore
         localStorage.setItem('currentOrganization', null);
+        getChats()
       }
-      getChats()
-      axios.get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: 'Bearer ' + accessToken(),
-        }
-      }).then((res) => {
-        setOrgData(res.data);
-        if (router.asPath.startsWith('/organization')) {
-          if(!currOrgSlug){
-            localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
-          }
-        }
-
-      }).catch((err) => {
-        // console.log(err);
-      })
-    }else{
-      router.push("/");
-    }
 
     if(currOrgId){
       getOrganizationNotifications()
