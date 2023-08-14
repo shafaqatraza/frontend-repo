@@ -276,7 +276,7 @@ const EditVolunteerListing = () => {
       }));
     }
   };
-  console.log('form data', formData)
+
   const handleSubmit = (e:any) =>{
     e.preventDefault();
     setIsLoading(true);
@@ -357,12 +357,11 @@ const EditVolunteerListing = () => {
         }
       })
       .then((response) => {
-        router.push("/organization/listings#Volunteer Listing");
+        router.push("/organization/listings");
         setIsLoading(false);
         toast({ position: "top", title: response.data.message, status: "success" })
       })
       .catch((error) => {
-        console.error(error);
         if (error.response && error.response.data && error.response.data.errors) {
           const errorMessages = error.response.data.errors;
           console.error('An error occurred:', errorMessages);

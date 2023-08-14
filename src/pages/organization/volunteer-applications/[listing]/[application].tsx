@@ -26,11 +26,40 @@ const CompletedApplication = () => {
     },
   });
   const [receiverId, setReceiverId] = useState<string | undefined>();
+  const [isContacting, setIsContacting] = React.useState(false); 
+  const [isCertificateExists, setIsCertificateExists] = React.useState(false); 
+  const [isMarkCompleteBtnClicked, setIsMarkCompleteBtnClicked] = React.useState(false); 
+  const [isCertificateBtnClicked, setIsCertificateBtnClicked] = React.useState(false); 
+  const [isChecking, setIsChecking] = React.useState(false); 
   const [formData, setFormData] = useState({
     receiver_id: '',
     listing_type: 'VolunteerListing',
   });
   useEffect(()=>{
+ 
+    if(application){
+      setIsMarkCompleteBtnClicked(true);
+      setIsChecking(true)
+      axios
+        .get(
+          `${baseUrl}/volunteer-certificates/${application}/certificate-exists?org=${// @ts-ignore: Unreachable code error
+            currentOrganization?.slug}`,
+          {
+            headers: {
+              Authorization: "Bearer " + accessToken(),
+              // 'Content-Type': 'application/x-www-form-urlencoded'
+            },
+          }
+        )
+        .then((res) => {
+          if(res.data === 1){
+            setIsCertificateExists(true)
+          }
+          setIsMarkCompleteBtnClicked(false);
+          setIsChecking(false)
+        })
+    }
+
 
     axios
       .get(
@@ -52,7 +81,7 @@ const CompletedApplication = () => {
       });
 
   },[currentOrganization, application])
-  console.log('appli', applicationData)
+  
   useEffect(() => {
     if (receiverId) {
       setFormData((prevFormData) => ({
@@ -63,6 +92,7 @@ const CompletedApplication = () => {
   }, [receiverId]);
 
   const handleApplicant = () => {
+    setIsContacting(true);
     // @ts-ignore: Unreachable code error
     const apiUrl = `${baseUrl}/messages/${listing}`;
 
@@ -76,9 +106,21 @@ const CompletedApplication = () => {
         router.push(`/organization/inbox/all`);
       })
       .catch((err) => {
-        // Handle any errors
+        setIsContacting(false);
       });
   };
+
+  const markAsComplete = () =>{
+    setIsMarkCompleteBtnClicked(true);
+    router.push(`/organization/volunteer-applications/${listing}/${application}/mark-as-complete`);
+  }
+
+  const viewCertificate = () =>{
+    setIsCertificateBtnClicked(true);
+    router.push(`/organization/volunteer-applications/${listing}/${application}/certification`);
+  }
+  
+
   const questionStyle = {
     fontWeight: 'bold',
     color: '#183553',
@@ -109,11 +151,21 @@ const CompletedApplication = () => {
 
         <div className='d-flex justify-content-end mt-4'>
           {/* <Link href="/"> */}
-          <button onClick={handleApplicant} className='approve-btn me-3'>Contact Applicant</button>
+          <button onClick={handleApplicant} className='approve-btn me-3'>
+            {isContacting ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Contact Applicant"}
+            
+          </button>
           {/* </Link> */}
-          <Link href="/completed-volunteer">
-            <button className='canc-btn'>Mark as complete</button>
-          </Link>
+          {isCertificateExists? 
+            <button onClick={viewCertificate} className='canc-btn'>
+              {isCertificateBtnClicked ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden"></span></div> : "View Certificate"}
+            </button>
+          : 
+            <button onClick={markAsComplete} className='canc-btn' disabled={isChecking}>
+              {isMarkCompleteBtnClicked ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden"></span></div> : "Mark as complete"}
+            </button>
+          }
+
         </div>
 
         <div className="row">

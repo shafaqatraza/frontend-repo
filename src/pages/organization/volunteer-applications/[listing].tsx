@@ -53,7 +53,6 @@ const VolunteerApplicants = () => {
         }
       )
       .then((res) => {
-        console.log(res);
         setApplicationsData(res.data);
         setUpdatingRowIndex(null);
       })
@@ -120,7 +119,6 @@ const VolunteerApplicants = () => {
   };
   const handleRowClick = (record: any) => {
     router.push(`/organization/volunteer-applications/${listing}/${record}`);
-    // console.log(listing, record);
   };
   const statusButtonMapping = {
     5: { className: "fi-btn", label: "Contacted" },
