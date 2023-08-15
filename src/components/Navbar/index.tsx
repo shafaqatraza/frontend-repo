@@ -383,6 +383,7 @@ export default function Navbar(props: any) {
 
 
   const getChats = async () => {
+    if (isLogin()) {
     await axios
       .get(baseUrl + '/member/chats/latest-count', {
         headers: {
@@ -394,6 +395,7 @@ export default function Navbar(props: any) {
       })
       .catch((error) => {
       })
+    }
   }
 
   const getOrganizationNotifications = async () => {
