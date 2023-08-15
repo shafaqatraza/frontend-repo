@@ -303,7 +303,7 @@ export default function Navbar(props: any) {
 
   useEffect(() => {
 
-      if(orgData.length == 0){
+      if(orgData.length == 0 && isLogin()){
         axios.get(`${baseUrl}/organizations`, {
           headers: {
             Authorization: 'Bearer ' + accessToken(),
