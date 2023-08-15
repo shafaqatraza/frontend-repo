@@ -50,8 +50,8 @@ const Sidebar = (props) => {
   }, [slug]);
   return (
     <>
-      <div className="row container-fluid main-side">
-        <div className="col-md-3 my-sidebar">
+      <div className="row container-fluid pe-0 m-0 pe-md-2 main-side">
+        <div className="col-md-3 my-sidebar ps-0">
           <div className="sidebar shadow-lg p-4 mb-5 card rounded">
             <div className="main-round-img">
               <div className="side-profile-img">
