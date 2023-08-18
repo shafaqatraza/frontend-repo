@@ -12,7 +12,7 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactNode } from 'react';
 
 type AddFilterDrawerProps = Pick<
   DrawerProps,
@@ -22,6 +22,7 @@ type AddFilterDrawerProps = Pick<
   isCancelDisabled?: boolean;
   onClickApply?: VoidFunction;
   onClearAll?: VoidFunction;
+  children: ReactNode; // Explicitly set the type here
 };
 
 export const FilterDrawer = (props: AddFilterDrawerProps) => {

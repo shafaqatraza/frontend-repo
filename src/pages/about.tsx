@@ -19,7 +19,6 @@ import {
   PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
   usePopoverContext,
   background
 } from '@chakra-ui/react'
