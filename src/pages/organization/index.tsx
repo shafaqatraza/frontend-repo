@@ -26,6 +26,8 @@ const organization = () => {
   const [organization, setOrganization] = useState(null);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [subscriptionLoading, setSubscriptionLoading] = useState(true);
+
   const [hours, setHours] = useState({});
   const router = useRouter()
 
@@ -90,6 +92,7 @@ const organization = () => {
         console.log(err);
         setLoading(false);
       });
+
     axios.get(`${baseUrl}/organization/subscriptions/hours-data?org=${organization}`, {
       headers: {
         Authorization: "Bearer " + accessToken(),
@@ -97,13 +100,17 @@ const organization = () => {
       },
     }).then((res) => {
       setHours(res.data);
-
+      if (res.data) {
+        setSubscriptionLoading(false);
+      }
     }).catch((err) => {
       // console.log(err.response.message,"mes");
-
-
+      setSubscriptionLoading(false)
     })
   }, [organization]);
+  
+
+  
   return (
     <div>
       <Navbar />
@@ -245,46 +252,61 @@ const organization = () => {
                   <div className="text-center">
                     <p className="p-txt mt-3">Plan</p>
                   </div>
-                  {
-                    // @ts-ignore: Unreachable code error
-                    hours && Object.keys(hours).length > 0 ? (
-                      <div className="text-center p-txt2 mt-3">
-                        {
-                          // @ts-ignore: Unreachable code error
-                          hours.used_hours}/{hours.total_hours} hours used
-                        <div className="card-body">
-                          <div className="progress">
-                            <div
-                              className="progress-bar"
-                              role="progressbar"
-                              style={{
-                                width: `${
-                                  // @ts-ignore: Unreachable code error
-                                  hours.percentage}%`, backgroundColor: "#183553"
-                              }}
-                              aria-valuenow={25}
-                              aria-valuemin={0}
-                              aria-valuemax={100}
-                            ></div>
+                  {subscriptionLoading? (
+                    <div
+                      style={{
+                        color: "#E27832",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        alignContent: "center",
+                      }}
+                      className="mb-5"
+                    >
+                      <div className="spinner-border"></div>
+                    </div>
+                    ):(
+                      // @ts-ignore: Unreachable code error
+                      hours && Object.keys(hours).length > 0 ? (
+                        <div className="text-center p-txt2 mt-3">
+                          {
+                            // @ts-ignore: Unreachable code error
+                            hours.used_hours}/{hours.total_hours} hours used
+                          <div className="card-body">
+                            <div className="progress">
+                              <div
+                                className="progress-bar"
+                                role="progressbar"
+                                style={{
+                                  width: `${
+                                    // @ts-ignore: Unreachable code error
+                                    hours.percentage}%`, backgroundColor: "#183553"
+                                }}
+                                aria-valuenow={25}
+                                aria-valuemin={0}
+                                aria-valuemax={100}
+                              ></div>
+                            </div>
+                            <Link href="/organization/payment-plans">
+                              <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
+                                Upgrade
+                              </button>
+                            </Link>
                           </div>
+                        </div>
+                      ) : (
+                        <>
+                          <p className="text-center mt-3 p-txt2 mb-3">There is no plan subscribed</p>
                           <Link href="/organization/payment-plans">
                             <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
-                              Upgrade
+                              Subscribe
                             </button>
                           </Link>
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        <p className="text-center mt-3 p-txt2 mb-3">There is no plan subscribed</p>
-                        <Link href="/organization/payment-plans">
-                          <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
-                            Subscribe
-                          </button>
-                        </Link>
-                      </>
+                        </>
+                      )
 
-                    )}
+                    )
+                  }
 
                 </div>
                 <div className="card mb-5 shadow mt-5 border-0">
