@@ -32,7 +32,7 @@ const Settings = () => {
               <p className='set-p-1'>Business Info</p>
               <p className='mt-2'>Edit your business name, <span className='d-block'>and logo</span></p>
             </div>
-            <div onClick={() => router.push("/payment")} style={{ cursor: "pointer" }} className="col-md-4">
+            <div onClick={() => router.push("../edit-payment")} style={{ cursor: "pointer" }} className="col-md-4">
               <p className='set-p-1'>Billing and Payments</p>
               <p>Invoices and Payment details <span className='d-block'>on file</span></p>
             </div>
