@@ -121,6 +121,7 @@ const organization = () => {
           <Sidebar>
           </Sidebar>
           </div>}
+          
           <div className="col">
             <div className="row m-0 ">
               <div className="col-md-7 col-sm-6">

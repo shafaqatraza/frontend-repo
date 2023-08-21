@@ -22,6 +22,7 @@ import axios from "axios";
 import { accessToken, baseUrl } from "../../components/Helper/index";
 import placeholder from "../../assets/imgs/placeholder.png";
 import camera from "../../assets/imgs/camera.png";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 const OrganizationInfo = () => {
   const [formData, setFormData] = useState({
@@ -101,6 +102,7 @@ const OrganizationInfo = () => {
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShow(true);
   const [show, setShow] = useState(false);
+  const [showtoggle, setShowtoggle] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -119,6 +121,7 @@ const OrganizationInfo = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [inviteData, setInviteData] = useState([]);
   const [packageData, setPackageData] = useState([]);
+  // const [show, setShow] = useState(false);
 
   useEffect(() => {
     axios
@@ -256,6 +259,7 @@ const OrganizationInfo = () => {
       [name]: value,
     }));
   };
+  
   return (
     <>
       <Navbar />
@@ -330,9 +334,17 @@ const OrganizationInfo = () => {
           <button className="modal2-btn">Save</button>
         </div>
       </Modal>
-      <div className="row container-fluid main-side">
-        <Sidebar>
-          <div className="col-md-12 mt-5">
+      <div className="row m-0 pe-0 container-fluid main-side">
+      <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShowtoggle(!showtoggle)}><HamburgerIcon/></button>
+        <div className="col-3 ps-0 organization-dash d-none d-lg-block">
+          <Sidebar>
+          </Sidebar>
+        </div>
+        {showtoggle && <div className="col-lg-3 px-0 wel-dashboard d-block d-lg-none">
+          <Sidebar>
+          </Sidebar>
+        </div>}
+          <div className="col mt-5">
             <div className="main-org-img">
               <div className="org-img text-center position-relative">
                 <div className="org-prof-img">
@@ -365,7 +377,7 @@ const OrganizationInfo = () => {
                 }
               </p>
             </div>
-            <div className="row">
+            <div className="row m-0">
               <div className="col-md-6">
                 <div className="mt-5">
                   <p className="info-txt">Organization Info</p>
@@ -461,31 +473,31 @@ const OrganizationInfo = () => {
                       />
                     </div>
                     <div className="mb-3 mt-5 col-md-6">
-      <label
-        style={{
-          fontWeight: "500",
-          fontSize: "20px",
-          lineHeight: "24px",
-        }}
-        className="form-label"
-      >
-        Upload a thumbnail picture
-      </label>
-      <div
-        className="upload-pic d-flex justify-content-center align-items-center"
-      > {thumbnail ? (
-        <Image src={thumbnail} width={200} height={200} />
-      ) : (
-        <Image
-          // @ts-ignore: Unreachable code error
-          src={camera?.src}
-          onClick={handleThumbnailClick}
-          alt="Thumbnail placeholder"
-        />
-      )}
+                    <label
+                      style={{
+                        fontWeight: "500",
+                        fontSize: "20px",
+                        lineHeight: "24px",
+                      }}
+                      className="form-label"
+                    >
+                      Upload a thumbnail picture
+                    </label>
+                    <div
+                      className="upload-pic d-flex justify-content-center align-items-center"
+                    > {thumbnail ? (
+                      <Image src={thumbnail} width={200} height={200} />
+                    ) : (
+                      <Image
+                        // @ts-ignore: Unreachable code error
+                        src={camera?.src}
+                        onClick={handleThumbnailClick}
+                        alt="Thumbnail placeholder"
+                      />
+                    )}
 
-      </div>
-      </div>
+                    </div>
+                    </div>
                     {/* <div className="mb-3">
                     <label className="form-label fw-bold">Password</label>
                     <Input
@@ -526,74 +538,73 @@ const OrganizationInfo = () => {
                   <div className="mt-5">Plan</div>
                 </p>
                 {Object.keys(packageData).length > 0 ? (
-  <div className="d-flex justify-content-center">
-  <div
-    className="card bg-light border-0"
-    style={{
-      backgroundColor: "#F6F6F6",
-      width: "332px",
-      marginTop: "2rem",
-    }}
-  >
-    <div className="card-body text-center">
-      <p className="card-title mt-3 plan-txt">{
-       // @ts-ignore: Unreachable code error
-      packageData?.package_name}</p>
-      <p className=" mt-4 plan-txt2">
-        {
-         // @ts-ignore: Unreachable code error
-         packageData?.package_description}
-      </p>
-      <p className="mt-3">
-        <span className="plan-txt3">${
-         // @ts-ignore: Unreachable code error
-        parseInt(packageData?.package_amount)}</span>/month, billed
-        annually
-      </p>
-    </div>
-    <div className="ms-4 mt-3">
-      {
-            // @ts-ignore: Unreachable code error
-            packageData?.package_features?.map((item,index)=>(
-              <>
-              <div className="d-flex">
-              <span className="ms-2 pt-2">
-          <Image src={good.src} alt={"Plan"} />
-        </span>
-        <div className='free-txt4 pt-2 ms-2'>
-        {item}
-        </div>
+                <div className="d-flex justify-content-center">
+                <div
+                  className="card bg-light border-0"
+                  style={{
+                    backgroundColor: "#F6F6F6",
+                    width: "332px",
+                    marginTop: "2rem",
+                  }}
+                >
+                  <div className="card-body text-center">
+                      <p className="card-title mt-3 plan-txt">{
+                      // @ts-ignore: Unreachable code error
+                      packageData?.package_name}</p>
+                      <p className=" mt-4 plan-txt2">
+                        {
+                        // @ts-ignore: Unreachable code error
+                        packageData?.package_description}
+                      </p>
+                      <p className="mt-3">
+                        <span className="plan-txt3">${
+                        // @ts-ignore: Unreachable code error
+                        parseInt(packageData?.package_amount)}</span>/month, billed
+                        annually
+                      </p>
+                  </div>
+                  <div className="ms-4 mt-3">
+                    {
+                          // @ts-ignore: Unreachable code error
+                          packageData?.package_features?.map((item,index)=>(
+                            <>
+                            <div className="d-flex">
+                            <span className="ms-2 pt-2">
+                        <Image src={good.src} alt={"Plan"} />
+                      </span>
+                      <div className='free-txt4 pt-2 ms-2'>
+                      {item}
+                      </div>
+                            </div>
+                            </>
+                          ))
+                        }
+
+
+                  </div>
+                  <div className="btns d-flex justify-content-center">
+                    <Link href="/select-plan">
+                      <button className="up-btn mt-5 mb-5">Upgrade</button>
+                    </Link>
+                    <Link href="/edit-payment">
+                      <button className="ed-btn ms-3 mt-5 mb-5">
+                        Edit Payment
+                      </button>
+                    </Link>
+                  </div>
+                </div>
               </div>
-              </>
-            ))
-          }
-
-
-    </div>
-    <div className="btns d-flex justify-content-center">
-      <Link href="/select-plan">
-        <button className="up-btn mt-5 mb-5">Upgrade</button>
-      </Link>
-      <Link href="/edit-payment">
-        <button className="ed-btn ms-3 mt-5 mb-5">
-          Edit Payment
-        </button>
-      </Link>
-    </div>
-  </div>
-</div>
 ) : (
   <div className="d-flex justify-content-center mt-5">
     <p className="fw-bold">No plan subscribed.</p>
   </div>
 )}
               </div>
-              <div className="mt-5">
-                <Table dataSource={inviteData} columns={columns} />;
+              <div className="mt-5 col-12 px-0 px-md-2">
+                <Table dataSource={inviteData} className="table-responsive" columns={columns} />;
               </div>
             </div>
           </div>
-        </Sidebar>
       </div>
       <Footer />
     </>

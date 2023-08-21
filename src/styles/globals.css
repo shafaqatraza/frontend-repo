@@ -1893,6 +1893,9 @@ color: #E27832;
 .wel-dashboard .my-sidebar{
   width: 100%;
 }
+.organization-dash .my-sidebar{
+  width: 100%;
+}
 
 @media screen and (min-width:1400px){
   .passionate-vol .volunteer-card-row1{
@@ -2070,6 +2073,9 @@ color: #E27832;
     position: absolute;
     z-index: 1;
     margin-top: 24px;
+    }
+    .plan-main {
+      height: 25px;
     }
   .charities-stpe-content p:first-child{
     font-size: 32px !important;
