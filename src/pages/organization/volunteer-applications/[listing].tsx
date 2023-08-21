@@ -14,6 +14,15 @@ import { accessToken, baseUrl, currOrgSlug } from "../../../components/Helper/in
 import { useRouter } from "next/router";
 import { useToast } from '@chakra-ui/toast'
 
+interface FormErrors {
+  number_of_hours:boolean,
+  number_of_credits:boolean
+}
+const initialFormErrors: FormErrors = {
+  number_of_hours: false,
+  number_of_credits:false,
+};
+
 const VolunteerApplicants = () => {
   const [applicationsData, setApplicationsData] = useState([]);
   const [applicationStatuses, setApplicationStatuses] = useState([]);
@@ -22,12 +31,21 @@ const VolunteerApplicants = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
   const [updatingRowIndex, setUpdatingRowIndex] = useState<number | null>(null);
+  const [approveBtnLoading, setApproveBtnLoading] = React.useState(false);
   const toast = useToast()
+  const [show, setShow] = useState(false);
+  // const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [showModal, setShowModal] = useState(false);
+  const [applicationId, setApplicationId] = useState(0);
+  const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
 
   const { listing } = router.query;
   const [formData, setFormData] = useState({
     number_of_hours: "",
     number_of_credits: "",
+    application_id: 0,
+    status_id: 0,
   });
   const filteredButtonData = [...applicationStatuses]; // Create a copy of the original array
   filteredButtonData.splice(1, 1);
@@ -82,25 +100,70 @@ const VolunteerApplicants = () => {
   }, [currOrgSlug, listing]);
 
   const handleClickdown = (index: number) => {
+
     if (selectedRowIndex === index) {
       setSelectedRowIndex(-1);
-      setShowCard(false);
+      setShowCard(true); 
     } else {
       setSelectedRowIndex(index);
       setShowCard(true);
     }
   };
 
+  
+  const handleCloseModal = () => {
+    setShowModal(false)
+  };
+  const handleClose = () => {
+    setFormData({
+      number_of_hours: '',
+      number_of_credits: '',
+      application_id: 0,
+      status_id: 0,
+    });
+    setFormErrors({
+      ['number_of_hours']: false,
+      ['number_of_credits']: false
+    });
+    setUpdatingRowIndex(null);
+    setShow(false); // Close the modal
+  };
+  const handleShowModal = () => {
+    setShow(false);
+    setShowModal(true);
+  };
 
-  const handleStatus = (statusId: number, applicationId: number, rowIndex: number) => { 
-    setUpdatingRowIndex(rowIndex);
+  const handleApproveApplicant = (event: any) => {
+    event.preventDefault();
+    setApproveBtnLoading(true);
+    let hasErrors = false;
+    
+
+    if (!formData.number_of_hours) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['number_of_hours']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.number_of_credits) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['number_of_credits']: true, 
+      }));
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
+      setApproveBtnLoading(false);
+      return;
+    }
+
     axios
       .post(
-        `${baseUrl}/volunteer-applications/${applicationId}/status/update`,
-        {
-          org: currOrgSlug,
-          status_id: statusId,
-        },
+        `${baseUrl}/volunteer-applications/applicants/approve?org=${currOrgSlug}`,
+        formData,
         {
           headers: {
             Authorization: "Bearer " + accessToken(),
@@ -108,14 +171,68 @@ const VolunteerApplicants = () => {
           },
         }
       )
-      .then((res) => {
-        toast({ position: "top", title: res.data.message, status: "success" })
-        getApplicationsData();
+      .then((res) => { 
+        if(res.status === 200){
+          setApplicationId(formData.application_id)
+          toast({ position: "top", title: res.data.message, status: "success" })
+          getApplicationsData();
+          setApproveBtnLoading(false);
+          handleClose();
+          handleShowModal();
+        }
+
       })
-      .catch((err) => {
-        setUpdatingRowIndex(null);
-        console.log(err);
+      .catch((error) => { 
+        setApproveBtnLoading(false);
+        if (error.response) { console.log(error.response.data.message)
+          const status = error.response.status;
+          if (status === 400) {
+            toast({ position: "top", title: error.response.data.message, status: "error" });
+          } else {
+            console.log('Other error status:', status);
+          }
+        } else {
+          console.log('Network error or other error occurred:', error);
+        }
       });
+  };
+
+  const handleStatus = (statusId: number, applicationId: number, rowIndex: number) => { 
+    setSelectedRowIndex(-1);
+    if(statusId === 8){
+      setUpdatingRowIndex(rowIndex);
+      setFormData((formData) => ({
+        ...formData,
+        application_id: applicationId,
+        status_id: statusId
+      }));
+      setShow(true);
+    }else{
+      setUpdatingRowIndex(rowIndex);
+      axios
+        .post(
+          `${baseUrl}/volunteer-applications/${applicationId}/status/update`,
+          {
+            org: currOrgSlug,
+            status_id: statusId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + accessToken(),
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          toast({ position: "top", title: res.data.message, status: "success" })
+          getApplicationsData();
+        })
+        .catch((err) => {
+          setUpdatingRowIndex(null);
+          console.log(err);
+        });
+    }
+
   };
   const handleRowClick = (record: any) => {
     router.push(`/organization/volunteer-applications/${listing}/${record}`);
@@ -165,6 +282,7 @@ const VolunteerApplicants = () => {
               <button
                 onClick={() => handleClickdown(rowIndex)}
                 className={statusButtonMapping[record.status_id as keyof typeof statusButtonMapping].className}
+                disabled={isCurrentlyUpdating || record.status_id === 8} // Disable if updating or status is Approved
               >
                 {isCurrentlyUpdating ? 
                   <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> 
@@ -175,10 +293,14 @@ const VolunteerApplicants = () => {
             )}
 
             <div className="ms-2">
-              <Image
-                onClick={() => handleClickdown(rowIndex)}
-                src={down.src}
-              />
+            <Image
+              onClick={() => {
+                if (!isCurrentlyUpdating && record.status_id !== 8) {
+                  handleClickdown(rowIndex);
+                }
+              }}
+              src={down.src}
+            />
             </div>
 
             {/* Render buttons based on the selected row index */}
@@ -242,37 +364,7 @@ const dataSource =
   };
 });
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => {
-    setShow(false);
-    setShowModal(true);
-  };
-
-  const handleSubmitapprove = (event: any) => {
-    event.preventDefault();
-    axios
-      .post(
-        `${baseUrl}/organization/subscriptions/approve-applicant?org=${currOrgSlug}`,
-        formData,
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken(),
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((res) => {
-        handleShowModal();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  
 
   return (
     <>
@@ -289,10 +381,8 @@ const dataSource =
               </p>
             </div>
             <div className="d-flex justify-content-center pb-5 mt-5">
-              <Link href="/completed-application">
-                <button className="approve-btn">Send Message</button>
-              </Link>
-              <button className="canc-btn2 ms-2">Close</button>
+              <button className="approve-btn" onClick={() => handleRowClick(applicationId) }>Send Message</button>
+              <button className="canc-btn2 ms-2" onClick={handleCloseModal}>Close</button>
             </div>
           </Modal>
         </div>
@@ -300,43 +390,49 @@ const dataSource =
           <div className="">
             <p className="modal-txt text-center p-4">Approve Applicant</p>
           </div>
-          {/* <form onSubmit={handleSubmitapprove}> */}
-          <div className="mx-5 mt-3">
-            <Input
-              style={{ backgroundColor: "#E8E8E8" }}
-              type="text"
-              placeholder="Number of hours"
-              // value={formData.number_of_hours}
-              // onChange={(event) =>
-              //   setFormData({ ...formData, number_of_hours: event.target.value })
-              // }
-              className="form-control"
-              // name="number_of_hours"
-              required
-            />
-          </div>
-          <div className="mx-5 mt-3">
-            <Input
-              style={{ backgroundColor: "#E8E8E8" }}
-              type="text"
-              placeholder="Number of deed dollars"
-              className="form-control"
-              // value={formData.number_of_credits}
-              // onChange={(event) =>
-              //   setFormData({ ...formData, number_of_credits: event.target.value })
-              // }
-              // name="number_of_credits"
-              required
-            />
-          </div>
-          <div className="d-flex justify-content-center pb-5 mt-5">
-            {/* type="submit" */}
-            <button onClick={handleShowModal} className="approve-btn">
-              Approve
-            </button>
-            <button className="canc-btn ms-2">Cancel</button>
-          </div>
-          {/* </form> */}
+          <form onSubmit={handleApproveApplicant}>
+            <div className="mx-5 mt-3">
+              <Input
+                style={{ backgroundColor: "#E8E8E8" }}
+                type="number"
+                placeholder="Number of hours"
+                className={`form-control ${formErrors['number_of_hours'] ? 'input-error' : ''}`}
+                value={formData.number_of_hours}
+                onChange={(event) => {
+                  setFormData({ ...formData, number_of_hours: event.target.value });
+                  setFormErrors((prevErrors) => ({ ...prevErrors, ['number_of_hours']: false }));
+                }}
+                name="number_of_hours"
+                required
+              />
+              {formErrors['number_of_hours'] && <p className="error-message">Please fill out the field.</p>}
+            </div>
+            <div className="mx-5 mt-3">
+              <Input
+                style={{ backgroundColor: "#E8E8E8" }}
+                type="number"
+                placeholder="Number of deed dollars"
+                className={`form-control ${formErrors['number_of_credits'] ? 'input-error' : ''}`}
+                value={formData.number_of_credits}
+                onChange={(event) =>{
+                  setFormData({ ...formData, number_of_credits: event.target.value });
+                  setFormErrors((prevErrors) => ({ ...prevErrors, ['number_of_credits']: false }));
+                }}
+                name="number_of_credits"
+                required
+              />
+              {formErrors['number_of_credits'] && <p className="error-message">Please fill out the field.</p>}
+            </div>
+            <div className="d-flex justify-content-center pb-5 mt-5">
+              {/* type="submit" */} 
+              <button type="submit" onClick={handleApproveApplicant} disabled={approveBtnLoading} id="submit" className="approve-btn">
+                <span id="button-text">
+                  {approveBtnLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Approve"}
+                </span>
+              </button>
+              <button className="canc-btn ms-2" onClick={handleClose}>Cancel</button>
+            </div>
+          </form>
         </Modal>
         <div className="plan-main"></div>
         <div className="ms-2">

@@ -303,7 +303,7 @@ export default function Navbar(props: any) {
 
   useEffect(() => {
 
-      if(orgData.length == 0){
+      if(orgData.length == 0 && isLogin()){
         axios.get(`${baseUrl}/organizations`, {
           headers: {
             Authorization: 'Bearer ' + accessToken(),
@@ -383,6 +383,7 @@ export default function Navbar(props: any) {
 
 
   const getChats = async () => {
+    if (isLogin()) {
     await axios
       .get(baseUrl + '/member/chats/latest-count', {
         headers: {
@@ -394,6 +395,7 @@ export default function Navbar(props: any) {
       })
       .catch((error) => {
       })
+    }
   }
 
   const getOrganizationNotifications = async () => {
