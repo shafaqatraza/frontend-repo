@@ -91,28 +91,28 @@ const ourPartners = () => {
             <Slider {...settings}>
               
                 <div  className="pe-3">
-                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3">
-                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3">
-                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
 
             </Slider>

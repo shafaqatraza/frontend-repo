@@ -129,7 +129,7 @@ export const Banner: React.FC<{}> = () => {
       <div className="container banner">
         <div className="row">
           <div className="col-md-8 mt-5 pe-0">
-            <p className="good-deeds">The First <span className="donors">Peer 2 Peer </span><span className="you-motivated d-md-block"><span className="donors">Marketplace</span> That <span className="donors">Rewards</span></span> <span className="volunteers">Kindness!</span></p>
+            <p className="good-deeds">The First <span className="donors">Peer 2 Peer </span><span className="you-motivated d-md-block"><span className="donors">Marketplace</span> That <span className="donors">Rewards</span></span> <span className="">Kindness!</span></p>
             <div className="mt-2 mb-2">
               <p className="our-platform col-md-10">Have stuff you want to get rid of?  Have a skill or service you can provide?  List what you want,  and turn your good will into real rewards.</p>
             </div>
