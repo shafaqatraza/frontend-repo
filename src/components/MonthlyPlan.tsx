@@ -82,7 +82,7 @@ const MonthlyPlan = () => {
               Object.keys(data).length > 0 ? (<div className="d-flex justify-content-center mb-5 flex-wrap">
                 <div>
                   <div
-                    className="card border-0"
+                    className="card border-0 px-3"
                     style={{
                       backgroundColor: "#f6d6c1",
                       width: "243px",
@@ -91,7 +91,7 @@ const MonthlyPlan = () => {
                     }}
                   >
                     <div className="card-body ">
-                      <p className="card-title mt-3 free-txt text-center">
+                      <p className="card-title mt-4 pt-2 free-txt text-center">
 
                         {// @ts-ignore: Unreachable code error
                           dataone?.name}
@@ -113,8 +113,8 @@ const MonthlyPlan = () => {
                           {
                             // @ts-ignore: Unreachable code error
                             dataone?.currency_symbol}{parseInt(dataone?.amount)}</span>
-                        {/* /month, billed{" "}
-                    <span className="ms-5">monthly</span> */}
+                       <span className=''>/month, billed</span>
+                      <span className='ms-5 ps-5'> monthly</span>
                       </p>
                       <hr className="mt-3" />
                       <div className="mt-3">
@@ -162,7 +162,7 @@ const MonthlyPlan = () => {
                 </div>
                 <div>
                   <div
-                    className="card border-0"
+                    className="card border-0 px-3"
                     style={{
                       backgroundColor: "#DEE3E6",
                       width: "243px",
@@ -171,12 +171,12 @@ const MonthlyPlan = () => {
                     }}
                   >
                     <div className="card-body ">
-                      <p className="card-title mt-2 free-txt text-center">
+                      <p className="card-title mt-3 free-txt text-center">
                         {
                           // @ts-ignore: Unreachable code error
                           data?.name}
                       </p>
-                      <p className=" mt-4 text-center free-txt2">
+                      <p className=" mt-4  text-center free-txt2">
                         {datadesc}
 
 
@@ -192,8 +192,9 @@ const MonthlyPlan = () => {
                       >
                         <span className="free-txt3">  {
                           // @ts-ignore: Unreachable code error
-                          data?.currency_symbol}{parseInt(data?.amount)}</span>/month,billed
-                        <span className="ms-5">monthly</span>
+                          data?.currency_symbol}{parseInt(data?.amount)}</span>
+                        <span className=''>/month,billed</span>
+                        <div className='ms-4 ps-1'><span className="ms-5 ps-5">monthly</span></div>
                       </p>
                       <hr className="mt-3" />
                       <div className="mt-3">
@@ -246,7 +247,7 @@ const MonthlyPlan = () => {
                 </div>
                 <div>
                   <div
-                    className="card border-0"
+                    className="card border-0 px-3"
                     style={{
                       backgroundColor: "#f9e4d6",
                       width: "243px",
@@ -255,7 +256,7 @@ const MonthlyPlan = () => {
                     }}
                   >
                     <div className="card-body ">
-                      <p className="card-title mt-3 pre-txt text-center">
+                      <p className="card-title mt-3 px-3 pre-txt text-center">
                         {
                           // @ts-ignore: Unreachable code error
                           datatwo?.name}
@@ -264,7 +265,7 @@ const MonthlyPlan = () => {
                         {datatwodesc}
                       </p>
                       <p
-                        className="mt-4 text-center"
+                        className="mt-1 text-center"
                         style={{
                           color: "#183553",
                           fontSize: "11px",
@@ -274,8 +275,8 @@ const MonthlyPlan = () => {
                       >
                         <span className="free-txt3">    {
                           // @ts-ignore: Unreachable code error
-                          datatwo?.currency_symbol}{parseInt(datatwo?.amount)}</span>/month,billed
-                        <span className="ms-5">monthly</span>
+                          datatwo?.currency_symbol}{parseInt(datatwo?.amount)}</span><span>/month,billed</span>
+                        <div className='ms-4 ps-1'><span className="ms-5 ps-5">monthly</span></div>
                       </p>
                       <hr className="mt-3" />
                       <div className="mt-3">
@@ -345,11 +346,12 @@ const MonthlyPlan = () => {
                       >
                         <span className="free-txt3">    {
                           // @ts-ignore: Unreachable code error
-                          datathree?.currency_symbol}{parseInt(datathree?.amount)}</span>/month,billed{" "}
-                        <span className="ms-5">monthly</span>
+                          datathree?.currency_symbol}{parseInt(datathree?.amount)}</span>
+                          <span>/month,billed</span>
+                        <div className='ms-5 ps-3'><span className="ms-5 ps-5">monthly</span></div>
                       </p>
-                      <hr className="mt-3" />
-                      <div className="mt-3">
+                      <hr className="mt-3 px-2" />
+                      <div className="mt-3 px-2">
                         {
                           // @ts-ignore: Unreachable code error
                           datathree?.features?.map((item, index) => (

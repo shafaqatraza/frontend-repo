@@ -19,6 +19,7 @@ import Sidebar from "../../components/Sidebar";
 import { accessToken, baseUrl } from "../../components/Helper/index";
 import axios from "axios";
 import { useRouter } from 'next/router'
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 const organization = () => {
   const [user, setUser] = useState(null);
@@ -30,6 +31,7 @@ const organization = () => {
 
   const [hours, setHours] = useState({});
   const router = useRouter()
+  const [show, setShow] = React.useState(false);
 
   useEffect(() => {
     axios
@@ -113,16 +115,27 @@ const organization = () => {
   
   return (
     <div>
+      
       <Navbar />
       <div>
-        <div className="row container-fluid main-side">
+        <div className="row container-md-fluid main-side m-0 justify-content-center">
+      <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShow(!show)}><HamburgerIcon/></button>
+      <div className="col-lg-3 px-0 wel-dashboard d-none d-lg-block">
           <Sidebar>
-            <div className="row">
+          </Sidebar>
+      </div>
+        {show && <div className="col-lg-3 px-0 wel-dashboard d-block d-lg-none">
+          <Sidebar>
+          </Sidebar>
+          </div>}
+          
+          <div className="col">
+            <div className="row m-0 ">
               <div className="col-md-7 col-sm-6">
-                <div className="px-5 pt-5">
+                <div className="px-5 pt-md-5 pt-3 text-center text-md-start">
                   <span className="welc-txt">Welcome,</span>
                 </div>
-                <div className="px-5">
+                <div className="px-5 text-center text-md-start">
                   <span className="welc-txt2">
                     {
                       // @ts-ignore: Unreachable code error
@@ -208,9 +221,9 @@ const organization = () => {
                             key={index}
                           >
                             <div>
-                              <div className="li-car">
+                              <div className="li-car m-auto">
                                 <Image
-                                  className="img-fluid"
+                                  className="img-fluid "
                                   src={
                                     // @ts-ignore: Unreachable code error
                                     item?.thumbnail
@@ -247,7 +260,7 @@ const organization = () => {
                 </div>
               </div>
               <div className="col-md-5 col-sm-6 pt-5 giving-img">
-                <Image className="ms-5" src={giving.src} alt={"Giving"} />
+                <Image src={giving.src} alt={"Giving"} />
                 <div className="card shadow border-0 plan-card">
                   <div className="text-center">
                     <p className="p-txt mt-3">Plan</p>
@@ -310,12 +323,12 @@ const organization = () => {
 
                 </div>
                 <div className="card mb-5 shadow mt-5 border-0">
-                  <p className="info-txt mt-1 text-center">Notifications</p>
+                  <p className="info-txt mt-1 text-center mt-4">Notifications</p>
                   <div className="container mt-4">
                     <hr />
                   </div>
                   <div>
-                    <p className="p-txt3 mt-5 text-center mb-5">You're all caught up no notification at this time</p>
+                    <p className="p-txt3 mt-md-5 text-center mb-md-5 my-4 px-2 px-md-0 lh-sm">You're all caught up no notification at this time</p>
                   </div>
                   {/* <div className="d-flex justify-content-between container mt-2">
                     <div className="txt-p container">
@@ -377,7 +390,7 @@ const organization = () => {
                 </div>
               </div>
             </div>
-          </Sidebar>
+          </div>
         </div>
       </div>
       <Footer />

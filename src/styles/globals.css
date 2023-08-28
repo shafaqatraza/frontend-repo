@@ -1873,7 +1873,7 @@ color: #E27832;
   padding: 20px 7px 20px 7px;
   border: 1px solid black;
   width: 300px;
-  min-height: 491px;
+  min-height: 496px;
 }
 .charity-card h1{
   font-size: 24px;
@@ -1890,6 +1890,15 @@ color: #E27832;
 .blog-card-shadow{
   box-shadow: 0 4px 5px rgba(0,0,0,.15)!important;
 }
+.wel-dashboard .my-sidebar{
+  width: 100%;
+}
+.organization-dash .my-sidebar{
+  width: 100%;
+}
+.conveient-access p{
+  padding:0 36px;
+}
 
 @media screen and (min-width:1400px){
   .passionate-vol .volunteer-card-row1{
@@ -1903,7 +1912,7 @@ color: #E27832;
     gap: 2rem !important;
   }
   .charity-card {
-    min-height: 458px;
+    min-height: 504px;
 }
 }
 @media screen and (max-width:1199px){
@@ -1926,6 +1935,15 @@ color: #E27832;
 @media (max-width: 600px) {
   .view-blog-btn {
     width: 312px;
+  }
+  .welc-txt {
+    font-size: 41px;
+  }
+  .conveient-access p{
+    padding:0 24px;
+  }
+  .welc-txt2 {
+    font-size: 41px;
   }
   .nav-login-btn{
     width: 100px !important;
@@ -2056,6 +2074,15 @@ color: #E27832;
 }
 
 @media (max-width: 768px){
+  .wel-dashboard .my-sidebar {
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    margin-top: 24px;
+    }
+    .plan-main {
+      height: 25px;
+    }
   .charities-stpe-content p:first-child{
     font-size: 32px !important;
     font-weight: bold !important;
