@@ -15,7 +15,7 @@ import {
 import * as React from 'react'
 import { FavouriteButton } from './FavouriteButton'
 import NoImage from '../../src/assets/imgs/no-image.png'
-import { baseImgUrl, isLogin } from '../../src/components/Helper/index'
+import { baseImgUrl, isLogin, currentUserData } from '../../src/components/Helper/index'
 import { useRouter } from 'next/router'
 import { EditIcon } from '@chakra-ui/icons'
 import { useToast } from '@chakra-ui/toast'
@@ -43,7 +43,7 @@ export const ProductSingleCard = (props) => {
   // const created_listing = moment(created_at).utc().format('YYYY-MM-DD, h:mm a')
   const router = useRouter()
   const toast = useToast()
-
+console.log('this user',currentUserData)
   return (
     <Stack position="relative" spacing={useBreakpointValue({ base: '4', md: '5' })} maxW="250px" {...rootProps}>
       <Box
@@ -178,6 +178,7 @@ export const ProductSingleCard = (props) => {
             {post_type == 'items' || post_type == 'service' ? created_at : post_type == 'volunteer' ? created_at_human_diff : null}
           </Text>
           {post_type == 'donation' ?
+            <a href={isLogin()? `${url_to_donate}?username=${currentUserData?.user_profile?.username}&listing=${slug}` :''} target="_blank" rel="noopener noreferrer">
             <Button
               type="submit"
               mt={"5"}
@@ -188,10 +189,10 @@ export const ProductSingleCard = (props) => {
               borderRadius='100px'
               fontSize="12px"
               fontWeight={'600'}
-            // onClick={url_to_donate}
+              onClick={url_to_donate}
             >
               Donate
-            </Button> :
+            </Button> </a> :
             null
           }
         </Stack>

@@ -32,6 +32,18 @@ export const currentUserId = () => {
     return "";
 };
 
+export const currentUser = () => {
+    if (typeof window !== 'undefined') {
+        let curUser = {};
+        if (localStorage.getItem('loggedInUser') !== null) {
+            curUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            return curUser.token ? curUser.user : "";
+        }
+
+    }
+    return "";
+};
+
 
 export const currentOrganizationInfo = () => {
     if (typeof window !== 'undefined') {
@@ -163,6 +175,7 @@ export const getLatLng = () => {
 
 export const baseUrl = baseURL;
 export const baseImgUrl = baseImgURL;
+export const currentUserData = currentUser();
 export const userId = currentUserId();
 export const currentOrganization = currentOrganizationInfo();
 export const currOrgId = currOrganizationId();
