@@ -217,8 +217,8 @@ const About = () => {
       <Navbar />
       <div className='container my-5 py-4 px-0'>
         <div className='d-flex align-items-center justify-content-center flex-column flex-md-row about-good-deed'>
-          <h1 className='good-deeds'>This is <span style={{color:"#E27832"}}>Good Deeds.</span></h1>
-          <img src={banner.src} className='mt-5 mt-md-0' alt="banner" />
+          <h1 className='good-deeds' style={{color:"#183553"}}>This is <span style={{color:"#E27832"}}>Good Deeds.</span></h1>
+          <img src={banner.src} className='mt-5 mt-md-0' width="250px" alt="banner" />
         </div>
       </div>
       <Box style={{background:"rgb(222,227,230,50%)"}}>
