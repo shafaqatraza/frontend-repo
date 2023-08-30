@@ -310,6 +310,8 @@ export default function Navbar(props: any) {
           }
         }).then((res) => {
           setOrgData(res.data);
+        }).catch((err) => {
+          // console.log(err);
         })
       }
 
