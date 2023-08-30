@@ -144,6 +144,7 @@ export const ProfileBanner = (props: any) => {
       columns={{ base: 1, md: 2 }}
       spacing={{ base: 10, lg: 6 }}
       py={{ base: 10, sm: 10, lg: 12 }}
+      px={{ base: 2, sm: 10, lg: 12 }}
       overflow="hidden"
       style={
         isMobile
@@ -306,7 +307,7 @@ export const ProfileBanner = (props: any) => {
           <button onClick={handleCloseSuccess} className="modal-btn">Got it</button>
         </div>
       </Modal>
-      <UserCard position="relative">
+      <UserCard position="relative" className="ms-lg-5">
         <Icon
           fontSize={30}
           as={GoPencil}
@@ -333,6 +334,7 @@ export const ProfileBanner = (props: any) => {
             isMobile ? { position: 'relative', left: '-8%', top: '-5px' } : {}
           }
         >
+          <div>
           <UserAvatar
             style={{ marginRight: '20px' }}
             name={profileData.full_name || ''}
@@ -344,7 +346,10 @@ export const ProfileBanner = (props: any) => {
             }
           //   isVerified
           />
-          <CardContent>
+            <p className='mt-2 mb-5 pb-sm-4 pb-5' style={{color:'#979797'}}>Bio</p>
+            <p style={{color:'#979797'}}>URL</p>
+          </div>
+          <CardContent className="ms-md-4 ps-md-3">
             <CardHeader
               style={
                 isMobile
@@ -517,9 +522,8 @@ export const ProfileBanner = (props: any) => {
           </CardContent>
         </Stack>
       </UserCard>
-      <UserCard
-        shadow={'base'}
-        bg="white"
+      <div
+        className="my-auto"
         style={
           isMobile
             ? {
@@ -532,12 +536,14 @@ export const ProfileBanner = (props: any) => {
         }
       >
         <HStack
+          className="rounded py-4"
+          shadow={'base'}
+          bg="white"
           justify="space-around"
           direction={{ base: 'column', md: 'row' }}
           spacing={{ base: '4', md: '10' }}
           color="grey.100"
-          my={5}
-          mx={5}
+          // py={5}
           width={'100%'}
         >
           <VStack
@@ -549,7 +555,7 @@ export const ProfileBanner = (props: any) => {
               {profileData.user_profile.credits || 0}
             </Text>
 
-            <Text fontSize={14}>deed dollars available</Text>
+            <Text fontSize={14} className="text-center text-md-start">credits available</Text>
           </VStack>
           <VStack
             color="main.1000"
@@ -562,14 +568,14 @@ export const ProfileBanner = (props: any) => {
                 : {}
             }
           >
-            <Text fontSize={14} style={{ textAlign: 'center', width: '60%' }}>
-              Invite your friends and get 10 deed dollars
+            <Text fontSize={14} style={{ textAlign: 'center', width: '81%' }}>
+              Invite your friends and get 100 credits
             </Text>
             <Text fontSize={16} color="primary.300" fontWeight={600}>
               url link here
             </Text>
 
-            <Button
+            <Button 
               onClick={onCopy}
               type="submit"
               colorScheme="custom"
@@ -582,7 +588,7 @@ export const ProfileBanner = (props: any) => {
             </Button>
           </VStack>
         </HStack>
-      </UserCard>
+      </div>
     </Container>
   )
 }

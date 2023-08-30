@@ -69,12 +69,12 @@ const ContactUs = () => {
         mb={12}
       >
         <Box>
-          <Flex gap={isSmallerThan767 ? '' : '70px'} alignItems={'center'} justifyContent={'center'} flexDirection={isSmallerThan767 ? 'column' : 'row'} py={'50px'} >
-            <Text fontSize={isSmallerThan767 ? '34px' : '64px'} color="#183553" textAlign="center" fontWeight={'700'} lineHeight="76px">Contact Us</Text>
+          <Flex gap={isSmallerThan767 ? '' : '70px'} alignItems={'center'} justifyContent={'center'} flexDirection={isSmallerThan767 ? 'column' : 'row'} py={'50px'} ps={isSmallerThan767 ? '' :'250px'} className="mt-5" >
+            <Text fontSize={isSmallerThan767 ? '34px' : '60px'} color="#183553" textAlign="center" fontWeight={'700'} lineHeight="76px">Contact Us</Text>
             <Image style={{ width: "200px", height: "203px" }} src={gdlogopegiun.src} />
           </Flex>
           <Text fontSize={isSmallerThan767 ? '24px' : '36px'} lineHeight="42px" fontWeight={'700'} color="#183553" textAlign="center">Any questions? Let us help</Text>
-          <Text fontSize={isSmallerThan767 ? '16px' : '22px'} color="#212121" textAlign="center" mt="40px">A safe and secure community is important to Good Deeds.</Text>
+          <Text fontSize={isSmallerThan767 ? '16px' : '22px'} color="#212121" textAlign="center" mt="40px" className="pt-md-4">A safe and secure community is important to Good Deeds.</Text>
           <Text fontSize={isSmallerThan767 ? '16px' : '22px'} color="#212121" textAlign="center" mt="15px">Please fill out the form below and someone will respond to your inquiry within 24 hours.</Text>
         </Box>
 
