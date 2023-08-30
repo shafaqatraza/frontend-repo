@@ -1,0 +1,831 @@
+import React, { useState, useEffect } from "react";
+import Navbar from "../../../components/Navbar";
+import { Footer } from "../../../components/Footer";
+import good from "../../../assets/imgs/good.png";
+import edit from "../../../assets/imgs/edit.png";
+import {Image, Input } from "@chakra-ui/react";
+import Link from "next/link";
+import { Table, Upload } from "antd";
+import { Modal } from "react-bootstrap";
+import "antd/dist/antd.css";
+import { FaCheck } from "react-icons/fa";
+import Sidebar from "../../../components/Sidebar";
+import axios from "axios";
+import { accessToken, baseUrl, currOrgSlug } from "../../../components/Helper/index";
+import placeholder from "../../../assets/imgs/placeholder.png";
+import camera from "../../../assets/imgs/camera.png";
+import { useRouter } from 'next/router'
+import { useToast } from '@chakra-ui/toast'
+
+interface FormErrors {
+  full_name:boolean,
+  business_number:boolean, 
+  business_email:boolean, 
+  about:boolean,
+  website_url:boolean
+  location:boolean,
+}
+
+const initialFormErrors: FormErrors = {
+  full_name: false,
+  business_number:false, 
+  business_email:false, 
+  about:false,
+  website_url:false,
+  location:false,
+};
+
+const OrganizationInfo = () => {
+  const [formData, setFormData] = useState({
+    full_name: "",
+    // organization_type_id: 7,
+    business_number: "",
+    business_email: "",
+    about: "",
+    website_url: "",
+    location: "",
+    profile_picture:"",
+    new_thumbnail:"",
+  });
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeletingOrganization, setIsDeletingOrganization] = useState(false);
+  const [image, setImage] = useState(null);
+  const [thumbnail, setThumbnail] = useState(null);
+  const [refresh, setRefresh] = useState(false)
+  const [showActionCard, setShowActionCard] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(-1);
+  const [showCard, setShowCard] = useState(false);
+  const [isDeactivating, setIsDeactivating] = useState(false)
+  const router = useRouter()
+  const toast = useToast()
+
+  const [showSuccess, setShowSuccess] = useState(false);
+  const handleCloseSuccess = () => setShowSuccess(false);
+  const handleShowSuccess = () => setShow(true);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+
+  const [showModalup, setShowModalup] = useState(false);
+
+  const handleCloseModalup = () => setShowModalup(false);
+  const handleShowModalup = () => setShowModalup(true);
+  const [slug, setSlug] = useState([]);
+  const [data, setData] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [inviteData, setInviteData] = useState([]);
+  const [packageData, setPackageData] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+  const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
+
+  const getInvitedMembers = () => {
+    axios
+    .get(`${baseUrl}/organizations/${currOrgSlug}/invitations`, {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .then((res) => {
+      setInviteData(res.data.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  useEffect(()=>{
+    
+    getInvitedMembers();
+
+    axios
+    .get(`${baseUrl}/organizations/${currOrgSlug}/invitations/statuses/all`, {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .then((res) => {
+      setStatuses(res.data.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  },[currOrgSlug])
+
+  useEffect(() => {
+    axios
+      .get(`${baseUrl}/organizations/${currOrgSlug}`, {
+        headers: {
+          Authorization: "Bearer " + accessToken(),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
+      .then((res) => {
+        setFormData(res.data.data);
+        setData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+
+      axios.get(`${baseUrl}/organization/subscriptions/subscribed-package?org=${currOrgSlug}`, {
+        headers: {
+          Authorization: "Bearer " + accessToken(),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }).then((res)=>{
+        setPackageData(res.data.data);
+
+      }).catch((err)=>{
+        console.log(err);
+
+      })
+
+  }, [currOrgSlug, refresh]);
+
+
+  const handleThumbnailClick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.click();
+    input.onchange = (event:any) => {
+      const file = event.target.files[0];
+      setImage(file);
+      // @ts-ignore: Unreachable code error
+      setThumbnail(URL.createObjectURL(file));
+      // @ts-ignore: Unreachable code error
+      setFormData({ ...formData, profile_picture: [file] });
+    };
+  };
+  const handleSubmit = (e: any, type: string) => {
+    e.preventDefault();
+    setIsUpdating(true);
+    let hasErrors = false;
+
+    if(type === 'modalform'){
+      if (!formData.full_name) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, ['full_name']: true}));
+        hasErrors = true;
+      }
+    }else{
+
+      if (!formData.business_email) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, ['business_email']: true}));
+        hasErrors = true;
+      }
+
+      if (!formData.business_number) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, ['business_number']: true}));
+        hasErrors = true;
+      }
+      
+      if (!formData.location) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, ['location']: true}));
+        hasErrors = true;
+      }
+
+      if (!formData.about) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, ['about']: true}));
+        hasErrors = true;
+      }
+
+      if (!formData.website_url) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, ['website_url']: true}));
+        hasErrors = true;
+      }
+
+      if (!formData.location) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, ['location']: true}));
+        hasErrors = true;
+      }
+    }
+    
+    if (hasErrors) {
+      if(type === 'normalform'){
+        toast({ position: "top", title: 'Please fill out the complete form.', status: "warning" })
+      }
+      setIsUpdating(false);
+      return;
+    }
+
+    const form = new FormData();
+    form.append("full_name", formData.full_name);
+    form.append("business_number", formData.business_number);
+    form.append("about", formData.about);
+    form.append("location", formData.location);
+    form.append("website_url", formData.website_url);
+    form.append("business_email", formData.business_email);
+    form.append("new_thumbnail", formData.new_thumbnail);
+    // form.append("organization_type_id" , formData.organization_type_id);
+    
+    axios
+      .post(`${baseUrl}/organizations/${currOrgSlug}`, form, {
+        headers: {
+          Authorization: "Bearer " + accessToken(),
+        },
+      })
+      .then((response) => {
+        toast({ position: "top", title: response.data.message, status: "success" })
+        // setShowSuccess(true);
+        setIsUpdating(false);
+        setRefresh(!refresh);
+      })
+      .catch((error) => {
+        toast({ position: "top", title: error.response.data.message, status: "error" })
+        // setShowSuccess(true);
+        setIsUpdating(false);
+      });
+  };
+
+
+  const handleInputChange = (event:any) => {
+    const { name, value } = event.target;
+    setFormErrors((prevErrors) => ({ ...prevErrors, [name]: false}));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+
+  const handleActionClick = (rowIndex: number) => {
+
+    if (selectedRow === rowIndex) {
+      setSelectedRow(-1);
+      setShowCard(true); 
+    } else {
+      setSelectedRow(rowIndex);
+      setShowCard(true);
+    }
+  };
+
+  const editMember = (memberId: number) => {
+    router.push(`/organization/profile/edit-member/${memberId}`)
+  }
+
+  const updateMemberStatus = (memberId: number, status: string) => {
+    const form = new FormData();
+    form.append("status", status);
+
+    axios
+      .post(
+        `${baseUrl}/organizations/${currOrgSlug}/invitations/${memberId}/update-status`,
+        form,
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            // 'Content-Type': 'application/x-www-form-urlencoded'
+          },
+        }
+      )
+      .then((res) => {
+        setIsDeactivating(false);
+        setSelectedRow(-1);
+        getInvitedMembers();
+        toast({ position: "top", title: res.data.message, status: "success" })
+      })
+      .catch((err) => {
+        setIsDeactivating(false);
+        toast({ position: "top", title: err.response.data.message, status: "error" })
+        console.log(err);
+      });
+  }
+
+  const removeMember = (memberId: number) => {
+    axios
+      .delete(
+        `${baseUrl}/organizations/${currOrgSlug}/invitations/${memberId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            // 'Content-Type': 'application/x-www-form-urlencoded'
+          },
+        }
+      )
+      .then((res) => {
+        setSelectedRow(-1);
+        getInvitedMembers();
+
+        toast({ position: "top", title: res.data.message, status: "success" })
+      })
+      .catch((err) => {
+        toast({ position: "top", title: err.response.data.message, status: "error" })
+        console.log(err);
+      });
+  }
+
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: '',
+      dataIndex: 'action',
+      render: (text: string, record: any, rowIndex: number) => {
+        return(
+          <div>
+            {record.role !== 'Superadmin' && (
+              <button style={{ color: '#E27832' }} onClick={() => handleActionClick(rowIndex)}>+ Action</button>
+            )}
+            
+            {
+              showCard && selectedRow === rowIndex && (
+                <div style={{textAlign: 'left'}}>
+                <div
+                  className="card profile-action-card shadow"
+                  style={{
+                    top: '0px', 
+                    left: "100px", 
+                    textAlign: "left", 
+                    padding: "5px", // @ts-ignore:
+                    'text-align-last': 'start',
+                  }}
+                >
+                  <button onClick={() => {editMember(record.id)}} className="action-card-button">Edit</button>
+                  {record.status == 'Inactive'? (
+                    <button onClick={() => updateMemberStatus(record.id, 'Active')} className="action-card-button">Activate User</button>
+                  ):(
+                    <button onClick={() => updateMemberStatus(record.id, 'Inactive')} className="action-card-button">Deactivate User</button>
+                  )}
+                  <button onClick={() => {removeMember(record.id)}} className="action-card-button">Remove From Account</button>
+                  {/* {statuses && statuses.map((status, index) => (
+                    (record.status === 'Active' && status.name !== 'Active') ||
+                    (record.status === 'Inactive' && status.name !== 'Inactive') ? (
+                      <button key={status.id} onClick={() => updateMemberStatus(record.id, status.id)} className="action-card-button">
+                        {status.name}
+                      </button>
+                    ) : (
+                      <button key={status.id} onClick={() => updateMemberStatus(record.id, status.id)} className="action-card-button">
+                        {status.name}
+                      </button>
+                    )
+                  ))} */}
+                  
+                </div>
+                </div>
+              )
+            }
+          </div>
+          
+        );
+      }
+    },
+    {
+      title: () => (
+        <div>
+          <Link href="/organization/profile/invite-user">
+            <button className="up-btn">+ New</button>
+          </Link>
+        </div>
+      ),
+      dataIndex: "New",
+      key: "New",
+    }
+  ];
+
+
+  const [hover, setHover] = useState(false); // Track the hover state
+  const handleFileChange = (info: any) => {  console.log('aaa',info)
+  
+    const file = info.file.originFileObj;
+    if (file) {
+      // Update the formData with the new thumbnail file
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        new_thumbnail: info.file.originFileObj,
+      }));
+      getBase64(file, (imageUrl: string) => {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          profile_picture: imageUrl, // Show the new thumbnail preview
+        }));
+      });
+    }
+  };
+  const getBase64 = (img: any, callback: any) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(img);
+  };
+
+
+  const deleteOrganization = () => {
+    setIsDeletingOrganization(true);
+    axios
+      .delete(
+        `${baseUrl}/organizations/${currOrgSlug}`,
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken()
+          },
+        }
+      )
+      .then((res) => {
+        router.push('/')
+        toast({ position: "top", title: res.data.message, status: "success" })
+      })
+      .catch((err) => {
+        setIsDeletingOrganization(false);
+        toast({ position: "top", title: err.response.data.message, status: "error" })
+        console.log(err);
+      });
+  }
+
+  return (
+    <>
+      <Navbar />
+      <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
+        <div className="p-3">
+          <p className="modal-txt text-center p-5 mt-3">
+            Organization Updated Successfully
+          </p>
+        </div>
+        <div className="d-flex justify-content-center pb-5">
+          <button onClick={handleCloseSuccess} className="modal-btn">
+            Got it
+          </button>
+        </div>
+      </Modal>
+      <Modal show={show} onHide={handleClose} closeButton>
+        <div className="p-3">
+          <p className="modal-txt text-center p-5 mt-3">
+            Are you sure you want to delete your account?
+          </p>
+        </div>
+        <div className="d-flex justify-content-center pb-5">
+          <button className="update-v-btn" onClick={handleClose}>No, I made a mistake</button>
+         
+          <button type="submit" onClick={deleteOrganization} disabled={isDeletingOrganization} id="submit" className="update-v-btn">
+            <span id="button-text">
+              {isDeletingOrganization ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden"></span></div> : "Yes, I'm sad to leave"}
+            </span>
+          </button>
+        </div>
+      </Modal>
+      <Modal show={showModalup} onHide={handleCloseModalup} closeButton>
+        <div className="p-3">
+          <p className="modal-txt text-center p-5 mt-3">
+            You purchase has been approved
+          </p>
+        </div>
+        <div className="d-flex justify-content-center pb-5">
+          <button className="modal-btn">Got it</button>
+        </div>
+      </Modal>
+      <Modal show={showModal} onHide={handleCloseModal} closeButton>
+        <div className="p-3">
+          <p className="modal-txt text-center py-3">Edit Profile</p>
+        </div>
+        <div>
+          <div className="input-group p-5">
+            <input
+              type="text"
+              className={`form-control ${formErrors['full_name'] ? 'input-error' : ''}`}
+              onChange={handleInputChange}
+              name="full_name"
+              style={{
+                backgroundColor: "#E8E8E8",
+                fontSize: "16px",
+                fontWeight: "500",
+                lineHeight: "20px",
+              }}
+              value={formData?.full_name || ""}
+            />
+            <button
+              style={{ backgroundColor: "#E8E8E8", border: "0px solid grey" }}
+              className="btn btn-outline-secondary"
+              type="button"
+            >
+              <FaCheck />
+            </button>
+          </div>
+          {/* {formErrors['full_name'] && <p className="error-message">Please fill out the field.</p>} */}
+        </div>
+        <div className="text-center">
+          <p>Upload a logo/photo</p>
+          <div className="d-flex justify-content-center mt-2">
+            <Upload
+              accept="image/*"
+              customRequest={() => {}}
+              onChange={(e) =>{handleFileChange(e)}}
+              showUploadList={false}
+            >
+              <div
+                className="upload-pic d-flex justify-content-center align-items-center"
+                style={{
+                  border: formData.new_thumbnail
+                    ? '2px solid #007BFF'
+                    : '2px solid transparent',
+                  borderRadius: '50%', // Change border radius to 50% for rounded shape
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  transition: 'border-color 0.2s',
+                  position: 'relative',
+                  width: '200px', // Specify a width and height for the container
+                  height: '200px',
+                }}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+              >
+                {formData?.profile_picture ? (
+                  <img
+                    src={formData?.profile_picture}
+                    width={200}
+                    height={200}
+                    alt="Previous Thumbnail"
+                  />
+                ) : (
+                  <img src={camera.src} alt="Thumbnail placeholder" />
+                )}
+
+                {hover && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      color: '#fff',
+                      fontSize: '16px',
+                    }}
+                  >
+                    Upload
+                  </div>
+                )}
+              </div>
+            </Upload>
+          </div>
+              
+          <div className="d-flex justify-content-center mt-3">
+            <Upload
+              accept="image/*"
+              customRequest={() => {}}
+              onChange={(e) =>{handleFileChange(e)}}
+              showUploadList={false}
+            >
+            <button className="replace-btn">Replace</button>
+            </Upload>
+          </div>
+        </div>
+        <div className="d-flex justify-content-center pb-5 mt-5">
+          <button type="submit" onClick={(e) => {handleSubmit(e,'modalform')}} disabled={isUpdating} id="submit" className="btn-reset mb-5">
+            <span id="button-text">
+              {isUpdating ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Update"}
+            </span>
+          </button>
+        </div>
+      </Modal>
+      <div className="row container-fluid main-side">
+        <Sidebar>
+          <div className="col-md-12 mt-5">
+            <div className="main-org-img">
+              <div className="org-img text-center position-relative">
+                <div className="org-prof-img">
+                  {!isLoaded && <img src={placeholder.src} alt="Loading..." />}
+                  <Image
+                    // style={{ height: "165px", width: "340px" }}
+                    className="img-fluid"
+                    src={
+                      // @ts-ignore: Unreachable code error
+                      data?.profile_picture
+                    }
+                    alt={"image"}
+                    onLoad={() => setIsLoaded(true)}
+                    onError={() => setIsLoaded(true)}
+                    style={{ display: isLoaded ? "block" : "none" }}
+                  />
+                </div>
+                <Image
+                  src={edit.src}
+                  onClick={handleShowModal}
+                  className="position-absolute top-0 float-end"
+                />
+              </div>
+            </div>
+            <div className="text-center">
+              <p className="info-txt mt-2">
+                {
+                  // @ts-ignore: Unreachable code error
+                  data?.full_name
+                }
+              </p>
+            </div>
+            <div className="row">
+              <div className="col-md-6">
+                <div className="mt-5">
+                  <p className="info-txt">Organization Info</p>
+                </div>
+                <div className="mt-4">
+                  <form>
+                     <div className="mb-3">
+                      <label className="form-label fw-bold">Email</label>
+                      <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="email"
+                        className={`form-control ${formErrors['business_email'] ? 'input-error' : ''}`}
+                        value={formData?.business_email || ""}
+                        onChange={handleInputChange}
+                        name="business_email"
+                        required
+                      />
+                      {formErrors['business_email'] && <p className="error-message">Please fill out the field.</p>}
+                    </div>
+                    {/* <div className="mb-3">
+                      <label className="form-label fw-bold">Organization Name</label>
+                      <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="text"
+                        className="form-control"
+                        value={formData?.full_name || ""}
+                        onChange={handleInputChange}
+                        name="full_name"
+                        required
+                      />
+                    </div> */}
+                    <div className="mb-3">
+                      <label className="form-label fw-bold">Address</label>
+                      <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="text"
+                        className={`form-control ${formErrors['location'] ? 'input-error' : ''}`}
+                        value={formData?.location || ""}
+                        onChange={handleInputChange}
+                        name="location"
+                        required
+                      />
+                      {formErrors['location'] && <p className="error-message">Please fill out the field.</p>}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label fw-bold">
+                        Business Number
+                      </label>
+                      <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="text"
+                        className={`form-control ${formErrors['business_number'] ? 'input-error' : ''}`}
+                        value={formData?.business_number || ""}
+                        onChange={handleInputChange}
+                        name="business_number"
+                        required
+                      />
+                      {formErrors['business_number'] && <p className="error-message">Please fill out the field.</p>}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label fw-bold">Website Url</label>
+                      <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="text"
+                        className={`form-control ${formErrors['website_url'] ? 'input-error' : ''}`}
+                        value={formData?.website_url || ""}
+                        onChange={handleInputChange}
+                        name="website_url"
+                        required
+                      />
+                      {formErrors['website_url'] && <p className="error-message">Please fill out the field.</p>}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label fw-bold">
+                        Company Description
+                      </label>
+                      <textarea
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        rows={3}
+                        className={`form-control ${formErrors['about'] ? 'input-error' : ''}`}
+                        value={formData?.about || ""}
+                        onChange={handleInputChange}
+                        name="about"
+                        required
+                      />
+                      {formErrors['about'] && <p className="error-message">Please fill out the field.</p>}
+                    </div>
+                    <div className="d-flex justify-content-end">
+                      <button type="submit" onClick={(e) => {handleSubmit(e,'normalform')}} disabled={isUpdating} id="submit" className="btn-reset mb-5">
+                        <span id="button-text">
+                          {isUpdating ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Update"}
+                        </span>
+                      </button>
+                    </div>
+                  </form>
+                  <div>
+                    <button onClick={handleShow} className="del-btn">
+                      Delete Account
+                    </button>
+                  </div>
+                  <div></div>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <p className="fw-bold text-center mt-5">
+                  <div className="mt-5">Plan</div>
+                </p>
+                {Object.keys(packageData).length > 0 ? (
+                <div className="d-flex justify-content-center">
+                  <div
+                    className="card bg-light border-0"
+                    style={{
+                      backgroundColor: "#F6F6F6",
+                      width: "332px",
+                      marginTop: "2rem",
+                    }}
+                  >
+                    <div className="card-body text-center">
+                      <p className="card-title mt-3 plan-txt">{
+                      // @ts-ignore: Unreachable code error
+                      packageData?.package_name}</p>
+                      <p className=" mt-4 plan-txt2">
+                        {
+                        // @ts-ignore: Unreachable code error
+                        packageData?.package_description}
+                      </p>
+                      <p className="mt-3">
+                        <span className="plan-txt3">${
+                        // @ts-ignore: Unreachable code error
+                        parseInt(packageData?.package_amount)}</span>/month, billed
+                        annually
+                      </p>
+                    </div>
+                    <div className="ms-4 mt-3">
+                      {
+                            // @ts-ignore: Unreachable code error
+                            packageData?.package_features?.map((item,index)=>(
+                              <>
+                              <div className="d-flex">
+                              <span className="ms-2 pt-2">
+                          <Image src={good.src} alt={"Plan"} />
+                        </span>
+                        <div className='free-txt4 pt-2 ms-2'>
+                        {item}
+                        </div>
+                              </div>
+                              </>
+                            ))
+                          }
+
+
+                    </div>
+                    <div className="btns d-flex justify-content-center">
+                      <Link href="/select-plan">
+                        <button className="up-btn mt-5 mb-5">Upgrade</button>
+                      </Link>
+                      <Link href="/edit-payment">
+                        <button className="ed-btn ms-3 mt-5 mb-5">
+                          Edit Payment
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                ) : (
+                  <div className="d-flex justify-content-center mt-5">
+                    <p className="fw-bold">No plan subscribed.</p>
+                  </div>
+                )}
+              </div>
+              <div className="mt-5">
+                <Table dataSource={inviteData} columns={columns} />
+              </div>
+              
+            </div>
+          </div>
+        </Sidebar>
+      </div>
+      <Footer />
+    </>
+  );
+};
+
+export default OrganizationInfo;

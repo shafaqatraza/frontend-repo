@@ -138,7 +138,8 @@ export default function Navbar(props: any) {
   const [thumbnail, setThumbnail] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
-  
+  const [isOrganization, setIsOrganization] = useState(false);
+
   const [showModel, setShowModel] = useState<ModelType>({
     login: false,
     forgotPassword: false,
@@ -302,18 +303,44 @@ export default function Navbar(props: any) {
 
   useEffect(() => {
 
-    if (isLogin()) {
-      getChats()
-      axios.get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: 'Bearer ' + accessToken(),
+      if(orgData.length == 0 && isLogin()){
+        axios.get(`${baseUrl}/organizations`, {
+          headers: {
+            Authorization: 'Bearer ' + accessToken(),
+          }
+        }).then((res) => {
+          setOrgData(res.data);
+        }).catch((err) => {
+          // console.log(err);
+        })
+      }
+
+      if (router.asPath.startsWith('/organization')) {
+        if (isLogin()) {
+          setIsOrganization(true);
+          axios.get(`${baseUrl}/organizations`, {
+            headers: {
+              Authorization: 'Bearer ' + accessToken(),
+            }
+          }).then((res) => {
+            
+            if (router.asPath.startsWith('/organization')) {
+              if(!currOrgSlug){
+                localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
+              }
+            }
+  
+          }).catch((err) => {
+            // console.log(err);
+          })
+        }else{
+          router.push("/");
         }
-      }).then((res) => {
-        setOrgData(res.data);
-      }).catch((err) => {
-        // console.log(err);
-      })
-    }
+      }else{ 
+        //@ts-ignore
+        localStorage.setItem('currentOrganization', null);
+        getChats()
+      }
 
     if(currOrgId){
       getOrganizationNotifications()
@@ -358,6 +385,7 @@ export default function Navbar(props: any) {
 
 
   const getChats = async () => {
+    if (isLogin()) {
     await axios
       .get(baseUrl + '/member/chats/latest-count', {
         headers: {
@@ -369,6 +397,7 @@ export default function Navbar(props: any) {
       })
       .catch((error) => {
       })
+    }
   }
 
   const getOrganizationNotifications = async () => {
@@ -789,7 +818,7 @@ export default function Navbar(props: any) {
 
                   <Menu>
 
-                    {currOrgId?
+                    {isOrganization?
                     <MenuButton
                       as={Button}
                       rounded={'full'}

@@ -2252,3 +2252,19 @@ color: #E27832;
 .payment-error-message {
   color: red;
 }
+
+.profile-action-card button{
+  margin-top: 10px;
+}
+
+.card.profile-action-card {
+  width: 200px;
+  height: 120px;
+  /* height: 245px; */
+  position: absolute;
+  z-index: 1;
+}
+
+.action-card-button:hover{
+  background-color: #0000000A;
+}

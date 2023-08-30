@@ -50,6 +50,7 @@ import {
   isLogin,
   accessToken,
   getLoginData,
+  currentUserData
 } from "../../components/Helper/index";
 import { useRouter } from "next/router";
 import Slider from "react-slick";
@@ -237,6 +238,14 @@ const ListingView = (props) => {
       setWishListIds(data.data.data);
     }
   }, []);
+
+  const handleDonateButtonClick = (url) => {
+    if (!isLogin()) {
+      toast({ title: "Please login for the donation", status: "error", position: "top" });
+    }else{
+      window.open(`${url}?username=${currentUserData?.user_profile?.username}&listing=${listingData.slug}`, '_blank');
+    }   
+  };
 
   useEffect(() => {
     // console.log("slug getting", router.query.id, router.query.type);
@@ -1451,7 +1460,7 @@ const ListingView = (props) => {
                           color='#fff'
                           loading={isContactLoading}
                           disabled={isContactLoading}
-                          href={listingData.url_to_donate}
+                          onClick={() => handleDonateButtonClick(listingData.url_to_donate)}
                         >
                           Donate Now
                         </Button>

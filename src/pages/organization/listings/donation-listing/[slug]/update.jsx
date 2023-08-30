@@ -40,10 +40,10 @@ const EditDonationListing = () => {
   const handleCloseError = () => setShowError(false);
   const handleShowError = () => setShowError(true);
   const [donError, setDonError] = useState([]);
-  const [pickerItems, setPickerItems] = useState([])
   const [selectedItems, setSelectedItems] = useState([])
   const [hover, setHover] = useState(false); // Track the hover state
   const [formErrors, setFormErrors] = useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
   const toast = useToast()
 
   if (!router) {
@@ -104,7 +104,11 @@ const EditDonationListing = () => {
             description: data.description,
             url_to_donate:data.url_to_donate,
             category_id: data.category_id,
-            keywords: res.data.data.keywords.map((keyword) => keyword.id),
+            keywords: res.data.data.keywords.map((keyword) => ({
+              id: keyword.id,
+              is_new: false,
+              is_deleted: false,
+            })),
             thumbnail: "",
             old_thumbnail: data.thumbnail
           });
@@ -112,7 +116,7 @@ const EditDonationListing = () => {
           
           if (res.data.data.keywords !== null && res.data.data.keywords.length > 0) {
             res.data.data.keywords.map((i) =>
-              tmpKeywords.push({ label: i.name, value: i.id })
+              tmpKeywords.push({ label: i.name, value: i.id})
             )
           }
           setSelectedItems(tmpKeywords)
@@ -160,9 +164,91 @@ const handleFileChange = (info) => {
       });
     }
   };
+  const handleInputChange = (event, type) => {
+    
+    const { name, value } = event.target;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
 
+    if(type == 'title'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['title']: false, // Reset the error state for the specific question ID
+      }));
+    }else if(type == 'description'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['description']: false, // Reset the error state for the specific question ID
+      }));
+    }else if(type == 'url_to_donate'){
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        ['url_to_donate']: false, // Reset the error state for the specific question ID
+      }));
+    }
+  };
+
+  const handleCreateItem = (item) => {
+    setSelectedItems((curr) => [...curr, item]);
+    
+    // Check if the item is new or already in the keywords list
+    const isNew = formData.keywords.every(
+      (keyword) => keyword.id !== item.value || keyword.is_deleted
+    );
+    
+    const updatedKeywords = isNew
+      ? [
+          ...formData.keywords,
+          { id: item.value, is_new: true, is_deleted: false },
+        ]
+      : formData.keywords;
+    
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      keywords: updatedKeywords,
+    }));
+    
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      keywords: false,
+    }));
+  };
+  
+  const handleSelectedItemsChange = (changes) => {
+    if (changes.selectedItems) {
+      setSelectedItems(changes.selectedItems);
+  
+      const removedKeywords = formData.keywords.filter(
+        (keyword) =>
+          !changes.selectedItems.some((item) => item.value === keyword.id)
+      );
+  
+      const updatedKeywords = formData.keywords.map((keyword) => {
+        if (removedKeywords.some((removedKeyword) => removedKeyword.id === keyword.id)) {
+          if (!keyword.is_new) {
+            return {
+              ...keyword,
+              is_deleted: true,
+            };
+          }else{
+            return null
+          }
+        }
+        return keyword;
+      }).filter(keyword => keyword !== null); // Remove null values
+  
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        keywords: updatedKeywords,
+      }));
+    }
+  };
+  
   const handleSubmit = (event) => {
     event.preventDefault();
+    setIsLoading(true);
     let hasErrors = false;
     
     if (!formData.title) {
@@ -208,13 +294,9 @@ const handleFileChange = (info) => {
     // If there are errors, prevent form submission
     if (hasErrors) {
       toast({ position: "top", title: 'Please fill out the complete form.', status: "warning" })
+      setIsLoading(false);
       return;
     }
-
-    selectedItems.map((i) => // @ts-ignore: Unreachable code error
-      formData.keywords.push(i.value)
-    )
-
     
     setIsSubmitting(true);
     const form = new FormData();
@@ -223,7 +305,9 @@ const handleFileChange = (info) => {
     form.append("description", formData.description);
     form.append("url_to_donate", formData.url_to_donate);
     form.append("category_id", formData.category_id);
-    formData.keywords.forEach((keyword) => form.append("keywords[]", keyword));
+    const keywordsString = JSON.stringify(formData.keywords);
+    form.append("keywords", keywordsString);
+
     if (Array.isArray(formData.thumbnail)) {
       formData.thumbnail.forEach((file) => form.append("thumbnail", file));
     } else if (formData.thumbnail && typeof formData.thumbnail[Symbol.iterator] === 'function') {
@@ -242,97 +326,27 @@ const handleFileChange = (info) => {
         },
       })
       .then((response) => {
-        setShowSuccess(true);
         router.push("/organization/listings");
+        setIsLoading(false);
+        toast({ position: "top", title: response.data.message, status: "success" })
         setIsSubmitting(false);
-        setFormData({
-          title: "",
-          description: "",
-          url_to_donate: "",
-          keywords: [],
-        });
-        // Handle response data here
       })
       .catch((error) => {
-        // setShowSuccess(true);
         setShowError(true);
+        setIsLoading(false);
         if (error.response && error.response.data && error.response.data.errors) {
           const errorMessages = error.response.data.errors;
           console.error('An error occurred:', errorMessages);
-
-          // Set errors in state
-          // @ts-ignore: Unreachable code error
           setDonError(Object.values(errorMessages).flat());
         } else {
           console.error('An unknown error occurred:', error);
         }
         console.error(error);
         setIsSubmitting(false);
-        setFormData({
-          title: "",
-          description: "",
-          url_to_donate: "",
-          keywords: [],
-        });
-        // Handle error here
+        
       });
   };
 
-  const handleInputChange = (event, type) => {
-    
-    const { name, value } = event.target;
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-
-    if(type == 'title'){
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        ['title']: false, // Reset the error state for the specific question ID
-      }));
-    }else if(type == 'description'){
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        ['description']: false, // Reset the error state for the specific question ID
-      }));
-    }else if(type == 'url_to_donate'){
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        ['url_to_donate']: false, // Reset the error state for the specific question ID
-      }));
-    }
-  };
-
-  // @ts-ignore: Unreachable code error
-  const handleCreateItem = (item) => { // @ts-ignore: Unreachable code error
-    setPickerItems((curr) => [...curr, item]) // @ts-ignore: Unreachable code error
-    setSelectedItems((curr) => [...curr, item])
-  }
- // @ts-ignore: Unreachable code error
- const handleSelectedItemsChange = (changes) => {
-  if (changes.selectedItems) {
-    setSelectedItems(changes.selectedItems);
-    setFormErrors((prevErrors) => ({
-      ...prevErrors,
-      keywords: false,
-    }));
-  }
-
-  const newKeywords = changes.selectedItems
-    .filter((item) => item.isNew) // Filter newly created keywords
-    .map((item) => item.value);
-
-  // Update the formData.keywords array with both the selected keywords and new keywords
-  setFormData((prevFormData) => ({
-    ...prevFormData,
-    keywords: [
-      ...changes.selectedItems.map((item) => item.value), // Selected keywords
-      ...newKeywords, // Newly created keywords
-    ],
-  }));
-};
-console.log('éeeeeeee', formData)
   return (
     <>
       <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
@@ -504,7 +518,7 @@ console.log('éeeeeeee', formData)
               label="Select a min of 3, max of 6"
               placeholder=""
               onCreateItem={handleCreateItem}
-              items={pickerItems}
+              items={selectedItems}
               selectedItems={selectedItems}
               onSelectedItemsChange={(changes) =>
                 handleSelectedItemsChange(changes)
@@ -580,20 +594,12 @@ console.log('éeeeeeee', formData)
             </div>
           </Upload>
           </div>
-          {isSubmitting ? (
-            <div
-              style={{ color: "#E27832" }}
-              className="spinner-border mt-5"
-            ></div>
-          ) : (
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="update-v-btn mt-5 mb-5"
-            >
-              Update
-            </button>
-          )}
+          <button type="submit" onClick={handleSubmit} disabled={isLoading} id="submit" className="update-v-btn mt-5 mb-5">
+            <span id="button-text">
+              {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Update"}
+            </span>
+          </button>
+          
         </form>
       </div>
     </Sidebar>

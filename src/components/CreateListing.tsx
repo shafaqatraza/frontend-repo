@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Image, Input, Textarea } from "@chakra-ui/react";
 import { Form, Modal } from "react-bootstrap";
 import camera from "../assets/imgs/camera.png";
-import { Select } from 'antd';
+import { Select, Upload } from 'antd';
 import axios from "axios";
 import { accessToken, baseUrl } from '../components/Helper/index'
 import { useRouter } from "next/router";
@@ -55,7 +55,7 @@ const CreateListing = () => {
   const [volunteerCategoryList, setVolunteerCategoryList] = useState([]);
   const [donError, setDonError] = useState([]);
   const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
-
+  const [hover, setHover] = useState(false);
 
   const toast = useToast()
 
@@ -69,6 +69,7 @@ const CreateListing = () => {
     category_id: "",
     keywords: [],
     thumbnail: "",
+    old_thumbnail: "",
     level_id: 0
   });
   const handleSizeChange = (e: any) => {
@@ -161,28 +162,38 @@ const CreateListing = () => {
       ['keywords']: false,
     }));
   }
-  const handleThumbnailClick = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.click();
-    input.onchange = (event: any) => {
-      const file = event.target.files[0];
-      setImage(file);
-      // @ts-ignore: Unreachable code error
-      setThumbnail(URL.createObjectURL(file));
-      setFormData({ ...formData, thumbnail: file })
+  
+  const getBase64 = (img: any, callback: any) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(img);
+  };
+
+  const handleFileChange = (info: any) => {
+  
+    const file = info.file.originFileObj;
+    if (file) {
+      // Update the formData with the new thumbnail file
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        thumbnail: info.file.originFileObj,
+      }));
+      getBase64(file, (imageUrl: any) => {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          old_thumbnail: imageUrl, // Show the new thumbnail preview
+        }));
+      });
       setFormErrors((prevErrors) => ({
         ...prevErrors,
         ['thumbnail']: false,
       }));
-    };
-
-    
+    }
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    setIsSubmitting(true);
     let hasErrors = false;
 
     setFormData((prevFormData) => ({
@@ -250,11 +261,12 @@ const CreateListing = () => {
     // If there are errors, prevent form submission
     if (hasErrors) {
       toast({ position: "top", title: 'Please fill out the complete form.', status: "warning" })
+      setIsSubmitting(false);
       return;
     }
 
     const form = new FormData();
-    setIsSubmitting(true);
+    
     form.append("title", formData.title);
     form.append("description", formData.description);
     form.append("credit_amount", formData.credit_amount);
@@ -282,21 +294,15 @@ const CreateListing = () => {
     })
       .then((response) => {
         router.push("/organization/listings");
-        toast({ position: "top", title: 'Volunteer listing has been created successfully.', status: "success" })
-        // @ts-ignore: Unreachable code error
+        toast({ position: "top", title: response.data.message, status: "success" })
+        // @ts-ignore:
         setIsSubmitting(false);
-        // Handle response data here
       })
       .catch((error) => {
         console.error(error);
-        setShowError(true);
         if (error.response && error.response.data && error.response.data.errors) {
           const errorMessages = error.response.data.errors;
           console.error('An error occurred:', errorMessages);
-
-          // Set errors in state
-          // @ts-ignore: Unreachable code error
-          setDonError(Object.values(errorMessages).flat());
         } else {
           console.error('An unknown error occurred:', error);
         }
@@ -306,37 +312,9 @@ const CreateListing = () => {
 
   }
 
-  console.log('eeeeeeee', formData)
-  console.log('eeeeeeee2', formErrors)
-
   return (
     <div>
-      <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
-        <div className="p-3">
-          <p className="modal-txt text-center p-5 mt-3">
-            Volunteer Listing Created Successfully
-          </p>
-        </div>
-        <div className="d-flex justify-content-center pb-5">
-          <button onClick={handleCloseSuccess} className="modal-btn">Got it</button>
-        </div>
-      </Modal>
-      <Modal show={showError} onHide={handleCloseError} closeButton>
-        <div className="p-3">
-          <p className="modal-txt text-center p-5 mt-3">
-          <ul>
-          {donError.map((errorMessage, index) => (
-            <li key={index}>{errorMessage}</li>
-          ))}
-        </ul>
-          </p>
-        </div>
-        <div className="d-flex justify-content-center pb-5">
-          <button onClick={handleCloseError} className="modal-btn">
-            Got it
-          </button>
-        </div>
-      </Modal>
+      
       <form>
         <div className="mb-3 mt-5 col-md-6">
           <div className='d-flex justify-content-between'>
@@ -519,24 +497,71 @@ const CreateListing = () => {
           >
             Upload a thumbnail picture
           </label>
-          <div
-            className="upload-pic d-flex justify-content-center align-items-center"
-          >
-            {thumbnail ? (
-              <Image src={thumbnail} width={200} height={200} />
-            ) : (
-              <Image
-                src={camera.src}
-                onClick={handleThumbnailClick}
-                alt="Thumbnail placeholder"
-              />
-            )}
+          <div className="upload-pic d-flex justify-content-center align-items-center" >
+            <Upload
+              accept="image/*"
+              customRequest={() => {}}
+              onChange={(e) =>{handleFileChange(e)}}
+              showUploadList={false}
+            >
+              <div
+                className="upload-pic d-flex justify-content-center align-items-center"
+                style={{ // @ts-ignore: Unreachable code error
+                  border: formData.new_thumbnail
+                    ? '2px solid #007BFF'
+                    : '2px solid transparent',
+                  borderRadius: '8px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  transition: 'border-color 0.2s',
+                  position: 'relative',
+                }}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+              >
+                {formData.old_thumbnail ? (
+                  <img
+                    src={formData.old_thumbnail}
+                    width={200}
+                    height={200}
+                    alt="Previous Thumbnail"
+                  />
+                ) : (
+                  <img src={camera.src} alt="Thumbnail placeholder" />
+                )}
+
+                {hover && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      color: '#fff',
+                      fontSize: '16px',
+                    }}
+                  >
+                    Upload
+                  </div>
+                )}
+              </div>
+            </Upload>
           </div>
           {formErrors['thumbnail'] && <p className="error-message">Please upload the thumbnail.</p>}
         </div>
         <div className="mb-5 mt-4">
           <div>
-            {isSubmitting ? <div style={{ color: "#E27832" }} className="spinner-border"></div> : <button type='submit' onClick={handleSubmit} className='update-v-btn'>Save</button>}
+          <button type="submit" onClick={handleSubmit} disabled={isSubmitting} id="submit" className="update-v-btn mt-5 mb-5">
+            <span id="button-text">
+              {isSubmitting ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Create"}
+            </span>
+          </button>
           </div>
         </div>
       </form>
