@@ -10,11 +10,8 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 
 const DonationAnalytics = () => {
 const [donationData, setDonationData] = useState([]);
-<<<<<<< HEAD
 const [slug, setSlug] = useState([]);
 const [show, setShow] = useState(false);
-=======
->>>>>>> a694a8d6f21100334f83aa64a6ae960b4b6b0e16
 
 interface DataSourceType {
   key: string;
