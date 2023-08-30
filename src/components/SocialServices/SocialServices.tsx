@@ -112,7 +112,7 @@ const SocialServices = () => {
       </div>
       <div className="container px-0 px-md-3  make-money">
         <div>
-          <p className="good-deeds my-5 ms-md-4 text-center text-md-start">
+          <p className="good-deeds my-5 pb-md-2 ms-md-4 text-center text-md-start">
             <span style={{ color: "#183553" }}>How do we make</span>{" "}
             <span style={{ color: "#E27832" }}>money</span>
             <span style={{ color: "#183553" }}>?</span>
@@ -174,7 +174,7 @@ const SocialServices = () => {
         </div>
         <div className="container mt-2 ">
           <p
-            className="my-4 my-md-5 text-md-center px-3 px-md-0"
+            className="my-4 my-md-5 pt-md-4 text-md-center px-3 px-md-0"
             style={{
               fontSize: "clamp(14px, 2.5vw, 24px )",
               color: "#000000",

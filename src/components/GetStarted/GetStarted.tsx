@@ -50,7 +50,7 @@ const GetStarted = () => {
       <Container>
         <Box marginTop="90px">
           <Tabs>
-            <Flex justify="center">
+            <Flex justify="center" className='mb-4'>
               <TabList
                 bg="grey.200"
                 color="grey.400"

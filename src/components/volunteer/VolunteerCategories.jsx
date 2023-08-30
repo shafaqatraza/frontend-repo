@@ -169,7 +169,7 @@ const VolunteerCategories = () => {
     <>
       <div className="mt-5">
         <div className="container">
-          <p className="ndollar-txt">What Deed Dollars Can Earn You</p>
+          <p className="ndollar-txt" style={{ fontSize: "clamp(16px, 2.2vw + 12px, 30px)"}}>What Deed Dollars Can Earn You</p>
           <p style={{ fontSize: "clamp(16px, 2.2vw + 0.9rem, 24px)", lineHeight: "29px", fontWeight: "700" }} className="mt-3">Trending Now</p>
           <Box mt={30} mb={50}>
             {/* <Text
@@ -315,7 +315,7 @@ const VolunteerCategories = () => {
             </div>
             <div className="d-flex row">
               <div className="col-md-7">
-                <p className="our-platform mt-md-3 mt-4 mb-5 px-3">High school students in Ontario need to complete 40 hours of volunteer service before graduation. Good Deeds provides a <span className="d-md-inline">remote and convenient solution for accumulating your <span className="d-md-inline ">community hours.</span></span></p>
+                <p className="our-platform mt-md-5 mt-4 mb-5 px-3">High school students in Ontario need to complete 40 hours of volunteer service before graduation. Good Deeds provides a <span className="d-md-inline">remote and convenient solution for accumulating your <span className="d-md-inline ">community hours.</span></span></p>
               </div>
               <div className="col-md-5 d-flex justify-content-center align-items-center mt-md-5 mt-xxl-4 ">
                 <button className="high-school-btn mb-5 ms-md-5" onClick={() => { router.push('/students-landing') }}>High School Students Click Here</button>
