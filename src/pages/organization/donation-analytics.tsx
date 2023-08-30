@@ -21,7 +21,6 @@ interface DataSourceType {
 }
 
 
-
 useEffect(() => {
   axios.get(`${baseUrl}/donation-analytics/${currOrgSlug}/all`,  {
     headers: {
