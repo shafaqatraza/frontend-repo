@@ -4,14 +4,17 @@ import Navbar from '../../components/Navbar'
 import { Footer } from '../../components/Footer'
 import { Table } from "antd";
 import axios from "axios";
-import { accessToken, baseUrl } from '../../components/Helper/index'
+import { accessToken, baseUrl, currOrgSlug } from '../../components/Helper/index'
 import moment from 'moment';
 import { HamburgerIcon } from "@chakra-ui/icons";
 
 const DonationAnalytics = () => {
 const [donationData, setDonationData] = useState([]);
+<<<<<<< HEAD
 const [slug, setSlug] = useState([]);
 const [show, setShow] = useState(false);
+=======
+>>>>>>> a694a8d6f21100334f83aa64a6ae960b4b6b0e16
 
 interface DataSourceType {
   key: string;
@@ -20,67 +23,21 @@ interface DataSourceType {
   amount: string;
 }
 
-useEffect(() => {
-  axios
-    .get(`${baseUrl}/organizations`, {
-      headers: {
-        Authorization: "Bearer " + accessToken(),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-    .then((res) => {
-      setSlug(res.data[0].slug);
-    })
-    .catch((err) => {
-      // console.log(err);
-    });
-}, []);
+
 
 useEffect(() => {
-  axios.get(`${baseUrl}/donation-analytics/${slug}/all`,  {
+  axios.get(`${baseUrl}/donation-analytics/${currOrgSlug}/all`,  {
     headers: {
       Authorization: 'Bearer ' + accessToken(),
       // 'Content-Type': 'application/x-www-form-urlencoded'
     }
   }).then((res)=>{
-    console.log(res.data.data, "response")
     setDonationData(res.data.data);
   }).catch((err)=>{
     console.log(err)
   })
-}, [])
-// const dataSource: DataSourceType[] = [
-//   {
-//     key: "1",
-//     user: "John",
-//     date: "2022-01-01",
-//     amount: "$100.00"
-//   },
-//   {
-//     key: "2",
-//     user: "Mary",
-//     date: "2022-01-02",
-//     amount: "$50.00"
-//   },
-//   {
-//     key: "3",
-//     user: "Bob",
-//     date: "2022-01-03",
-//     amount: "$75.00"
-//   },
-//   {
-//     key: "4",
-//     user: "Alice",
-//     date: "2022-01-04",
-//     amount: "$200.00"
-//   },
-//   {
-//     key: "5",
-//     user: "Charlie",
-//     date: "2022-01-05",
-//     amount: "$150.00"
-//   }
-// ];
+}, [currOrgSlug])
+
 
 interface ColumnsType {
   title: string;

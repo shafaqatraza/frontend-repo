@@ -242,7 +242,7 @@ const OrganizationInfo = () => {
       })
       .catch((error) => {
         toast({ position: "top", title: error.response.data.message, status: "error" })
-        setShowSuccess(true);
+        // setShowSuccess(true);
         setIsUpdating(false);
       });
   };

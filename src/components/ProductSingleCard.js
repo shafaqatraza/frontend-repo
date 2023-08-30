@@ -15,7 +15,7 @@ import {
 import * as React from 'react'
 import { FavouriteButton } from './FavouriteButton'
 import NoImage from '../../src/assets/imgs/no-image.png'
-import { baseImgUrl, isLogin } from '../../src/components/Helper/index'
+import { baseImgUrl, isLogin, currentUserData } from '../../src/components/Helper/index'
 import { useRouter } from 'next/router'
 import { EditIcon } from '@chakra-ui/icons'
 import { useToast } from '@chakra-ui/toast'
@@ -34,16 +34,21 @@ export const ProductSingleCard = (props) => {
     isImageEdit
   } = props
 
-  // console.log("nooooooqqqs", product);
-
   const { title, credit_amount, name, media, id, created_at, transaction_status, slug, post_type, thumbnail, created_at_human_diff, url_to_donate, category } = product
-  // console.log("category", category);
-  // console.log('kkk', title, media[0].path, media[0].image);
-  // console.log('bbb', baseImgUrl);
+
   // const created_listing = moment(created_at).utc().format('YYYY-MM-DD, h:mm a')
   const router = useRouter()
   const toast = useToast()
 
+  const handleDonateButtonClick = (url) => {
+    if (!isLogin()) {
+      toast({ title: "Please login for the donation", status: "error", position: "top" });
+    }else{
+      window.open(`${url}?username=${currentUserData?.user_profile?.username}&listing=${slug}`, '_blank');
+    }   
+  };
+
+  
   return (
     <Stack position="relative" spacing={useBreakpointValue({ base: '4', md: '5' })} maxW="250px" {...rootProps}>
       <Box
@@ -188,10 +193,10 @@ export const ProductSingleCard = (props) => {
               borderRadius='100px'
               fontSize="12px"
               fontWeight={'600'}
-            // onClick={url_to_donate}
+              onClick={() => handleDonateButtonClick(url_to_donate)}
             >
               Donate
-            </Button> :
+            </Button>:
             null
           }
         </Stack>
