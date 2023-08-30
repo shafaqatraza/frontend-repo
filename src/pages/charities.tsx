@@ -347,28 +347,28 @@ const Charities = () => {
             <Slider {...settings}>
               
                 <div  className="pe-3">
-                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                 <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3">
-                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3">
-                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
 
             </Slider>
@@ -534,25 +534,25 @@ const Charities = () => {
       </div> */}
       <div className="container px-0 py-5">
         <div className="d-flex flex-column flex-lg-row align-items-center">
-          <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
+          <div className="me-lg-4 mb-4 mb-lg-0 charity-card conveient-access">
             <img src={partner1.src} className='m-auto mb-4' alt="" />
-            <h1 className='mb-4'>Convenient Access</h1>
-            <p className='px-xxl-4 px-3'>Access Good Deeds’s diverse and growing database of volunteers with varying levels of unique skills and expertise based on your project needs.</p>
+            <h1 className='mb-4 mt-5 pt-1'>Convenient Access</h1>
+            <p>Access Good Deeds’s diverse and growing database of volunteers with varying levels of unique skills and expertise based on your project needs.</p>
           </div>
           <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
             <img src={partner2.src} className='m-auto mb-4' alt="" />
             <h1 className='mb-4'>Optimized <br /> Security and Safety</h1>
-            <p className='px-3'>Provide your volunteers with access to a reliable and secure platform to connect with vetted and age-suitable volunteer opportunities.</p>
+            <p className='px-4'>Provide your <br /> volunteers with access to a reliable and secure platform to connect with vetted and age-suitable volunteer opportunities.</p>
           </div>
           <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
             <img src={partner3.src} className='m-auto mb-4' alt="" />
-            <h1 className='mb-4'>Trusted Quality</h1>
-            <p className='px-3'>Our rate and review feature maintains trusted standards in reliability, transparency, and accountability.</p>
+            <h1 className='mb-4 mt-5'>Trusted Quality</h1>
+            <p className='px-xl-5 px-4'>Our rate and review feature maintains trusted standards in reliability, transparency, and accountability.</p>
           </div>
           <div className=" charity-card">
             <img src={partner4.src} className='m-auto mb-4' alt="" />
-            <h1 className='mb-4'>Engaging <br /> Reward System</h1>
-            <p className='px-3'>Improve your volunteer engagement and retention with a reward system where volunteers earn Deed Dollars for their invaluable contributions. </p>
+            <h1 className='mb-4 mt-4 pt-2'>Engaging <br /> Reward System</h1>
+            <p className='px-3'>Improve your <br /> volunteer engagement and retention with a reward system where volunteers earn Deed Dollars for their invaluable <br /> contributions. </p>
           </div>
         </div>
       </div>

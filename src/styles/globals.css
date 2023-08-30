@@ -874,7 +874,7 @@ margin-bottom: 24px;
 }
 .high-school-btn{
   width: 377px;
-  height: 51px;
+  height: 47px;
   border-radius: 100px;
   background-color: #E27832;
   color: white;
@@ -1131,6 +1131,8 @@ font-weight: 700;
   border-radius: 100px;
   background-color: #E27832;
   color: white;
+  font-size: 16px;
+  font-weight: 600;
 }
 .plan-txt{
   font-size: clamp(40px, 5vw, 64px);
@@ -1172,7 +1174,7 @@ font-weight: 700;
   border: 1.7px solid #000000;
 }
 .give-earn .card{
-  box-shadow: 0 4px 4px rgba(0,0,0,.15)!important;
+  box-shadow: 0 4px 4px #0000003a!important;
 }
 .preferred-company{
   padding: 1.375rem .75rem;
@@ -1844,7 +1846,7 @@ color: #E27832;
   margin: auto;
 }
 .mission-card{
-  box-shadow: 0 0 5px #0000005e;
+  box-shadow: 0 4px 4px #00000038;
   border-radius: 8px;
   padding: 35px 35px 25px 35px;
 }
@@ -1873,7 +1875,7 @@ color: #E27832;
   padding: 20px 7px 20px 7px;
   border: 1px solid black;
   width: 300px;
-  min-height: 491px;
+  min-height: 496px;
 }
 .charity-card h1{
   font-size: 24px;
@@ -1893,6 +1895,28 @@ color: #E27832;
 .wel-dashboard .my-sidebar{
   width: 100%;
 }
+.organization-dash .my-sidebar{
+  width: 100%;
+}
+.conveient-access p{
+  padding:0 36px;
+}
+.guide-heading{
+  font-size: 60px;
+  text-align: center;
+  font-weight: 700;
+  color: #183553;
+  margin: 85px 0;
+}
+.guide-sub-heading{
+  font-size: 36px;
+  font-weight: 700;
+  color: #183553;
+}
+.community-guideline{
+  font-size: 24px;
+  font-weight: 600;
+}
 
 @media screen and (min-width:1400px){
   .passionate-vol .volunteer-card-row1{
@@ -1906,7 +1930,7 @@ color: #E27832;
     gap: 2rem !important;
   }
   .charity-card {
-    min-height: 458px;
+    min-height: 504px;
 }
 }
 @media screen and (max-width:1199px){
@@ -1932,6 +1956,19 @@ color: #E27832;
   }
   .welc-txt {
     font-size: 41px;
+  }
+  .guide-heading{
+    font-size: 40px;
+    margin: 85px 0;
+  }
+  .guide-sub-heading{
+    font-size: 24px;
+  }
+  .community-guideline{
+    font-size: 16px;
+  }
+  .conveient-access p{
+    padding:0 24px;
   }
   .welc-txt2 {
     font-size: 41px;
@@ -2070,6 +2107,9 @@ color: #E27832;
     position: absolute;
     z-index: 1;
     margin-top: 24px;
+    }
+    .plan-main {
+      height: 25px;
     }
   .charities-stpe-content p:first-child{
     font-size: 32px !important;

@@ -12,12 +12,14 @@ import Link from "next/link";
 import axios from "axios";
 import { accessToken, baseUrl } from "../../../components/Helper/index";
 import { useRouter } from "next/router";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 const VolunteerApplications = () => {
   const [volunteerData, setVolunteerData] = useState([]);
   const [applicantName, setApplicantName] = useState([]);
   const [volunteerName, setVolunteerName] = useState([]);
   const [volunteerSlug, setVolunteerSlug] = useState([]);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     axios
       .get(`${baseUrl}/organizations`, {
@@ -65,44 +67,53 @@ const VolunteerApplications = () => {
   return (
     <>
       <Navbar />
-      <Sidebar>
-        <div className="plan-main"></div>
-        <div className="ms-2">
-          <p className="info-txt">Volunteer Applications</p>
+      <div className="row m-0">
+      <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShow(!show)}><HamburgerIcon/></button>
+        <div className="col-3 ps-0 organization-dash d-none d-lg-block">
+          <Sidebar>
+          </Sidebar>
         </div>
-        <div className="mt-4">
-  <div className="row">
-    {applicantName &&
-      applicantName.map((item, index) => (
-        <div className="col-md-4 mx-2" key={index}>
-          <Link href={`volunteer-applications/${ // @ts-ignore: Unreachable code error
-          item?.slug}`}>
-            <a>
-              <Image className="applicant-image" src={
-                 // @ts-ignore: Unreachable code error
-                item?.path} />
-            </a>
-          </Link>
-          <div>{
-           // @ts-ignore: Unreachable code error
-          item?.title}</div>
-          <div>
-            <p className="fw-bold">
-              {
-               // @ts-ignore: Unreachable code error
-              item?.applications_count} Applicants
-            </p>
+        {show && <div className="col-lg-3 px-0 wel-dashboard d-block d-lg-none">
+          <Sidebar>
+          </Sidebar>
+      </div>}
+        <div className="col">
+          <div className="plan-main"></div>
+          <div className="ms-2">
+            <p className="info-txt text-center text-md-start">Volunteer Applications</p>
+          </div>
+          <div className="mt-4">
+            <div className="row m-0 text-center text-md-start">
+              {applicantName &&
+                applicantName.map((item, index) => (
+                  <div className="col-md-4 mx-2" key={index}>
+                    <Link href={`volunteer-applications/${ // @ts-ignore: Unreachable code error
+                    item?.slug}`}>
+                      <a className="">
+                        <Image className="applicant-image m-auto mx-md-0 my-3" src={
+                          // @ts-ignore: Unreachable code error
+                          item?.path} />
+                      </a>
+                    </Link>
+                    <div>{
+                    // @ts-ignore: Unreachable code error
+                    item?.title}</div>
+                    <div>
+                      <p className="fw-bold">
+                        {
+                        // @ts-ignore: Unreachable code error
+                        item?.applications_count} Applicants
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+          <div className="mt-3">
+            {/* <Table columns={columns} dataSource={dataSource} /> */}
           </div>
         </div>
-      ))}
-  </div>
-</div>
-
-
-        <div className="mt-3">
-          {/* <Table columns={columns} dataSource={dataSource} /> */}
-        </div>
-      </Sidebar>
+      </div>
       <Footer />
     </>
   );

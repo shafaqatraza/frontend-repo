@@ -217,8 +217,8 @@ const About = () => {
       <Navbar />
       <div className='container my-5 py-4 px-0'>
         <div className='d-flex align-items-center justify-content-center flex-column flex-md-row about-good-deed'>
-          <h1 className='good-deeds'>This is <span style={{color:"#E27832"}}>Good Deeds.</span></h1>
-          <img src={banner.src} className='mt-5 mt-md-0' alt="banner" />
+          <h1 className='good-deeds' style={{color:"#183553"}}>This is <span style={{color:"#E27832"}}>Good Deeds.</span></h1>
+          <img src={banner.src} className='mt-5 mt-md-0' width="250px" alt="banner" />
         </div>
       </div>
       <Box style={{background:"rgb(222,227,230,50%)"}}>
@@ -550,28 +550,28 @@ const About = () => {
             <Slider {...settings}>
               
                 <div  className="pe-3">
-                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3">
-                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <img src={part1.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <img src={part2.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3">
-                  <img src={part3.src} className="" style={{height:"150px",}} alt="" />
+                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <img src={part4.src} className="w-100" style={{height:"150px",}} alt="" />
+                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
 
             </Slider>

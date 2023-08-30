@@ -37,8 +37,8 @@ const Plan = () => {
                   Click here to get volunteers and donors
                 </Button>
             </div>
-            <div className="col-lg-8 pe-lg-0 pe-1 ps-0 ps-lg-2 py-lg-5">
-              <p className="good-deeds d-none d-lg-block"><span style={{ color: "#183553" }}>Calling all</span> <span style={{ color: "#E27832" }}>Charities</span> and <span style={{ color: "#E27832" }}>NPO’s</span><span style={{ color: "#183553" }}>: Need donations or volunteers?</span></p>
+            <div className="col-lg-8 pe-lg-0 pe-1 ps-0 ps-lg-4 py-lg-5">
+              <p className="good-deeds d-none d-lg-block"><span style={{ color: "#183553" }}>Calling all</span> <span style={{ color: "#E27832" }}>Charities</span><span style={{ color: "#183553" }}> and</span> <span style={{ color: "#E27832" }}>NPO’s</span><span style={{ color: "#183553" }}>: Need donations or volunteers?</span></p>
               <p className="our-platform d-none d-lg-block mt-4 mb-md-0">Unleash the potential of impact. Discover how Good Deeds amplifies charitable donations and maximizes cost savings for your organization. Unlock a world of diverse, dedicated volunteers, both skilled and unskilled, poised to join your noble cause.</p>
               <p className="our-platform d-block d-lg-none mb-md-0  px-3">Learn more about how Good Deeds can help increase charitable donations, and save your organization money by matching you with a wide range of skilled or unskilled volunteers.</p>
               <Button className="d-block d-lg-none mt-4 mb-5"
