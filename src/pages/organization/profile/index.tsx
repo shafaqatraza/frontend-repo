@@ -16,6 +16,7 @@ import placeholder from "../../../assets/imgs/placeholder.png";
 import camera from "../../../assets/imgs/camera.png";
 import { useRouter } from 'next/router'
 import { useToast } from '@chakra-ui/toast'
+import profilTrash from '../../../assets/imgs/profile-trash.png'
 
 interface FormErrors {
   full_name:boolean,
@@ -613,7 +614,7 @@ const OrganizationInfo = () => {
         <Sidebar>
           <div className="col-md-12 mt-5">
             <div className="main-org-img">
-              <div className="org-img text-center position-relative">
+              <div className="org-img text-center position-relative mt-md-4 pt-md-3">
                 <div className="org-prof-img">
                   {!isLoaded && <img src={placeholder.src} alt="Loading..." />}
                   <Image
@@ -626,13 +627,14 @@ const OrganizationInfo = () => {
                     alt={"image"}
                     onLoad={() => setIsLoaded(true)}
                     onError={() => setIsLoaded(true)}
+                    className="rounded-circle"
                     style={{ display: isLoaded ? "block" : "none" }}
                   />
                 </div>
                 <Image
                   src={edit.src}
                   onClick={handleShowModal}
-                  className="position-absolute top-0 float-end"
+                  className="position-absolute right-0 top-0 float-end"
                 />
               </div>
             </div>
@@ -644,10 +646,10 @@ const OrganizationInfo = () => {
                 }
               </p>
             </div>
-            <div className="row">
+            <div className="row ps-3">
               <div className="col-md-6">
-                <div className="mt-5">
-                  <p className="info-txt">Organization Info</p>
+                <div className="mt-5 mb-4 pb-3">
+                  <p className="info-txt" style={{fontSize:"30px"}}>Organization Info</p>
                 </div>
                 <div className="mt-4">
                   <form>
@@ -740,15 +742,16 @@ const OrganizationInfo = () => {
                       </button>
                     </div>
                   </form>
-                  <div>
+                  <div className="d-flex align-items-center">
                     <button onClick={handleShow} className="del-btn">
                       Delete Account
                     </button>
+                    <img src={profilTrash.src} style={{height:"20px"}} className="img-fluid ms-3"   alt=""/>
                   </div>
                   <div></div>
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-6 pt-md-5">
                 <p className="fw-bold text-center mt-5">
                   <div className="mt-5">Plan</div>
                 </p>
@@ -816,6 +819,7 @@ const OrganizationInfo = () => {
                 )}
               </div>
               <div className="mt-5">
+              <p className="info-txt mb-4" style={{color:"black"}}>Members</p>
                 <Table dataSource={inviteData} columns={columns} />
               </div>
               

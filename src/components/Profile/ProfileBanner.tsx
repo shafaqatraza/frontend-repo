@@ -30,6 +30,8 @@ import { useRouter } from "next/router";
 import camera from "../../assets/imgs/camera.png";
 import { useToast } from '@chakra-ui/toast'
 import { ReactNode } from 'react';
+import location from '../../assets/imgs/location.png'
+import copyLink from '../../assets/imgs/copylink.png'
 
 
 export const ProfileBanner = (props: any) => {
@@ -378,7 +380,8 @@ export const ProfileBanner = (props: any) => {
               }
             >
               <HStack fontSize="sm">
-                <Icon as={GoGlobe} color="grey.100" />
+                {/* <Icon as={GoGlobe} color="grey.100" /> */}
+                <img src={location.src} width="15px" alt="" />
                 <Text>{profileData.user_profile.location || ''}</Text>
               </HStack>
               <HStack>
@@ -579,11 +582,12 @@ export const ProfileBanner = (props: any) => {
               onClick={onCopy}
               type="submit"
               colorScheme="custom"
-              size="lg"
+              className="pe-md-4"
               fontSize="md"
               style={isMobile ? { borderRadius: 70 } : {}}
             >
               {isMobile ? <LinkIcon fontSize={'md'} mr={'5px'} /> : null}
+              <img src={copyLink.src} width="15px" className="me-md-5 me-3" alt="" />
               Copy link {hasCopied ? 'Copied' : ''}
             </Button>
           </VStack>

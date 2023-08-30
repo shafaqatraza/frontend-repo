@@ -267,7 +267,7 @@ const organization = () => {
               </div>
               <div className="col-md-5 col-sm-6 pt-5 giving-img">
                 <Image src={giving.src} alt={"Giving"} className="pe-5" />
-                <div className="card shadow border-0 plan-card">
+                <div className="card border-0 plan-card">
                   <div className="text-center">
                     <p className="p-txt mt-3">Plan</p>
                   </div>
