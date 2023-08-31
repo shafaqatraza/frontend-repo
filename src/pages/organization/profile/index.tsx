@@ -619,7 +619,6 @@ const OrganizationInfo = () => {
                   {!isLoaded && <img src={placeholder.src} alt="Loading..." />}
                   <Image
                     // style={{ height: "165px", width: "340px" }}
-                    className="img-fluid"
                     src={
                       // @ts-ignore: Unreachable code error
                       data?.profile_picture
@@ -627,7 +626,7 @@ const OrganizationInfo = () => {
                     alt={"image"}
                     onLoad={() => setIsLoaded(true)}
                     onError={() => setIsLoaded(true)}
-                    className="rounded-circle"
+                    className="img-fluid rounded-circle"
                     style={{ display: isLoaded ? "block" : "none" }}
                   />
                 </div>
