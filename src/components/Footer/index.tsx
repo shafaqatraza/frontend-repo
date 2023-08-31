@@ -43,7 +43,7 @@ export const Footer = () => (
             ms={{ base: "30px", sm: "0" }}
           >
             {" "}
-            Do Good. Get Rewarded.
+            Do Good. Feel Better. Get Rewarded
           </Text>
         </Box>
         <SimpleGrid

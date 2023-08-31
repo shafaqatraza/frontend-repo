@@ -60,6 +60,7 @@ import { Upload } from 'antd';
 import { useMutation } from 'react-query'
 import NoImage from '../../assets/imgs/no-image.png'
 import {Pusher_key} from '../../../config'
+import chatAttached from '../../assets/imgs/chat-attached.png'
 
 let pusher = {};
 let echo = {};
@@ -2486,6 +2487,8 @@ const Message = (props) => {
 																						w={'70%'}
 																						type="submit"
 																						mt={'5'}
+																						mb={'3'}
+																						ms ={'10'}
 																						colorScheme="orange"
 																						size="md"
 																						fontSize="md"
@@ -2534,11 +2537,7 @@ const Message = (props) => {
 																					}
 																					}
 																				>
-																					<BiImageAdd
-																						fontSize={30}
-																						color={'#979797'}
-																						fontWeight={600}
-																					/>
+																					<img src={chatAttached.src} width="25px" className="ms-4" alt="" />
 																				</Upload>
 																				:
 																				<Spinner
@@ -2557,7 +2556,7 @@ const Message = (props) => {
 																			minH={'45px'}
 																			type={'text'}
 																			placeholder="Message here"
-																			backgroundColor={'#fff'}
+																			backgroundColor={'#E8E8E8'}
 																			borderRadius={20}
 																			value={message}
 																			onChange={(e) => {

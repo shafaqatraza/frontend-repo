@@ -131,6 +131,14 @@ import {
                 >
                   <Text zIndex="100">Transactions</Text>
                 </Tab>
+                <Tab
+                _focus={{ outline: "none" }}
+                _selected={{ color: "orange.400" }}
+                borderRadius="30px"
+                px="8"
+              >
+                <Text zIndex="100">Applications</Text>
+              </Tab>
 
                 <TabIndicator
                   bg="white"
