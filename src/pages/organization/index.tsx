@@ -166,7 +166,7 @@ const organization = () => {
                           }
                         </p>
                         <div className="mt-3">
-                          <a className="orga-txt" href="">
+                          <a className="orga-txt" href="/organization/profile">
                             Edit Profile
                           </a>
                         </div>

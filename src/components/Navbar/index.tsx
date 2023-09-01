@@ -440,7 +440,7 @@ export default function Navbar(props: any) {
           />
 
         </Head>
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+        <Flex h={16} alignItems={'center'} justifyContent={'space-between'} className='ps-md-5 pe-md-4'>
           {isSmallerThan991 &&
             <Center>
               <HStack spacing={8} alignItems={'center'}>
@@ -743,7 +743,7 @@ export default function Navbar(props: any) {
                 variant={'solid'}
                 colorScheme={'orange'}
                 style={{ borderRadius: 50 }}
-                size={'md'}
+                // size={'md'}
                 ml={4}
                 className="nav-login-btn"
                 onClick={() => {
