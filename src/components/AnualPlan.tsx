@@ -79,7 +79,7 @@ const AnualPlan = () => {
                 <div className="d-flex justify-content-center mb-5 flex-wrap">
                   <div>
                     <div
-                      className="card border-0"
+                      className="card border-0 px-md-3"
                       style={{
                         backgroundColor: "#f6d6c1",
                         width: "243px",
@@ -88,7 +88,7 @@ const AnualPlan = () => {
                       }}
                     >
                       <div className="card-body ">
-                        <p className="card-title mt-3 free-txt text-center">
+                        <p className="card-title mt-4 pt-md-1 free-txt text-center">
 
                           {// @ts-ignore: Unreachable code error
                             dataone?.name}
@@ -97,7 +97,7 @@ const AnualPlan = () => {
                           {dataonedesc}
                         </p>
                         <p
-                          className="mt-1 text-center"
+                          className="mt-2 text-center"
                           style={{
                             color: "#183553",
                             fontSize: "11px",
@@ -109,8 +109,9 @@ const AnualPlan = () => {
                           <span className="free-txt3">
                             {
                               // @ts-ignore: Unreachable code error
-                              dataone?.currency_symbol}{parseInt(dataone?.amount)}</span>/month, billed{" "}
-                          <span className="ms-5">monthly</span>
+                              dataone?.currency_symbol}{parseInt(dataone?.amount)}</span>
+                              {/* /month, billed{" "} */}
+                          {/* <span className="ms-5">monthly</span> */}
                         </p>
                         <hr className="mt-3" />
                         <div className="mt-3">
@@ -155,7 +156,7 @@ const AnualPlan = () => {
                   </div>
                   <div>
                     <div
-                      className="card border-0"
+                      className="card border-0 px-md-3"
                       style={{
                         backgroundColor: "#DEE3E6",
                         width: "243px",
@@ -187,7 +188,7 @@ const AnualPlan = () => {
                           <span className="free-txt3">  {
                             // @ts-ignore: Unreachable code error
                             data?.currency_symbol}{parseInt(data?.amount)}</span>/month,billed
-                          <span className="ms-5">monthly</span>
+                          <div className='ms-4 ps-1'><span className="ms-5 ps-5">annually</span></div>
                         </p>
                         <hr className="mt-3" />
                         <div className="mt-3">
@@ -231,7 +232,7 @@ const AnualPlan = () => {
                   </div>
                   <div>
                     <div
-                      className="card border-0"
+                      className="card border-0 px-md-3"
                       style={{
                         backgroundColor: "#f9e4d6",
                         width: "243px",
@@ -240,7 +241,7 @@ const AnualPlan = () => {
                       }}
                     >
                       <div className="card-body ">
-                        <p className="card-title mt-3 pre-txt text-center">
+                        <p className="card-title mt-1 pre-txt text-center">
                           {
                             // @ts-ignore: Unreachable code error
                             datatwo?.name}
@@ -249,7 +250,7 @@ const AnualPlan = () => {
                           {datatwodesc}
                         </p>
                         <p
-                          className="mt-4 text-center"
+                          className="mt-2 text-center"
                           style={{
                             color: "#183553",
                             fontSize: "11px",
@@ -260,7 +261,7 @@ const AnualPlan = () => {
                           <span className="free-txt3">    {
                             // @ts-ignore: Unreachable code error
                             datatwo?.currency_symbol}{parseInt(datatwo?.amount)}</span>/month,billed
-                          <span className="ms-5">monthly</span>
+                          <div className='ms-4 ps-1'><span className="ms-5 ps-5">annually</span></div>
                         </p>
                         <hr className="mt-3" />
                         <div className="mt-3">
@@ -304,7 +305,7 @@ const AnualPlan = () => {
                   </div>
                   <div>
                     <div
-                      className="card border-0"
+                      className="card border-0 px-md-3"
                       style={{
                         backgroundColor: "rgb(209 215 221)",
                         width: "243px",
@@ -313,7 +314,7 @@ const AnualPlan = () => {
                       }}
                     >
                       <div className="card-body ">
-                        <p className="card-title mt-3 free-txt text-center">
+                        <p className="card-title mt-2 free-txt text-center">
                           {
                             // @ts-ignore: Unreachable code error
                             datathree?.name}
@@ -333,7 +334,7 @@ const AnualPlan = () => {
                           <span className="free-txt3">    {
                             // @ts-ignore: Unreachable code error
                             datathree?.currency_symbol}{parseInt(datathree?.amount)}</span>/month,billed{" "}
-                          <span className="ms-5">monthly</span>
+                          <div className='ms-4 ps-1'><span className="ms-5 ps-5">annually</span></div>
                         </p>
                         <hr className="mt-3" />
                         <div className="mt-3">
