@@ -45,6 +45,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import fav from "../assets/imgs/favicon.ico"
 import rev1 from "../assets/imgs/student_rev_1.png";
+import revew1 from '../assets/imgs/review_one.jpg'
+import revew2 from '../assets/imgs/review_two.jpg'
+import revew3 from '../assets/imgs/review_three.jpg'
 
 const Charities = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -991,17 +994,19 @@ const Charities = () => {
                   </p>
                   <div className="d-flex align-items-center justify-content-center mt-4">
                     <Image
-                      src={rev1.src}
+                      src={revew1.src}
                       alt={"Review"}
                       style={{
-                        width: '83px',
-                        height: '90px',
-                        borderRadius: '50px',
+                        width: '41px',
+                        height: '46px',
+                        borderRadius: '50%',
+                        border:'4px solid #E27832'
                       }}
+                      className='me-3'
                     />
                     <div className="">
                       <p className="rev-txt1">Laina Mercer</p>
-                      <p className="rev-txt2">Habitat for Humanity Canada</p>
+                      <p className="rev-txt2">Barrie, Ontario</p>
                     </div>
                   </div>
                 </div>
@@ -1019,21 +1024,23 @@ const Charities = () => {
                     <span className="star">&#9733;</span>
                   </div>
                   <p className="review">
-                  Thank you, Good Deeds Canada for joining the Partner for Life program. As it can often take more than one donor to save a life, Partners for Life brings people together with the common goal of supporting the most vulnerable people in our communities.
+                  Good Deeds is simply perfect for someone like me who’s always looking for the next opportunity to help out. It was just the thing to bond with my son while we engaged in social work as a collective unit. Give it a try if you’re a volunteer with lots to give!
                   </p>
                   <div className="d-flex align-items-center justify-content-center mt-4">
                     <Image
-                      src={rev1.src}
+                      src={revew2.src}
                       alt={"Review"}
                       style={{
-                        width: '83px',
-                        height: '90px',
-                        borderRadius: '50px',
+                        width: '41px',
+                        height: '46px',
+                        borderRadius: '50%',
+                        border:'4px solid #E27832'
                       }}
+                      className='me-3'
                     />
                     <div >
-                      <p className="rev-txt1">Simran Dulay</p>
-                      <p className="rev-txt2">Canadian Blood Services</p>
+                      <p className="rev-txt1">Jake Masic</p>
+                      <p className="rev-txt2">Brampton, Ontario</p>
                     </div>
                   </div>
                 </div>
@@ -1054,13 +1061,15 @@ const Charities = () => {
                   </p>
                   <div className="d-flex align-items-center justify-content-center mt-4">
                     <Image
-                      src={rev1.src}
+                      src={revew3.src}
                       alt={"Review"}
                       style={{
-                        width: '83px',
-                        height: '90px',
-                        borderRadius: '50px',
+                        width: '41px',
+                        height: '46px',
+                        borderRadius: '50%',
+                        border:'4px solid #E27832'
                       }}
+                      className='me-3'
                     />
                     <div>
                       <p className="rev-txt1">Abe Evreniadis</p>
