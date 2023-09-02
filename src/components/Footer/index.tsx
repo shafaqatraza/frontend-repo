@@ -17,6 +17,13 @@ import Image from "next/image";
 import { footerLinks, links, socialLinks } from "./FooterData";
 import logo from "../../assets/imgs/footer-logo.png";
 import { SocialButton } from "./SocialButton";
+import footerfacebook from "../../assets/imgs/footerfacebook.png";
+import footertwiter from "../../assets/imgs/footertwitter.png";
+import footerlinkedIn from "../../assets/imgs/footerlinkedin.png";
+import footeryoutube from "../../assets/imgs/footeryoutube.png";
+import footerinsta from "../../assets/imgs/footerinstagram.png";
+
+
 export const Footer = () => (
   <Box as="footer" bg="secondary.100" color="white" pb="30px" pt="20px">
     <Box maxW="8xl" px="8" mx="auto">
@@ -48,11 +55,12 @@ export const Footer = () => (
         </Box>
         <SimpleGrid
           w="full"
-          maxW={{ base: "unset", lg: "5xl" }}
+          maxW={{ base: "unset", lg: "3xl" }}
           columns={{ base: 1, lg: 4, sm: 1 }}
-          spacing={{ base: "4", md: "2" }}
+          spacing={{ base: "4", md: "12" }}
           fontSize="10px"
           fontWeight="600"
+          className="ms-md-5"
         >
           {links.map((group, idx) => (
             <Box key={idx}>
@@ -87,6 +95,13 @@ export const Footer = () => (
             </Box>
           ))}
         </SimpleGrid>
+        <div className=" me-4 mt-4 d-flex">
+          <a href="https://www.facebook.com/gooddeeds.ca" target="_blank" className="me-3"><img src={footerfacebook.src} width='30px'  alt="" /></a>
+          <a href="https://twitter.com/GoodDee20643366" target="_blank" className="me-3"><img src={footertwiter.src} width='30px'  alt="" /></a>
+          <a href="https://www.linkedin.com/company/good-deeds-llc-1/" target="_blank" className="me-3"><img src={footerlinkedIn.src} width='30px'  alt="" /></a>
+          <a href="#" className="me-3"><img src={footeryoutube.src} width='30px'  alt="" /></a>
+          <a href="https://www.instagram.com/gooddeedsllc/" target="_blank"><img src={footerinsta.src} width='30px' alt="" /></a>
+        </div>
         {/* <HStack spacing="2" mt="8" as="ul">
           {socialLinks.map((link, idx) => (
             <SocialButton key={idx} href={link.href}>

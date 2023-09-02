@@ -572,7 +572,7 @@ export const ProfileBanner = (props: any) => {
             }
           >
             <Text fontSize={14} style={{ textAlign: 'center', width: '81%' }}>
-              Invite your friends and get 100 credits
+              Invite your friends and get 10 credits
             </Text>
             <Text fontSize={16} color="primary.300" fontWeight={600}>
               url link here

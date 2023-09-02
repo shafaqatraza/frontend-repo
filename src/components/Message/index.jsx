@@ -61,6 +61,8 @@ import { useMutation } from 'react-query'
 import NoImage from '../../assets/imgs/no-image.png'
 import {Pusher_key} from '../../../config'
 import chatAttached from '../../assets/imgs/chat-attached.png'
+import iconChat from '../../assets/imgs/chat.png'
+
 
 let pusher = {};
 let echo = {};
@@ -2031,6 +2033,7 @@ const Message = (props) => {
 																		}`}
 																	backgroundSize={'cover'}
 																	position={'relative'}
+																	style={{border:"4px solid #E27832"}}
 																>
 																	<div className="onlineStatus" style={{ background: chatHeader.online_status === true ? '#13d50c' : '#bfbfbf' }}></div>
 																</Avatar>
@@ -2048,7 +2051,8 @@ const Message = (props) => {
 														</Link>
 													</Flex>
 													<Text textAlign={'right'} mr={5} color={'white'}>
-														<BsChatLeftDotsFill
+														<img src={iconChat.src}
+															width="18px"
 															cursor={'pointer'}
 															onClick={() => setTransactionModal(true)}
 														/>

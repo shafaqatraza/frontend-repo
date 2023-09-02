@@ -17,6 +17,7 @@ import camera from "../../../assets/imgs/camera.png";
 import { useRouter } from 'next/router'
 import { useToast } from '@chakra-ui/toast'
 import profilTrash from '../../../assets/imgs/profile-trash.png'
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 interface FormErrors {
   full_name:boolean,
@@ -64,6 +65,7 @@ const OrganizationInfo = () => {
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShow(true);
   const [show, setShow] = useState(false);
+  const [showtoggle, setShowtoggle] = React.useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -84,6 +86,7 @@ const OrganizationInfo = () => {
   const [packageData, setPackageData] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
+  
 
   const getInvitedMembers = () => {
     axios
@@ -610,9 +613,17 @@ const OrganizationInfo = () => {
           </button>
         </div>
       </Modal>
-      <div className="row container-fluid main-side">
-        <Sidebar>
-          <div className="col-md-12 mt-5">
+      <div className="row container-fluid main-side m-0">
+      <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShowtoggle(!showtoggle)}><HamburgerIcon/></button>
+      <div className="col-lg-3 px-0 wel-dashboard d-none d-lg-block">
+          <Sidebar>
+          </Sidebar>
+      </div>
+        {showtoggle && <div className="col-lg-3 px-0 wel-dashboard d-block d-lg-none">
+          <Sidebar>
+          </Sidebar>
+          </div>}
+          <div className="col mt-5">
             <div className="main-org-img">
               <div className="org-img text-center position-relative mt-md-4 pt-md-3">
                 <div className="org-prof-img">
@@ -819,12 +830,11 @@ const OrganizationInfo = () => {
               </div>
               <div className="mt-5">
               <p className="info-txt mb-4" style={{color:"black"}}>Members</p>
-                <Table dataSource={inviteData} columns={columns} />
+                <Table dataSource={inviteData} className="table-responsive" columns={columns} />
               </div>
               
             </div>
           </div>
-        </Sidebar>
       </div>
       <Footer />
     </>

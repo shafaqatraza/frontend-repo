@@ -74,8 +74,8 @@ const ContactUs = () => {
             <Image style={{ width: "200px", height: "203px" }} src={gdlogopegiun.src} />
           </Flex>
           <Text fontSize={isSmallerThan767 ? '24px' : '36px'} lineHeight="42px" fontWeight={'700'} color="#183553" textAlign="center">Any questions? Let us help</Text>
-          <Text fontSize={isSmallerThan767 ? '16px' : '22px'} color="#212121" textAlign="center" mt="40px" className="pt-md-4">A safe and secure community is important to Good Deeds.</Text>
-          <Text fontSize={isSmallerThan767 ? '16px' : '22px'} color="#212121" textAlign="center" mt="15px">Please fill out the form below and someone will respond to your inquiry within 24 hours.</Text>
+          <Text fontSize={isSmallerThan767 ? '16px' : '22px'} color="#212121"  fontWeight={'500'} textAlign="center" mt="40px" className="pt-md-4">A safe and secure community is important to Good Deeds.</Text>
+          <Text fontSize={isSmallerThan767 ? '16px' : '22px'} color="#212121"  fontWeight={'500'} textAlign="center" mt="15px">Please fill out the form below and someone will respond to your inquiry within 24-48 hours.</Text>
         </Box>
 
         <Contact />

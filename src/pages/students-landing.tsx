@@ -33,6 +33,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import fav from "../assets/imgs/favicon.ico"
 import rev1 from "../assets/imgs/student_rev_1.png";
+import frankrusso from '../assets/imgs/frankrusso.png'
+import nina from '../assets/imgs/Nina_Harlow.png'
+import meg from '../assets/imgs/Meg_randall.png'
 
 
 const StudentLanding = () => {
@@ -718,7 +721,7 @@ const StudentLanding = () => {
                     type="tel"
                     className="form-control mt-1"
                     id="phone-number"
-                    placeholder="Company Name"
+                    placeholder="eg. Geneva Center for Autism"
                     required
                     onChange={(e) => setCompanyName(e.target.value)}
                     value={companyName}
@@ -740,7 +743,7 @@ const StudentLanding = () => {
                     type="tel"
                     className="form-control mt-1"
                     id="phone-number"
-                    placeholder="Department/Area of Expertise"
+                    placeholder="Marketing Department"
                     required
                     onChange={(e) => setExpertise(e.target.value)}
                     value={expertise}
@@ -764,7 +767,7 @@ const StudentLanding = () => {
                     onChange={(e) => setDescription(e.target.value)}
                     className="form-control mt-1"
                     id="phone-number"
-                    placeholder="Write  a short description of the request here."
+                    placeholder="Tell us more about what experience you are looking for"
                     required
                     value={description}
                   />
@@ -876,7 +879,7 @@ const StudentLanding = () => {
             <Col className="rev-col" md={4}>
 
               <div>
-                <div className="card-review pb-md-0">
+                <div className="card-review pb-md-3">
                   <div className="stars d-flex justify-content-center">
                     <span className="star">&#9733;</span>
                     <span className="star">&#9733;</span>
@@ -889,13 +892,15 @@ const StudentLanding = () => {
                   </p>
                   <div className="d-flex align-items-center justify-content-center mt-4">
                     <Image
-                      src={rev1.src}
+                      src={nina.src}
                       alt={"Review"}
                       style={{
-                        width: '83px',
-                        height: '90px',
-                        borderRadius: '50px',
+                        width: '40px',
+                        height: '46px',
+                        borderRadius: '50%',
+                        border:"4px solid #E27832"
                       }}
+                      className="me-3"
                     />
                     <div className="">
                       <p className="rev-txt1">Nina Harlowe (student)</p>
@@ -908,7 +913,7 @@ const StudentLanding = () => {
             <Col className="rev-col" md={4}>
 
               <div>
-                <div className="card-review pb-md-0">
+                <div className="card-review pb-md-3">
                   <div className="stars d-flex justify-content-center">
                     <span className="star">&#9733;</span>
                     <span className="star">&#9733;</span>
@@ -921,13 +926,15 @@ const StudentLanding = () => {
                   </p>
                   <div className="d-flex align-items-center justify-content-center mt-2">
                     <Image
-                      src={rev1.src}
+                      src={meg.src}
                       alt={"Review"}
                       style={{
-                        width: '83px',
-                        height: '90px',
-                        borderRadius: '50px',
+                        width: '40px',
+                        height: '46px',
+                        borderRadius: '50%',
+                        border:"4px solid #E27832"
                       }}
+                      className="me-3"
                     />
                     <div >
                       <p className="rev-txt1">Meg Randall (student)</p>
@@ -939,7 +946,7 @@ const StudentLanding = () => {
             </Col>
             <Col className="rev-col" md={4}>
               <div>
-                <div className="card-review pb-md-0">
+                <div className="card-review pb-md-3">
                   <div className="stars d-flex justify-content-center">
                     <span className="star">&#9733;</span>
                     <span className="star">&#9733;</span>
@@ -952,13 +959,15 @@ const StudentLanding = () => {
                   </p>
                   <div className="d-flex align-items-center justify-content-center mt-4">
                     <Image
-                      src={rev1.src}
+                      src={frankrusso.src}
                       alt={"Review"}
                       style={{
-                        width: '83px',
-                        height: '90px',
-                        borderRadius: '50px',
+                        width: '40px',
+                        height: '46px',
+                        borderRadius: '50%',
+                        border:"4px solid #E27832"
                       }}
+                      className="me-3"
                     />
                     <div>
                       <p className="rev-txt1">Frank Russo (student)</p>
