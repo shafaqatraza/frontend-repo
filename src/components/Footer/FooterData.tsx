@@ -36,7 +36,7 @@ export const links: LinkGroup[] = [
     links: [
       { label: "About Good Deeds", href: "/about" },
       { label: "Community Guidelines", href: "/community" },
-      { label: "Advertise With Us", href: "/advertisement-with-us" },
+      // { label: "Advertise With Us", href: "/advertisement-with-us" },
 
     ],
   },

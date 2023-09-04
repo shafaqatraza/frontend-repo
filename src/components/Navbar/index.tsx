@@ -704,36 +704,7 @@ export default function Navbar(props: any) {
                     </Stack>
                   }
                 </Box>
-                {/* <Stack direction={'row'} spacing={4}>
-                  <Box>
-                    <Popover trigger={'hover'} placement={'bottom-start'}>
-                      <PopoverTrigger>
-                        <Link
-                          style={{ color: "black", margin: "0 2rem", fontWeight: "700", fontSize: "16px" }}
-                        >
-                          Discover
-                        </Link>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        border={0}
-                        boxShadow={'sm'}
-                        // bg={popoverContentBgColor}
-                        p={4}
-                        rounded={'sm'}
-                      // maxW={'200px'}
-                      >
-                        <Stack>
-                          <Link href="/browse?type=offering&activeTab=0" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Items</Link>
-                          <Link href="/browse?type=offering&activeTab=1" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Services</Link>
-                          <Link href="/browse?type=offering&activeTab=3" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Donate</Link>
-                          <Link href="/browse?type=offering&activeTab=2" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Volunteer</Link>
-                          <Link href="#" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>40 Hours Program</Link>
-                          <Link href="/blog" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Blog</Link>
-                        </Stack>
-                      </PopoverContent>
-                    </Popover>
-                  </Box>
-                </Stack> */}
+
                 <Link href="/charities" style={{ color: "black", margin: "0 2rem", fontWeight: "700", fontSize: "16px" }}>Organization</Link>
                 <Link href="/contact-us" style={{ color: "black", margin: "0 2rem", fontWeight: "700", fontSize: "16px" }}>Contact</Link>
               </Flex>
@@ -755,27 +726,6 @@ export default function Navbar(props: any) {
                 Login
               </Button>
             )}
-            {/* {!isSmallerThan850 && (
-                <Button
-                  variant={'solid'}
-                  colorScheme={'orange'}
-                  style={{ borderRadius: 16 }}
-                  size={'sm'}
-                  mr={4}
-                  ml={2}
-                  onClick={() => {
-                    if (isLogin()) {
-                      router.push('/listing/create')
-                    } else {
-                      let dubShow = { ...showModel }
-                      dubShow.login = true
-                      setShowModel(dubShow)
-                    }
-                  }}
-                >
-                  <AddIcon /> &nbsp;Create a listing
-                </Button>
-              )} */}
 
             {isLogin() && (
               <Flex alignItems={'center'}>
@@ -804,20 +754,9 @@ export default function Navbar(props: any) {
                         style={{ marginRight: 5, marginLeft: 5, color: '#000' }}
                       />
                     </MenuButton>
-                    {/* <MenuList>
-                    <Link href="/bookmarks?type=wanted">
-                      <MenuItem>Wanted</MenuItem>
-                    </Link>
-                    <MenuDivider />
-                    <Link href="/bookmarks?type=offering">
-                      <MenuItem>Offering</MenuItem>
-                    </Link>
-                    <MenuDivider />
-                  </MenuList> */}
                   </Menu>
 
                   <Menu>
-
                     {isOrganization?
                     <MenuButton
                       as={Button}
@@ -880,52 +819,6 @@ export default function Navbar(props: any) {
 
                     </MenuButton>
                     }
-
-                    {/* <MenuList>
-                    {isChatLoading && (
-                      <Center>
-                        <Spinner
-                          thickness="4px"
-                          speed="0.65s"
-                          emptyColor="orange.200"
-                          color="orange.500"
-                          size="xl"
-                        />
-                      </Center>
-                    )}
-                    {!isChatLoading && (
-                      chatList.map((singleChat, index) => {
-                        return (
-                          <>
-                            <Link href="/message">
-                              <MenuItem>
-                                <Flex>
-                                  <Avatar src={singleChat.receiver.avatar_url} />
-                                  <Box ml='3'>
-                                    <Text fontWeight='bold'>
-                                      {singleChat.receiver.name}
-                                    </Text>
-                                    <Text fontSize='sm'>This is message from the sender...</Text>
-                                    <Text fontSize='xs'>
-                                      {singleChat.last_msg_at}
-                                    </Text>
-                                  </Box>
-                                </Flex>
-                              </MenuItem>
-                            </Link>
-                            <MenuDivider />
-                          </>
-                        )
-                      })
-                    )}
-
-                    <Link href="/message">
-                      <Center color='orange'>
-                        See more chats
-                      </Center>
-                    </Link>
-
-                  </MenuList> */}
                   </Menu>
 
                   <Menu>
@@ -973,16 +866,6 @@ export default function Navbar(props: any) {
                           <MenuItem>Add an Organization</MenuItem>
                         </Link>
                       }
-
-                      {/* <MenuDivider /> */}
-                      {/* <Link href="/about">
-                      <MenuItem>About</MenuItem>
-                    </Link>
-                    <MenuDivider />
-                    <Link href="/how-to-use">
-                      <MenuItem>How to use</MenuItem>
-                    </Link>
-                    <MenuDivider /> */}
                       <Link
                         onClick={() => {
                           Logout()
@@ -1028,28 +911,6 @@ export default function Navbar(props: any) {
                     </MenuList>
                   </Menu>
                 </div>
-                {/* {!isSmallerThan850 && (
-                <Button
-                  variant={'solid'}
-                  colorScheme={'orange'}
-                  style={{ borderRadius: 16 }}
-                  size={'sm'}
-                  mr={4}
-                  ml={4}
-                  onClick={() => {
-                    if (isLogin()) {
-                      router.push('/listing/create')
-                    } else {
-                      let dubShow = { ...showModel }
-                      dubShow.login = true
-                      setShowModel(dubShow)
-                    }
-                  }}
-                //   leftIcon={<AddIcon />}
-                >
-                  <AddIcon /> &nbsp;Create a listing
-                </Button>
-              )} */}
               </Flex>
             )}
 
@@ -1057,7 +918,7 @@ export default function Navbar(props: any) {
 
 
         </Flex>
-
+        {/* Create organization modal */}
         <Modal show={showCreateOrg} onHide={closeCreateOrgModal} >
           <div className="p-3">
             <div className="p-5 mt-3">
@@ -1201,6 +1062,7 @@ export default function Navbar(props: any) {
             {/* <button onClick={handleClose} className="modal-btn">Got it</button> */}
           </div>
         </Modal>
+        {/* Success message modal on organization creation */}
         <Modal show={showSuccess} onHide={closeCreateOrgSuccessModal} >
           <div className="p-3">
             <p className="modal-txt text-center p-5 mt-3">

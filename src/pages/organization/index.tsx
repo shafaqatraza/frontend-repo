@@ -132,7 +132,7 @@ const organization = () => {
           <div className="col">
             <div className="row m-0 ">
               <div className="col-md-7 col-sm-6">
-                <div className="px-5 pt-md-5 pt-3 text-center text-md-start">
+                <div className="px-5 pt-md-5 mt-4 pt-3 text-center text-md-start">
                   <span className="welc-txt">Welcome,</span>
                 </div>
                 <div className="px-5 text-center text-md-start">
@@ -158,12 +158,18 @@ const organization = () => {
                           <Image src={userB.src} alt={"user"} />
                           <p className="card-text ms-2">User</p>
                         </div>
+                        
                         <p className="mt-3 card-txt">
                           {
                             // @ts-ignore: Unreachable code error
                             user?.username
                           }
                         </p>
+                        <div className="mt-3">
+                          <a className="orga-txt" href="/organization/profile">
+                            Edit Profile
+                          </a>
+                        </div>
                         <div className="mt-3">
                           <Link href="/organization/profile">
                             <a className="orga-txt">
@@ -260,8 +266,8 @@ const organization = () => {
                 </div>
               </div>
               <div className="col-md-5 col-sm-6 pt-5 giving-img">
-                <Image src={giving.src} alt={"Giving"} />
-                <div className="card shadow border-0 plan-card">
+                <Image src={giving.src} alt={"Giving"} className="pe-5" />
+                <div className="card border-0 plan-card">
                   <div className="text-center">
                     <p className="p-txt mt-3">Plan</p>
                   </div>

@@ -16,6 +16,8 @@ import placeholder from "../../../assets/imgs/placeholder.png";
 import camera from "../../../assets/imgs/camera.png";
 import { useRouter } from 'next/router'
 import { useToast } from '@chakra-ui/toast'
+import profilTrash from '../../../assets/imgs/profile-trash.png'
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 interface FormErrors {
   full_name:boolean,
@@ -63,6 +65,7 @@ const OrganizationInfo = () => {
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShow(true);
   const [show, setShow] = useState(false);
+  const [showtoggle, setShowtoggle] = React.useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -83,6 +86,7 @@ const OrganizationInfo = () => {
   const [packageData, setPackageData] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
+  
 
   const getInvitedMembers = () => {
     axios
@@ -609,16 +613,23 @@ const OrganizationInfo = () => {
           </button>
         </div>
       </Modal>
-      <div className="row container-fluid main-side">
-        <Sidebar>
-          <div className="col-md-12 mt-5">
+      <div className="row container-fluid main-side m-0">
+      <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShowtoggle(!showtoggle)}><HamburgerIcon/></button>
+      <div className="col-lg-3 px-0 wel-dashboard d-none d-lg-block">
+          <Sidebar>
+          </Sidebar>
+      </div>
+        {showtoggle && <div className="col-lg-3 px-0 wel-dashboard d-block d-lg-none">
+          <Sidebar>
+          </Sidebar>
+          </div>}
+          <div className="col mt-5">
             <div className="main-org-img">
-              <div className="org-img text-center position-relative">
+              <div className="org-img text-center position-relative mt-md-4 pt-md-3">
                 <div className="org-prof-img">
                   {!isLoaded && <img src={placeholder.src} alt="Loading..." />}
                   <Image
                     // style={{ height: "165px", width: "340px" }}
-                    className="img-fluid"
                     src={
                       // @ts-ignore: Unreachable code error
                       data?.profile_picture
@@ -626,13 +637,14 @@ const OrganizationInfo = () => {
                     alt={"image"}
                     onLoad={() => setIsLoaded(true)}
                     onError={() => setIsLoaded(true)}
+                    className="img-fluid rounded-circle"
                     style={{ display: isLoaded ? "block" : "none" }}
                   />
                 </div>
                 <Image
                   src={edit.src}
                   onClick={handleShowModal}
-                  className="position-absolute top-0 float-end"
+                  className="position-absolute right-0 top-0 float-end"
                 />
               </div>
             </div>
@@ -644,10 +656,10 @@ const OrganizationInfo = () => {
                 }
               </p>
             </div>
-            <div className="row">
+            <div className="row ps-3">
               <div className="col-md-6">
-                <div className="mt-5">
-                  <p className="info-txt">Organization Info</p>
+                <div className="mt-5 mb-4 pb-3">
+                  <p className="info-txt" style={{fontSize:"30px"}}>Organization Info</p>
                 </div>
                 <div className="mt-4">
                   <form>
@@ -740,15 +752,16 @@ const OrganizationInfo = () => {
                       </button>
                     </div>
                   </form>
-                  <div>
+                  <div className="d-flex align-items-center">
                     <button onClick={handleShow} className="del-btn">
                       Delete Account
                     </button>
+                    <img src={profilTrash.src} style={{height:"20px"}} className="img-fluid ms-3"   alt=""/>
                   </div>
                   <div></div>
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-6 pt-md-5">
                 <p className="fw-bold text-center mt-5">
                   <div className="mt-5">Plan</div>
                 </p>
@@ -816,12 +829,12 @@ const OrganizationInfo = () => {
                 )}
               </div>
               <div className="mt-5">
-                <Table dataSource={inviteData} columns={columns} />
+              <p className="info-txt mb-4" style={{color:"black"}}>Members</p>
+                <Table dataSource={inviteData} className="table-responsive" columns={columns} />
               </div>
               
             </div>
           </div>
-        </Sidebar>
       </div>
       <Footer />
     </>

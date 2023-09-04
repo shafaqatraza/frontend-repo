@@ -403,7 +403,7 @@ const ListingView = (props) => {
 
   return (
     <>
-      <Box mt="10" mb="20">
+      <Box mt="20" mb="20">
         {isLoading && (
           <Center h={"300px"}>
             <Spinner
@@ -646,6 +646,7 @@ const ListingView = (props) => {
                                   bg={"#F6F6F6"}
                                   color="gray.900"
                                   size="sm"
+                                  className="mt-4 me-4"
                                   onClick={() => {
                                     if (!isLogin()) {
                                       toast({

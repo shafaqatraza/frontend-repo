@@ -66,19 +66,19 @@ const Community = () => {
                             Updated Feb 26, 2022
                         </Text>
                     </Text>
-                    <Text>
+                    <Text fontWeight="600">
                         We're so glad to have you as part of the Good Deeds Community!
                     </Text>
-                    <Text>
+                    <Text fontWeight="600">
                         This community is a space for Good Deeds users to exchange good and services, volunteer their time
                         and grow personally and professionally.
                     </Text>
-                    <Text>
+                    <Text fontWeight="600">
                         We want to ensure that this community remains a space that is positive, helpful and supportive,
                         and where everyone feels like they are connecting with others with the same values of giving back
                         and feeling completely safe to engage like-minded users.
                     </Text>
-                    <Text>
+                    <Text fontWeight="600">
                         Our community members come from many different countries, cultures, backgrounds, and professions.
                         Because we likely understand things differently, it feels important for all of us to be conscious
                         of how we communicate with each other. It's also a wonderful opportunity for us to learn a lot
@@ -95,9 +95,11 @@ const Community = () => {
                         national origin, immigration status, age, political affiliation, or religion.
                     </Text>
                 </Container>
-
+                <Container maxW="container.lg">
+                    <Text className="guide-sub-heading mt-3">Our collective community <span style={{color:"#E27832"}}>values:</span></Text>
+                </Container>
                 <HeadingAndText
-                    heading="Our collective community values:"
+                    heading=" "
                     unOrderedList={
                         [
                             {
@@ -124,9 +126,12 @@ const Community = () => {
                     }
 
                 </HeadingAndText>
+                    <Container maxW="container.lg">
 
+                    <Text className="guide-sub-heading">What we <span style={{color:"#E27832"}}>encourage</span> you to do in the community</Text>
+                </Container>
                 <HeadingAndText
-                    heading="What we encourage you to do in the community:"
+                    heading=" "
                     unOrderedList={
                         [
                             {
@@ -193,9 +198,12 @@ const Community = () => {
                         </div>
                     }
                 </HeadingAndText>
+                    <Container maxW="container.lg">
 
+                    <Text className="guide-sub-heading">What we <span style={{color:"#E27832"}}>do not</span> allow</Text>
+                </Container>
                 <HeadingAndText
-                    heading="What we do not allow"
+                    heading=" "
                     unOrderedList={
                         [
                             {
@@ -231,9 +239,12 @@ const Community = () => {
                     }
 
                 </HeadingAndText>
+                    <Container maxW="container.lg">
 
+                    <Text className="guide-sub-heading">Responses to any behavior that <span style={{color:"#E27832"}}>violates</span> this Code of Conduct:</Text>
+                </Container>
                 <HeadingAndText
-                    heading="Responses to any behavior that violates this Code of Conduct:"
+                    heading=" "
                     list={
                         [
                             {

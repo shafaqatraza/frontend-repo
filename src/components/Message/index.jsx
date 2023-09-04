@@ -60,6 +60,9 @@ import { Upload } from 'antd';
 import { useMutation } from 'react-query'
 import NoImage from '../../assets/imgs/no-image.png'
 import {Pusher_key} from '../../../config'
+import chatAttached from '../../assets/imgs/chat-attached.png'
+import iconChat from '../../assets/imgs/chat.png'
+
 
 let pusher = {};
 let echo = {};
@@ -2030,6 +2033,7 @@ const Message = (props) => {
 																		}`}
 																	backgroundSize={'cover'}
 																	position={'relative'}
+																	style={{border:"4px solid #E27832"}}
 																>
 																	<div className="onlineStatus" style={{ background: chatHeader.online_status === true ? '#13d50c' : '#bfbfbf' }}></div>
 																</Avatar>
@@ -2047,7 +2051,8 @@ const Message = (props) => {
 														</Link>
 													</Flex>
 													<Text textAlign={'right'} mr={5} color={'white'}>
-														<BsChatLeftDotsFill
+														<img src={iconChat.src}
+															width="18px"
 															cursor={'pointer'}
 															onClick={() => setTransactionModal(true)}
 														/>
@@ -2486,6 +2491,8 @@ const Message = (props) => {
 																						w={'70%'}
 																						type="submit"
 																						mt={'5'}
+																						mb={'3'}
+																						ms ={'10'}
 																						colorScheme="orange"
 																						size="md"
 																						fontSize="md"
@@ -2534,11 +2541,7 @@ const Message = (props) => {
 																					}
 																					}
 																				>
-																					<BiImageAdd
-																						fontSize={30}
-																						color={'#979797'}
-																						fontWeight={600}
-																					/>
+																					<img src={chatAttached.src} width="25px" className="ms-4" alt="" />
 																				</Upload>
 																				:
 																				<Spinner
@@ -2557,7 +2560,7 @@ const Message = (props) => {
 																			minH={'45px'}
 																			type={'text'}
 																			placeholder="Message here"
-																			backgroundColor={'#fff'}
+																			backgroundColor={'#E8E8E8'}
 																			borderRadius={20}
 																			value={message}
 																			onChange={(e) => {
