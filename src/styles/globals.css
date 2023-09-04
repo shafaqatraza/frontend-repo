@@ -1930,6 +1930,9 @@ color: #E27832;
   font-size: 24px;
   font-weight: 500;
 }
+.sidebarCategory .col-md-6{
+  width: 100% !important;
+}
 
 @media screen and (min-width:1400px){
   .passionate-vol .volunteer-card-row1{
