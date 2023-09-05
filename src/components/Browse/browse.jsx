@@ -656,7 +656,7 @@ function Browse(props) {
       <Box
         maxW="9xl"
         mx="auto"
-        px={{ base: '4', md: '8', lg: '12' }}
+        px={{ base: '4', md: '4', lg: '8' }}
         py={{ base: '6', md: '8', lg: '12' }}
         pb="0"
       >
@@ -673,10 +673,10 @@ function Browse(props) {
         )}
         {!isInitialLoading && (
           <Box>
-            <Grid templateColumns={{ base: '1fr', md: '240px 1fr' }} gap="4">
+            <Grid templateColumns={{ base: '1fr', md: '340px 1fr' }} gap="4">
               <Stack
                 spacing="0"
-                maxW={mobileFilter ? "100%" : "440px"}
+                width={mobileFilter ? "100%" : "420px"}
                 pl="0"
                 mt={!mobileFilter && { base: '8', md: '16', lg: '24' }}
                 display={{ base: mobileFilter ? 'flex' : 'none', md: 'flex' }}
@@ -854,36 +854,42 @@ function Browse(props) {
                       )}
 
                       {/* Condition Filter */}
-                      {activeTab === 0 && (
-                        <CheckboxFilter
-                          spacing="3"
-                          options={conditionList}
-                          label="Condition"
-                          onCheckboxChange={(e) => {
-                            setSelectedCondition(e)
-                          }}
-                          defaultValue={selectedCondition}
-                        />
-                      )}
+                      <div className='sidebarCategory'>
+                        {activeTab === 0 && (
+                          <CheckboxFilter
+                            spacing="3"
+                            options={conditionList}
+                            label="Condition"
+                            onCheckboxChange={(e) => {
+                              setSelectedCondition(e)
+                            }}
+                            defaultValue={selectedCondition}
+                          />
+                        )}
+                      </div>
                       {/* Level of Expertise Filter */}
-                      {activeTab === 1 && (
-                        <CheckboxFilter
-                          spacing="3"
-                          options={levelList}
-                          label="Level of Expertise"
-                          onCheckboxChange={(e) => setSelectedLevel(e)}
-                          defaultValue={selectedLevel}
-                        />
-                      )}
-                      {activeTab === 2 && (
-                        <CheckboxFilter
-                          spacing="3"
-                          options={levelList}
-                          label="Level of Expertise"
-                          onCheckboxChange={(e) => setSelectedLevel(e)}
-                          defaultValue={selectedLevel}
-                        />
-                      )}
+                      <div className='sidebarCategory'>
+                        {activeTab === 1 && (
+                          <CheckboxFilter
+                            spacing="3"
+                            options={levelList}
+                            label="Level of Expertise"
+                            onCheckboxChange={(e) => setSelectedLevel(e)}
+                            defaultValue={selectedLevel}
+                          />
+                        )}
+                      </div>
+                      <div className='sidebarCategory'>
+                        {activeTab === 2 && (
+                          <CheckboxFilter
+                            spacing="3"
+                            options={levelList}
+                            label="Level of Expertise"
+                            onCheckboxChange={(e) => setSelectedLevel(e)}
+                            defaultValue={selectedLevel}
+                          />
+                        )}
+                      </div>
                       {/* Location Filter */}
                       <Stack spacing="5" mt={5}>
                         <label style={{ fontSize: 16, fontWeight: 600 }}>Location</label>
@@ -1144,6 +1150,7 @@ function Browse(props) {
                   fontSize="2xl"
                   fontWeight="semibold"
                   pb={3}
+                  mb={4}
                   pr={'5%'}
                   pl={{ base: '8', md: '12', lg: '16' }}
                   textAlign={isMobile ? 'left' : "center"}
@@ -1174,7 +1181,7 @@ function Browse(props) {
                           _focus={{ outline: 'none' }}
                           _selected={{ color: 'primary.300' }}
                           borderRadius="30px"
-                          px={isSmallerThan767 ? 4 : 8}
+                          px={isSmallerThan767 ? 4 : 14}
                           fontWeight="600"
                           fontSize={isSmallerThan767 ? 12 : 16}
                           // style={isSmallerThan767 ? { width: '50%' } : {}}
@@ -1188,7 +1195,7 @@ function Browse(props) {
                           _focus={{ outline: 'none' }}
                           _selected={{ color: 'orange.400' }}
                           borderRadius="30px"
-                          px={isSmallerThan767 ? 4 : 8}
+                          px={isSmallerThan767 ? 4 : 10}
                           fontWeight="600"
                           onClick={() => refreshFilter(1)}
                         >
@@ -1200,7 +1207,7 @@ function Browse(props) {
                           _focus={{ outline: 'none' }}
                           _selected={{ color: 'orange.400' }}
                           borderRadius="30px"
-                          px={isSmallerThan767 ? 4 : 8}
+                          px={isSmallerThan767 ? 4 : 10}
                           fontWeight="600"
                           onClick={() => refreshFilter(2)}
                         >
@@ -1212,7 +1219,7 @@ function Browse(props) {
                           _focus={{ outline: 'none' }}
                           _selected={{ color: 'orange.400' }}
                           borderRadius="30px"
-                          px={isSmallerThan767 ? 4 : 8}
+                          px={isSmallerThan767 ? 4 : 14}
                           fontWeight="600"
                           onClick={() => refreshFilter(3)}
                         >
@@ -1260,8 +1267,9 @@ function Browse(props) {
                         <Box
                           maxW="7xl"
                           mx="auto"
-                          px={{ base: '4', md: '8', lg: '12' }}
+                          px={{ base: '4', md: '8', lg: '0' }}
                           py={{ base: '6', md: '8', lg: '8' }}
+                          className='ms-md-5 ps-lg-3'
                         >
                           {isFilterLoading && <Loader h="300px" />}
                           {!isFilterLoading && (
@@ -1314,8 +1322,9 @@ function Browse(props) {
                         <Box
                           maxW="7xl"
                           mx="auto"
-                          px={{ base: '4', md: '8', lg: '12' }}
+                          px={{ base: '4', md: '8', lg: '0' }}
                           py={{ base: '6', md: '8', lg: '12' }}
+                          className="ms-md-5 ps-lg-3"
                         >
                           {isFilterLoading && <Loader h="300px" />}
                           {!isFilterLoading && (
@@ -1365,8 +1374,9 @@ function Browse(props) {
                         <Box
                           maxW="7xl"
                           mx="auto"
-                          px={{ base: '4', md: '8', lg: '12' }}
+                          px={{ base: '4', md: '8', lg: '0' }}
                           py={{ base: '6', md: '8', lg: '8' }}
+                          className="ms-md-5 ps-lg-3"
                         >
                           {isFilterLoading && <Loader h="300px" />}
                           {!isFilterLoading && (
@@ -1419,8 +1429,9 @@ function Browse(props) {
                         <Box
                           maxW="7xl"
                           mx="auto"
-                          px={{ base: '4', md: '8', lg: '12' }}
+                          px={{ base: '4', md: '8', lg: '0' }}
                           py={{ base: '6', md: '8', lg: '8' }}
+                          className="ms-md-5 ps-lg-3"
                         >
                           {isFilterLoading && <Loader h="300px" />}
                           {!isFilterLoading && (
