@@ -182,19 +182,19 @@ const Contact = (props) => {
                     <SimpleGrid columns={1} spacing={isMobile ? 0 : 10}>
                         <FormControl id="name" isRequired >
                             <FormLabel color="gray.500">First Name</FormLabel>
-                            <Input variant="filled" placeholder="First Name" value={contactForm.first_name} onChange={event => setContactForm({ ...contactForm, first_name: event.currentTarget.value })} name="first_name" type="text" maxLength={50} />
+                            <Input variant="filled" placeholder="First Name" value={contactForm.first_name} onChange={event => setContactForm({ ...contactForm, first_name: event.currentTarget.value })} name="first_name" type="text" maxLength={50} style={{background:"#F6F6F6", border:"1px solid #E8E8E8"}}/>
                         </FormControl>
 
                         <FormControl id="name" isRequired>
                             <FormLabel color="gray.500">Last Name</FormLabel>
-                            <Input variant="filled" placeholder="Last Name" value={contactForm.last_name} onChange={event => setContactForm({ ...contactForm, last_name: event.currentTarget.value })} name="last_name" type="text" maxLength={50} />
+                            <Input variant="filled" placeholder="Last Name" value={contactForm.last_name} onChange={event => setContactForm({ ...contactForm, last_name: event.currentTarget.value })} name="last_name" type="text" maxLength={50} style={{background:"#F6F6F6", border:"1px solid #E8E8E8"}}/>
                         </FormControl>
                     </SimpleGrid>
 
                     <SimpleGrid columns={1} spacing={2}>
                         <FormControl mt="8" id="name" isRequired>
                             <FormLabel color="gray.500">Email</FormLabel>
-                            <Input variant="filled" placeholder="Email" value={contactForm.email} onChange={event => setContactForm({ ...contactForm, email: event.currentTarget.value })} name="email" type="email" maxLength={50} />
+                            <Input variant="filled" placeholder="Email" value={contactForm.email} onChange={event => setContactForm({ ...contactForm, email: event.currentTarget.value })} name="email" type="email" maxLength={50} style={{background:"#F6F6F6", border:"1px solid #E8E8E8"}}/>
                         </FormControl>
 
                         <FormControl mt="8" id="name" isRequired>
@@ -205,7 +205,8 @@ const Contact = (props) => {
                                 // international
                                 country={'ca'}
                                 value={contactForm.phone}
-                                onChange={setPhone} />
+                                onChange={setPhone}
+                                style={{background:"#F6F6F6", border:"1px solid #E8E8E8"}} />
                             {/* <Input variant="filled" placeholder="Phone Number" value={contactForm.phone} onChange={event => setContactForm({ ...contactForm, phone: event.currentTarget.value })} name="phone" type="number" maxLength={50} /> */}
                         </FormControl>
                     </SimpleGrid>
@@ -213,7 +214,7 @@ const Contact = (props) => {
                     <SimpleGrid columns={1} spacing={10}>
                     <FormControl mt="8" id="inquiry" isRequired>
                     <FormLabel color="gray.500">Inquiry</FormLabel>
-                    <Select placeholder="Inquiry Type" variant="filled" className="inquiry-select" value={contactForm.inquiry} onChange={(e) => setContactForm({ ...contactForm, inquiry: e.target.value })} >
+                    <Select placeholder="Inquiry Type" variant="filled" className="inquiry-select" style={{background:"#F6F6F6", border:"1px solid #E8E8E8"}} value={contactForm.inquiry} onChange={(e) => setContactForm({ ...contactForm, inquiry: e.target.value })} >
                         <option value="General" >General Inquiry</option>
                         <option value="Technical" style={{background:"#F6F6F6"}}>Technical</option>
                         <option value="Dispute">Dispute/Resolution</option>
@@ -228,7 +229,7 @@ const Contact = (props) => {
                     
                     <FormControl mt="1" id="description" isRequired>
                         <FormLabel color="gray.500">Message</FormLabel>
-                        <Textarea variant="filled" rows={5} name="Message" value={contactForm.message} onChange={event => setContactForm({ ...contactForm, message: event.currentTarget.value })} placeholder="message" type="text" maxLength={1000} />
+                        <Textarea variant="filled" rows={5} name="Message" value={contactForm.message} onChange={event => setContactForm({ ...contactForm, message: event.currentTarget.value })} placeholder="message" type="text" maxLength={1000} style={{background:"#F6F6F6", border:"1px solid #E8E8E8"}}/>
                     </FormControl>
                     </SimpleGrid>
 
@@ -237,7 +238,7 @@ const Contact = (props) => {
                             <FormLabel color="gray.500">Security Check (CAPTCHA)</FormLabel>
                             <div id="captcha"> </div>
                             <Text onClick={createCaptcha} style={{ cursor: 'pointer', textAlign: 'right' }}>Change text</Text>
-                            <Input variant="filled" placeholder="Enter Captcha" name="captcha" type="text" id="cpatchaTextBox" />
+                            <Input variant="filled" placeholder="Enter Captcha" name="captcha" type="text" id="cpatchaTextBox" style={{background:"#F6F6F6", border:"1px solid #E8E8E8"}} />
                         </FormControl>
                     </SimpleGrid>
 

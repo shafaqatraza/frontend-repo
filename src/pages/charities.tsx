@@ -540,22 +540,22 @@ const Charities = () => {
           <div className="me-lg-4 mb-4 mb-lg-0 charity-card conveient-access">
             <img src={partner1.src} className='m-auto mb-4' alt="" />
             <h1 className='mb-4 mt-5 pt-1'>Convenient Access</h1>
-            <p>Access Good Deeds’s diverse and growing database of volunteers with varying levels of unique skills and expertise based on your project needs.</p>
+            <p style={{lineHeight:"1.2"}}>Access Good Deeds’s diverse and growing database of volunteers with varying levels of unique skills and expertise based on your project needs.</p>
           </div>
           <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
             <img src={partner2.src} className='m-auto mb-4' alt="" />
             <h1 className='mb-4'>Optimized <br /> Security and Safety</h1>
-            <p className='px-4'>Provide your <br /> volunteers with access to a reliable and secure platform to connect with vetted and age-suitable volunteer opportunities.</p>
+            <p className='px-4' style={{lineHeight:"1.2"}}>Provide your <br /> volunteers with access to a reliable and secure platform to connect with vetted and age-suitable volunteer opportunities.</p>
           </div>
           <div className="me-lg-4 mb-4 mb-lg-0 charity-card">
             <img src={partner3.src} className='m-auto mb-4' alt="" />
             <h1 className='mb-4 mt-5'>Trusted Quality</h1>
-            <p className='px-xl-5 px-4'>Our rate and review feature maintains trusted standards in reliability, transparency, and accountability.</p>
+            <p className='px-xl-5 px-4' style={{lineHeight:"1.2"}}>Our rate and review feature maintains trusted standards in reliability, transparency, and accountability.</p>
           </div>
           <div className=" charity-card">
             <img src={partner4.src} className='m-auto mb-4' alt="" />
             <h1 className='mb-4 mt-4 pt-2'>Engaging <br /> Reward System</h1>
-            <p className='px-3'>Improve your <br /> volunteer engagement and retention with a reward system where volunteers earn Deed Dollars for their invaluable <br /> contributions. </p>
+            <p className='px-3' style={{lineHeight:"1.2"}}>Improve your <br /> volunteer engagement and retention with a reward system where volunteers earn Deed Dollars for their invaluable <br /> contributions. </p>
           </div>
         </div>
       </div>
@@ -566,7 +566,7 @@ const Charities = () => {
             <p className="volun-txt text-center pb-md-5 pt-md-0 p-4">Volunteer Categories</p>
           </div>
           <div>
-            <p className="text-center volun-txt2">
+            <p className="text-center volun-txt2 mb-md-4 pb-md-2">
               I am Seeking Passionate Volunteers for...
             </p>
           </div>
@@ -718,7 +718,7 @@ const Charities = () => {
                     className='mt-3'
                   />
                   <span className="text-center mb-2 skill-txt">
-                    Hospital/ Senior Care
+                    Hospital/ <br/> Senior Care
                   </span>
                 </div>
               </Popover>
@@ -735,19 +735,19 @@ const Charities = () => {
                     alt={"Skilled Workers"}
                   />
                   <span className="text-center mb-2 skill-txt">
-                    Animal Services
+                    Animal <br /> Services
                   </span>
                 </div>
               </Popover>
             </div>
           </div>
           <div className="mt-md-4  pb-5 text-center">
-            <button className="try-button" style={{height:"50px", width:"320px"}}>Get Started</button>
+            <button className="try-button" style={{height:"44px", width:"320px"}}>Get Started</button>
           </div>
         </div>
       </div>
       {/* Get Started */}
-      <div className="mt-5 container">
+      <div className="mt-5 pt-md-4 container">
         <p className="start-txt text-center">How to Get Started</p>
       </div>
       <Container className='charities-steps'>
@@ -760,7 +760,7 @@ const Charities = () => {
               </div>
               <div className='charities-stpe-content'>
                 <p className="mt-md-5 mb-2 text-center text-md-start step1-txt">Register</p>
-                <hr className="hr-step1" style={{ height: "5px", marginLeft:"-40px"}} />
+                <hr className="hr-step1" style={{ height: "5px", marginLeft:"-40px",borderColor:"#183553"}} />
                 <p className="step1-txt2 mt-2">
                   Sign up and create a Good Deeds User account, linked to your organization portal. Ensure you possess the necessary credentials to open an account on behalf of your charity or nonprofit organization.
                 </p>
@@ -776,7 +776,7 @@ const Charities = () => {
               <div className='ms-md-4 mt-md-4 order-2 order-md-1 charities-stpe-content'>
                 <p className="mb-2 step1-txt ms-md-5 ps-md-5 text-center text-md-start">Add An Organization</p>
 
-                <hr className="hr-step2 ms-md-5" style={{ height: "5px", marginRight:'-70px' }} />
+                <hr className="hr-step2 ms-md-5" style={{ height: "5px", marginRight:'-70px',borderColor:"#183553" }} />
 
                 <p className="step1-txt2 mt-2 ms-md-5 ps-md-4">
                   Create or Add and Organization to being creating listings for volunteers or donations!
@@ -803,7 +803,7 @@ const Charities = () => {
               </div>
               <div className="mt-md-5 charities-stpe-content">
                 <p className="mt-5 mb-2 step1-txt text-center text-md-start">Set Up Your Dashboard</p>
-                <hr className="hr-step1 me-5" style={{ height: "5px", marginLeft:'-58px' }} />
+                <hr className="hr-step1 me-5" style={{ height: "5px", marginLeft:'-58px',borderColor:"#183553" }} />
                 <p className="step1-txt2 mt-2">
                   Organize your dashboard for easy visibility and management of user donations and volunteer applications.
                 </p>
@@ -830,7 +830,7 @@ const Charities = () => {
               <div className='order-2 order-md-1 charities-stpe-content'>
                 <p className="mb-2 step1-txt ms-md-5 ps-md-5 mt-3 m4-md-0 text-center text-md-start">Recruit Your Volunteer </p>
 
-                <hr className="hr-step2 ms-md-4" style={{ height: "5px",marginRight:'-25px' }} />
+                <hr className="hr-step2 ms-md-4" style={{ height: "5px",marginRight:'-25px',borderColor:"#183553" }} />
 
                 <p className="step1-txt2 mt-2 ms-md-5 ps-md-4">
                   Follow up with a selected volunteer application and start collaborating on your campaign!
@@ -873,8 +873,8 @@ const Charities = () => {
                     variant={'solid'}
                     colorScheme={'orange'}
                     className='c-donate-btn mb-5 mb-md-0'
-                    size={'md'}
-                    fontSize="16px"
+                    height={"37px"}
+                    fontSize="12px"
                     display="block"
                     // onClick={submitForm}
                     w="150px"
@@ -895,8 +895,8 @@ const Charities = () => {
                     variant={'solid'}
                     colorScheme={'orange'}
                     className='c-donate-btn mb-5 mb-md-0'
-                    size={'md'}
-                    fontSize="16px"
+                    height={"37px"}
+                    fontSize="12px"
                     display="block"
                     // onClick={submitForm}
                     w="150px"
@@ -917,8 +917,8 @@ const Charities = () => {
                     variant={'solid'}
                     colorScheme={'orange'}
                     className='c-donate-btn mb-5 mb-md-0'
-                    size={'md'}
-                    fontSize="16px"
+                    height={"37px"}
+                    fontSize="12px"
                     display="block"
                     // onClick={submitForm}
                     w="150px"
@@ -937,7 +937,7 @@ const Charities = () => {
               _focus={{ background: 'none' }}
               onClick={() => router.push('/browse?type=offering&activeTab=3')}
             >
-              See more
+              See More
             </Button>
           </Container>
         </div>
@@ -952,14 +952,14 @@ const Charities = () => {
             fontWeight="700"
             lineHeight={isSmallerThan767 ? "40px" : "76px"}
             color="#183553"
-            className='text-md-center px-3 px-md-0'
+            className='text-md-center px-3 px-md-0 pb-md-5'
           >Find the Right Plan For Your <br className='d-none d-md-block'/> Organization</Text>
           <div className="d-flex my-md-5 mt-5 mb-3 justify-content-center align-items-center flex-wrap">
             <div className="btn-list d-flex">
               <button onClick={handleClickOne} className={selectedButton === 1 ? 'donate-btn2 shadow' : 'donatee-btn'}>Monthly</button>
               <button onClick={handleClickTwo} className={selectedButton === 2 ? 'donate-btn2 shadow' : 'donatee-btn'}>Annual</button>
             </div>
-            <p className="save-txt mt-4 mt-md-0">Save 20% anually</p>
+            <p className="save-txt mt-4 mt-md-0">Save 20% Anually</p>
           </div>
           {selectedButton === 1 ? <MonthlyPlan /> : <AnualPlan />}
         </Container>
@@ -968,7 +968,7 @@ const Charities = () => {
       {/* testimonials */}
 
       <div
-        className="mt-5 deeds-review"
+        className="mt-5 deeds-review pb-md-5"
         
       >
         <Container>
@@ -977,109 +977,111 @@ const Charities = () => {
             Hear What Our Partners Have to Say
             </p>
           </div>
-          <Row className="mt-5 pb-5">
-            <Col className="rev-col" md={4}>
+          <div className='px-md-4'>
+            <Row className="mt-5 pb-5 mx-0 px-md-5">
+              <Col className="rev-col" md={4}>
 
-              <div>
-                <div className="card-review">
-                  <div className="stars d-flex justify-content-center">
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                  </div>
-                  <p className="review">
-                  I was initially skeptical about a platform for giving. After trying it for a few days, I realized how user-friendly it was. I recommended Good Deeds to my daughter so she could round up her 40 hours of community service without the fuss. She loved it.
-                  </p>
-                  <div className="d-flex align-items-center justify-content-center mt-4">
-                    <Image
-                      src={revew1.src}
-                      alt={"Review"}
-                      style={{
-                        width: '41px',
-                        height: '46px',
-                        borderRadius: '50%',
-                        border:'4px solid #E27832'
-                      }}
-                      className='me-3'
-                    />
-                    <div className="">
-                      <p className="rev-txt1">Laina Mercer</p>
-                      <p className="rev-txt2">Barrie, Ontario</p>
+                <div>
+                  <div className="card-review">
+                    <div className="stars d-flex justify-content-center">
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                    </div>
+                    <p className="review">
+                    I was initially skeptical about a platform for giving. After trying it for a few days, I realized how user-friendly it was. I recommended Good Deeds to my daughter so she could round up her 40 hours of community service without the fuss. She loved it.
+                    </p>
+                    <div className="d-flex align-items-center justify-content-center mt-4">
+                      <Image
+                        src={revew1.src}
+                        alt={"Review"}
+                        style={{
+                          width: '41px',
+                          height: '46px',
+                          borderRadius: '50%',
+                          border:'4px solid #E27832'
+                        }}
+                        className='me-3'
+                      />
+                      <div className="">
+                        <p className="rev-txt1">Laina Mercer</p>
+                        <p className="rev-txt2">Barrie, Ontario</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Col>
-            <Col className="rev-col" md={4}>
+              </Col>
+              <Col className="rev-col" md={4}>
 
-              <div>
-                <div className="card-review">
-                  <div className="stars d-flex justify-content-center">
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                  </div>
-                  <p className="review">
-                  Good Deeds is simply perfect for someone like me who’s always looking for the next opportunity to help out. It was just the thing to bond with my son while we engaged in social work as a collective unit. Give it a try if you’re a volunteer with lots to give!
-                  </p>
-                  <div className="d-flex align-items-center justify-content-center mt-4">
-                    <Image
-                      src={revew2.src}
-                      alt={"Review"}
-                      style={{
-                        width: '41px',
-                        height: '46px',
-                        borderRadius: '50%',
-                        border:'4px solid #E27832'
-                      }}
-                      className='me-3'
-                    />
-                    <div >
-                      <p className="rev-txt1">Jake Masic</p>
-                      <p className="rev-txt2">Brampton, Ontario</p>
+                <div>
+                  <div className="card-review">
+                    <div className="stars d-flex justify-content-center">
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                    </div>
+                    <p className="review">
+                    Good Deeds is simply perfect for someone like me who’s always looking for the next opportunity to help out. It was just the thing to bond with my son while we engaged in social work as a collective unit. Give it a try if you’re a volunteer with lots to give!
+                    </p>
+                    <div className="d-flex align-items-center justify-content-center mt-4">
+                      <Image
+                        src={revew2.src}
+                        alt={"Review"}
+                        style={{
+                          width: '41px',
+                          height: '46px',
+                          borderRadius: '50%',
+                          border:'4px solid #E27832'
+                        }}
+                        className='me-3'
+                      />
+                      <div >
+                        <p className="rev-txt1">Jake Masic</p>
+                        <p className="rev-txt2">Brampton, Ontario</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Col>
-            <Col className="rev-col" md={4}>
-              <div>
-                <div className="card-review">
-                  <div className="stars d-flex justify-content-center">
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                  </div>
-                  <p className="review">
-                  Our experience with Good Deeds has been nothing short of amazing. The partnership redefined the donation and volunteering process, setting the stage for new fundraising possibilities. We truly look forward to many more good years with Good Deeds.
-                  </p>
-                  <div className="d-flex align-items-center justify-content-center mt-4">
-                    <Image
-                      src={revew3.src}
-                      alt={"Review"}
-                      style={{
-                        width: '41px',
-                        height: '46px',
-                        borderRadius: '50%',
-                        border:'4px solid #E27832'
-                      }}
-                      className='me-3'
-                    />
-                    <div>
-                      <p className="rev-txt1">Abe Evreniadis</p>
-                      <p className="rev-txt2">Geneva Centre for Autism</p>
+              </Col>
+              <Col className="rev-col" md={4}>
+                <div>
+                  <div className="card-review">
+                    <div className="stars d-flex justify-content-center">
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                      <span className="star">&#9733;</span>
+                    </div>
+                    <p className="review">
+                    Our experience with Good Deeds has been nothing short of amazing. The partnership redefined the donation and volunteering process, setting the stage for new fundraising possibilities. We truly look forward to many more good years with Good Deeds.
+                    </p>
+                    <div className="d-flex align-items-center justify-content-center mt-4">
+                      <Image
+                        src={revew3.src}
+                        alt={"Review"}
+                        style={{
+                          width: '41px',
+                          height: '46px',
+                          borderRadius: '50%',
+                          border:'4px solid #E27832'
+                        }}
+                        className='me-3'
+                      />
+                      <div>
+                        <p className="rev-txt1">Abe Evreniadis</p>
+                        <p className="rev-txt2">Geneva Centre for Autism</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Col>
-          </Row>
+              </Col>
+            </Row>
+          </div>
         </Container>
       </div>
 

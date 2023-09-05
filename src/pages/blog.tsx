@@ -49,8 +49,8 @@ const Blog = () => {
             {/* <Section1 title="Good Deeds Community Updates" /> */}
 
               <p className="good-deeds-blog container text-center pt-md-5">Good Deeds <span style={{color:"#E27832"}}>Blog</span> </p>
-              <p className="good-deeds-bl mt-3 mt-md-5">Discover How You Can Make A Difference</p>
-            <div className="mb-5 pb-5">
+              <p className="good-deeds-bl mt-3 mt-md-5 mb-md-4">Discover How You Can Make A Difference</p>
+            <div className="mb-5 pb-5 pt-md-2">
                 <BlogCard />
             </div>
             <Footer />
