@@ -355,20 +355,21 @@ const OrganizationInfo = () => {
       dataIndex: 'action',
       render: (text: string, record: any, rowIndex: number) => {
         return(
-          <div>
+          <div className="ms-3">
             {record.role !== 'Superadmin' && (
-              <button style={{ color: '#E27832' }} onClick={() => handleActionClick(rowIndex)}>+ Action</button>
+              <button style={{ color: '#E27832', borderRight:'1px solid #0000001F' }} className="pe-4" onClick={() => handleActionClick(rowIndex)}>+ Action</button>
             )}
             
             {
               showCard && selectedRow === rowIndex && (
                 <div style={{textAlign: 'left'}}>
                 <div
-                  className="card profile-action-card shadow"
+                  className="card profile-action-card border-0"
                   style={{
-                    top: '0px', 
-                    left: "100px", 
-                    textAlign: "left", 
+                    top: '2px', 
+                    left: "127px", 
+                    textAlign: "left",
+                    fontSize:"12px", 
                     padding: "5px", // @ts-ignore:
                     'text-align-last': 'start',
                   }}
@@ -613,7 +614,7 @@ const OrganizationInfo = () => {
           </button>
         </div>
       </Modal>
-      <div className="row container-fluid main-side m-0">
+      <div className="row container-fluid main-side orgainization-profile m-0">
       <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShowtoggle(!showtoggle)}><HamburgerIcon/></button>
       <div className="col-lg-3 px-0 wel-dashboard d-none d-lg-block">
           <Sidebar>
@@ -644,7 +645,7 @@ const OrganizationInfo = () => {
                 <Image
                   src={edit.src}
                   onClick={handleShowModal}
-                  className="position-absolute right-0 top-0 float-end"
+                  className="position-absolute end-0 top-0"
                 />
               </div>
             </div>
@@ -664,9 +665,9 @@ const OrganizationInfo = () => {
                 <div className="mt-4">
                   <form>
                      <div className="mb-3">
-                      <label className="form-label fw-bold">Email</label>
+                      <label className="form-label " style={{fontSize:'20px', fontWeight:'500'}}>Email</label>
                       <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
+                        style={{ backgroundColor: "#F6F6F6", height:'50px' }}
                         type="email"
                         className={`form-control ${formErrors['business_email'] ? 'input-error' : ''}`}
                         value={formData?.business_email || ""}
@@ -689,9 +690,9 @@ const OrganizationInfo = () => {
                       />
                     </div> */}
                     <div className="mb-3">
-                      <label className="form-label fw-bold">Address</label>
+                      <label className="form-label " style={{fontSize:'20px', fontWeight:'500'}}>Address</label>
                       <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
+                        style={{ backgroundColor: "#F6F6F6", height:'50px' }}
                         type="text"
                         className={`form-control ${formErrors['location'] ? 'input-error' : ''}`}
                         value={formData?.location || ""}
@@ -702,11 +703,11 @@ const OrganizationInfo = () => {
                       {formErrors['location'] && <p className="error-message">Please fill out the field.</p>}
                     </div>
                     <div className="mb-3">
-                      <label className="form-label fw-bold">
+                      <label className="form-label " style={{fontSize:'20px', fontWeight:'500'}}>
                         Business Number
                       </label>
                       <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
+                        style={{ backgroundColor: "#F6F6F6", height:'50px' }}
                         type="text"
                         className={`form-control ${formErrors['business_number'] ? 'input-error' : ''}`}
                         value={formData?.business_number || ""}
@@ -717,9 +718,9 @@ const OrganizationInfo = () => {
                       {formErrors['business_number'] && <p className="error-message">Please fill out the field.</p>}
                     </div>
                     <div className="mb-3">
-                      <label className="form-label fw-bold">Website Url</label>
+                      <label className="form-label" style={{fontSize:'20px', fontWeight:'500'}}>Website Url</label>
                       <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
+                        style={{ backgroundColor: "#F6F6F6", height:'50px' }}
                         type="text"
                         className={`form-control ${formErrors['website_url'] ? 'input-error' : ''}`}
                         value={formData?.website_url || ""}
@@ -730,11 +731,11 @@ const OrganizationInfo = () => {
                       {formErrors['website_url'] && <p className="error-message">Please fill out the field.</p>}
                     </div>
                     <div className="mb-3">
-                      <label className="form-label fw-bold">
+                      <label className="form-label " style={{fontSize:'20px', fontWeight:'500'}}>
                         Company Description
                       </label>
                       <textarea
-                        style={{ backgroundColor: "#E8E8E8" }}
+                        style={{ backgroundColor: "#F6F6F6", }}
                         rows={3}
                         className={`form-control ${formErrors['about'] ? 'input-error' : ''}`}
                         value={formData?.about || ""}
@@ -763,7 +764,7 @@ const OrganizationInfo = () => {
               </div>
               <div className="col-md-6 pt-md-5">
                 <p className="fw-bold text-center mt-5">
-                  <div className="mt-5">Plan</div>
+                  <div className="mt-5" style={{fontSize:'20px',fontWeight:'500'}}>Plan</div>
                 </p>
                 {Object.keys(packageData).length > 0 ? (
                 <div className="d-flex justify-content-center">
@@ -829,7 +830,7 @@ const OrganizationInfo = () => {
                 )}
               </div>
               <div className="mt-5">
-              <p className="info-txt mb-4" style={{color:"black"}}>Members</p>
+              <p className="info-txt mb-4" style={{color:"black",fontSize:"30px", fontWeight:"600"}}>Members</p>
                 <Table dataSource={inviteData} className="table-responsive" columns={columns} />
               </div>
               

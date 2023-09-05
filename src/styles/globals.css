@@ -621,6 +621,7 @@ margin-bottom: 24px;
 
 .sidebar {
   height: 95% !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,.120)!important;
 }
 .sidebar ul li{
   font-size: 22px;
@@ -642,6 +643,7 @@ margin-bottom: 24px;
   display: flex;
   justify-content: center;
 }
+
 .org-txt{
   font-size: 22px;
   font-weight: 500;
@@ -1702,6 +1704,16 @@ color: #E27832;
   transition: background-color 0.3s;
   content: '';
 }
+.orgainization-profile .ant-table-thead > tr > th {
+  background: #DEE3E6 !important;
+  border-bottom: 0px solid black !important;
+  font-size: 17px !important;
+  font-weight: 700;
+}
+.orgainization-profile table {
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+}
+
 .set-p-1{
   font-size: 20px;
   font-weight: 700;
@@ -1917,6 +1929,9 @@ color: #E27832;
 .community-guideline{
   font-size: 24px;
   font-weight: 500;
+}
+.sidebarCategory .col-md-6{
+  width: 100% !important;
 }
 
 @media screen and (min-width:1400px){
@@ -2255,7 +2270,7 @@ color: #E27832;
 }
 
 .profile-action-card button{
-  margin-top: 10px;
+  padding: 6px 8px 6px 20px;
 }
 
 .card.profile-action-card {
@@ -2264,6 +2279,8 @@ color: #E27832;
   /* height: 245px; */
   position: absolute;
   z-index: 1;
+  padding: 8px 0px 0 0px !important;
+  box-shadow: 0 3px 12px 2px rgba(0, 0, 0, 0.24);
 }
 
 .action-card-button:hover{

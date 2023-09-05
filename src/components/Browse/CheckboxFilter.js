@@ -28,16 +28,20 @@ export const CheckboxFilter = (props) => {
                 </FormLabel>
             )}
             <Checkbox.Group value={props.defaultValue} className="browse-checkbox" onChange={props.onCheckboxChange}>
-                {options.map((option) => (
-                    <Box>
-                        <Checkbox
-                            key={option.id}
-                            value={option.id}
-                        >
-                            <span>{option.name}</span>
-                        </Checkbox>
-                    </Box>
-                ))}
+            <div className="row">
+                    {options.map((option) => (
+                        <div className="col-md-6">
+                        <Box>
+                            <Checkbox
+                                key={option.id}
+                                value={option.id}
+                            >
+                                <span>{option.name}</span>
+                            </Checkbox>
+                        </Box>     
+                        </div>
+                    ))}
+            </div>
             </Checkbox.Group>
         </Stack>
     );
