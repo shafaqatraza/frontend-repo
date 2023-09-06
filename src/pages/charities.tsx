@@ -72,7 +72,7 @@ import revew1 from '../assets/imgs/review_one.jpg'
 import revew2 from '../assets/imgs/review_two.jpg'
 import revew3 from '../assets/imgs/review_three.jpg'
 
-import logoHorizontal from '../assets/imgs/logo/newlogo.png'
+import logoHorizontal from '../assets/imgs/logo/newlogo.png';
 import { MyModal } from '../components/MyModal'
 import { SignupModal } from '../components/onboarding/Signup/SignupModal'
 import { Step1 } from '../components/createProfileModels/step1'
@@ -89,6 +89,9 @@ import { InnerSection } from '../components/createProfileModels/welcomeScreen/in
 import { isLogin, getLoginData, baseUrl, accessToken} from '../components/Helper/index'
 import axios from 'axios'
 import OrganizationCreationModal from '../components/organization/OrganizationCreationModal';
+import gdlogo from '../assets/imgs/gdlogopegiun.png'
+import explorepegiun from '../assets/imgs/explorepegiun.png'
+import exchangepegiun from '../assets/imgs/exchangepegiun.png'
 
 interface ModelType {
   login: boolean
@@ -644,20 +647,6 @@ const Charities = () => {
               />
             }
           />
-        )}
-
-        {!isSmallerThan850 && (
-          <Center >
-            <Link href="/">
-              <Image
-                src={logoHorizontal}
-                alt="GoodDeeds"
-                width={150}
-                height={80}
-                className="py-3"
-              />
-            </Link>
-          </Center>
         )}
 
         <OrganizationCreationModal
