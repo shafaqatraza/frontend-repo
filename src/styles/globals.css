@@ -991,12 +991,12 @@ margin-bottom: 24px;
 }
 .main-volunteer-section{
   background-color: rgba(222, 227, 230, 0.5);
-  margin-top: 90px;
+  margin-top: 55px;
   padding: 12px 0 25px 0;
 }
 .volun-txt{
   color: #E27832;
-  font-size: clamp(20px, 3vw, 30px);
+  font-size: clamp(20px, 3vw, 40px);
   font-weight: 700;
   line-height: clamp(24px, 4vw, 37px);
 }
@@ -1029,13 +1029,13 @@ margin-bottom: 24px;
   display: flex;
   justify-content: space-around;
   padding: 50px 0 50px 0;
-  gap: 0.7rem !important;
+  gap:3rem 0.5rem !important;
 }
 .passionate-vol .volunteer-card-row1{
   display: flex;
     justify-content: space-around;
     padding: 50px 0 50px 0;
-    gap: 1.4rem !important;
+    gap:3.5rem 1.4rem !important;
 }
 .volunteer-btn{
   max-width: 376px;
@@ -1888,7 +1888,7 @@ color: #E27832;
   padding: 20px 7px 20px 7px;
   border: 1px solid black;
   width: 300px;
-  min-height: 496px;
+  min-height: 449px;
 }
 .charity-card h1{
   font-size: 24px;
@@ -1933,6 +1933,28 @@ color: #E27832;
 .sidebarCategory .col-md-6{
   width: 100% !important;
 }
+.privacy-heading{
+  font-size: 60px;
+  font-weight: 700;
+  text-align: center;
+  color: #183553;
+  margin: 90px 0 30px 0;
+}
+.privacy-policy-content{
+  font-size: 22px;
+  font-weight: 500;
+  color: 212121;
+  line-height: 1.2;
+}
+.privacy-policy-content .css-186l2rg {
+  width: 2em;
+  height: 2em;
+}
+.privacy-policy-content .css-j2ph2z {
+  width: 2em;
+  height: 2em;
+}
+
 
 @media screen and (min-width:1400px){
   .passionate-vol .volunteer-card-row1{
@@ -1943,10 +1965,10 @@ color: #E27832;
     display: flex;
     justify-content: space-around;
     padding: 50px 0 50px 0;
-    gap: 2rem !important;
+    gap:3rem 1rem !important;
   }
   .charity-card {
-    min-height: 504px;
+    min-height: 449px;
 }
 }
 @media screen and (max-width:1199px){
@@ -1967,6 +1989,33 @@ color: #E27832;
   }
 }
 @media (max-width: 600px) {
+  .privacy-policy-content{
+    font-size: 17px;
+    font-weight: 500;
+    color: 212121;
+    line-height: 1.3;
+  }
+  .privacy-policy-content .css-hne08q {
+    font-size: 19px !important;
+    line-height: 1.3;
+  }
+  .privacy-policy-content .css-1c5uvt6 {
+    font-size: 19px !important;
+    line-height: 1.3;
+  }
+  .privacy-policy-content .css-15hlaeh {
+    font-size: 19px !important;
+    line-height: 1.3;
+  }
+
+  
+  .privacy-heading{
+    font-size: 45px;
+    font-weight: 700;
+    text-align: center;
+    color: #183553;
+    margin: 90px 0 30px 0;
+  }
   .view-blog-btn {
     width: 312px;
   }

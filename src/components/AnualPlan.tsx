@@ -71,7 +71,7 @@ const AnualPlan = () => {
 
   return (
     <>
-      <Container>
+      <Container className='pt-md-5'>
         <Row>
           <Col md={12}>
             {
@@ -85,6 +85,8 @@ const AnualPlan = () => {
                         width: "243px",
                         height: "599px",
                         marginTop: "2rem",
+                        boxShadow:"0 4px 4px #00000040",
+                        borderRadius:"0"
                       }}
                     >
                       <div className="card-body ">
@@ -113,7 +115,7 @@ const AnualPlan = () => {
                               {/* /month, billed{" "} */}
                           {/* <span className="ms-5">monthly</span> */}
                         </p>
-                        <hr className="mt-3" />
+                        <hr className="mt-3" style={{opacity:"1"}}/>
                         <div className="mt-3">
                           {
                             // @ts-ignore: Unreachable code error
@@ -162,6 +164,8 @@ const AnualPlan = () => {
                         width: "243px",
                         height: "599px",
                         marginTop: "2rem",
+                        boxShadow:"0 4px 4px #00000040",
+                        borderRadius:"0"
                       }}
                     >
                       <div className="card-body ">
@@ -190,7 +194,7 @@ const AnualPlan = () => {
                             data?.currency_symbol}{parseInt(data?.amount)}</span>/month,billed
                           <div className='ms-4 ps-1'><span className="ms-5 ps-5">annually</span></div>
                         </p>
-                        <hr className="mt-3" />
+                        <hr className="mt-3" style={{opacity:"1"}} />
                         <div className="mt-3">
                           {
                             // @ts-ignore: Unreachable code error
@@ -238,10 +242,12 @@ const AnualPlan = () => {
                         width: "243px",
                         height: "599px",
                         marginTop: "2rem",
+                        boxShadow:"0 4px 4px #00000040",
+                        borderRadius:"0"
                       }}
                     >
                       <div className="card-body ">
-                        <p className="card-title mt-1 pre-txt text-center">
+                        <p className="card-title mt-1 pre-txt text-center" style={{color:"#E27832"}}>
                           {
                             // @ts-ignore: Unreachable code error
                             datatwo?.name}
@@ -258,12 +264,12 @@ const AnualPlan = () => {
                             lineHeight: "12px",
                           }}
                         >
-                          <span className="free-txt3">    {
+                          <span className="free-txt3" style={{color:"#E27832"}}>    {
                             // @ts-ignore: Unreachable code error
                             datatwo?.currency_symbol}{parseInt(datatwo?.amount)}</span>/month,billed
                           <div className='ms-4 ps-1'><span className="ms-5 ps-5">annually</span></div>
                         </p>
-                        <hr className="mt-3" />
+                        <hr className="mt-3" style={{opacity:"1"}} />
                         <div className="mt-3">
                           {
                             // @ts-ignore: Unreachable code error
@@ -311,6 +317,8 @@ const AnualPlan = () => {
                         width: "243px",
                         height: "599px",
                         marginTop: "2rem",
+                        boxShadow:"0 4px 4px #00000040",
+                        borderRadius:"0"
                       }}
                     >
                       <div className="card-body ">
@@ -336,7 +344,7 @@ const AnualPlan = () => {
                             datathree?.currency_symbol}{parseInt(datathree?.amount)}</span>/month,billed{" "}
                           <div className='ms-4 ps-1'><span className="ms-5 ps-5">annually</span></div>
                         </p>
-                        <hr className="mt-3" />
+                        <hr className="mt-3" style={{opacity:"1"}}/>
                         <div className="mt-3">
                           {
                             // @ts-ignore: Unreachable code error

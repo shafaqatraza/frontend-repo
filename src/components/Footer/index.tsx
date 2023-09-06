@@ -22,6 +22,7 @@ import footertwiter from "../../assets/imgs/footertwitter.png";
 import footerlinkedIn from "../../assets/imgs/footerlinkedin.png";
 import footeryoutube from "../../assets/imgs/footeryoutube.png";
 import footerinsta from "../../assets/imgs/footerinstagram.png";
+import footertiktok from "../../assets/imgs/footerTiktok.png";
 
 
 export const Footer = () => (
@@ -50,7 +51,7 @@ export const Footer = () => (
             ms={{ base: "30px", sm: "0" }}
           >
             {" "}
-            Do Good. Feel Better. Get Rewarded
+            Where Charity Meets Community
           </Text>
         </Box>
         <SimpleGrid
@@ -97,9 +98,10 @@ export const Footer = () => (
         </SimpleGrid>
         <div className=" me-4 mt-4 d-flex">
           <a href="https://www.facebook.com/gooddeeds.ca" target="_blank" className="me-3"><img src={footerfacebook.src} width='30px'  alt="" /></a>
-          <a href="https://twitter.com/GoodDee20643366" target="_blank" className="me-3"><img src={footertwiter.src} width='30px'  alt="" /></a>
+          {/* <a href="https://twitter.com/GoodDee20643366" target="_blank" className="me-3"><img src={footertwiter.src} width='30px'  alt="" /></a> */}
           <a href="https://www.linkedin.com/company/good-deeds-llc-1/" target="_blank" className="me-3"><img src={footerlinkedIn.src} width='30px'  alt="" /></a>
-          <a href="#" className="me-3"><img src={footeryoutube.src} width='30px'  alt="" /></a>
+          {/* <a href="#" className="me-3"><img src={footeryoutube.src} width='30px'  alt="" /></a> */}
+          <a href="https://www.tiktok.com/@gooddeedsllc" target="_blank" className="me-3"><img src={footertiktok.src} width='30px'  alt="" /></a>
           <a href="https://www.instagram.com/gooddeedsllc/" target="_blank"><img src={footerinsta.src} width='30px' alt="" /></a>
         </div>
         {/* <HStack spacing="2" mt="8" as="ul">

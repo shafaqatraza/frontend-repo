@@ -76,7 +76,7 @@ const MonthlyPlan = () => {
   return (
     <>
       <Container>
-        <Row>
+        <Row className='pt-md-5'>
           <Col md={12}>
             {
               Object.keys(data).length > 0 ? (<div className="d-flex justify-content-center mb-5 flex-wrap">
@@ -88,6 +88,9 @@ const MonthlyPlan = () => {
                       width: "243px",
                       height: "599px",
                       marginTop: "2rem",
+                      borderRadius:"0",
+                      boxShadow:"0 4px 4px #00000040"
+                      
                     }}
                   >
                     <div className="card-body ">
@@ -116,7 +119,7 @@ const MonthlyPlan = () => {
                        <span className=''>/month, billed</span>
                       <span className='ms-5 ps-5'> monthly</span>
                       </p>
-                      <hr className="mt-3" />
+                      <hr className="mt-3" style={{opacity:"1"}}/>
                       <div className="mt-3">
                         <div className="d-flex mt-3">
                           <p className="ms-2 free-txt4">
@@ -168,6 +171,8 @@ const MonthlyPlan = () => {
                       width: "243px",
                       height: "599px",
                       marginTop: "2rem",
+                      borderRadius:"0",
+                      boxShadow:"0 4px 4px #00000040"
                     }}
                   >
                     <div className="card-body ">
@@ -196,7 +201,7 @@ const MonthlyPlan = () => {
                         <span className=''>/month,billed</span>
                         <div className='ms-4 ps-1'><span className="ms-5 ps-5">monthly</span></div>
                       </p>
-                      <hr className="mt-3" />
+                      <hr className="mt-3" style={{opacity:"1"}}/>
                       <div className="mt-3">
                         <div className="d-flex mt-3">
 
@@ -253,10 +258,12 @@ const MonthlyPlan = () => {
                       width: "243px",
                       height: "599px",
                       marginTop: "2rem",
+                      borderRadius:"0",
+                      boxShadow:"0 4px 4px #00000040"
                     }}
                   >
                     <div className="card-body ">
-                      <p className="card-title mt-3 px-3 pre-txt text-center">
+                      <p className="card-title mt-3 px-3 pre-txt text-center"style={{color:"#E27832"}}>
                         {
                           // @ts-ignore: Unreachable code error
                           datatwo?.name}
@@ -273,12 +280,12 @@ const MonthlyPlan = () => {
                           lineHeight: "12px",
                         }}
                       >
-                        <span className="free-txt3">    {
+                        <span className="free-txt3" style={{color:"#E27832"}}>    {
                           // @ts-ignore: Unreachable code error
                           datatwo?.currency_symbol}{parseInt(datatwo?.amount)}</span><span>/month,billed</span>
                         <div className='ms-4 ps-1'><span className="ms-5 ps-5">monthly</span></div>
                       </p>
-                      <hr className="mt-3" />
+                      <hr className="mt-3" style={{opacity:"1"}}/>
                       <div className="mt-3">
                         <div className="d-flex mt-3">
                           <p className="free-txt4">
@@ -324,6 +331,8 @@ const MonthlyPlan = () => {
                       width: "243px",
                       height: "599px",
                       marginTop: "2rem",
+                      borderRadius:"0",
+                      boxShadow:"0 4px 4px #00000040"
                     }}
                   >
                     <div className="card-body ">
@@ -350,7 +359,7 @@ const MonthlyPlan = () => {
                           <span>/month,billed</span>
                         <div className='ms-5 ps-3'><span className="ms-5 ps-5">monthly</span></div>
                       </p>
-                      <hr className="mt-3 px-2" />
+                      <hr className="mt-3 px-2" style={{opacity:"1"}}/>
                       <div className="mt-3 px-2">
                         {
                           // @ts-ignore: Unreachable code error

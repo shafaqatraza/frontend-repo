@@ -438,8 +438,8 @@ const StudentLanding = () => {
               <p className="our-platform mt-3 d-none d-md-block">Get engaged, create a positive change, and enjoy the benefits.</p>
               <p className="our-platform mt-3 d-block d-md-none px-4 px-md-2" style={{fontWeight:600,}}>Browse a broad range of online or in-person volunteer opportunities. Help causes that matter most to you while completing your 40 hours and earning exclusive Deed Dollars to help you get the stuff you need.</p>
             </div>
-            <div className="mt-4 mb-3 px-4 px-md-0 ">
-              <button className="try-button d-none d-md-block">
+            <div className="mt-4 mb-0 pt-2 px-4 px-md-0 ">
+              <button className="try-button d-none d-md-block" style={{width:"350px"}}>
                Start Earning Rewards Today!
               </button>
               <button className="try-button d-block d-md-none" style={{height:"50px", width:"300px"}}>
@@ -456,7 +456,7 @@ const StudentLanding = () => {
       </div>
       {/* Partners */}
       <div className="container">
-        <div className='pt-md-5 pt-3 pb-3 pb-md-0'>
+        <div className='pt-md-4 pt-3 pb-3 pb-md-0'>
           <p className="text-center part-txt">Our Partners</p>
         </div>
         <div className="partners-img mt-4 p-3 pe-0 mb-md-5 mb-4">
@@ -840,8 +840,9 @@ const StudentLanding = () => {
               lineHeight="26.63px"
               color="#212121"
               fontWeight="600"
-              mt="100px"
-              className="ms-md-5 about-more-people"
+              mt="80px"
+              className="about-more-people ms-md-5"
+              style={{color:"#212121",fontSize:"22px",fontWeight:"600",maxWidth:"73%"}}
             >
               Good Deeds is a digital platform that directly delivers meaningful opportunities to you.  Volunteer with Good Deeds today and earn Deed Dollars for every volunteer hour you contribute.
             </Text>
@@ -1002,6 +1003,7 @@ const StudentLanding = () => {
                 fontWeight="600"
                 textAlign="center"
                 mt="34px"
+                className="px-md-3"
               >Free access to Good Deed's ever-expanding database of volunteer opportunities that match your preferences or support your future goals.
               </Text>
             </div>
@@ -1024,7 +1026,8 @@ const StudentLanding = () => {
                 fontWeight="600"
                 textAlign="center"
                 mt="34px"
-              >Provide volunteers with a reliable and secure platform that connects with verified and vetted organizations and age-appropriate volunteer opportunities.
+                className="px-md-4"
+              >Provide volunteers with <br className="d-none d-xl-block"/>a reliable and secure platform that connects with verified and vetted organizations and age-appropriate volunteer opportunities.
 
               </Text>
             </div>
@@ -1046,6 +1049,7 @@ const StudentLanding = () => {
                 fontWeight="600"
                 textAlign="center"
                 mt="34px"
+                className="px-md-3"
               >Volunteerism is such an incredibly important experience and Good Deeds would like to reward you for a job well done.
               </Text>
             </div>
@@ -1186,18 +1190,18 @@ const StudentLanding = () => {
                 lineHeight="26px"
                 color="#212121"
                 fontWeight="600"
-                className="parental-para"
+                className="parental-para pe-md-5 ps-md-5"
               >
                 Are you worried about your child's volunteering progress? The Good Deeds platform makes it effortless to track the details of your teens assigned volunteering activities from the convenience of your mobile device. We highly encourage parents to join in the process of giving with a quick and easy sign-up.
               </Text>
               <Button
                 variant={'solid'}
                 colorScheme={'orange'}
-                style={{ borderRadius: 50 }}
+                style={{ borderRadius: 50, height:"48px"}}
                 size={'md'}
                 display="block"
                 minW="320px"
-                m="30px auto 0"
+                m="50px auto 0"
                 onClick={() => router.push("/blog")}
               >
                 Click here to Learn More

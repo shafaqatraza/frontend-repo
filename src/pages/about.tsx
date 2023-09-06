@@ -225,23 +225,23 @@ const About = () => {
           <div className='container py-md-5 pb-5 pt-1 what-and-who px-0'>
             <div className='row mt-md-4 mx-0 px-4 px-md-0'>
               <div className='col-lg-9 col-md-8 order-2 order-md-1  pe-md-5 pe-2'>
-                <h1 className='d-none d-md-block'><span style={{color:"#E27832"}} >What</span> we do?</h1>
+                <h1 className='d-none d-md-block' style={{color:"#183553"}}><span style={{color:"#E27832"}} >What</span> we do?</h1>
                 <p>Good Deeds is the first online platform that rewards kindness by inspiring a cycle of giving. You earn exclusive Deed Dollars in exchange for donations and volunteer services, which you can exchange for goods and services within the Good Deeds marketplace. </p>
                 <p>We believe that a non-monetized society can help shape a friendlier and better world. Additionally, our collective efforts encourage a reduction in waste and pollution, promoting a sustainable Earth for physical and mental well-being. </p>
                 <p>We welcome everyone to join our vibrant community as we do good and feel better together!</p>
               </div>
               <div className='col-lg-3 col-md-4 order-1 order-md-2 flex-column justify-content-center justify-content-md-end  py-5 d-flex'>
-              <h1 className='d-block d-md-none text-center'><span style={{color:"#E27832"}} >What</span> we do?</h1>
+              <h1 className='d-block d-md-none text-center' style={{color:"#183553"}}><span style={{color:"#E27832"}} >What</span> we do?</h1>
                 <img src={whatsdo.src} className='px-2 px-md-0' alt="what we do" />
               </div>
             </div>
             <div className='row mt-md-5 mt-4 pt-md-5 mb-md-5 mx-0 px-4 px-md-0'>
               <div className='col-lg-3 col-md-4 d-flex pb-5 pb-md-0 justify-content-center flex-column pt-4'>
-              <h1 className='text-center d-block d-md-none'><span style={{color:"#E27832"}}>Who</span> we are?</h1>
+              <h1 className='text-center d-block d-md-none' style={{color:"#183553"}}><span style={{color:"#E27832"}}>Who</span> we are?</h1>
                 <img src={whowe.src} className='px-2 px-md-0' alt="who we are" />
               </div>
               <div className='col-lg-9 col-md-8 ps-md-5'>
-                <h1 className='text-end me-5 d-none d-md-block'><span style={{color:"#E27832"}}>Who</span> we are?</h1>
+                <h1 className='text-end me-5 d-none d-md-block' style={{color:"#183553"}}><span style={{color:"#E27832"}}>Who</span> we are?</h1>
                 <p>We empower communities to help others without ulterior motives or seeking monetary gains in return.</p>
                 <p>Our community aims to progress occasional acts of giving into everyday practice. In doing so, we can work together to minimize poverty and provide support to those who need it most.</p>
                 <p> Let's build a healthy cycle that goes beyond monetary limitations for a kinder and more sustainable lifestyle.</p>
@@ -281,7 +281,7 @@ const About = () => {
             fontWeight={400}
             pb={20}
             py={7}
-            className='for-desk text-center text-md-start d-block value-para'
+            className='for-desk text-center text-md-start d-block value-para text-dark'
           >
             Our values are what guides us. We cultivate a diverse and inclusive environment through equality, kindness, respect, trust
             and compassion for all.

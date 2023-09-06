@@ -30,25 +30,25 @@ const Settings = () => {
           <div className="row mx-0 mt-5">
             <div onClick={() => router.push("/organization/profile")} style={{ cursor: "pointer" }} className="col-md-4">
               <p className='set-p-1'>Business Info</p>
-              <p className='mt-2'>Edit your business name, <span className='d-block'>and logo</span></p>
+              <p className='mt-2'>Edit company information  <span className='d-block'>and change logo</span></p>
             </div>
             <div onClick={() => router.push("../edit-payment")} style={{ cursor: "pointer" }} className="col-md-4">
               <p className='set-p-1'>Billing and Payments</p>
-              <p>Invoices and Payment details <span className='d-block'>on file</span></p>
+              <p>View invoices and modify  <span className='d-block'>payment details</span></p>
             </div>
             <div onClick={() => router.push("/payment")} style={{ cursor: "pointer" }} className="col-md-4">
-              <p className='set-p-1'>Site member settings</p>
-              <p>Invoices and Payment details  <span className='d-block'>on file</span></p>
+              <p className='set-p-1'>Member Login & Security</p>
+              <p>Manage site members’ login, <span className='d-block'>sign up, profiles, and security</span></p>
             </div>
           </div>
           <div className='row mx-0 mt-5'>
             <div onClick={() => router.push("/organization/profile")} style={{ cursor: "pointer" }} className="col-md-4">
               <p className='set-p-1'>Manage Plan</p>
-              <p className='mt-2'>Edit your business name, <span className='d-block'>logo or change your plan.</span></p>
+              <p className='mt-2'>Upgrade or modify your <span className='d-block'>plan</span></p>
             </div>
             <div onClick={() => router.push("/payment")} style={{ cursor: "pointer" }} className="col-md-4">
-              <p className='set-p-1'>Roles & Permissions</p>
-              <p className='mt-2'>Invoices and Payment details  <span className='d-block'>on file</span></p>
+              <p className='set-p-1'>Member Roles & Permissions</p>
+              <p className='mt-2'>Invite people to work on this  <span className='d-block'>site and set their permissions</span></p>
             </div>
           </div>
           <div onClick={() => router.push("/organization")} style={{ cursor: "pointer" }} className="row mx-0 mt-5">
