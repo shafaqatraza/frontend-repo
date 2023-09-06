@@ -636,7 +636,7 @@ const CreateApplication = (props: Props) => {
                 <p className="fw-bold">* Do you have experience working with</p>
               </div>
               <div className="col-md-6">
-                <Input 
+                {/* <Input 
                   type="text" 
                   style={{ backgroundColor: "#E8E8E8" }} 
                   placeholder="Begin Typing here" 
@@ -644,6 +644,21 @@ const CreateApplication = (props: Props) => {
                   value={previousQuestions[id]?.question} // @ts-ignore: Unreachable code error
                   className={`${questionErrors[id] ? 'input-error' : ''}`}
                   onChange={(e:any) => handleInputChange(id, e.target.value)}
+                /> */}
+                <Input
+                  type="text"
+                  style={{ backgroundColor: "#E8E8E8" }}
+                  placeholder="Begin Typing here"
+                  id={id} // @ts-ignore:
+                  value={
+                    previousQuestions[id]?.question
+                      ? previousQuestions[id]?.question
+                          .split("Do you have experience working with")[1] // Get text after the delimiter
+                          .trim() // Remove leading/trailing whitespace
+                      : ""
+                  } // @ts-ignore:
+                  className={`${questionErrors[id] ? 'input-error' : ''}`}
+                  onChange={(e: any) => handleInputChange(id, e.target.value)}
                 />
               </div>
               {// @ts-ignore: Unreachable code error

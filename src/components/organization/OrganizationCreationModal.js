@@ -90,7 +90,7 @@ function OrganizationCreationModal({ show, onClose }) {
       .then((response) => {
         // setShowSuccess(true);
         // setShowCreateOrg(false);
-        toast({position: "top", title: 'response?.data.message', status: "success" })
+        toast({position: "top", title: 'Organization has been created successfully.', status: "success" })
         router.push("/organization")
       })
       .catch((error) => {
