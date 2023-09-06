@@ -31,8 +31,6 @@ export const LoginModal = () => {
           <ModalBody>
             <Card>
               <LoginForm />
-              {/* <CreateProfilStep1/> */}
-              {/* <CreateProfilStep2 /> */}
             </Card>
 
           </ModalBody>

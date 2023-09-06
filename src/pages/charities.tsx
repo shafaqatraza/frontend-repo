@@ -2,7 +2,30 @@ import React, { useState } from 'react'
 import Navbar from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import Charity from "../assets/imgs/Charity.png";
-import { Image, Text, Button, Box } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  HStack,
+  Link,
+  Image,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  useDisclosure,
+  Badge,
+  PopoverTrigger,
+  PopoverContent,
+  Stack,
+  Input,
+  Text,
+  Avatar,
+  Spacer,
+  Spinner
+} from '@chakra-ui/react'
 import part1 from "../assets/imgs/part1.png";
 import part2 from "../assets/imgs/part2.png";
 import part3 from "../assets/imgs/part3.png";
@@ -49,16 +72,107 @@ import revew1 from '../assets/imgs/review_one.jpg'
 import revew2 from '../assets/imgs/review_two.jpg'
 import revew3 from '../assets/imgs/review_three.jpg'
 
+import logoHorizontal from '../assets/imgs/logo/newlogo.png'
+import { MyModal } from '../components/MyModal'
+import { SignupModal } from '../components/onboarding/Signup/SignupModal'
+import { Step1 } from '../components/createProfileModels/step1'
+import { Step1Form } from '../components/createProfileModels/step1Form'
+import { LoginForm } from '../components/onboarding/Login/LoginForm'
+import { ForgotPasswordModal } from '../components/onboarding/Login/ForgotPassword/ForgotPasswordModal'
+import { ForgotPassword } from '../components/onboarding/Login/ForgotPassword/ForgotPasswordForm'
+import { SignupForm } from '../components/onboarding/Signup/SignupForm'
+import { SignUpVerificationModal } from '../components/onboarding/Signup/Verification/VerificationModal'
+import { SignUpVerificationForm } from '../components/onboarding/Signup/Verification/VerificationForm'
+import { Step2Form } from '../components/createProfileModels/step2/step2Form'
+import { WelcomeScreen1 } from '../components/createProfileModels/welcomeScreen/screen1'
+import { InnerSection } from '../components/createProfileModels/welcomeScreen/innerSection'
+import { isLogin, getLoginData, baseUrl, accessToken} from '../components/Helper/index'
+import axios from 'axios'
+import OrganizationCreationModal from '../components/organization/OrganizationCreationModal';
+
+interface ModelType {
+  login: boolean
+  forgotPassword: boolean
+  signUp: boolean
+  drawer: boolean
+  signUpVerification: boolean
+  step1: boolean
+  step2: boolean,
+  welcomeScreen1: boolean
+  welcomeScreen2: boolean
+  welcomeScreen3: boolean
+  welcomeScreen4: boolean
+}
+
 const Charities = () => {
   const [selectedButton, setSelectedButton] = useState(1);
   const [isSmallerThan767] = useMediaQuery('(max-width: 767px)')
+  const [isSmallerThan850] = useMediaQuery('(max-width: 850px)');
+  const [showCreateOrgModal, setShowCreateOrgModal] = useState(false);
   const router = useRouter()
-
+  const [orgData, setOrgData] = useState([]);
   const handleClickOne = () => {
     setSelectedButton(1);
   }
   const handleClickTwo = () => {
     setSelectedButton(2);
+  }
+
+  if(isLogin()){
+    axios.get(`${baseUrl}/organizations`, {
+      headers: {
+        Authorization: 'Bearer ' + accessToken(),
+      }
+    }).then((res) => {
+      setOrgData(res.data);
+    }).catch((err) => {
+      // console.log(err);
+    })
+  }
+
+
+  const [showModel, setShowModel] = useState<ModelType>({
+    login: false,
+    forgotPassword: false,
+    signUp: false,
+    drawer: false,
+    signUpVerification: false,
+    step1: false,
+    step2: false,
+    welcomeScreen1: false,
+    welcomeScreen2: false,
+    welcomeScreen3: false,
+    welcomeScreen4: false
+  })
+
+  const [data, setData] = useState<any>({
+    username: '',
+    bio: '',
+    location: '',
+    website_url: '',
+    avatar: null,
+    refer: '',
+    email: '',
+  })
+
+  const openCreateOrgModal = () => {
+    setShowCreateOrgModal(true);
+  };
+
+  const closeCreateOrgModal = () => {
+    setShowCreateOrgModal(false);
+  };
+
+  const [refer, setRefer] = useState<any>('')
+  const [isRefer, setIsRefer] = useState<boolean>(true);
+  const [openOrganization, setOpenOrganization] = useState<boolean>(false);
+
+  const goToOrganizatonDashboard = () => {
+    router.push("/organization")
+  }
+
+  if(openOrganization && isLogin() && orgData.length !== 0){
+    goToOrganizatonDashboard()
   }
 
   const Governance = (
@@ -322,6 +436,235 @@ const Charities = () => {
         {/* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqal6LVnvttE3KHG-Xk9z3cVMRVUWFjY4&libraries=places"></script> */}
       </Head>
       <Navbar />
+
+      {/* Modals */}
+      <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+        {showModel.login && (
+          <MyModal
+            show={showModel}
+            setShow={setShowModel}
+            TitleModal="Login In"
+            body={<LoginForm show={showModel} setShowModel={setShowModel} />}
+          />
+        )}
+
+        {showModel.forgotPassword && (
+          <ForgotPasswordModal
+            show={showModel.forgotPassword}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.forgotPassword = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.forgotPassword = false
+              dubShow.login = true
+              setShowModel(dubShow)
+            }}
+            TitleModal="Forgot Password"
+            body={<ForgotPassword show={showModel} setShowModel={setShowModel} />}
+          />
+        )}
+        {showModel.signUp && (
+          <SignupModal
+            show={showModel}
+            setShow={setShowModel}
+            TitleModal="Sign up and receive 100 deed dollars"
+            body={
+              <SignupForm
+                userData={data}
+                setUserData={setData}
+                show={showModel}
+                setShowModel={setShowModel}
+                refer={refer}
+              />
+            }
+          />
+        )}
+        {showModel.signUpVerification && (
+          <SignUpVerificationModal
+            show={showModel.signUpVerification}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.signUpVerification = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.signUpVerification = false
+              dubShow.signUp = true
+              setShowModel(dubShow)
+            }}
+            body={
+              <SignUpVerificationForm
+                data={data}
+                setData={setData}
+                show={showModel}
+                setShowModel={setShowModel} />
+            }
+          />
+        )}
+        {showModel.step1 && (
+          <Step1
+            show={showModel.step1}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.step1 = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.step2 = false
+              dubShow.step1 = true
+              setShowModel(dubShow)
+            }}
+            TitleModal="Create Profile"
+            currentStep={1}
+            body={
+              showModel.step1 && (
+                <Step1Form
+                  data={data}
+                  setData={setData}
+                  show={showModel}
+                  setShowModel={setShowModel}
+                />
+              )
+            }
+          />
+        )}
+
+        {showModel.step2 && (
+          <Step1
+            show={showModel.step2}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.step2 = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.step2 = false
+              dubShow.step1 = true
+              setShowModel(dubShow)
+            }}
+            TitleModal="Create Profile"
+            currentStep={2}
+            body={
+              <Step2Form
+                data={data}
+                setData={setData}
+                show={showModel}
+                setShowModel={setShowModel}
+              />
+            }
+          />
+        )}
+
+        {showModel.welcomeScreen1 && (
+          <WelcomeScreen1
+            show={showModel.welcomeScreen1}
+            setShow={(value: any) => {
+              let dubShow = { ...showModel }
+              dubShow.welcomeScreen1 = value
+              setShowModel(dubShow)
+            }}
+            TitleModal={`Welcome to Good Deeds!`}
+            body={
+              <InnerSection
+                currentStep={1}
+                image={gdlogo.src}
+                lastStep={false}
+                //   para="Good Deeds is the world’s first free-to-use
+                // marketplace that promotes and rewards acts of kindness."
+                show={showModel}
+                setShowModel={setShowModel}
+                goNext={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.welcomeScreen1 = false
+                  dubShow.welcomeScreen2 = true
+                  setShowModel(dubShow)
+                }}
+              />
+            }
+          />
+        )}
+
+        {showModel.welcomeScreen2 && (
+          <WelcomeScreen1
+            show={showModel.welcomeScreen2}
+            setShow={(value: any) => {
+              let dubShow = { ...showModel }
+              dubShow.welcomeScreen2 = value
+              setShowModel(dubShow)
+            }}
+            TitleModal="Explore or offer items
+            and services"
+            body={
+              <InnerSection
+                currentStep={2}
+                lastStep={false}
+                image={explorepegiun.src}
+                para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual deed dollars that can be used to acquire things you need."
+                show={showModel}
+                setShowModel={setShowModel}
+                goNext={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.welcomeScreen2 = false
+                  dubShow.welcomeScreen3 = true
+                  setShowModel(dubShow)
+                }}
+              />
+            }
+          />
+        )}
+        {showModel.welcomeScreen3 && (
+          <WelcomeScreen1
+            show={showModel.welcomeScreen3}
+            setShow={(value: any) => {
+              let dubShow = { ...showModel }
+              dubShow.welcomeScreen3 = value
+              setShowModel(dubShow)
+            }}
+            TitleModal="Exchanging items and services"
+            body={
+              <InnerSection
+                currentStep={3}
+                image={exchangepegiun.src}
+                para="Receive or provide your items and services in person or remotely. Don't worry — your deed dollars are pending until the transaction successfully happens."
+                show={showModel}
+                setShowModel={setShowModel}
+                goNext={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.welcomeScreen3 = false
+                  dubShow.welcomeScreen4 = true
+                  setShowModel(dubShow)
+                }}
+                lastStep={true}
+              />
+            }
+          />
+        )}
+
+        {!isSmallerThan850 && (
+          <Center >
+            <Link href="/">
+              <Image
+                src={logoHorizontal}
+                alt="GoodDeeds"
+                width={150}
+                height={80}
+                className="py-3"
+              />
+            </Link>
+          </Center>
+        )}
+
+        <OrganizationCreationModal
+          show={showCreateOrgModal}
+          onClose={closeCreateOrgModal}
+        />
+      </Flex>
       <div className="container">
         <div className="row">
           <div className="col-md-8 mt-5">
@@ -378,163 +721,7 @@ const Charities = () => {
         </div>
       </div>
 
-      {/* <div className="container">
-        <div>
-          <p className="text-center part-txt">Our Partners</p>
-        </div>
-        <div className="partners-img mt-5">
-          <div className="row">
-            <div className="col-md-3 d-flex justify-content-center">
-              <Image className="mb-3 mt-3" src={part1.src} alt={"Partner1"} />
-            </div>
-            <div className="col-md-3 d-flex justify-content-center">
-              <Image className="mb-3 mt-3" src={part2.src} alt={"Partner2"} />
-            </div>
-            <div className="col-md-4 d-flex justify-content-center">
-              <Image
-                style={{ width: "320px" }}
-                className="mb-3 mt-3 img-fluid"
-                src={part3.src}
-                alt={"Partner3"}
-              />
-            </div>
-            <div className="col-md-2 d-flex justify-content-center">
-              <Image
-                className="mb-3 mt-3 me-0 me-md-3"
-                src={part4.src}
-                alt={"Partner4"}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="charities-wrapper ">
-          <div
-            className="card border-1"
-            style={{ width: "276px" }}
-          >
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
-              <Image
-                style={{ maxWidth: "92px", height: "106px" }}
-                src={partner1.src}
-                alt={"Image"}
-              />
-            </div>
-            <div className="card-body">
-              <p
-                style={{
-                  fontSize: "clamp(20px, 1.5vw, 24px)",
-                  lineHeight: "clamp(20px, 3.5vw, 30px)",
-                  fontWeight: "bold",
-                  color: "#212121",
-                  textAlign: "center",
-                  height: '60px',
-                  overflow: 'hidden'
-                }}
-              >
-                Convenient Access
-              </p>
-              <p className="card-text text-center mt-4 mb-3">
-                Access Good Deeds diverse and growing database of
-                volunteers with varying levels of unique skills and
-                expertise based on your project needs.
-              </p>
-            </div>
-          </div>
-          <div
-            className="card border-1"
-            style={{ width: "276px" }}
-          >
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
-              <Image
-                style={{ width: "92px", height: "106px" }}
-                src={partner2.src}
-                alt={"Image"}
-              />
-            </div>
-            <div className="card-body">
-              <p
-                style={{
-                  fontSize: "clamp(20px, 1.5vw, 24px)",
-                  lineHeight: "clamp(20px, 3.5vw, 30px)",
-                  fontWeight: "bold",
-                  color: "#212121",
-                  textAlign: "center",
-                  height: '60px',
-                  overflow: 'hidden'
-                }}
-              >
-                Optimized Security and Safety
-              </p>
-              <p className="card-text text-center mt-4 mb-3">
-                Provide your volunteers with access to a reliable and secure platform to connect with vetted and age-appropriate volunteer opportunities.
-              </p>
-            </div>
-          </div>
-          <div
-            className="card border-1 border-black"
-            style={{ width: "276px" }}
-          >
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
-              <Image
-                style={{ width: "106px", height: "106px" }}
-                src={partner3.src}
-                alt={"Image"}
-              />
-            </div>
-            <div className="card-body">
-              <p
-                style={{
-                  fontSize: "clamp(20px, 1.5vw, 24px)",
-                  lineHeight: "clamp(20px, 3.5vw, 30px)",
-                  fontWeight: "bold",
-                  color: "#212121",
-                  textAlign: "center",
-                  height: '60px',
-                  overflow: 'hidden'
-                }}
-              >
-                Trusted Quality
-              </p>
-              <p className="card-text text-center mt-4 mb-3">
-                Our rate and review feature maintains trusted standards in
-                reliability, transparency, and accountability.
-              </p>
-            </div>
-          </div>
-          <div
-            className="card border-1"
-            style={{ width: "276px" }}
-          >
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '150px' }}>
-              <Image
-                style={{ width: "112px", height: "92px" }}
-                src={partner4.src}
-                alt={"Image"}
-              />
-            </div>
-            <div className="card-body">
-              <p
-                style={{
-                  fontSize: "clamp(20px, 1.5vw, 24px)",
-                  lineHeight: "clamp(20px, 3.5vw, 30px)",
-                  fontWeight: "bold",
-                  color: "#212121",
-                  textAlign: "center",
-                  height: '60px',
-                  overflow: 'hidden'
-                }}
-              >
-                Engaging Reward System
-              </p>
-              <p className="card-text text-center mt-4 mb-3">
-                Improve your volunteer engagement and retention with a
-                reward system where volunteers earn Deed Dollars for their
-                invaluable contributions.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div> */}
+    
       <div className="container px-0 py-5">
         <div className="d-flex flex-column flex-lg-row align-items-center">
           <div className="me-lg-4 mb-4 mb-lg-0 charity-card conveient-access">
@@ -742,7 +929,47 @@ const Charities = () => {
             </div>
           </div>
           <div className="mt-md-4  pb-5 text-center">
-            <button className="try-button" style={{height:"44px", width:"320px"}}>Get Started</button>
+
+          {!isLogin() && (
+            <button 
+              className="try-button" 
+              style={{ height: "50px", width: "320px" }}
+              onClick={() => {
+                setOpenOrganization(true)
+                let dubShow = { ...showModel }
+                dubShow.login = true
+                setShowModel(dubShow)
+                
+              }}
+            >
+              Get Started
+            </button>
+          )}
+
+          {isLogin() && orgData.length == 0 && (
+            <button 
+              className="try-button" 
+              style={{ height: "50px", width: "320px" }}
+              onClick={() => {
+                openCreateOrgModal 
+                setOpenOrganization(true)
+              }}
+            >
+              Get Started
+            </button>
+          )}
+
+          
+          {isLogin() && orgData.length !== 0 && (
+            <button 
+              className="try-button" 
+              style={{ height: "50px", width: "320px" }}
+              onClick={goToOrganizatonDashboard}
+            >
+              Get Started
+            </button>
+          )}
+
           </div>
         </div>
       </div>
