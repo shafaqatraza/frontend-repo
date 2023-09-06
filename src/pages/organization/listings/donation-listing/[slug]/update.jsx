@@ -96,9 +96,9 @@ const EditDonationListing = () => {
           }
         )
         .then((res) => {
-          setFormData(res.data.data);
-          let data = res.data.data;
           
+          let data = res.data.data;
+
           setFormData({
             title: data.title,
             description: data.description,
@@ -124,7 +124,7 @@ const EditDonationListing = () => {
         .catch((err) => {
           console.log(err);
         });
-
+        
       axios
         .get(`${baseUrl}/donation-listings/categories`, {
           headers: {
@@ -190,31 +190,67 @@ const handleFileChange = (info) => {
     }
   };
 
+  // const handleCreateItem = (item) => {
+  //   setSelectedItems((curr) => [...curr, item]);
+    
+  //   // Check if the item is new or already in the keywords list
+  //   const isNew = formData.keywords.every(
+  //     (keyword) => keyword.id !== item.value || keyword.is_deleted
+  //   );
+    
+  //   const updatedKeywords = isNew
+  //     ? [
+  //         ...formData.keywords,
+  //         { id: item.value, is_new: true, is_deleted: false },
+  //       ]
+  //     : formData.keywords;
+    
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     keywords: updatedKeywords,
+  //   }));
+    
+  //   setFormErrors((prevErrors) => ({
+  //     ...prevErrors,
+  //     keywords: false,
+  //   }));
+  // };
+
   const handleCreateItem = (item) => {
     setSelectedItems((curr) => [...curr, item]);
-    
-    // Check if the item is new or already in the keywords list
-    const isNew = formData.keywords.every(
-      (keyword) => keyword.id !== item.value || keyword.is_deleted
-    );
-    
-    const updatedKeywords = isNew
-      ? [
-          ...formData.keywords,
-          { id: item.value, is_new: true, is_deleted: false },
-        ]
-      : formData.keywords;
-    
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      keywords: updatedKeywords,
-    }));
-    
+  
+    // Check if formData.keywords is an array and not empty
+    if (Array.isArray(formData.keywords) && formData.keywords.length > 0) {
+      const isNew = formData.keywords.every(
+        (keyword) => keyword.id !== item.value || keyword.is_deleted
+      );
+  
+      const updatedKeywords = isNew
+        ? [
+            ...formData.keywords,
+            { id: item.value, is_new: true, is_deleted: false },
+          ]
+        : formData.keywords;
+  
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        keywords: updatedKeywords,
+      }));
+  
+    } else {
+      // If formData.keywords is not an array or empty, initialize it as an array
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        keywords: [{ id: item.value, is_new: true, is_deleted: false }],
+      }));
+    }
+
     setFormErrors((prevErrors) => ({
       ...prevErrors,
       keywords: false,
     }));
   };
+  
   
   const handleSelectedItemsChange = (changes) => {
     if (changes.selectedItems) {
