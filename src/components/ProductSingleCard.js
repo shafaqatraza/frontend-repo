@@ -50,7 +50,7 @@ export const ProductSingleCard = (props) => {
 
   
   return (
-    <Stack position="relative" spacing={useBreakpointValue({ base: '4', md: '5' })} maxW="250px" {...rootProps}>
+    <Stack position="relative" spacing={useBreakpointValue({ base: '4', md: '5' })} maxW="230px" {...rootProps}>
       <Box
         position="relative"
         cursor={'pointer'}

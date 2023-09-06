@@ -168,7 +168,7 @@ const VolunteerCategories = () => {
   return (
     <>
       <div className="mt-5">
-        <div className="container">
+        <div className="container px-md-4 px-xxl-3">
           <p className="ndollar-txt" style={{ fontSize: "clamp(16px, 2.2vw + 12px, 30px)"}}>What Deed Dollars Can Earn You</p>
           <p style={{ fontSize: "clamp(16px, 2.2vw + 0.9rem, 24px)", lineHeight: "29px", fontWeight: "700" }} className="mt-3">Trending Now</p>
           <Box mt={30} mb={50}>

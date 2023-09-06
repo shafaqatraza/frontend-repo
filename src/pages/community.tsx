@@ -406,7 +406,7 @@ const Community = () => {
                         <br></br>
                         <UnorderedList>
                             <ListItem>
-                            If you are being harassed, or if you notice that someone else in the Good Deeds Community is being harassed, please contact a Good Deeds team member via email (all reports are confidential): Amanda Diplo, Community Strategist: amanda@gooddeeds.ca
+                            If you are being harassed, or if you notice that someone else in the Good Deeds Community is being harassed, please contact a Good Deeds team member via email (all reports are confidential) amanda@gooddeeds.ca
                             </ListItem>
                             <br/>
                             <ListItem>

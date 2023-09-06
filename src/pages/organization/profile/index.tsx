@@ -18,6 +18,7 @@ import { useRouter } from 'next/router'
 import { useToast } from '@chakra-ui/toast'
 import profilTrash from '../../../assets/imgs/profile-trash.png'
 import { HamburgerIcon } from "@chakra-ui/icons";
+import Spinner from 'react-bootstrap/Spinner';
 
 interface FormErrors {
   full_name:boolean,
@@ -628,18 +629,21 @@ const OrganizationInfo = () => {
             <div className="main-org-img">
               <div className="org-img text-center position-relative mt-md-4 pt-md-3">
                 <div className="org-prof-img">
-                  {!isLoaded && <img src={placeholder.src} alt="Loading..." />}
+                  {!isLoaded && <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>}
                   <Image
                     // style={{ height: "165px", width: "340px" }}
                     src={
                       // @ts-ignore: Unreachable code error
                       data?.profile_picture
                     }
-                    alt={"image"}
+                    alt=""
                     onLoad={() => setIsLoaded(true)}
                     onError={() => setIsLoaded(true)}
-                    className="img-fluid rounded-circle"
-                    style={{ display: isLoaded ? "block" : "none" }}
+                    className="img-fluid"
+                    // style={{ display: isLoaded ? "block" : "none" }}
+                   style={{display: isLoaded ? "block" : "none",height:"189px",width:"189px",objectFit:"cover",borderRadius:"50%"}}
                   />
                 </div>
                 <Image
