@@ -158,7 +158,7 @@ const Charities = () => {
     email: '',
   })
 
-  const openCreateOrgModal = () => {
+  const openCreateOrgModal = () => { 
     setShowCreateOrgModal(true);
   };
 
@@ -940,7 +940,7 @@ const Charities = () => {
               className="try-button" 
               style={{ height: "50px", width: "320px" }}
               onClick={() => {
-                openCreateOrgModal 
+                openCreateOrgModal()
                 setOpenOrganization(true)
               }}
             >
