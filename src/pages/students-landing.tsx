@@ -823,7 +823,7 @@ const StudentLanding = () => {
               lineHeight="26px"
               color="#E27832"
               fontWeight="600"
-              className="d-none d-md-block ms-md-5"
+              className="d-none d-md-block ms-md-5 ps-md-2"
             >About Us</Text>
             <Text
               fontSize="40px"
@@ -833,19 +833,9 @@ const StudentLanding = () => {
               className="d-none d-md-block"
               mt="18px"
             >
-              More People, More <Text color="#E27832" display="inline-block">Impact</Text>
+              More People, More <span style={{color:"#E27832",display:"inline-block"}}  >Impact</span>
             </Text>
-            <Text
-              fontSize="22px"
-              lineHeight="26.63px"
-              color="#212121"
-              fontWeight="600"
-              mt="80px"
-              className="about-more-people ms-md-5"
-              style={{color:"#212121",fontSize:"22px",fontWeight:"600",maxWidth:"73%"}}
-            >
-              Good Deeds is a digital platform that directly delivers meaningful opportunities to you.  Volunteer with Good Deeds today and earn Deed Dollars for every volunteer hour you contribute.
-            </Text>
+            <p className="about-more-people ms-md-5">Good Deeds is a digital platform that directly delivers meaningful opportunities to you. Volunteer with Good Deeds today and earn Deed Dollars for every volunteer hour you contribute.</p>
             <Button
               variant={'solid'}
               colorScheme={'orange'}
