@@ -221,8 +221,8 @@ const About = () => {
           <img src={banner.src} className='mt-5 mt-md-0' width="250px" alt="banner" />
         </div>
       </div>
-      <Box style={{background:"rgb(222,227,230,50%)"}}>
-          <div className='container py-md-5 pb-5 pt-1 what-and-who px-0'>
+      <div style={{background:"rgb(222,227,230,50%)"}}>
+          <div className='container py-md-5 pb-5 pt-1 what-and-who px-0 px-xl-5'>
             <div className='row mt-md-4 mx-0 px-4 px-md-0'>
               <div className='col-lg-9 col-md-8 order-2 order-md-1  pe-md-5 pe-2'>
                 <h1 className='d-none d-md-block' style={{color:"#183553"}}><span style={{color:"#E27832"}} >What</span> we do?</h1>
@@ -248,7 +248,7 @@ const About = () => {
               </div>
             </div>
           </div>
-      </Box>
+      </div>
 
       <div className='container pt-3 pb-md-3 px-0'>
         <div className="d-flex flex-column flex-md-row mission-vision mt-5">
@@ -542,41 +542,41 @@ const About = () => {
 
       </Container>
       </div>
-      <div className='container pb-5 mb-md-5 px-0'>
-        <div className='pt-md-5 pt-3 pb-3 pb-md-0'>
-          <p className="text-center part-txt">Our Partners</p>
-        </div>
-        <div className="partners-img mt-4 p-3 pe-0 mb-md-5 mb-4">
-            <Slider {...settings}>
-              
-                <div  className="pe-3">
-                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
-                </div>
-                <div  className="pe-3">
-                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
-                </div>
-                <div className="pe-3">
-                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
-                </div>
-                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
-                </div>
-                <div  className="pe-3">
-                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
-                </div>
-                <div  className="pe-3">
-                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
-                </div>
-                <div className="pe-3">
-                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
-                </div>
-                <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
-                </div>
-
-            </Slider>
+        <div className='container pb-5 mb-md-5 px-0 px-xl-4'>
+          <div className='pt-md-5 pt-3 pb-3 pb-md-0'>
+            <p className="text-center part-txt">Our Partners</p>
           </div>
-        </div>
+          <div className="partners-img mt-4 p-3 pe-0 mb-md-5 mb-4">
+              <Slider {...settings}>
+                
+                  <div  className="pe-3">
+                    <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  </div>
+                  <div  className="pe-3">
+                    <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
+                  </div>
+                  <div className="pe-3">
+                    <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  </div>
+                  <div className="pe-3 w-100 ms-auto d-flex align-items-end">
+                    <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  </div>
+                  <div  className="pe-3">
+                    <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  </div>
+                  <div  className="pe-3">
+                    <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
+                  </div>
+                  <div className="pe-3">
+                    <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  </div>
+                  <div className="pe-3 w-100 ms-auto d-flex align-items-end">
+                    <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  </div>
+
+              </Slider>
+          </div>
+      </div>
       <Footer />
     </Box >
   )
