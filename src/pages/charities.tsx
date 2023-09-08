@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import Charity from "../assets/imgs/Charity.png";
@@ -121,7 +121,7 @@ const Charities = () => {
     setSelectedButton(2);
   }
 
-  if(isLogin()){
+  useEffect(() => {
     axios.get(`${baseUrl}/organizations`, {
       headers: {
         Authorization: 'Bearer ' + accessToken(),
@@ -131,7 +131,8 @@ const Charities = () => {
     }).catch((err) => {
       // console.log(err);
     })
-  }
+  }, [isLogin()])
+  
 
 
   const [showModel, setShowModel] = useState<ModelType>({
@@ -177,6 +178,22 @@ const Charities = () => {
   if(openOrganization && isLogin() && orgData.length !== 0){
     goToOrganizatonDashboard()
   }
+
+  // Callback function to handle the "Select" button click in child component
+  const handlePlanButtonClick = (plan_id: any) => { 
+    if (!isLogin()) {
+      setOpenOrganization(true)
+      let dubShow = { ...showModel }
+      dubShow.login = true
+      setShowModel(dubShow)
+    } else if(isLogin() && orgData.length == 0) {
+      openCreateOrgModal()
+      setOpenOrganization(true)
+    }else{
+      router.push(`/organization/payment-plans/${plan_id}`)
+    }
+  };
+
 
   const Governance = (
     <Box w={'472px'} maxW={'100%'} p={'30px 48px'}>
@@ -663,7 +680,31 @@ const Charities = () => {
               <p className="our-platform px-4 px-md-0" style={{fontWeight:"600"}}>Our platform makes it effortless to manage and reward your donors and volunteers in one convenient place.</p>
             </div>
             <div className="mt-3 mb-3 px-4 px-md-0">
-              <button className="try-button mt-3" style={{height:'40px'}}>Try for free for 30 days</button>
+              {!isLogin() && (
+                <button 
+                  className="try-button mt-3" 
+                  style={{height:'40px'}}
+                  onClick={() => {
+                    setOpenOrganization(true)
+                    let dubShow = { ...showModel }
+                    dubShow.login = true
+                    setShowModel(dubShow)
+                    
+                  }}
+                >Try for free for 30 days</button>
+              )}
+
+              {isLogin() && orgData.length == 0 && (
+                <button 
+                  className="try-button mt-3" 
+                  style={{height:'40px'}}
+                  onClick={() => {
+                    openCreateOrgModal()
+                    setOpenOrganization(true)
+                  }}
+                >Try for free for 30 days</button>
+                
+              )}   
             </div>
           </div>
           <div className="col-md-4 d-none d-md-block">
@@ -948,17 +989,6 @@ const Charities = () => {
             </button>
           )}
 
-          
-          {isLogin() && orgData.length !== 0 && (
-            <button 
-              className="try-button" 
-              style={{ height: "50px", width: "320px" }}
-              onClick={goToOrganizatonDashboard}
-            >
-              Get Started
-            </button>
-          )}
-
           </div>
         </div>
       </div>
@@ -1177,7 +1207,7 @@ const Charities = () => {
             </div>
             <p className="save-txt mt-4 mt-md-0">Save 20% Anually</p>
           </div>
-          {selectedButton === 1 ? <MonthlyPlan /> : <AnualPlan />}
+          {selectedButton === 1 ? <MonthlyPlan handlePlanButtonClick = { handlePlanButtonClick } /> : <AnualPlan handlePlanButtonClick = { handlePlanButtonClick } />}
         </Container>
       </div>
 

@@ -1,4 +1,4 @@
-import { Box, Text, Spinner, Center } from "@chakra-ui/react";
+import { Box, Text, Spinner, Center, Flex } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Banner } from "../components/banner/Banner";
@@ -11,7 +11,7 @@ import { TestimonialCard } from "../components/TestimonialCard";
 import { products } from "../utils/_Data";
 import { ProductCard } from "../components/ProductCard";
 import { Footer } from "../components/Footer";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { baseUrl, accessToken, isLogin } from "../components/Helper/index";
 import axios from 'axios';
 import { ProductSingleCard } from "../components/ProductSingleCard";
@@ -24,6 +24,38 @@ import Plan from "../components/Plan/Plan";
 import Reviews from "../components/Review/Reviews";
 import fav from "../assets/imgs/favicon.ico"
 
+import { MyModal } from '../components/MyModal'
+import { SignupModal } from '../components/onboarding/Signup/SignupModal'
+import { Step1 } from '../components/createProfileModels/step1'
+import { Step1Form } from '../components/createProfileModels/step1Form'
+import { LoginForm } from '../components/onboarding/Login/LoginForm'
+import { ForgotPasswordModal } from '../components/onboarding/Login/ForgotPassword/ForgotPasswordModal'
+import { ForgotPassword } from '../components/onboarding/Login/ForgotPassword/ForgotPasswordForm'
+import { SignupForm } from '../components/onboarding/Signup/SignupForm'
+import { SignUpVerificationModal } from '../components/onboarding/Signup/Verification/VerificationModal'
+import { SignUpVerificationForm } from '../components/onboarding/Signup/Verification/VerificationForm'
+import { Step2Form } from '../components/createProfileModels/step2/step2Form'
+import { WelcomeScreen1 } from '../components/createProfileModels/welcomeScreen/screen1'
+import { InnerSection } from '../components/createProfileModels/welcomeScreen/innerSection'
+import OrganizationCreationModal from '../components/organization/OrganizationCreationModal';
+import gdlogo from '../assets/imgs/gdlogopegiun.png'
+import explorepegiun from '../assets/imgs/explorepegiun.png'
+import exchangepegiun from '../assets/imgs/exchangepegiun.png'
+import { useRouter } from 'next/router'
+
+interface ModelType {
+  login: boolean
+  forgotPassword: boolean
+  signUp: boolean
+  drawer: boolean
+  signUpVerification: boolean
+  step1: boolean
+  step2: boolean,
+  welcomeScreen1: boolean
+  welcomeScreen2: boolean
+  welcomeScreen3: boolean
+  welcomeScreen4: boolean
+}
 
 const Home: NextPage = () => {
 
@@ -34,6 +66,26 @@ const Home: NextPage = () => {
   const [wihslistIds, setWishListIds] = React.useState<any>([]);
   const [recentReviews, setRecentReviews] = React.useState<any>([]);
   const [trendingNow, setTrendingNow] = React.useState<any>([]);
+  const [refer, setRefer] = useState<any>('')
+  const [isRefer, setIsRefer] = useState<boolean>(true);
+  const [showCreateOrgModal, setShowCreateOrgModal] = useState(false);
+  const [openOrganization, setOpenOrganization] = useState<boolean>(false);
+  const [orgData, setOrgData] = useState([]);
+  const router = useRouter()
+
+  useEffect(() => {
+    axios.get(`${baseUrl}/organizations`, {
+      headers: {
+        Authorization: 'Bearer ' + accessToken(),
+      }
+    }).then((res) => {
+      setOrgData(res.data);
+    }).catch((err) => {
+      // console.log(err);
+    })
+    
+  }, [isLogin()])
+  
 
   const getHotDeals = React.useCallback(async () => {
     setIsLoading(true);
@@ -119,7 +171,7 @@ const Home: NextPage = () => {
       setWishListIds(data.data.data);
     }
   }, []);
-
+  
   React.useEffect(() => {
     getHotDeals();
     getNewListing();
@@ -129,6 +181,61 @@ const Home: NextPage = () => {
       getWhishlistIds();
     }
   }, [])
+
+  const [showModel, setShowModel] = useState<ModelType>({
+    login: false,
+    forgotPassword: false,
+    signUp: false,
+    drawer: false,
+    signUpVerification: false,
+    step1: false,
+    step2: false,
+    welcomeScreen1: false,
+    welcomeScreen2: false,
+    welcomeScreen3: false,
+    welcomeScreen4: false
+  })
+
+  const [data, setData] = useState<any>({
+    username: '',
+    bio: '',
+    location: '',
+    website_url: '',
+    avatar: null,
+    refer: '',
+    email: '',
+  })
+
+  const openCreateOrgModal = () => { 
+    setShowCreateOrgModal(true);
+  };
+
+  const closeCreateOrgModal = () => {
+    setShowCreateOrgModal(false);
+  };
+
+
+  const goToOrganizatonDashboard = () => {
+    router.push("/organization")
+  }
+
+  if(openOrganization && isLogin() && orgData.length !== 0){
+    goToOrganizatonDashboard()
+  }
+
+  // Callback function to handle the "Select" button click in child component
+  const handleGetVolunteersAndDonorsClick = () => { 
+    if (!isLogin()) {
+      setOpenOrganization(true)
+      let dubShow = { ...showModel }
+      dubShow.login = true
+      setShowModel(dubShow)
+    } else if(isLogin() && orgData.length == 0) {
+      openCreateOrgModal()
+      setOpenOrganization(true)
+    }
+  };
+
   return (
     <Box>
       <Head>
@@ -172,11 +279,232 @@ const Home: NextPage = () => {
       <OurPartners/>
       <VolunteerCategories/>
       {/* <BlueBlock /> */}
+      <GetStarted/>
+      <SocialServices/>
+      <Plan 
+        handleGetVolunteersAndDonorsClick = {handleGetVolunteersAndDonorsClick}
+        isLogin = { isLogin }
+        organizationExists = { orgData.length }
+        
+      />
+      <Reviews/>
+      {/* Login Signup Modals */}
+      <>
+      <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+        
+        {showModel.login && (
+          <MyModal
+            show={showModel}
+            setShow={setShowModel}
+            TitleModal="Login In"
+            body={<LoginForm show={showModel} setShowModel={setShowModel} />}
+          />
+        )}
 
-        <GetStarted/>
-        <SocialServices/>
-        <Plan/>
-        <Reviews/>
+        {showModel.forgotPassword && (
+          <ForgotPasswordModal
+            show={showModel.forgotPassword}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.forgotPassword = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.forgotPassword = false
+              dubShow.login = true
+              setShowModel(dubShow)
+            }}
+            TitleModal="Forgot Password"
+            body={<ForgotPassword show={showModel} setShowModel={setShowModel} />}
+          />
+        )}
+        {showModel.signUp && (
+          <SignupModal
+            show={showModel}
+            setShow={setShowModel}
+            TitleModal="Sign up and receive 100 deed dollars"
+            body={
+              <SignupForm
+                userData={data}
+                setUserData={setData}
+                show={showModel}
+                setShowModel={setShowModel}
+                refer={refer}
+              />
+            }
+          />
+        )}
+        {showModel.signUpVerification && (
+          <SignUpVerificationModal
+            show={showModel.signUpVerification}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.signUpVerification = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.signUpVerification = false
+              dubShow.signUp = true
+              setShowModel(dubShow)
+            }}
+            body={
+              <SignUpVerificationForm
+                data={data}
+                setData={setData}
+                show={showModel}
+                setShowModel={setShowModel} />
+            }
+          />
+        )}
+        {showModel.step1 && (
+          <Step1
+            show={showModel.step1}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.step1 = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.step2 = false
+              dubShow.step1 = true
+              setShowModel(dubShow)
+            }}
+            TitleModal="Create Profile"
+            currentStep={1}
+            body={
+              showModel.step1 && (
+                <Step1Form
+                  data={data}
+                  setData={setData}
+                  show={showModel}
+                  setShowModel={setShowModel}
+                />
+              )
+            }
+          />
+        )}
+
+        {showModel.step2 && (
+          <Step1
+            show={showModel.step2}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.step2 = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.step2 = false
+              dubShow.step1 = true
+              setShowModel(dubShow)
+            }}
+            TitleModal="Create Profile"
+            currentStep={2}
+            body={
+              <Step2Form
+                data={data}
+                setData={setData}
+                show={showModel}
+                setShowModel={setShowModel}
+              />
+            }
+          />
+        )}
+
+        {showModel.welcomeScreen1 && (
+          <WelcomeScreen1
+            show={showModel.welcomeScreen1}
+            setShow={(value: any) => {
+              let dubShow = { ...showModel }
+              dubShow.welcomeScreen1 = value
+              setShowModel(dubShow)
+            }}
+            TitleModal={`Welcome to Good Deeds!`}
+            body={
+              <InnerSection
+                currentStep={1}
+                image={gdlogo.src}
+                lastStep={false}
+                //   para="Good Deeds is the world’s first free-to-use
+                // marketplace that promotes and rewards acts of kindness."
+                show={showModel}
+                setShowModel={setShowModel}
+                goNext={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.welcomeScreen1 = false
+                  dubShow.welcomeScreen2 = true
+                  setShowModel(dubShow)
+                }}
+              />
+            }
+          />
+        )}
+
+        {showModel.welcomeScreen2 && (
+          <WelcomeScreen1
+            show={showModel.welcomeScreen2}
+            setShow={(value: any) => {
+              let dubShow = { ...showModel }
+              dubShow.welcomeScreen2 = value
+              setShowModel(dubShow)
+            }}
+            TitleModal="Explore or offer items
+            and services"
+            body={
+              <InnerSection
+                currentStep={2}
+                lastStep={false}
+                image={explorepegiun.src}
+                para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual deed dollars that can be used to acquire things you need."
+                show={showModel}
+                setShowModel={setShowModel}
+                goNext={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.welcomeScreen2 = false
+                  dubShow.welcomeScreen3 = true
+                  setShowModel(dubShow)
+                }}
+              />
+            }
+          />
+        )}
+        {showModel.welcomeScreen3 && (
+          <WelcomeScreen1
+            show={showModel.welcomeScreen3}
+            setShow={(value: any) => {
+              let dubShow = { ...showModel }
+              dubShow.welcomeScreen3 = value
+              setShowModel(dubShow)
+            }}
+            TitleModal="Exchanging items and services"
+            body={
+              <InnerSection
+                currentStep={3}
+                image={exchangepegiun.src}
+                para="Receive or provide your items and services in person or remotely. Don't worry — your deed dollars are pending until the transaction successfully happens."
+                show={showModel}
+                setShowModel={setShowModel}
+                goNext={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.welcomeScreen3 = false
+                  dubShow.welcomeScreen4 = true
+                  setShowModel(dubShow)
+                }}
+                lastStep={true}
+              />
+            }
+          />
+        )}
+
+        <OrganizationCreationModal
+          show={showCreateOrgModal}
+          onClose={closeCreateOrgModal}
+        />
+      </Flex>
+      </>
         {/* <InputBlock /> */}
         {/* <InputBlock
           type={type}

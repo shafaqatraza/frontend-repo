@@ -4,8 +4,8 @@ import { Footer } from "../../../components/Footer";
 import Sidebar from "../../../components/Sidebar.jsx";
 import back from "../../../assets/imgs/back.png";
 import { Image } from "@chakra-ui/react";
-import MonthlyPlan from "../../../components/MonthlyPlan";
-import AnualPlan from "../../../components/AnualPlan";
+import MonthlyPlan from "../../../components/organization/paymentplans/MonthlyPlan";
+import AnualPlan from "../../../components/organization/paymentplans/AnualPlan";
 
 const SelectPlan = () => {
   const [selectedButton, setSelectedButton] = useState(1);
