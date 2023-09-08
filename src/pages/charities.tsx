@@ -1244,8 +1244,8 @@ const Charities = () => {
                         src={revew1.src}
                         alt={"Review"}
                         style={{
-                          width: '41px',
-                          height: '46px',
+                          width: '43px',
+                          height: '43px',
                           borderRadius: '50%',
                           border:'4px solid #E27832'
                         }}
@@ -1278,8 +1278,8 @@ const Charities = () => {
                         src={revew2.src}
                         alt={"Review"}
                         style={{
-                          width: '41px',
-                          height: '46px',
+                          width: '43px',
+                          height: '43px',
                           borderRadius: '50%',
                           border:'4px solid #E27832'
                         }}
@@ -1311,8 +1311,8 @@ const Charities = () => {
                         src={revew3.src}
                         alt={"Review"}
                         style={{
-                          width: '41px',
-                          height: '46px',
+                          width: '43px',
+                          height: '43px',
                           borderRadius: '50%',
                           border:'4px solid #E27832'
                         }}
