@@ -4,6 +4,8 @@ import part1 from "../../assets/imgs/part1.png";
 import part2 from "../../assets/imgs/part2.png";
 import part3 from "../../assets/imgs/part3.png";
 import part4 from "../../assets/imgs/part4.png";
+import part1Mb from "../../assets/imgs/part1-mb.png";
+import part2Mb from "../../assets/imgs/part2-mb.png";
 import partner1 from "../../assets/imgs/partner1.png";
 import partner2 from "../../assets/imgs/partner2.png";
 import partner3 from "../../assets/imgs/partner3.png";
@@ -91,10 +93,16 @@ const ourPartners = () => {
             <Slider {...settings}>
               
                 <div  className="pe-3">
-                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.autism.net">
+                  <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
+                  <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
+                  </a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.blood.ca">
+                    <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
+                    <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
+                  </a>
                 </div>
                 <div className="pe-3">
                   <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
@@ -103,10 +111,16 @@ const ourPartners = () => {
                   <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.autism.net">
+                  <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
+                  <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
+                  </a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.blood.ca">
+                    <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
+                    <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
+                  </a>
                 </div>
                 <div className="pe-3">
                   <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>

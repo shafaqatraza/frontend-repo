@@ -1974,6 +1974,9 @@ color: #E27832;
 .donation-card .whishlist{
   top: -9px !important;
 }
+.donation-card .css-qw6le9 {
+  min-height: 315px;
+}
 
 
 @media screen and (min-width:1400px){
@@ -2191,6 +2194,9 @@ color: #E27832;
 }
 
 @media (max-width: 768px){
+  .donation-card .css-571i8x {
+    min-height: 331px;
+  }
   .wel-dashboard .my-sidebar {
     width: 100%;
     position: absolute;
