@@ -765,40 +765,40 @@ const StudentLanding = () => {
             <Slider {...settings}>
               
                 <div  className="pe-3">
-                  <a href="https://www.autism.net">
+                  <a href="https://www.autism.net" target="_blank">
                   <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
                   <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
                     </a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.blood.ca">
+                  <a href="https://www.blood.ca" target="_blank">
                   <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
                     <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
                     </a>
                 </div>
                 <div className="pe-3 ">
-                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.autism.net">
+                  <a href="https://www.autism.net" target="_blank">
                   <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
                   <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
                   </a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.blood.ca">
+                  <a href="https://www.blood.ca" target="_blank">
                     <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
                     <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
                   </a>
                 </div>
                 <div className="pe-3">
-                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
 
             </Slider>
@@ -1465,7 +1465,7 @@ const StudentLanding = () => {
                   Now you can browse the marketplace to find items and services that you want.
                 </p>
                 <p className="step1-txt2 mt-2 m-md-5d-block d-md-none">
-                Once you’ve accumulated 40 hours of volunteer work, you will receive an official certificate of completion signed by your volunteer coordinator. You can proceed to submit the certificate to your school as official proof of your community contributions. 
+                  Now you can browse the marketplace to find items and services that you want. 
                 </p>
               </div>
             </div>
