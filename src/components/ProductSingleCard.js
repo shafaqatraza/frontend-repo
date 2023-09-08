@@ -34,7 +34,7 @@ export const ProductSingleCard = (props) => {
     isImageEdit
   } = props
 
-  const { title, credit_amount, name, media, id, created_at, transaction_status, slug, post_type, thumbnail, created_at_human_diff, url_to_donate, category } = product
+  const { title, description, credit_amount, name, media, id, created_at, transaction_status, slug, post_type, thumbnail, created_at_human_diff, url_to_donate, category } = product
 
   // const created_listing = moment(created_at).utc().format('YYYY-MM-DD, h:mm a')
   const router = useRouter()
@@ -191,7 +191,7 @@ export const ProductSingleCard = (props) => {
           </Text>
           {post_type == 'donation' &&
             <TruncateText
-              text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+              text={description}
               limit={120}
             />
           }
@@ -208,7 +208,7 @@ export const ProductSingleCard = (props) => {
       </Stack>
       </Box>
       {post_type == 'donation' ?
-      <div className="text-center">
+      <div className="text-center mt-auto">
         <Button
           type="submit"
           
@@ -220,7 +220,6 @@ export const ProductSingleCard = (props) => {
           fontSize="12px"
           fontWeight={'600'}
           onClick={() => handleDonateButtonClick(url_to_donate)}
-          className="mt-auto"
         >
           Donate
         </Button>
