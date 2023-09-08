@@ -1,17 +1,13 @@
 import { Image, Link, Button } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from "react-bootstrap";
-import good from "../assets/imgs/good.png";
+import good from "../../../assets/imgs/good.png";
 import axios from 'axios';
-import { accessToken, baseUrl, isLogin, currentOrganization } from "../components/Helper/index";
+import { accessToken, baseUrl, isLogin, currentOrganization } from "../../Helper/index";
 import { useRouter } from 'next/router'
 import { useToast } from '@chakra-ui/toast'
 
-interface MonthlyPlanProps {
-  handlePlanButtonClick: (plan_id: any) => any; // Adjust the function type accordingly
-}
-
-const MonthlyPlan: React.FC<MonthlyPlanProps> = ({ handlePlanButtonClick }) => {
+const MonthlyPlan = () => {
   const [data, setData] = useState([]);
   const [dataone, setDataOne] = useState<{ id: number } | null>(null);
   const [dataonedesc, setDataOneDesc] = useState([]);
@@ -63,6 +59,18 @@ const MonthlyPlan: React.FC<MonthlyPlanProps> = ({ handlePlanButtonClick }) => {
       })
 
   }, [])
+
+  const handlePlanButton = (plan_id: any) => {
+    if (isLogin()) {
+      if (currentOrganization || orgData) {
+        router.push(`/organization/payment-plans/${plan_id}`)
+      } else {
+        toast({ position: "top", title: "Please create your organization first!", status: "error" })
+      }
+    } else {
+      toast({ position: "top", title: "Please login to select plan!", status: "error" })
+    }
+  };
 
 
   return (
@@ -147,8 +155,7 @@ const MonthlyPlan: React.FC<MonthlyPlanProps> = ({ handlePlanButtonClick }) => {
                       colorScheme={'orange'}
                       size={'md'}
                       fontSize="16px"
-                      onClick={ // @ts-ignore:
-                        () => handlePlanButtonClick(dataone?.id)}
+                      onClick={() => handlePlanButton(dataone?.id)}
                       w="150px"
                       className='my-4 mx-auto'
                     >
@@ -231,7 +238,7 @@ const MonthlyPlan: React.FC<MonthlyPlanProps> = ({ handlePlanButtonClick }) => {
                       colorScheme={'orange'}
                       size={'md'}
                       fontSize="16px"
-                      onClick={() => handlePlanButtonClick( // @ts-ignore: Unreachable code error
+                      onClick={() => handlePlanButton( // @ts-ignore: Unreachable code error
                         data?.id)}
                       w="150px"
                       className='my-4 mx-auto'
@@ -307,7 +314,7 @@ const MonthlyPlan: React.FC<MonthlyPlanProps> = ({ handlePlanButtonClick }) => {
                       colorScheme={'orange'}
                       size={'md'}
                       fontSize="16px"
-                      onClick={() => handlePlanButtonClick( // @ts-ignore: Unreachable code error
+                      onClick={() => handlePlanButton( // @ts-ignore: Unreachable code error
                         datatwo?.id)}
                       w="150px"
                       className='my-4 mx-auto'
@@ -378,7 +385,7 @@ const MonthlyPlan: React.FC<MonthlyPlanProps> = ({ handlePlanButtonClick }) => {
                       colorScheme={'orange'}
                       size={'md'}
                       fontSize="16px"
-                      onClick={()=> handlePlanButtonClick( // @ts-ignore: Unreachable code error
+                      onClick={()=> handlePlanButton( // @ts-ignore: Unreachable code error
                         datathree?.id) }
                       w="150px"
                       className='my-4 mx-auto'
