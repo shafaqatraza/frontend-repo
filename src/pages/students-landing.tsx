@@ -730,9 +730,21 @@ const StudentLanding = () => {
                   Start Earning Rewards Today!
                 </button>
               )}
-              <button className="try-button d-block d-md-none" style={{height:"50px", width:"300px"}}>
-               Sign up and get 100 FREE Deed Dollars!
+
+              {!isLogin() && (
+              <button 
+                className="try-button d-block d-md-none" 
+                style={{height:"50px", width:"300px"}}
+                onClick={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.login = true
+                  setShowModel(dubShow)
+                  
+                }}
+                >
+                Sign up and get 100 FREE Deed Dollars!
               </button>
+              )}
             </div>
           </div>
           <div className="col-md-4 align-items-center ps-md-0 pe-md-0 d-none d-md-flex">
