@@ -32,6 +32,7 @@ import { useToast } from '@chakra-ui/toast'
 import { ReactNode } from 'react';
 import location from '../../assets/imgs/location.png'
 import copyLink from '../../assets/imgs/copylink.png'
+import defaultprofile from '../../assets/imgs/profile/default-profile.png'
 
 
 export const ProfileBanner = (props: any) => {
@@ -344,7 +345,7 @@ export const ProfileBanner = (props: any) => {
             src={
               profileData.avatar !== null && profileData.avatar !== ''
                 ? profileData.avatar
-                : 'https://images.unsplash.com/photo-1506935077180-46af676a2f6d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80'
+                : defaultprofile.src
             }
           //   isVerified
           />
