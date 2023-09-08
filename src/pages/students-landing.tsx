@@ -886,10 +886,10 @@ const StudentLanding = () => {
                       src={nina.src}
                       alt={"Review"}
                       style={{
-                        width: '40px',
-                        height: '46px',
+                        width: '43px',
+                        height: '43px',
                         borderRadius: '50%',
-                        border:"4px solid #E27832"
+                        border:"5px solid #FFF"
                       }}
                       className="me-3"
                     />
@@ -920,10 +920,10 @@ const StudentLanding = () => {
                       src={meg.src}
                       alt={"Review"}
                       style={{
-                        width: '40px',
-                        height: '46px',
+                        width: '43px',
+                        height: '43px',
                         borderRadius: '50%',
-                        border:"4px solid #E27832"
+                        border:"5px solid #FFF"
                       }}
                       className="me-3"
                     />
@@ -953,10 +953,10 @@ const StudentLanding = () => {
                       src={frankrusso.src}
                       alt={"Review"}
                       style={{
-                        width: '40px',
-                        height: '46px',
+                        width: '43px',
+                        height: '43px',
                         borderRadius: '50%',
-                        border:"4px solid #E27832"
+                        border:"5px solid #FFF"
                       }}
                       className="me-3"
                     />
