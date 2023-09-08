@@ -684,40 +684,40 @@ const Charities = () => {
             <Slider {...settings}>
               
                 <div  className="pe-3">
-                 <a href="https://www.autism.net">
+                 <a href="https://www.autism.net" target="_blank">
                   <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
                   <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
                   </a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.blood.ca">
+                  <a href="https://www.blood.ca" target="_blank">
                     <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
                     <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
                   </a>
                 </div>
                 <div className="pe-3">
-                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.autism.net">
+                  <a href="https://www.autism.net" target="_blank">
                   <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
                   <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
                   </a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.blood.ca">
+                  <a href="https://www.blood.ca" target="_blank">
                     <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
                     <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
                   </a>
                 </div>
                 <div className="pe-3">
-                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
 
             </Slider>
@@ -1009,7 +1009,7 @@ const Charities = () => {
                 <hr className="hr-step2 ms-md-5" style={{ height: "5px", marginRight:'-70px',borderColor:"#183553" }} />
 
                 <p className="step1-txt2 mt-2 ms-md-5 ps-md-4">
-                  Create or Add and Organization to being creating listings for volunteers or donations!
+                Effortlessly manage user donations and volunteer applications with our user-friendly dashboard. Organize and streamline your tasks for enhanced visibility and efficient management.
                 </p>
               </div>
               <div className='order-1 order-md-2'>

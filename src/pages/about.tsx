@@ -252,7 +252,7 @@ const About = () => {
           </div>
       </div>
 
-      <div className='container pt-3 pb-md-3 px-0'>
+      <div className='container pt-3 pb-md-3 px-0'> target="_blank"
         <div className="d-flex flex-column flex-md-row mission-vision mt-5">
           <div className='mission-card me-md-4 mb-2 mb-md-0 text-center text-md-start'>
             <h1 className='value-heading fw-bold mb-4'>Mission</h1>
@@ -260,7 +260,7 @@ const About = () => {
           </div>
           <div className='mission-card mb-2 mb-md-0 mt-4 mt-md-0 text-center text-md-start'>
             <h1 className='value-heading fw-bold mb-4'>Vision</h1>
-            <p className='value-para mb-5 '>Our vision is to make the world and better, happier place for all mankind.</p>
+            <p className='value-para mb-5 '>Our vision is to make the world a better, happier place for all mankind.</p>
           </div>
         </div>
 
@@ -552,40 +552,40 @@ const About = () => {
               <Slider {...settings}>
                 
                   <div  className="pe-3">
-                    <a href="https://www.autism.net">
+                    <a href="https://www.autism.net" target="_blank">
                     <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
                     <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
                     </a>
                   </div>
                   <div  className="pe-3">
-                    <a href="https://www.blood.ca">
+                    <a href="https://www.blood.ca" target="_blank">
                     <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
                     <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
                     </a>
                   </div>
                   <div className="pe-3">
-                    <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                    <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                   </div>
                   <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                    <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                    <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                   </div>
                   <div  className="pe-3">
-                    <a href="https://www.autism.net">
+                    <a href="https://www.autism.net" target="_blank">
                     <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
                     <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
                     </a>
                   </div>
                   <div  className="pe-3">
-                    <a href="https://www.blood.ca">
+                    <a href="https://www.blood.ca" target="_blank">
                     <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
                     <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
                     </a>
                   </div>
                   <div className="pe-3">
-                    <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                    <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                   </div>
                   <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                    <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                    <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                   </div>
 
               </Slider>
