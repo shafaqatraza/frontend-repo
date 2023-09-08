@@ -69,7 +69,7 @@ const ContactUs = () => {
         mb={12}
       >
         <Box>
-          <Flex gap={isSmallerThan767 ? '' : '70px'} alignItems={'center'} justifyContent={'center'} flexDirection={isSmallerThan767 ? 'column' : 'row'} py={'50px'} ps={isSmallerThan767 ? '' :'250px'} className="mt-5" >
+          <Flex gap={isSmallerThan767 ? '' : '70px'} alignItems={'center'} justifyContent={'center'} flexDirection={isSmallerThan767 ? 'column' : 'row'} py={'40px'} ps={isSmallerThan767 ? '' :'250px'} className="mt-5" >
             <Text fontSize={isSmallerThan767 ? '34px' : '60px'} color="#183553" textAlign="center" fontWeight={'700'} lineHeight="76px">Contact Us</Text>
             <Image style={{ width: "200px", height: "203px" }} src={gdlogopegiun.src} />
           </Flex>

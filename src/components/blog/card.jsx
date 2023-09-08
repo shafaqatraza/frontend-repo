@@ -163,8 +163,8 @@ export const BlogCard = () => {
         </div>
       </div>
       ))}
-      <div>
-        <button className='view-blog-btn mb-md-5 mt-md-5'>View more</button>
+      <div className='mt-md-5'>
+        <button className='view-blog-btn mb-md-5 mt-md-5'>View More</button>
       </div>
     </div>
     </>

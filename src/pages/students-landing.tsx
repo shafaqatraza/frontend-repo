@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import penstu from "../assets/imgs/penstu.png";
-import { Image, Input, Button, Text, Box } from "@chakra-ui/react";
+import { Image, Input, Button, Text, Box, Flex, useMediaQuery } from "@chakra-ui/react";
 import part1 from "../assets/imgs/part1.png";
 import part2 from "../assets/imgs/part2.png";
 import part3 from "../assets/imgs/part3.png";
@@ -37,13 +37,77 @@ import frankrusso from '../assets/imgs/frankrusso.png'
 import nina from '../assets/imgs/Nina_Harlow.png'
 import meg from '../assets/imgs/Meg_randall.png'
 
+import { MyModal } from '../components/MyModal'
+import { SignupModal } from '../components/onboarding/Signup/SignupModal'
+import { Step1 } from '../components/createProfileModels/step1'
+import { Step1Form } from '../components/createProfileModels/step1Form'
+import { LoginForm } from '../components/onboarding/Login/LoginForm'
+import { ForgotPasswordModal } from '../components/onboarding/Login/ForgotPassword/ForgotPasswordModal'
+import { ForgotPassword } from '../components/onboarding/Login/ForgotPassword/ForgotPasswordForm'
+import { SignupForm } from '../components/onboarding/Signup/SignupForm'
+import { SignUpVerificationModal } from '../components/onboarding/Signup/Verification/VerificationModal'
+import { SignUpVerificationForm } from '../components/onboarding/Signup/Verification/VerificationForm'
+import { Step2Form } from '../components/createProfileModels/step2/step2Form'
+import { WelcomeScreen1 } from '../components/createProfileModels/welcomeScreen/screen1'
+import { InnerSection } from '../components/createProfileModels/welcomeScreen/innerSection'
+import { isLogin, getLoginData, baseUrl, accessToken} from '../components/Helper/index'
+import axios from 'axios'
+import OrganizationCreationModal from '../components/organization/OrganizationCreationModal';
+import gdlogo from '../assets/imgs/gdlogopegiun.png'
+import exchangepegiun from '../assets/imgs/exchangepegiun.png'
+
+
+interface ModelType {
+  login: boolean
+  forgotPassword: boolean
+  signUp: boolean
+  drawer: boolean
+  signUpVerification: boolean
+  step1: boolean
+  step2: boolean,
+  welcomeScreen1: boolean
+  welcomeScreen2: boolean
+  welcomeScreen3: boolean
+  welcomeScreen4: boolean
+}
 
 const StudentLanding = () => {
+  const [selectedButton, setSelectedButton] = useState(1);
+  const [isSmallerThan767] = useMediaQuery('(max-width: 767px)')
+  const [isSmallerThan850] = useMediaQuery('(max-width: 850px)');
+  const [showCreateOrgModal, setShowCreateOrgModal] = useState(false);
   const [companyName, setCompanyName] = useState('')
   const [expertise, setExpertise] = useState('')
   const [description, setDescription] = useState('')
   const toast = useToast()
   const router = useRouter();
+  const [refer, setRefer] = useState<any>('')
+  const [isRefer, setIsRefer] = useState<boolean>(true);
+  const [showModel, setShowModel] = useState<ModelType>({
+    login: false,
+    forgotPassword: false,
+    signUp: false,
+    drawer: false,
+    signUpVerification: false,
+    step1: false,
+    step2: false,
+    welcomeScreen1: false,
+    welcomeScreen2: false,
+    welcomeScreen3: false,
+    welcomeScreen4: false
+  })
+
+  const [data, setData] = useState<any>({
+    username: '',
+    bio: '',
+    location: '',
+    website_url: '',
+    avatar: null,
+    refer: '',
+    email: '',
+  })
+
+  
 
   const submitForm = () => {
     // console.log('companyName', companyName, 'expertise', expertise, 'description', description)
@@ -419,6 +483,219 @@ const StudentLanding = () => {
         {/* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqal6LVnvttE3KHG-Xk9z3cVMRVUWFjY4&libraries=places"></script> */}
       </Head>
       <Navbar />
+      
+      {/* Login Signup Modals */}
+      <>
+      <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+        
+        {showModel.login && (
+          <MyModal
+            show={showModel}
+            setShow={setShowModel}
+            TitleModal="Login In"
+            body={<LoginForm show={showModel} setShowModel={setShowModel} />}
+          />
+        )}
+
+        {showModel.forgotPassword && (
+          <ForgotPasswordModal
+            show={showModel.forgotPassword}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.forgotPassword = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.forgotPassword = false
+              dubShow.login = true
+              setShowModel(dubShow)
+            }}
+            TitleModal="Forgot Password"
+            body={<ForgotPassword show={showModel} setShowModel={setShowModel} />}
+          />
+        )}
+        {showModel.signUp && (
+          <SignupModal
+            show={showModel}
+            setShow={setShowModel}
+            TitleModal="Sign up and receive 100 deed dollars"
+            body={
+              <SignupForm
+                userData={data}
+                setUserData={setData}
+                show={showModel}
+                setShowModel={setShowModel}
+                refer={refer}
+              />
+            }
+          />
+        )}
+        {showModel.signUpVerification && (
+          <SignUpVerificationModal
+            show={showModel.signUpVerification}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.signUpVerification = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.signUpVerification = false
+              dubShow.signUp = true
+              setShowModel(dubShow)
+            }}
+            body={
+              <SignUpVerificationForm
+                data={data}
+                setData={setData}
+                show={showModel}
+                setShowModel={setShowModel} />
+            }
+          />
+        )}
+        {showModel.step1 && (
+          <Step1
+            show={showModel.step1}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.step1 = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.step2 = false
+              dubShow.step1 = true
+              setShowModel(dubShow)
+            }}
+            TitleModal="Create Profile"
+            currentStep={1}
+            body={
+              showModel.step1 && (
+                <Step1Form
+                  data={data}
+                  setData={setData}
+                  show={showModel}
+                  setShowModel={setShowModel}
+                />
+              )
+            }
+          />
+        )}
+
+        {showModel.step2 && (
+          <Step1
+            show={showModel.step2}
+            setShow={(value: boolean) => {
+              let dubShow = { ...showModel }
+              dubShow.step2 = value
+              setShowModel(dubShow)
+            }}
+            goBack={() => {
+              let dubShow = { ...showModel }
+              dubShow.step2 = false
+              dubShow.step1 = true
+              setShowModel(dubShow)
+            }}
+            TitleModal="Create Profile"
+            currentStep={2}
+            body={
+              <Step2Form
+                data={data}
+                setData={setData}
+                show={showModel}
+                setShowModel={setShowModel}
+              />
+            }
+          />
+        )}
+
+        {showModel.welcomeScreen1 && (
+          <WelcomeScreen1
+            show={showModel.welcomeScreen1}
+            setShow={(value: any) => {
+              let dubShow = { ...showModel }
+              dubShow.welcomeScreen1 = value
+              setShowModel(dubShow)
+            }}
+            TitleModal={`Welcome to Good Deeds!`}
+            body={
+              <InnerSection
+                currentStep={1}
+                image={gdlogo.src}
+                lastStep={false}
+                //   para="Good Deeds is the world’s first free-to-use
+                // marketplace that promotes and rewards acts of kindness."
+                show={showModel}
+                setShowModel={setShowModel}
+                goNext={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.welcomeScreen1 = false
+                  dubShow.welcomeScreen2 = true
+                  setShowModel(dubShow)
+                }}
+              />
+            }
+          />
+        )}
+
+        {showModel.welcomeScreen2 && (
+          <WelcomeScreen1
+            show={showModel.welcomeScreen2}
+            setShow={(value: any) => {
+              let dubShow = { ...showModel }
+              dubShow.welcomeScreen2 = value
+              setShowModel(dubShow)
+            }}
+            TitleModal="Explore or offer items
+            and services"
+            body={
+              <InnerSection
+                currentStep={2}
+                lastStep={false}
+                image={explorepegiun.src}
+                para="In exchange for donating things that you no longer need, providing a free service or experience or volunteering, you earn virtual deed dollars that can be used to acquire things you need."
+                show={showModel}
+                setShowModel={setShowModel}
+                goNext={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.welcomeScreen2 = false
+                  dubShow.welcomeScreen3 = true
+                  setShowModel(dubShow)
+                }}
+              />
+            }
+          />
+        )}
+        {showModel.welcomeScreen3 && (
+          <WelcomeScreen1
+            show={showModel.welcomeScreen3}
+            setShow={(value: any) => {
+              let dubShow = { ...showModel }
+              dubShow.welcomeScreen3 = value
+              setShowModel(dubShow)
+            }}
+            TitleModal="Exchanging items and services"
+            body={
+              <InnerSection
+                currentStep={3}
+                image={exchangepegiun.src}
+                para="Receive or provide your items and services in person or remotely. Don't worry — your deed dollars are pending until the transaction successfully happens."
+                show={showModel}
+                setShowModel={setShowModel}
+                goNext={() => {
+                  let dubShow = { ...showModel }
+                  dubShow.welcomeScreen3 = false
+                  dubShow.welcomeScreen4 = true
+                  setShowModel(dubShow)
+                }}
+                lastStep={true}
+              />
+            }
+          />
+        )}
+      </Flex>
+      </>
       <div className="container">
         <div className="row ">
           <div className="col-md-8 mt-5 pe-md-0 future-bright">
@@ -438,10 +715,21 @@ const StudentLanding = () => {
               <p className="our-platform mt-3 d-none d-md-block">Get engaged, create a positive change, and enjoy the benefits.</p>
               <p className="our-platform mt-3 d-block d-md-none px-4 px-md-2" style={{fontWeight:600,}}>Browse a broad range of online or in-person volunteer opportunities. Help causes that matter most to you while completing your 40 hours and earning exclusive Deed Dollars to help you get the stuff you need.</p>
             </div>
-            <div className="mt-4 mb-3 px-4 px-md-0 ">
-              <button className="try-button d-none d-md-block">
-               Start Earning Rewards Today!
-              </button>
+            <div className="mt-4 mb-0 pt-2 px-4 px-md-0 ">
+              {!isLogin() && (
+                <button 
+                  className="try-button d-none d-md-block" 
+                  style={{width:"350px"}}
+                  onClick={() => {
+                    let dubShow = { ...showModel }
+                    dubShow.login = true
+                    setShowModel(dubShow)
+                    
+                  }}
+                >
+                  Start Earning Rewards Today!
+                </button>
+              )}
               <button className="try-button d-block d-md-none" style={{height:"50px", width:"300px"}}>
                Sign up and get 100 FREE Deed Dollars!
               </button>
@@ -456,7 +744,7 @@ const StudentLanding = () => {
       </div>
       {/* Partners */}
       <div className="container">
-        <div className='pt-md-5 pt-3 pb-3 pb-md-0'>
+        <div className='pt-md-4 pt-3 pb-3 pb-md-0'>
           <p className="text-center part-txt">Our Partners</p>
         </div>
         <div className="partners-img mt-4 p-3 pe-0 mb-md-5 mb-4">
@@ -840,8 +1128,9 @@ const StudentLanding = () => {
               lineHeight="26.63px"
               color="#212121"
               fontWeight="600"
-              mt="100px"
-              className="ms-md-5 about-more-people"
+              mt="80px"
+              className="about-more-people ms-md-5"
+              style={{color:"#212121",fontSize:"22px",fontWeight:"600",maxWidth:"73%"}}
             >
               Good Deeds is a digital platform that directly delivers meaningful opportunities to you.  Volunteer with Good Deeds today and earn Deed Dollars for every volunteer hour you contribute.
             </Text>
@@ -1002,6 +1291,7 @@ const StudentLanding = () => {
                 fontWeight="600"
                 textAlign="center"
                 mt="34px"
+                className="px-md-3"
               >Free access to Good Deed's ever-expanding database of volunteer opportunities that match your preferences or support your future goals.
               </Text>
             </div>
@@ -1024,7 +1314,8 @@ const StudentLanding = () => {
                 fontWeight="600"
                 textAlign="center"
                 mt="34px"
-              >Provide volunteers with a reliable and secure platform that connects with verified and vetted organizations and age-appropriate volunteer opportunities.
+                className="px-md-4"
+              >Provide volunteers with <br className="d-none d-xl-block"/>a reliable and secure platform that connects with verified and vetted organizations and age-appropriate volunteer opportunities.
 
               </Text>
             </div>
@@ -1046,6 +1337,7 @@ const StudentLanding = () => {
                 fontWeight="600"
                 textAlign="center"
                 mt="34px"
+                className="px-md-3"
               >Volunteerism is such an incredibly important experience and Good Deeds would like to reward you for a job well done.
               </Text>
             </div>
@@ -1186,18 +1478,18 @@ const StudentLanding = () => {
                 lineHeight="26px"
                 color="#212121"
                 fontWeight="600"
-                className="parental-para"
+                className="parental-para pe-md-5 ps-md-5"
               >
                 Are you worried about your child's volunteering progress? The Good Deeds platform makes it effortless to track the details of your teens assigned volunteering activities from the convenience of your mobile device. We highly encourage parents to join in the process of giving with a quick and easy sign-up.
               </Text>
               <Button
                 variant={'solid'}
                 colorScheme={'orange'}
-                style={{ borderRadius: 50 }}
+                style={{ borderRadius: 50, height:"48px"}}
                 size={'md'}
                 display="block"
                 minW="320px"
-                m="30px auto 0"
+                m="50px auto 0"
                 onClick={() => router.push("/blog")}
               >
                 Click here to Learn More
