@@ -591,20 +591,25 @@ const CreateApplication = (props: Props) => {
     );
   };
 
+
   
 // ===============================================================================================
 
-const handleAddQuestion = (type: string) => {
-  const id = 'question-' + questions.length;
+const handleAddQuestion = (type: string, length:any) => {
+
+  const id = length == null? 'question-' + questions.length: 'question-' + length;
   let newQuestion: JSX.Element;
   let type_id: number;
 
   // Check if the question type is AskAvailability or WorkExperience
-  if (type === 'AskAvailability' || type === 'WorkExperience') {
+  if (type === 'AskAvailability' || type === 'WorkExperience' || type === 'AskVaccination') {
     // Check if the question already exists in the questions array
     const exists = questions.some((question) => question.type === type);
     if (exists) {
-      toast({ position: "top", title: `You cannot add ${type === 'AskAvailability' ? '(Ask Availability)' : '(Work Experience)'} more than once.`, status: "warning" });
+      toast({ position: "top", title: `You cannot add ${
+        type === 'AskAvailability' ? '(Ask Availability)' :
+        type === 'WorkExperience' ? '(Work Experience)' :
+        type === 'AskVaccination' ? '(Ask Vaccination)' : ''} more than once.`, status: "warning" });
       return;
     }
   }
@@ -937,6 +942,13 @@ const handleAddQuestion = (type: string) => {
       });
   }, [organization]);
 
+  useEffect(() => {
+      handleAddQuestion("AskAvailability", 0);
+      handleAddQuestion("WorkExperience", 1);
+      handleAddQuestion("AskVaccination", 2);
+    
+  }, []);
+
   return (
     <>
       <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
@@ -1066,13 +1078,13 @@ const handleAddQuestion = (type: string) => {
                       style={{ width: "250px", height: "262px" }}
                       className="card ques-card shadow mt-2"
                     >
-                      <button onClick={()=> handleAddQuestion("ShortQuestion")} className="ques-card-button"> Short Question </button>
-                      <button onClick={()=> handleAddQuestion("CheckboxQuestion")} className="ques-card-button" > Checkbox Question </button>
-                      <button onClick={()=> handleAddQuestion("RadioButtonQuestion")} className="ques-card-button"> Radio Button Question</button>
-                      <button onClick={()=> handleAddQuestion("ConditionalQuestion")} className="ques-card-button">Conditional Question </button>
-                      <button onClick={()=> handleAddQuestion("AskAvailability")} className="ques-card-button"> Ask Availability </button>
-                      <button onClick={()=> handleAddQuestion("WorkExperience")} className="ques-card-button"> Work Experience </button>
-                      <button onClick={()=> handleAddQuestion("AskVaccination")} className="ques-card-button"> Ask Vaccination </button>
+                      <button onClick={()=> handleAddQuestion("ShortQuestion", null)} className="ques-card-button"> Short Question </button>
+                      <button onClick={()=> handleAddQuestion("CheckboxQuestion", null)} className="ques-card-button" > Checkbox Question </button>
+                      <button onClick={()=> handleAddQuestion("RadioButtonQuestion", null)} className="ques-card-button"> Radio Button Question</button>
+                      <button onClick={()=> handleAddQuestion("ConditionalQuestion", null)} className="ques-card-button">Conditional Question </button>
+                      <button onClick={()=> handleAddQuestion("AskAvailability", null)} className="ques-card-button"> Ask Availability </button>
+                      <button onClick={()=> handleAddQuestion("WorkExperience", null)} className="ques-card-button"> Work Experience </button>
+                      <button onClick={()=> handleAddQuestion("AskVaccination", null)} className="ques-card-button"> Ask Vaccination </button>
                     </div>
                   )}
                 </div>
