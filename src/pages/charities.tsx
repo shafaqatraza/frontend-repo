@@ -658,11 +658,11 @@ const Charities = () => {
       </Flex>
       <div className="container">
         <div className="row">
-          <div className="col-md-8 mt-5">
+          <div className="col-md-8 mt-5 ps-md-4 pe-md-5">
             <p className="good-deeds ms-3 ms-md-0 and">Good Deeds <span className="donors"> connects</span> <span >you with motivated</span> <span className="volunteers">volunteers</span> <span className="and">and</span> <span className="donors">donors</span></p>
             <Image src={Charity.src} className='d-block d-md-none px-5' alt={"Charity"} />
             <div className="mt-2 mb-2">
-              <p className="our-platform px-4 px-md-0" style={{fontWeight:"600"}}>Our platform makes it effortless to manage and reward your donors and volunteers in one convenient place.</p>
+              <p className="our-platform px-4 ps-md-0 pe-md-4" style={{fontWeight:"600"}}>Our platform makes it effortless to manage and reward your donors and volunteers in one convenient place.</p>
             </div>
             <div className="mt-3 mb-3 px-4 px-md-0">
               <button className="try-button mt-3" style={{height:'40px'}}>Try for free for 30 days</button>

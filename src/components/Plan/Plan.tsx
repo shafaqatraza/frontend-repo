@@ -13,10 +13,10 @@ const Plan = () => {
     <>
       <div className="container-fluid" style={{ backgroundColor: "#DEE3E680" }}>
         <div className="container nop">
-          <div className="row pb-5 pt-md-3">
+          <div className="row pb-4 pt-md-3">
             <div className="col-lg-4">
             <p className="good-deeds d-block d-lg-none mt-5 ms-1"><span style={{ color: "#183553" }}>Calling all</span> <span style={{ color: "#E27832" }}>Charities</span> and <span style={{ color: "#E27832" }}>NPO’s</span><span style={{ color: "#183553" }}>:<br/> Need donations or volunteers?</span></p>
-              <Image src={charity.src} className="m-auto m-lg-0 mt-lg-5 mt-xl-0 pt-md-4" alt={"Image"} />
+              <Image src={charity.src} className="m-auto  mt-lg-5 mt-xl-0 pt-md-4" alt={"Image"} />
               <Button
                 className="d-none d-lg-block nop-btn"
                 variant={'solid'}
@@ -63,10 +63,10 @@ const Plan = () => {
         </div>
       </div>
       <div className="container social">
-        <p className="good-deeds text-center"><span style={{ color: "#183553" }}>Join us on</span> <span style={{ color: "#E27832" }}>Social!</span></p>
+        <p className="good-deeds text-center pb-4"><span style={{ color: "#183553" }}>Join us on</span> <span style={{ color: "#E27832" }}>Social!</span></p>
         <div
           className="d-flex justify-content-center flex-wrap mt-md-5 mt-4"
-          style={{ gap: '2rem' }}
+          style={{ gap: '2.5rem' }}
         >
           <a href="https://www.tiktok.com/@gooddeedsllc" target="_blank" rel="noopener noreferrer">
             <Image src={tiktok.src} alt="TikTok" />

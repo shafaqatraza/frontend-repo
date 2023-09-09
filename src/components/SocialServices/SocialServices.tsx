@@ -19,19 +19,19 @@ const SocialServices = () => {
         id="need_more_credits"
       >
         <div className="container deed-dollars">
-          <p className="paragraph ms-xxl-5 ms-md-4 mb-md-5">
+          <p className="paragraph ms-xxl-5 ms-md-4 mb-md-5 ps-md-3">
             <span className="good-deeds">
               <span style={{ color: "#183553" }}>Need more</span>{" "}
               <span style={{ color: "#E27832" }}>credits</span>
               <span style={{ color: "#183553" }} className="d-none d-md-inline">?</span>
             </span>
           </p>
-          <p className="our-platform mt-3 mt-md-4 mb-2 mb-md-5 ms-xxl-5 ms-md-4">
+          <p className="our-platform mt-3 mt-md-4 mb-2 mb-md-5 ms-xxl-5 ms-md-4 ps-md-3">
             Here are 3 simple ways to earn exclusive Deed Dollars:
           </p>
           <Row className="">
             <div className="d-flex justify-content-around flex-wrap px-md-0">
-              <div className="card-social res-card-soc">
+              <div className="card-social res-card-soc px-md-5">
                 <p
                   style={{
                     fontSize: "clamp(20px, 2.5vw, 40px)",
@@ -56,7 +56,7 @@ const SocialServices = () => {
                 <button className="donate-btn" onClick={() => { router.push('/browse?type=offering&activeTab=0') }} >List an item or service</button>
               </div>
 
-              <div className="card-social res-card-soc mt-4 mt-md-0">
+              <div className="card-social res-card-soc mt-4 px-md-5 mt-md-0">
                 <p
                   style={{
                     fontSize: "clamp(20px, 2.5vw, 40px)",
@@ -82,7 +82,7 @@ const SocialServices = () => {
                 <button className="donate-btn" onClick={() => { router.push('/browse?type=offering&activeTab=3') }}>Donate</button>
               </div>
 
-              <div className="card-social res-card-soc mt-4 mt-md-3 mt-lg-5 mt-xl-0">
+              <div className="card-social res-card-soc mt-4 mt-md-3 mt-lg-5 mt-xl-0 px-md-5">
                 <p
                   style={{
                     fontSize: "clamp(20px, 2.5vw, 40px)",
@@ -100,7 +100,7 @@ const SocialServices = () => {
                     lineHeight: "1.3",
                     fontWeight: "600",
                   }}
-                  className="text-center"
+                  className="text-center px-md-3"
                 >
                   Invite your friends and get 10 Deed Dollars
                 </p>

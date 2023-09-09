@@ -795,12 +795,12 @@ const StudentLanding = () => {
                 variant={'solid'}
                 colorScheme={'orange'}
                 style={{ borderRadius: 50 }}
-                size={'md'}
                 fontSize="16px"
                 mt="56px"
                 onClick={submitForm}
-                minW="285px"
-                className="ms-md-5"
+                height="47px"
+                minW="270px"
+                className="ms-md-5 pt-1"
               >
                 Submit a Volunteer Request
               </Button>
@@ -850,20 +850,21 @@ const StudentLanding = () => {
               More People, More <span style={{color:"#E27832",display:"inline-block"}}  >Impact</span>
             </Text>
             <p className="about-more-people ms-md-5">Good Deeds is a digital platform that directly delivers meaningful opportunities to you. Volunteer with Good Deeds today and earn Deed Dollars for every volunteer hour you contribute.</p>
-            <Button
-              variant={'solid'}
-              colorScheme={'orange'}
-              style={{ borderRadius: 50 }}
-              size={'md'}
-              display="block"
-              minW="320px"
-              height="50px"
-              m="20px auto 0"
-              onClick={() => router.push("/about")}
-              className="mt-5 "
-            >
-              Learn more about Good Deeds
-            </Button>
+            <div className="ms-md-5 ps-md-3">
+              <Button
+                variant={'solid'}
+                colorScheme={'orange'}
+                style={{ borderRadius: 50 }}
+                size={'md'}
+                display="block"
+                minW="290px"
+                height="50px"
+                onClick={() => router.push("/about")}
+                className="mt-5 ms-md-5"
+              >
+                Learn more about Good Deeds
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -871,16 +872,16 @@ const StudentLanding = () => {
       {/* Reviews  */}
       <div className="student-landing-review mb-5">
       <div
-        className="mt-5 deeds-review"
+        className="mt-5 mt-md-3 deeds-review"
         
       >
-        <Container>
+        <Container className="px-md-5">
           <div className="text-center">
             <p className="review-txt pt-5">
               Hear What Our Volunteers Have to Say
             </p>
           </div>
-          <Row className="mt-5 pb-5">
+          <Row className="mt-5 pb-5 px-md-5">
             <Col className="rev-col" md={4}>
 
               <div>
@@ -988,7 +989,7 @@ const StudentLanding = () => {
       </div>
 
       <div style={{ backgroundColor: "rgba(222, 227, 230, 0.5)" }}>
-        <div className="container pb-4 pb-md-0">
+        <div className="container pb-4 pb-md-0 px-md-3">
           <div className="row pt-3 pt-md-0 px-md-5">
             <div className="col-md-4 py-md-5 mb-4 mb-md-0 py-4 px-5 px-md-5" >
               <Image src={partner1.src} alt={"icon"} style={{ margin: '0 auto' }} />
@@ -1088,7 +1089,7 @@ const StudentLanding = () => {
 
         <Row className="justify-content-end">
           <Col md={10}>
-            <p className="step1-txt text-md-center text-lg-end mt-5 me-5">Step 2</p>
+            <p className="step1-txt text-md-center text-lg-end mt-3 me-5">Step 2</p>
             <div className="d-flex justify-content-end align-items-end flex-column flex-md-row container">
               <div className="col-md-6 order-2 order-md-1 fourty-hours-content">
                 <p className="mb-2 mt-4 step1-txt text-md-end text-center" style={{marginRight:"-20px"}}>
@@ -1129,7 +1130,7 @@ const StudentLanding = () => {
 
         <Row className="justify-content-end">
           <Col md={11} className="ps-md-5">
-            <p className="step1-txt text-md-center text-lg-end mt-5 me-5 pe-5">Step 4</p>
+            <p className="step1-txt text-md-center text-lg-end mt-3 me-5 pe-5">Step 4</p>
             <div className="d-flex justify-content-end flex-column flex-md-row container mt-5">
               <div className="col-md-6 mt-4 order-2 order-md-1 fourty-hours-content">
                 <p className="mb-2 mt-4 step1-txt text-md-end text-center">YOU DID IT!!</p>
