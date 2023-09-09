@@ -28,7 +28,8 @@ import {
     Text,
     Avatar,
     Spacer,
-    Spinner
+    Spinner,
+    ModalHeader
   } from '@chakra-ui/react'
 
 function OrganizationCreationModal({ show, onClose }) {
@@ -103,159 +104,142 @@ function OrganizationCreationModal({ show, onClose }) {
     <div>
         {/* Create organization modal */}
         <Modal show={show} onHide={onClose}>
-            <div className="p-3">
-            <div className="p-5 mt-3">
-                <form>
-                <div className="mb-3">
-                    <label className="form-label fw-bold">Email</label>
-                    <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    type="email"
-                    className="form-control"
-                    value={formData.business_email}
-                    onChange={(event) =>
-                        setFormData({ ...formData, business_email: event.target.value })
-                    }
-                    name="business_email"
-                    id="email"
-                    required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label fw-bold">Organization Name</label>
-                    <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    type="text"
-                    className="form-control"
-                    id="admin-name"
-                    value={formData.full_name}
-                    onChange={(event) =>
-                        setFormData({ ...formData, full_name: event.target.value })
-                    }
-                    name="full_name"
-                    required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label fw-bold">Address</label>
-                    <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    type="text"
-                    className="form-control"
-                    id="address"
-                    value={formData.location}
-                    onChange={(event) =>
-                        setFormData({ ...formData, location: event.target.value })
-                    }
-                    name="location"
-                    required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label fw-bold">
-                    Business Number
-                    </label>
-                    <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    type="text"
-                    className="form-control"
-                    id="business-number"
-                    value={formData.business_number}
-                    onChange={(event) =>
-                        setFormData({ ...formData, business_number: event.target.value })
-                    }
-                    name="business_number"
-                    required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label fw-bold">Website Url</label>
-                    <Input
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    type="tel"
-                    className="form-control"
-                    id="phone-number"
-                    value={formData.website_url}
-                    onChange={(event) =>
-                        setFormData({ ...formData, website_url: event.target.value })
-                    }
-                    name="website_url"
-                    required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label fw-bold">
-                    Company Description
-                    </label>
-                    <textarea
-                    style={{ backgroundColor: "#E8E8E8" }}
-                    className="form-control"
-                    id="company-description"
-                    rows={3}
-                    value={formData.about}
-                    onChange={(event) =>
-                        setFormData({ ...formData, about: event.target.value })
-                    }
-                    name="about"
-                    required
-                    ></textarea>
-                </div>
-                <label
-                    style={{
-                    fontWeight: "500",
-                    fontSize: "20px",
-                    lineHeight: "24px",
-                    }}
-                    className="form-label"
-                >
-                    Upload a Profile Picture
-                </label>
-                <div className="upload-pic d-flex justify-content-center align-items-center">
-                    {thumbnail ? (
-                    <Image src={thumbnail} width={200} height={200} />
-                    ) : (
-                    <Image
-                        src={camera.src}
-                        onClick={handleThumbnailClick}
-                        alt="Thumbnail placeholder"
-                        width={39}
-                        height={36}
-                    />
-                    )}
-                </div>
-                {/* <div className="mb-3">
-                    <label className="form-label fw-bold">Password</label>
-                    <Input
+            <Modal.Header closeButton>
+                <Modal.Title>Create Organization</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div className="p-3">     
+                    <form>
+                    <div className="mb-3">
+                        <label className="form-label fw-bold">Email</label>
+                        <Input
                         style={{ backgroundColor: "#E8E8E8" }}
-                        type="password"
+                        type="email"
                         className="form-control"
-                        id="password"
+                        value={formData.business_email}
+                        onChange={(event) =>
+                            setFormData({ ...formData, business_email: event.target.value })
+                        }
+                        name="business_email"
+                        id="email"
+                        placeholder="Enter an email address"
                         required
-                    />
-                    </div> */}
-                <div className="d-flex justify-content-end">
-                    <button onClick={submitCreateOrganization} type="submit" className="btn-reset mb-5">
-                    Submit
-                    </button>
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label fw-bold">Organization Name</label>
+                        <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="text"
+                        className="form-control"
+                        id="admin-name"
+                        value={formData.full_name}
+                        onChange={(event) =>
+                            setFormData({ ...formData, full_name: event.target.value })
+                        }
+                        name="full_name"
+                        placeholder="Enter an organization name"
+                        required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label fw-bold">Address</label>
+                        <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="text"
+                        className="form-control"
+                        id="address"
+                        value={formData.location}
+                        onChange={(event) =>
+                            setFormData({ ...formData, location: event.target.value })
+                        }
+                        name="location"
+                        placeholder="Enter an organization address"
+                        required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label fw-bold">
+                        Business Number
+                        </label>
+                        <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="text"
+                        className="form-control"
+                        id="business-number"
+                        value={formData.business_number}
+                        onChange={(event) =>
+                            setFormData({ ...formData, business_number: event.target.value })
+                        }
+                        name="business_number"
+                        placeholder="Enter mobile number"
+                        required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label fw-bold">Website Url</label>
+                        <Input
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        type="tel"
+                        className="form-control"
+                        id="phone-number"
+                        value={formData.website_url}
+                        onChange={(event) =>
+                            setFormData({ ...formData, website_url: event.target.value })
+                        }
+                        name="website_url"
+                        placeholder="Enter website url"
+                        required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label fw-bold">
+                        Company Description
+                        </label>
+                        <textarea
+                        style={{ backgroundColor: "#E8E8E8" }}
+                        className="form-control"
+                        id="company-description"
+                        rows={3}
+                        value={formData.about}
+                        onChange={(event) =>
+                            setFormData({ ...formData, about: event.target.value })
+                        }
+                        name="about"
+                        placeholder="Enter comapny description"
+                        required
+                        ></textarea>
+                    </div>
+                    <label
+                        style={{
+                        fontWeight: "500",
+                        fontSize: "20px",
+                        lineHeight: "24px",
+                        }}
+                        className="form-label"
+                    >
+                        Upload a Profile Picture
+                    </label>
+                    <div className="upload-pic d-flex justify-content-center align-items-center">
+                        {thumbnail ? (
+                        <Image src={thumbnail} width={200} height={200} />
+                        ) : (
+                        <Image
+                            src={camera.src}
+                            onClick={handleThumbnailClick}
+                            alt="Thumbnail placeholder"
+                            width={39}
+                            height={36}
+                        />
+                        )}
+                    </div>
+                    </form>
                 </div>
-                </form>
-            </div>
-            </div>
-            <div className="d-flex justify-content-center pb-5">
-            {/* <button onClick={handleClose} className="modal-btn">Got it</button> */}
-            </div>
+            </Modal.Body>
+            <Modal.Footer>
+                <button onClick={submitCreateOrganization} type="submit" className="btn-reset mt-1 justify-content-end">Submit</button>
+            </Modal.Footer>
         </Modal>
-        {/* Success message modal on organization creation */}
-        {/* <Modal show={showSuccess} onHide={closeCreateOrgSuccessModal} >
-            <div className="p-3">
-            <p className="modal-txt text-center p-5 mt-3">
-                Organization Created Successfully
-            </p>
-            </div>
-            <div className="d-flex justify-content-center pb-5">
-            <button onClick={() => setShowSuccess(false)} className="modal-btn">Got it</button>
-            </div>
-        </Modal> */}
     </div>
   );
 }
