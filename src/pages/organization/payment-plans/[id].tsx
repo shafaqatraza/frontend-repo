@@ -9,12 +9,13 @@ import gooddeedsorange from "../../../assets/imgs/gooddeedsorange.png";
 import { Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { accessToken, baseUrl, currentOrganization } from "../../../components/Helper/index";
+import { accessToken, baseUrl} from "../../../components/Helper/index";
 import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
 import { CardNumberElement, CardCvcElement, CardExpiryElement} from '@stripe/react-stripe-js';
 import { loadStripe } from "@stripe/stripe-js";
 import { useToast } from '@chakra-ui/toast'
 // import { GoogleMap, Autocomplete } from '@react-google-maps/api';
+
 
 const calculateHST = (price: number): number => {
   const hst = parseFloat(price.toString()) * 0.13;
@@ -31,7 +32,9 @@ const stripePromise = loadStripe('pk_test_51MzNd8HXctCE4qHqr1vcficqBBBYQp6cFwZxD
 const StripeForm = () => {
   const toast = useToast()
   const autocompleteRef = useRef(null);
-
+  const [orgData, setOrgData] = useState({  
+    slug: ''
+  });
   const [show, setShow] = useState(false);
   const handleShowModal = () => setShow(true);
   const handleCloseModal = () => setShow(false);
@@ -57,6 +60,24 @@ const StripeForm = () => {
   } else if (pricingTenure) {
     tenureAbbreviation = pricingTenure.substr(0, 2);
   }
+
+
+  useEffect( ()=> {
+    axios
+    .get(`${baseUrl}/organizations`, {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .then((res) => {
+      setOrgData(res.data[0]);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  }, [])
 
   const cardElementOptions = {
     // iconStyle: 'default', 
@@ -95,9 +116,10 @@ const StripeForm = () => {
   });
 
   useEffect(() => {
-    axios
+    if(orgData?.slug !== ''){
+      axios
         .get(`${baseUrl}/organization/packages/${id}?org=${// @ts-ignore: Unreachable code error
-          currentOrganization?.slug}`, {
+          orgData?.slug}`, {
           headers: {
             Authorization: "Bearer " + accessToken(),
             "Content-Type": "application/x-www-form-urlencoded",
@@ -111,8 +133,9 @@ const StripeForm = () => {
         .catch((err) => {
           console.log(err);
         });
+    }
         
-  }, [id, currentOrganization])
+  }, [id, orgData])
 
   useEffect(() => {
     const calculatedHST = calculateHST(price);
@@ -158,6 +181,13 @@ const StripeForm = () => {
   const handleSubmit = async (event:any) =>{
     setIsLoading(true);
     event.preventDefault();
+
+    if (orgData?.slug === '') {
+      toast({ position: 'top', title: 'Something went wrong, please try again later!', status: 'warning' })
+      setIsLoading(false);
+      return;
+    }
+
 
     if (!stripe || !elements) {
       toast({ position: 'top', title: 'Please fill in the card details!', status: 'info' })
@@ -240,20 +270,18 @@ const StripeForm = () => {
     form.append("expiry_date", formData.card_detail.expiry_date);
     form.append("cvv", formData.card_detail.cvv);
     axios.post(`${baseUrl}/organization/subscriptions/payment?org=${ // @ts-ignore: Unreachable code error
-      currentOrganization?.slug}`, form,  {
+      orgData?.slug}`, form,  {
       headers: {
         Authorization: "Bearer " + accessToken(),
         "Content-Type": "application/x-www-form-urlencoded",
       },}).then((res)=>{
         if(res.status == 200){
           setIsLoading(false);
-          // setPaymentStatus('success')
           setMessage(res.data.message)
           toast({ position: "top", title: res.data.message, status: "success" })
           router.push("/organization")
           handleShowModal();
         }
-      // router.push("/organization");
     }).catch((error)=>{
      
       setPaymentStatus('failed')
@@ -264,7 +292,7 @@ const StripeForm = () => {
         // Extract the error message from the API response
         if (data && data.message) {
           setErrorMessage(data.message)
-          // toast({ position: "top", title: data.message, status: "error" })
+          toast({ position: "top", title: 'You already have an active subscription', status: "warning" })
         } else {
           toast({ position: "top", title: 'An error occurred. Please try again later.', status: "error" })
         }
