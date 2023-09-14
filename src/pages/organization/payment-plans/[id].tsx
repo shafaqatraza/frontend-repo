@@ -116,7 +116,8 @@ const StripeForm = () => {
   });
 
   useEffect(() => {
-    axios
+    if(orgData?.slug !== ''){
+      axios
         .get(`${baseUrl}/organization/packages/${id}?org=${// @ts-ignore: Unreachable code error
           orgData?.slug}`, {
           headers: {
@@ -132,6 +133,7 @@ const StripeForm = () => {
         .catch((err) => {
           console.log(err);
         });
+    }
         
   }, [id, orgData])
 
