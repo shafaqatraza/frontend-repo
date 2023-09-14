@@ -5,8 +5,16 @@ import Navbar from '../../components/Navbar'
 import { Footer } from '../../components/Footer'
 import { useRouter } from "next/router";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import { Icon } from '@chakra-ui/react';
+import { FaLock } from 'react-icons/fa'; 
 
 const Settings = () => {
+  const [modalshow, setmodalShow] = useState(false);
+
+  const handleClose = () => setmodalShow(false);
+  const handleShow = () => setmodalShow(true);
   const [show, setShow] = useState(false);
   const router = useRouter();
   return (
@@ -36,28 +44,33 @@ const Settings = () => {
               <p className='set-p-1'>Billing and Payments</p>
               <p>View invoices and modify  <span className='d-block'>payment details</span></p>
             </div>
-            <div onClick={() => router.push("/payment")} style={{ cursor: "pointer" }} className="col-md-4">
+            {/* <div onClick={() => router.push("/payment")} style={{ cursor: "pointer" }} className="col-md-4">
               <p className='set-p-1'>Member Login & Security</p>
               <p>Manage site members’ login, <span className='d-block'>sign up, profiles, and security</span></p>
-            </div>
+            </div> */}
           </div>
           <div className='row mx-0 mt-5'>
-            <div onClick={() => router.push("/organization/profile")} style={{ cursor: "pointer" }} className="col-md-4">
+            <div onClick={() => router.push("/organization/payment-plans")} style={{ cursor: "pointer" }} className="col-md-4">
               <p className='set-p-1'>Manage Plan</p>
               <p className='mt-2'>Upgrade or modify your <span className='d-block'>plan</span></p>
             </div>
-            <div onClick={() => router.push("/payment")} style={{ cursor: "pointer" }} className="col-md-4">
+            <div onClick={() => router.push("/organization/profile")} style={{ cursor: "pointer" }} className="col-md-4">
               <p className='set-p-1'>Member Roles & Permissions</p>
               <p className='mt-2'>Invite people to work on this  <span className='d-block'>site and set their permissions</span></p>
             </div>
           </div>
-          <div onClick={() => router.push("/organization")} style={{ cursor: "pointer" }} className="row mx-0 mt-5">
-            <p className='set-p-1'>Notifications</p>
+          <div onClick={handleShow} style={{ cursor: "pointer" }} className="row mx-0 mt-5">
+            <p className='set-p-1'>Notifications <span className='ms-1'><Icon as={FaLock} width={"12px"}/></span></p>
             <p>Choose what notifications <span className='d-block'>you get from Good Deeds</span></p>
           </div>
         </div>
       </div>
-      
+      <Modal show={modalshow} onHide={handleClose}>
+        <Modal.Header closeButton className='py-2'>
+          <Modal.Title className='fs-5'>Notifications</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='fs-6'>Comming Soon</Modal.Body>
+      </Modal>
       <Footer />
     </>
   )

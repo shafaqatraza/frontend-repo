@@ -816,7 +816,7 @@ const OrganizationInfo = () => {
 
                     </div>
                     <div className="btns d-flex justify-content-center">
-                      <Link href="/select-plan">
+                      <Link href="/organization/payment-plans">
                         <button className="up-btn mt-5 mb-5">Upgrade</button>
                       </Link>
                       <Link href="/edit-payment">
