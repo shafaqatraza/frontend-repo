@@ -252,7 +252,7 @@ const About = () => {
           </div>
       </div>
 
-      <div className='container pt-3 pb-md-3 px-0'> target="_blank"
+      <div className='container pt-3 pb-md-3 px-0'>
         <div className="d-flex flex-column flex-md-row mission-vision mt-5">
           <div className='mission-card me-md-4 mb-2 mb-md-0 text-center text-md-start'>
             <h1 className='value-heading fw-bold mb-4'>Mission</h1>
