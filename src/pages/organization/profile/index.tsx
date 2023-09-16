@@ -466,7 +466,7 @@ const OrganizationInfo = () => {
   }
 
   return (
-    <>
+    <div style={{overflowX:"hidden"}}>
       <Navbar />
       <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
         <div className="p-3">
@@ -842,7 +842,7 @@ const OrganizationInfo = () => {
           </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

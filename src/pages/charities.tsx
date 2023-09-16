@@ -420,7 +420,7 @@ const Charities = () => {
     ],
   };
   return (
-    <>
+    <div style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
@@ -1347,7 +1347,7 @@ const Charities = () => {
 
 
       <Footer />
-    </>
+    </div>
   )
 }
 export default Charities;

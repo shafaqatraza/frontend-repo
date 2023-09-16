@@ -9,7 +9,7 @@ import { BlogCard } from "../components/blog/card";
 import fav from "../assets/imgs/favicon.ico"
 const Blog = () => {
     return (
-        <Box>
+        <Box style={{overflowX:"hidden"}}>
             <Head>
                 {/* <title>Good Deeds | Community Updates Good Deeds</title> */}
                 <title>Good Deeds | An Online Marketplace of Opportunities</title>

@@ -18,7 +18,7 @@ const Settings = () => {
   const [show, setShow] = useState(false);
   const router = useRouter();
   return (
-    <>
+    <div style={{overflowX:"hidden"}}>
       <Navbar />
       <div className="row m-0">
       <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShow(!show)}><HamburgerIcon/></button>
@@ -72,7 +72,7 @@ const Settings = () => {
         <Modal.Body className='fs-6'>Comming Soon</Modal.Body>
       </Modal>
       <Footer />
-    </>
+    </div>
   )
 }
 

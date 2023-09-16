@@ -447,7 +447,7 @@ const StudentLanding = () => {
   };
 
   return (
-    <>
+    <div style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
@@ -1516,7 +1516,7 @@ const StudentLanding = () => {
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 };
 

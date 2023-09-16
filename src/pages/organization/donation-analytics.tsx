@@ -65,7 +65,7 @@ const columns: ColumnsType[] = [
 
 
   return (
-    <>
+    <div style={{overflowX:"hidden"}}>
     <Navbar/>
     <div className="row m-0">
     <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShow(!show)}><HamburgerIcon/></button>
@@ -100,7 +100,7 @@ const columns: ColumnsType[] = [
       </div>
     </div>
     <Footer/>
-    </>
+    </div>
   )
 }
 

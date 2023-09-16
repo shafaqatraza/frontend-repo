@@ -22,7 +22,7 @@ import { isMobile } from 'react-device-detect'
 import fav from "../assets/imgs/favicon.ico"
 const PrivacyPolicy = () => {
   return (
-    <Box>
+    <Box style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds | Terms Of Service</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
