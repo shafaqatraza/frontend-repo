@@ -2,14 +2,14 @@ import { Box } from "@chakra-ui/react";
 import { Spacer, Divider , Container} from '@chakra-ui/react'
 import Head from "next/head";
 import React from "react";
-import { Footer } from "../components/Footer";
-import Navbar from "../components/Navbar";
-import { Section1 } from "../components/howToUse/section1";
-import { BlogCard } from "../components/blog/card";
-import fav from "../assets/imgs/favicon.ico"
+import { Footer } from "../../components/Footer";
+import Navbar from "../../components/Navbar";
+import { Section1 } from "../../components/howToUse/section1";
+import { BlogCard } from "../../components/blog/card";
+import fav from "../../assets/imgs/favicon.ico"
 const Blog = () => {
     return (
-        <Box style={{overflowX:"hidden"}}>
+        <Box>
             <Head>
                 {/* <title>Good Deeds | Community Updates Good Deeds</title> */}
                 <title>Good Deeds | An Online Marketplace of Opportunities</title>
