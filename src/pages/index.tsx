@@ -237,7 +237,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <Box>
+    <Box style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>

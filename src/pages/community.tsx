@@ -16,7 +16,7 @@ import fav from "../assets/imgs/favicon.ico"
 
 const Community = () => {
     return (
-        <Box>
+        <Box style={{overflowX:"hidden"}}>
             <Head>
                 {/* <title>Good Deeds | Community Good Deeds</title> */}
                 <title>Good Deeds | An Online Marketplace of Opportunities</title>

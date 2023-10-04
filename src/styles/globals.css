@@ -2015,6 +2015,9 @@ color: #E27832;
   }
 }
 @media (max-width: 600px) {
+  .select-plan-tabs{
+    margin: auto !important;
+  }
   .privacy-policy-content{
     font-size: 17px;
     font-weight: 500;

@@ -114,7 +114,7 @@ const organization = () => {
 
   
   return (
-    <div>
+    <div style={{overflowX:"hidden"}}>
       
       <Navbar />
       <div>

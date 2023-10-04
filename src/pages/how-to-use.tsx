@@ -10,7 +10,7 @@ import fav from "../assets/imgs/favicon.ico"
 
 const HowToUse = () => {
   return (
-    <Box>
+    <Box style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds | How to use</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>

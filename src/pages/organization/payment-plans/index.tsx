@@ -18,7 +18,7 @@ const SelectPlan = () => {
     setSelectedButton(2);
   }
   return (
-    <>
+    <div style={{overflowX:"hidden"}}>
       <Navbar />
       <Sidebar>
         <div className="plan-main"></div>
@@ -28,14 +28,14 @@ const SelectPlan = () => {
         <div className="ms-5 mt-5">
           <p className="modal-txt ms-3">Select Plan</p>
         </div>
-       <div className="d-flex">
-       <div style={{marginLeft:"7rem"}} className="btn-list mt-5">
+       <div className="d-flex flex-column flex-md-row">
+       <div style={{marginLeft:"7rem"}} className="btn-list mt-5 select-plan-tabs">
             <div className="d-flex">
               <button onClick={handleClickOne} className={selectedButton === 1 ? 'donate-btn2 shadow' : 'donatee-btn'}>Monthly</button>
               <button onClick={handleClickTwo} className={selectedButton === 2 ? 'donate-btn2 shadow' : 'donatee-btn'}>Annual</button>
             </div>
           </div>
-          <div className="mt-5 d-flex align-items-center ms-4">
+          <div className="mt-5 d-flex align-items-center justify-content-md-start justify-content-center ms-4">
             <p className="save-txt">Save 20% anually</p>
           </div>
        </div>
@@ -44,7 +44,7 @@ const SelectPlan = () => {
       {selectedButton === 1 ? <MonthlyPlan /> : <AnualPlan />}
       </Sidebar>
       <Footer />
-    </>
+    </div>
   );
 };
 

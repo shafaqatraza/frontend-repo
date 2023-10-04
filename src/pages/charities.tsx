@@ -94,6 +94,10 @@ import OrganizationCreationModal from '../components/organization/OrganizationCr
 import gdlogo from '../assets/imgs/gdlogopegiun.png'
 import explorepegiun from '../assets/imgs/explorepegiun.png'
 import exchangepegiun from '../assets/imgs/exchangepegiun.png'
+import addorg from '../assets/imgs/add-organization.png'
+import recruit from '../assets/imgs/recruit.png'
+import createListing1 from '../assets/imgs/create-listing1.png'
+import createListing2 from '../assets/imgs/create-listing2.png'
 
 interface ModelType {
   login: boolean
@@ -420,7 +424,7 @@ const Charities = () => {
     ],
   };
   return (
-    <>
+    <div style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
@@ -1039,7 +1043,7 @@ const Charities = () => {
                 <hr className="hr-step2 ms-md-5" style={{ height: "5px", marginRight:'-70px',borderColor:"#183553" }} />
 
                 <p className="step1-txt2 mt-2 ms-md-5 ps-md-4">
-                Effortlessly manage user donations and volunteer applications with our user-friendly dashboard. Organize and streamline your tasks for enhanced visibility and efficient management.
+                Simply click 'Add an Organization' in your account profile, provide your company details, and submit. We'll verify and approve your account within 24 hours.
                 </p>
               </div>
               <div className='order-1 order-md-2'>
@@ -1051,21 +1055,22 @@ const Charities = () => {
               </div>
             </div>
           </Col>
+          <img src={addorg.src} alt='' style={{width:"315px"}} />
         </Row>
 
 
         <Row>
           <Col md={10}>
-            <div className="d-flex align-items-center justify-content-center mt-5 flex-column flex-md-row px-5 px-md-0">
+            <div className="d-flex align-items-center justify-content-center flex-column flex-md-row px-5 px-md-0">
               <div>
                 <p className="step1-txt ms-0 ms-md-5 mt-4">Step 3</p>
                 <img className="mt-md-5" src={gooddeedspegiun2.src} alt="example" />
               </div>
-              <div className="mt-md-5 charities-stpe-content">
-                <p className="mt-5 mb-2 step1-txt text-center text-md-start">Set Up Your Dashboard</p>
+              <div className="mt-md-5 charities-stpe-content pt-md-5">
+                <p className="mt-5 mb-2 step1-txt text-center text-md-start">Create Listings</p>
                 <hr className="hr-step1 me-5" style={{ height: "5px", marginLeft:'-58px',borderColor:"#183553" }} />
                 <p className="step1-txt2 mt-2">
-                  Organize your dashboard for easy visibility and management of user donations and volunteer applications.
+                After approval, start by crafting compelling volunteer and donation listings. Complete all necessary details, and seamlessly connect volunteer applications with your positions.
                 </p>
               </div>
             </div>
@@ -1073,12 +1078,12 @@ const Charities = () => {
         </Row>
         <Row>
           <Col md={12}>
-            <div className="d-flex justify-content-center mt-5">
+            <div className="d-flex justify-content-center mt-4 mb-4 pe-md-5">
               <div>
-                <Image src={dashboard1.src} alt={"Dashboard one"} />
+                <Image src={createListing1.src} style={{width:"290px"}} alt={"createListing one"} />
               </div>
-              <div className="mt-5">
-                <Image src={dashboard2.src} alt={"Dashboard tw0"} />
+              <div className="mt-3">
+                <Image src={createListing2.src} style={{width:"290px"}} alt={"createListing tw0"} />
               </div>
             </div>
           </Col>
@@ -1093,7 +1098,7 @@ const Charities = () => {
                 <hr className="hr-step2 ms-md-4" style={{ height: "5px",marginRight:'-25px',borderColor:"#183553" }} />
 
                 <p className="step1-txt2 mt-2 ms-md-5 ps-md-4">
-                  Follow up with a selected volunteer application and start collaborating on your campaign!
+                Connect with your chosen volunteer and begin collaborating on your campaign!
                 </p>
               </div>
               <div className='order-1 order-md-2'>
@@ -1105,6 +1110,7 @@ const Charities = () => {
               </div>
             </div>
           </Col>
+          <img src={recruit.src} alt='' className='m-auto pe-md-5 mb-md-4 mt-4 mt-sm-0' style={{width:"330px"}}/>
         </Row>
       </Container>
 
@@ -1347,7 +1353,7 @@ const Charities = () => {
 
 
       <Footer />
-    </>
+    </div>
   )
 }
 export default Charities;
