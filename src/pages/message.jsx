@@ -12,7 +12,7 @@ function Profile() {
     const router = useRouter();
 
     return (
-        <Box>
+        <Box style={{overflowX:"hidden"}}>
             <Head>
                 {/* <title>Good Deeds | Message</title> */}
                 <title>Good Deeds | An Online Marketplace of Opportunities</title>

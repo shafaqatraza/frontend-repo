@@ -8,7 +8,7 @@ import {
   AspectRatio
 } from '@chakra-ui/react'
 import React from 'react'
-import { baseImgUrl } from '../../components/Helper/index'
+import { baseImgUrl } from '../Helper/index'
 import NoImage from '../../../src/assets/imgs/no-image.png'
 import moment from 'moment'
 import Router from 'next/router'

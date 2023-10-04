@@ -1436,25 +1436,32 @@ function Browse(props) {
                           {isFilterLoading && <Loader h="300px" />}
                           {!isFilterLoading && (
                             <>
-                              <ProductGrids show4={true}>
-                                {donationData.length !== 0 &&
-                                  donationData.map((product, index) => {
-                                    return (
-                                      <ProductSingleCard
-                                        key={index}
-                                        product={product}
-                                        addToWhishList={(e) => addToWhishList(e)}
-                                        removeFromWhiteList={(e) =>
-                                          removeFromWhiteList(e)
-                                        }
-                                        isBookmark={props.isBookmark}
-                                        inWhishList={wihslistIds.some(
-                                          (o) => o.id === product.id
-                                        )}
-                                      />
-                                    )
-                                  })}
-                              </ProductGrids>
+                  
+                            <div className='row'>
+                              {donationData.length !== 0 &&
+                                donationData.map((product, index) => {
+                                  return (
+                                          <div className='col-xl-4 col-sm-6 mb-4 '>
+                                            <div className='donation-card'>
+                                              <ProductSingleCard
+                                                key={index}
+                                                product={product}
+                                                addToWhishList={(e) => addToWhishList(e)}
+                                                removeFromWhiteList={(e) =>
+                                                  removeFromWhiteList(e)
+                                                }
+                                                isBookmark={props.isBookmark}
+                                                inWhishList={wihslistIds.some(
+                                                  (o) => o.id === product.id
+                                                )}
+                                              />
+                                            </div>
+                                          </div>
+                                          )
+                                        })
+                                      }
+                              </div>
+                             
                               {donationData.length === 0 && (
                                 <Center h="300px" textAlign={'center'}>
                                   <Stack spacing={2} textAlign={'center'}>

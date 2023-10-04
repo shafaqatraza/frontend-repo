@@ -34,7 +34,7 @@ export const ProductSingleCard = (props) => {
     isImageEdit
   } = props
 
-  const { title, credit_amount, name, media, id, created_at, transaction_status, slug, post_type, thumbnail, created_at_human_diff, url_to_donate, category } = product
+  const { title, description, credit_amount, name, media, id, created_at, transaction_status, slug, post_type, thumbnail, created_at_human_diff, url_to_donate, category } = product
 
   // const created_listing = moment(created_at).utc().format('YYYY-MM-DD, h:mm a')
   const router = useRouter()
@@ -48,13 +48,27 @@ export const ProductSingleCard = (props) => {
     }   
   };
 
+  function TruncateText({ text, limit }) {
+    const truncatedText = text.length > limit ? text.slice(0, limit) + '..' : text;
+    const dotsStyle = {
+      color: '#8F8C8C', 
+    };
+  
+    return (
+      <p style={{fontSize:"11px",fontWeight:"500"}}>
+        {truncatedText}
+        {text.length > limit && <span style={dotsStyle}>see more</span>}
+      </p>
+    );
+  }
+  
+
   
   return (
-    <Stack position="relative" spacing={useBreakpointValue({ base: '4', md: '5' })} maxW="250px" {...rootProps}>
+    <Stack position="relative" spacing={useBreakpointValue({ base: '4', md: '5' })} maxW="230px" {...rootProps}>
       <Box
-        position="relative"
-        cursor={'pointer'}
-        onClick={() => router.push(`/listing/${slug}?type=${post_type}`)}
+      cursor={'pointer'} 
+      onClick={() => router.push(`/listing/${slug}?type=${post_type}`)} 
       >
         <AspectRatio
           ratio={4 / 3}
@@ -83,7 +97,7 @@ export const ProductSingleCard = (props) => {
           />
         </AspectRatio>
         {post_type == 'donation' &&
-          <Tag size='lg' bg={'#183553'} color="#FFF" fontSize={"12px"} fontWeight={'600'} borderRadius='full' position={'absolute'} top="-11px" left={'-8px'}>
+          <Tag size='lg' bg={'#E27832'} color="#FFF" fontSize={"12px"} fontWeight={'600'} borderRadius='full' position={'absolute'} top="-40px" right={'-8px'}>
             <TagLabel>{category}</TagLabel>
           </Tag>
         }
@@ -125,6 +139,7 @@ export const ProductSingleCard = (props) => {
             position="absolute"
             top="2"
             right="2"
+            className="whishlist"
             _focus={{
               // boxShadow: "none",
               outline: 'none'
@@ -168,12 +183,18 @@ export const ProductSingleCard = (props) => {
             Transaction Pending
           </Text>
         }
-      </Box>
+      
       <Stack>
         <Stack spacing="1">
-          <Text fontWeight="medium" fontSize={{ base: '14px', sm: 'md' }}>
+          <Text fontWeight="bold" fontSize={{ base: '14px', sm: '14px' }} className="mt-3">
             {title}
           </Text>
+          {post_type == 'donation' &&
+            <TruncateText
+              text={description}
+              limit={120}
+            />
+          }
           {!(post_type == 'donation') &&
             <Text fontWeight="bold" fontSize={{ base: '14px', sm: 'md' }}>
               {credit_amount} Deed Dollars
@@ -182,25 +203,29 @@ export const ProductSingleCard = (props) => {
           <Text color={'grey'} fontSize={{ base: '12px', sm: '12px' }}>
             {post_type == 'items' || post_type == 'service' ? created_at : post_type == 'volunteer' ? created_at_human_diff : null}
           </Text>
-          {post_type == 'donation' ?
-            <Button
-              type="submit"
-              mt={"5"}
-              colorScheme="orange"
-              w={"150px"}
-              maxW={'100%'}
-              h={'36px'}
-              borderRadius='100px'
-              fontSize="12px"
-              fontWeight={'600'}
-              onClick={() => handleDonateButtonClick(url_to_donate)}
-            >
-              Donate
-            </Button>:
-            null
-          }
+        
         </Stack>
       </Stack>
+      </Box>
+      {post_type == 'donation' ?
+      <div className="text-center mt-auto">
+        <Button
+          type="submit"
+          
+          colorScheme="orange"
+          w={"145px"}
+          maxW={'100%'}
+          h={'36px'}
+          borderRadius='100px'
+          fontSize="12px"
+          fontWeight={'600'}
+          onClick={() => handleDonateButtonClick(url_to_donate)}
+        >
+          Donate
+        </Button>
+      </div>:
+      null
+    }
     </Stack >
   )
 }

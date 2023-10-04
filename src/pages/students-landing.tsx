@@ -7,6 +7,8 @@ import part1 from "../assets/imgs/part1.png";
 import part2 from "../assets/imgs/part2.png";
 import part3 from "../assets/imgs/part3.png";
 import part4 from "../assets/imgs/part4.png";
+import part1Mb from "../assets/imgs/part1-mb.png";
+import part2Mb from "../assets/imgs/part2-mb.png";
 import partner1 from "../assets/imgs/partner1.png";
 import partner2 from "../assets/imgs/partner2.png";
 import partner3 from "../assets/imgs/partner3.png";
@@ -763,28 +765,40 @@ const StudentLanding = () => {
             <Slider {...settings}>
               
                 <div  className="pe-3">
-                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.autism.net" target="_blank">
+                  <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
+                  <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
+                    </a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.blood.ca" target="_blank">
+                  <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
+                    <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
+                    </a>
                 </div>
                 <div className="pe-3 ">
-                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.autism.net"><img src={part1.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.autism.net" target="_blank">
+                  <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
+                  <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
+                  </a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.blood.ca"><img src={part2.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.blood.ca" target="_blank">
+                    <img src={part2.src} className="d-none d-md-block" style={{height:"150px",}} alt="" />
+                    <img src={part2Mb.src} className="d-block d-md-none" style={{height:"150px",}} alt="" />
+                  </a>
                 </div>
                 <div className="pe-3">
-                  <a href="https://www.bgccan.com"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <a href="https://www.habitat.org/" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
 
             </Slider>
@@ -1123,7 +1137,7 @@ const StudentLanding = () => {
               lineHeight="26px"
               color="#E27832"
               fontWeight="600"
-              className="d-none d-md-block ms-md-5"
+              className="d-none d-md-block ms-md-5 ps-md-2"
             >About Us</Text>
             <Text
               fontSize="40px"
@@ -1133,19 +1147,9 @@ const StudentLanding = () => {
               className="d-none d-md-block"
               mt="18px"
             >
-              More People, More <Text color="#E27832" display="inline-block">Impact</Text>
+              More People, More <span style={{color:"#E27832",display:"inline-block"}}  >Impact</span>
             </Text>
-            <Text
-              fontSize="22px"
-              lineHeight="26.63px"
-              color="#212121"
-              fontWeight="600"
-              mt="80px"
-              className="about-more-people ms-md-5"
-              style={{color:"#212121",fontSize:"22px",fontWeight:"600",maxWidth:"73%"}}
-            >
-              Good Deeds is a digital platform that directly delivers meaningful opportunities to you.  Volunteer with Good Deeds today and earn Deed Dollars for every volunteer hour you contribute.
-            </Text>
+            <p className="about-more-people ms-md-5">Good Deeds is a digital platform that directly delivers meaningful opportunities to you. Volunteer with Good Deeds today and earn Deed Dollars for every volunteer hour you contribute.</p>
             <Button
               variant={'solid'}
               colorScheme={'orange'}
@@ -1196,10 +1200,10 @@ const StudentLanding = () => {
                       src={nina.src}
                       alt={"Review"}
                       style={{
-                        width: '40px',
-                        height: '46px',
+                        width: '43px',
+                        height: '43px',
                         borderRadius: '50%',
-                        border:"4px solid #E27832"
+                        border:"5px solid #FFF"
                       }}
                       className="me-3"
                     />
@@ -1230,10 +1234,10 @@ const StudentLanding = () => {
                       src={meg.src}
                       alt={"Review"}
                       style={{
-                        width: '40px',
-                        height: '46px',
+                        width: '43px',
+                        height: '43px',
                         borderRadius: '50%',
-                        border:"4px solid #E27832"
+                        border:"5px solid #FFF"
                       }}
                       className="me-3"
                     />
@@ -1263,10 +1267,10 @@ const StudentLanding = () => {
                       src={frankrusso.src}
                       alt={"Review"}
                       style={{
-                        width: '40px',
-                        height: '46px',
+                        width: '43px',
+                        height: '43px',
                         borderRadius: '50%',
-                        border:"4px solid #E27832"
+                        border:"5px solid #FFF"
                       }}
                       className="me-3"
                     />
@@ -1461,7 +1465,7 @@ const StudentLanding = () => {
                   Now you can browse the marketplace to find items and services that you want.
                 </p>
                 <p className="step1-txt2 mt-2 m-md-5d-block d-md-none">
-                Once you’ve accumulated 40 hours of volunteer work, you will receive an official certificate of completion signed by your volunteer coordinator. You can proceed to submit the certificate to your school as official proof of your community contributions. 
+                  Now you can browse the marketplace to find items and services that you want. 
                 </p>
               </div>
             </div>

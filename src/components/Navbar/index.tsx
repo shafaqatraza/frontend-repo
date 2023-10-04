@@ -699,7 +699,7 @@ export default function Navbar(props: any) {
                       <Link href="/browse?type=offering&activeTab=3" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Donate</Link>
                       <Link href="/browse?type=offering&activeTab=2" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Volunteer</Link>
                       <Link href="../../students-landing" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>40 Hours Program</Link>
-                      <Link href="/blog" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Blog</Link>
+                      <Link href="/blogs" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Blogs</Link>
                     </Stack>
                   }
                 </Box>

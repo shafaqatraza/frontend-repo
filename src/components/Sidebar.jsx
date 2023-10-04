@@ -10,6 +10,7 @@ import donation from "../assets/imgs/donation.png";
 import placeholder from "../assets/imgs/placeholder.png";
 import axios from "axios";
 import { accessToken, baseUrl } from "../components/Helper/index";
+import Spinner from 'react-bootstrap/Spinner';
 
 const Sidebar = (props) => {
   const [slug, setSlug] = useState([]);
@@ -56,18 +57,20 @@ const Sidebar = (props) => {
             <div className="ps-2">
               <div className="main-round-img">
                 <div className="side-profile-img">
-                  {!isLoaded && <img src={placeholder.src} alt="Loading..." />}
+                  {!isLoaded && <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>}
                   <Image
                     // style={{ height: "165px", width: "340px" }}
-                    className="img-fluid rounded-circle"
+                    className="img-fluid"
                     src={
                       // @ts-ignore: Unreachable code error
                       data?.profile_picture
                     }
-                    alt={"image"}
+                    alt=""
                     onLoad={() => setIsLoaded(true)}
                     onError={() => setIsLoaded(true)}
-                    style={{ display: isLoaded ? "block" : "none" }}
+                    style={{display: isLoaded ? "block" : "none",height:"126px",width:"126px",objectFit:"cover",borderRadius:"50%"}}
                   />
                 </div>
               </div>
