@@ -21,7 +21,7 @@ import Head from 'next/head'
 import ReactHtmlParser from 'react-html-parser'
 import { isMobile } from 'react-device-detect'
 import {ChevronLeftIcon} from '@chakra-ui/icons'
-
+ 
 const BlogView = (props) => {
   const router = useRouter()
 
@@ -30,9 +30,9 @@ const BlogView = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [blogDetails, setBlogDetail] = useState({})
 
-  const getBlogDetails = useCallback(async (slugname) => {
+  const getBlogDetails = useCallback(async (slug) => {
     setIsLoading(true)
-    const data = await axios.get(`${baseUrl}/blogs/${slugname}`)
+    const data = await axios.get(`${baseUrl}/blogs/${slug}`)
 
     if (data.status === 200) {
       setBlogDetail(data.data.data)
@@ -129,7 +129,8 @@ const BlogView = (props) => {
                   fontSize="16px"
                   color={'rgba(151, 151, 151, 1)'}
                 >
-                  {moment(blogDetails.updated_at).fromNow()}
+                  {blogDetails.created_at_human_diff}
+                  {/* {moment(blogDetails.updated_at).fromNow()} */}
                 </Text>
 
                 <div style={{width:'100%',backgroundColor:'red'}} textAlign={'center'}>
