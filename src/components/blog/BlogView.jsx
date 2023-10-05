@@ -156,7 +156,7 @@ const BlogView = (props) => {
                     color={'rgba(151, 151, 151, 1)'}
                   >
                     {blogDetails.created_at_human_diff}
-                    {moment(blogDetails.updated_at).fromNow()}
+                    {/* {moment(blogDetails.updated_at).fromNow()} */}
                   </Text>
                 </div>
             </div>
