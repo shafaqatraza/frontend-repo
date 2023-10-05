@@ -91,7 +91,7 @@ export const BlogCard = () => {
                         style={{ borderRadius: '10px' }}
                         src={
                           blog.image !== null
-                            ? `${baseImgUrl}/${blog.image}`
+                            ? `${blog.image}`
                             : NoImage.src
                         }
                         alt={"Image"}
