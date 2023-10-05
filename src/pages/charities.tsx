@@ -729,7 +729,7 @@ const Charities = () => {
             <Slider {...settings}>
               
                 <div  className="pe-3">
-                 <a href="https://www.autism.net" target="_blank">
+                 <a href="https://www.autism.net/foundation/donate-today" target="_blank">
                   <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
                   <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
                   </a>
@@ -741,13 +741,13 @@ const Charities = () => {
                   </a>
                 </div>
                 <div className="pe-3">
-                  <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://bgca.org/ways-to-give?form=DonateSEM&gad=1&gclid=EAIaIQobChMIgPzE-IHGgQMVENTICh14ngFJEAAYASAAEgLh9vD_BwE" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                  <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://secure.habitat.org/site/Donation2?df_id=6492&6492.donation=form1&keyword=button-header-single" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div  className="pe-3">
-                  <a href="https://www.autism.net" target="_blank">
+                  <a href="https://www.autism.net/foundation/donate-today" target="_blank">
                   <img src={part1.src} className="w-100 d-none d-md-block" style={{height:"150px",}} alt="" />
                   <img src={part1Mb.src} className="w-100 d-block d-md-none" style={{height:"150px",}} alt="" />
                   </a>
@@ -759,10 +759,10 @@ const Charities = () => {
                   </a>
                 </div>
                 <div className="pe-3">
-                  <a href="https://www.bgccan.com" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
+                  <a href="https://bgca.org/ways-to-give?form=DonateSEM&gad=1&gclid=EAIaIQobChMIgPzE-IHGgQMVENTICh14ngFJEAAYASAAEgLh9vD_BwE" target="_blank"><img src={part3.src} className="" style={{height:"150px",}} alt="" /></a>
                 </div>
                 <div className="pe-3 w-100 ms-auto d-flex align-items-end">
-                <a href="https://www.habitat.org/" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
+                <a href="https://secure.habitat.org/site/Donation2?df_id=6492&6492.donation=form1&keyword=button-header-single" target="_blank" className='w-100'><img src={part4.src} className="w-100" style={{height:"150px",}} alt="" /></a>
                 </div>
 
             </Slider>
