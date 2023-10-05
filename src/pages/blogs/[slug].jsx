@@ -47,7 +47,7 @@ const BlogViewPage = () => {
             </Head>
 
             <Navbar />
-            {isMobile ? null : <Section1 title="Community Updates" />}
+           
             <BlogView />
             <Spacer />
             <Footer />
