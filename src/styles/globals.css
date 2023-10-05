@@ -1977,6 +1977,27 @@ color: #E27832;
 .donation-card .css-qw6le9 {
   min-height: 315px;
 }
+.other-post-card{
+  max-width: 337px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.219);
+  padding: 0 25px 0 19px;
+}
+.other-post-card h1{
+  text-align: center;
+  font-size: 24px;
+}
+.other-post-card img{
+  border-radius:7px;
+   object-fit:cover;
+   width:98px;
+   height: 89px;
+}
+.blog-title{
+  font-size: 55px;
+}
+.blog-details{
+  margin-bottom: 260px;
+}
 
 
 @media screen and (min-width:1400px){
@@ -2017,6 +2038,9 @@ color: #E27832;
 @media (max-width: 600px) {
   .select-plan-tabs{
     margin: auto !important;
+  }
+  .blog-title{
+    font-size: 30px;
   }
   .privacy-policy-content{
     font-size: 17px;
@@ -2197,6 +2221,9 @@ color: #E27832;
 }
 
 @media (max-width: 768px){
+  .blog-details{
+    margin-bottom: 30px;
+  }
   .donation-card .css-571i8x {
     min-height: 331px;
   }
