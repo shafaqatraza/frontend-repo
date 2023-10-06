@@ -293,7 +293,7 @@ const Community = () => {
                                 </ListItem>
                                 <br/>
                                 <ListItem>
-                                Influencers: Learn how you can be an official Good Deeds influencer, earning valuable virtual credits to use on the website. Contact Amanda Diplo, amanda@gooddeeds.ca to learn more on how to get involved.
+                                Influencers: Learn how you can be an official Good Deeds influencer, earning valuable virtual credits to use on the website. Contact Admin, info@gooddeeds.ca to learn more on how to get involved.
                                 </ListItem>
                                 <br/>
                             </UnorderedList>
@@ -406,7 +406,7 @@ const Community = () => {
                         <br></br>
                         <UnorderedList>
                             <ListItem>
-                            If you are being harassed, or if you notice that someone else in the Good Deeds Community is being harassed, please contact a Good Deeds team member via email (all reports are confidential) amanda@gooddeeds.ca
+                            If you are being harassed, or if you notice that someone else in the Good Deeds Community is being harassed, please contact a Good Deeds team member via email (all reports are confidential) info@gooddeeds.ca
                             </ListItem>
                             <br/>
                             <ListItem>
