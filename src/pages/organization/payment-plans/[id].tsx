@@ -810,6 +810,9 @@ const StripeForm = () => {
                   <p style={{fontSize:"24px", lineHeight:"30px", fontWeight:"700"}}>{packageData?.currency_symbol}{(totalPrice).toFixed(2)}</p>
                 </div>
               </div>
+              <div className="d-flex justify-content-around mt-3">
+                <p style={{ color: 'red' }}>Free Trial: Payment will be charged after 3 months.</p>
+              </div>
             </div>
           </Col>
         </Row>
