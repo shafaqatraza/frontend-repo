@@ -42,7 +42,7 @@ import gdlogo from '../assets/imgs/gdlogopegiun.png'
 import explorepegiun from '../assets/imgs/explorepegiun.png'
 import exchangepegiun from '../assets/imgs/exchangepegiun.png'
 import { useRouter } from 'next/router'
-
+import { useToast } from '@chakra-ui/toast'
 interface ModelType {
   login: boolean
   forgotPassword: boolean
@@ -58,7 +58,7 @@ interface ModelType {
 }
 
 const Home: NextPage = () => {
-
+  const toast = useToast()
   const [type, setType] = React.useState<string>('offering')
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [hotDeals, setHotDeals] = React.useState<any>([]);
@@ -72,7 +72,8 @@ const Home: NextPage = () => {
   const [openOrganization, setOpenOrganization] = useState<boolean>(false);
   const [orgData, setOrgData] = useState([]);
   const router = useRouter()
-
+  const { token } = router.query;
+  
   useEffect(() => {
     axios.get(`${baseUrl}/organizations`, {
       headers: {
@@ -85,7 +86,42 @@ const Home: NextPage = () => {
     })
     
   }, [isLogin()])
-  
+
+  useEffect(() => {
+    if (token) {
+      // Call your backend API with the token to accept the invitation.
+      axios.get(`${baseUrl}/accept-invite?invitationtoken=${token}`)
+        .then((response) => {
+          if(response.data.status === 'accepted'){
+            toast({ position: 'top', title: response.data.message, status: 'warning' })
+          }
+          
+          if(response.data.status === 'success'){
+            toast({ position: "top", title: response.data.message, status: "success" });
+          }
+
+          if(response.data.status === 'inactive'){
+            toast({ position: "top", title: response.data.message, status: "warning" });
+          }
+          
+          if(isLogin()){
+            goToOrganizatonDashboard()
+          }else {
+            if(response.data.status != 'inactive'){
+              setOpenOrganization(true)
+            }
+            
+            let dubShow = { ...showModel }
+            dubShow.login = true
+            setShowModel(dubShow)
+          }
+          
+        })
+        .catch((error) => {
+          toast({ position: 'top', title: error.response.data.message, status: 'warning' })
+        });
+    }
+  }, [token]);
 
   const getHotDeals = React.useCallback(async () => {
     setIsLoading(true);
