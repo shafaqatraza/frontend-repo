@@ -26,13 +26,10 @@ const InviteUser = () => {
 
   function handleEmailChange(e:any) {
     setEmail(e.target.value);
-    console.log(e.target.value);
-
   }
 
   function handleRadioChange(e:any) {
     setSelectedRadio(e.target.value);
-    console.log(e.target.value);
   }
   useEffect(() => {
     axios
@@ -43,7 +40,6 @@ const InviteUser = () => {
         },
       })
       .then((res) => {
-        console.log(res.data[0].slug, "datatatata");
         setSlug(res.data[0].slug);
       })
       .catch((err) => {
@@ -63,7 +59,6 @@ const InviteUser = () => {
       }
     })
       .then((response) => {
-        console.log(response.data);
         router.push("/organization/profile");
         // Handle response data here
       })
