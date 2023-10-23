@@ -74,54 +74,94 @@ const Home: NextPage = () => {
   const router = useRouter()
   const { token } = router.query;
   
+  const [showModel, setShowModel] = useState<ModelType>({
+    login: false,
+    forgotPassword: false,
+    signUp: false,
+    drawer: false,
+    signUpVerification: false,
+    step1: false,
+    step2: false,
+    welcomeScreen1: false,
+    welcomeScreen2: false,
+    welcomeScreen3: false,
+    welcomeScreen4: false
+  })
+
   useEffect(() => {
-    axios.get(`${baseUrl}/organizations`, {
-      headers: {
-        Authorization: 'Bearer ' + accessToken(),
-      }
-    }).then((res) => {
-      setOrgData(res.data);
-    }).catch((err) => {
-      // console.log(err);
-    })
+    if(isLogin()){
+      axios.get(`${baseUrl}/organizations`, {
+        headers: {
+          Authorization: 'Bearer ' + accessToken(),
+        }
+      }).then((res) => {
+        setOrgData(res.data);
+      }).catch((err) => {
+        // console.log(err);
+      })
+    }
     
   }, [isLogin()])
 
   useEffect(() => {
     if (token) {
-      // Call your backend API with the token to accept the invitation.
-      axios.get(`${baseUrl}/accept-invite?invitationtoken=${token}`)
-        .then((response) => {
-          if(response.data.status === 'accepted'){
-            toast({ position: 'top', title: response.data.message, status: 'warning' })
-          }
-          
-          if(response.data.status === 'success'){
-            toast({ position: "top", title: response.data.message, status: "success" });
-          }
+      if(isLogin()){
+        if(showModel.signUp === false && showModel.signUpVerification === false && showModel.step1 === false && showModel.step2 === false && showModel.welcomeScreen1 === false 
+          && showModel.welcomeScreen2 === false && showModel.welcomeScreen3 === false && showModel.welcomeScreen4 === false){
+          axios.get(`${baseUrl}/accept-invite?invitationtoken=${token}`)
+            .then((response) => {
+              if(response.data.status === 'accepted'){
+                toast({ position: 'top', title: response.data.message, status: 'warning' })
+                goToOrganizatonDashboard()
+              }
+              
+              if(response.data.status === 'success'){
+                toast({ position: "top", title: response.data.message, status: "success" });
+                goToOrganizatonDashboard()
+              }
 
-          if(response.data.status === 'inactive'){
-            toast({ position: "top", title: response.data.message, status: "warning" });
-          }
-          
-          if(isLogin()){
-            goToOrganizatonDashboard()
-          }else {
-            if(response.data.status != 'inactive'){
-              setOpenOrganization(true)
-            }
-            
-            let dubShow = { ...showModel }
-            dubShow.login = true
-            setShowModel(dubShow)
-          }
-          
-        })
-        .catch((error) => {
-          toast({ position: 'top', title: error.response.data.message, status: 'warning' })
-        });
+              if(response.data.status === 'inactive'){
+                toast({ position: "top", title: response.data.message, status: "warning" });
+              }
+              
+            })
+            .catch((error) => {
+              toast({ position: 'top', title: error.response.data.message, status: 'warning' })
+            });
+        }else if(showModel.signUp === true){
+          axios.get(`${baseUrl}/accept-invite?invitationtoken=${token}`)
+            .then((response) => {
+              if(response.data.status === 'accepted'){
+                toast({ position: 'top', title: response.data.message, status: 'warning' })
+              }
+              
+              if(response.data.status === 'success'){
+                toast({ position: "top", title: response.data.message, status: "success" });
+              }
+
+              if(response.data.status === 'inactive'){
+                toast({ position: "top", title: response.data.message, status: "warning" });
+              }
+              
+            })
+            .catch((error) => {
+              toast({ position: 'top', title: error.response.data.message, status: 'warning' })
+            });
+        }else if (showModel.welcomeScreen3 === true) {
+          goToOrganizatonDashboard()
+        }
+      }else{
+        let dubShow = { ...showModel }
+        dubShow.login = true
+        setShowModel(dubShow)
+      }
+  
     }
-  }, [token]);
+  }, [token, isLogin()]);
+
+  console.log('login: ', showModel.login, 'signUp: ', showModel.signUp, 'signUpVerification: ', showModel.signUpVerification, 'step 1: ', showModel.step1, 'step 2: ', 
+  showModel.step2, 'welcomeScreen1: ', showModel.welcomeScreen1, 'welcomeScreen2: ', showModel.welcomeScreen2, 'welcomeScreen3: ', showModel.welcomeScreen3, 'welcomeScreen4: ', showModel.welcomeScreen4)
+
 
   const getHotDeals = React.useCallback(async () => {
     setIsLoading(true);
@@ -218,19 +258,7 @@ const Home: NextPage = () => {
     }
   }, [])
 
-  const [showModel, setShowModel] = useState<ModelType>({
-    login: false,
-    forgotPassword: false,
-    signUp: false,
-    drawer: false,
-    signUpVerification: false,
-    step1: false,
-    step2: false,
-    welcomeScreen1: false,
-    welcomeScreen2: false,
-    welcomeScreen3: false,
-    welcomeScreen4: false
-  })
+  
 
   const [data, setData] = useState<any>({
     username: '',
@@ -255,9 +283,11 @@ const Home: NextPage = () => {
     router.push("/organization")
   }
 
-  if(openOrganization && isLogin() && orgData.length !== 0){
-    goToOrganizatonDashboard()
-  }
+  useEffect(() => {
+    if(openOrganization && isLogin() && orgData.length !== 0){
+      goToOrganizatonDashboard()
+    }
+  })
 
   // Callback function to handle the "Select" button click in child component
   const handleGetVolunteersAndDonorsClick = () => { 
