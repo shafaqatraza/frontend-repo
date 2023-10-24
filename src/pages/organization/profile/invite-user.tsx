@@ -16,13 +16,14 @@ import Sidebar from "../../../components/Sidebar";
 import axios from "axios";
 import { accessToken, baseUrl } from '../../../components/Helper/index'
 import { useRouter } from "next/router";
-
+import { useToast } from '@chakra-ui/toast'
 
 const InviteUser = () => {
   const [email, setEmail] = useState('');
   const [selectedRadio, setSelectedRadio] = useState('');
   const [slug, setSlug] = useState([]);
   const router = useRouter();
+  const toast = useToast()
 
   function handleEmailChange(e:any) {
     setEmail(e.target.value);
@@ -51,7 +52,7 @@ const InviteUser = () => {
     const formData = new FormData();
     formData.append('email', email);
     formData.append('role_id', selectedRadio);
-    console.log(formData.get('email'));
+
     axios.post(`${baseUrl}/organizations/${slug}/invitations`, formData, {
       headers: {
         Authorization: 'Bearer ' + accessToken(),
@@ -60,12 +61,12 @@ const InviteUser = () => {
     })
       .then((response) => {
         router.push("/organization/profile");
-        // Handle response data here
+        toast({ position: "top", title: response.data.message, status: "success" });
       })
       .catch((error) => {
-        console.error(error);
+        // console.log(error.response);
         router.push("/organization/profile");
-        // Handle error here
+        toast({ position: 'top', title: error.response.data.message, status: 'error' })
       });
 
 
