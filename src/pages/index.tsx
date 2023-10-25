@@ -72,7 +72,7 @@ const Home: NextPage = () => {
   const [openOrganization, setOpenOrganization] = useState<boolean>(false);
   const [orgData, setOrgData] = useState([]);
   const router = useRouter()
-  const { token } = router.query;
+  const { token, 'accept-invite': acceptInvite, 'decline-invitation': declineInvitation} = router.query;
   
   const [showModel, setShowModel] = useState<ModelType>({
     login: false,
@@ -104,7 +104,7 @@ const Home: NextPage = () => {
   }, [isLogin()])
 
   useEffect(() => {
-    if (token) {
+    if (token && acceptInvite) {
       if(isLogin()){
         if(showModel.signUp === false && showModel.signUpVerification === false && showModel.step1 === false && showModel.step2 === false && showModel.welcomeScreen1 === false 
           && showModel.welcomeScreen2 === false && showModel.welcomeScreen3 === false && showModel.welcomeScreen4 === false){
@@ -157,10 +157,20 @@ const Home: NextPage = () => {
       }
   
     }
-  }, [token, isLogin()]);
+  }, [token, acceptInvite, isLogin()]);
 
-  console.log('login: ', showModel.login, 'signUp: ', showModel.signUp, 'signUpVerification: ', showModel.signUpVerification, 'step 1: ', showModel.step1, 'step 2: ', 
-  showModel.step2, 'welcomeScreen1: ', showModel.welcomeScreen1, 'welcomeScreen2: ', showModel.welcomeScreen2, 'welcomeScreen3: ', showModel.welcomeScreen3, 'welcomeScreen4: ', showModel.welcomeScreen4)
+  useEffect(() => {
+    if (token && declineInvitation) {
+      axios.get(`${baseUrl}/decline-invitation?invitationtoken=${token}`)
+        .then((response) => {
+          toast({ position: "top", title: response.data.message, status: "success" });
+        })
+        .catch((error) => {
+          toast({ position: 'top', title: error.response.data.message, status: 'warning' })
+        });
+    }
+
+  }, [token, declineInvitation])
 
 
   const getHotDeals = React.useCallback(async () => {
