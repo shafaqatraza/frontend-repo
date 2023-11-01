@@ -61,6 +61,7 @@ const NotificationSetting = () => {
     })
     .then((res) => {
       setSlug(res.data[0].slug);
+      setIsLoading(false);
     })
     .catch((err) => {
       console.log(err);
@@ -68,25 +69,7 @@ const NotificationSetting = () => {
 
   }, [])
 
-  useEffect( ()=> {
-    if(slug !== ""){
-      axios
-      .get(`${baseUrl}/notification-settings/${slug}`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        setNotificationSetting(res.data.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    }
 
-  }, [slug])
  
 
 
