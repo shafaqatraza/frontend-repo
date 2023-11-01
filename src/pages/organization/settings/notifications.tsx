@@ -79,7 +79,11 @@ const NotificationSetting = () => {
         },
       })
       .then((res) => {
-        setNotificationSetting(res.data.data);
+        
+        if(res.data.data){
+          setNotificationSetting(res.data.data);
+        }
+        
         setIsLoading(false);
       })
       .catch((err) => {
@@ -96,7 +100,7 @@ const NotificationSetting = () => {
       [settingName as keyof NotificationSettingType]: !prevSettings[settingName as keyof NotificationSettingType],
     }));
   };
-console.log('ssssssssss', notificationSetting)
+
   const handleSaveSetting = (e: any) => {
     e.preventDefault();
     setIsUpdating(true);
