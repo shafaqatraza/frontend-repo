@@ -104,7 +104,7 @@ const CreateApplication = (props: Props) => {
   };
 
   const handleAddOption = (id: string, options: Option[][]) => { // @ts-ignore: Unreachable code error
-    if (options[id] && options[id].length < 4) {  
+    if (options[id] && options[id].length < 10) {  
       setOptions((prevOptions) => {
         // Get the existing options array for the specific question ID, or initialize an empty array
         // @ts-ignore: Unreachable code error
@@ -121,7 +121,7 @@ const CreateApplication = (props: Props) => {
       });
     }
   };
-  
+  console.log('asss', options)
   const handleOptionChange = (id: string, index: number, value: string, options: Option[][]) => { // @ts-ignore: Unreachable code error
     if (options[id]) { 
       setOptions((prevOptions) => { // @ts-ignore: Unreachable code error

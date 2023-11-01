@@ -200,7 +200,7 @@ const CreateApplication = (props: Props) => {
   // Get the length of the filtered array
   const nonDeletedOptionsLength = nonDeletedOptions.length;
 
-    if (nonDeletedOptionsLength < 4) { 
+    if (nonDeletedOptionsLength < 10) { 
       setPreviousQuestions((prevQuestions) => { // @ts-ignore: Unreachable code error
         const questionToUpdate = prevQuestions[id];
         if (!questionToUpdate) {

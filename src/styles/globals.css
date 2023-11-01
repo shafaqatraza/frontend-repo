@@ -2395,3 +2395,43 @@ color: #E27832;
 .action-card-button:hover{
   background-color: #0000000A;
 }
+
+/* Customize the line's appearance */
+.line {
+  width: 100%; /* Adjust the width of the line */
+  height: 1px; /* Adjust the height/thickness of the line */
+  background-color: grey; /* Change the color as needed */
+  margin: 20px 0; /* Adjust margin to control spacing */
+  opacity: 50%;
+}
+
+.notification-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.notification-heading {
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 16px; /* Adjust the font size as needed */
+}
+
+
+
+.notification-description {
+  font-size: 14px; /* Adjust the font size as needed */
+  /* Additional styles for the description text */
+}
+
+
+
+.highlighted-name {
+  color: rgb(41, 41, 41); /* Default text color for highlighted names */
+  font-weight: bold; /* Optionally, make the text bold */
+  transition: color 0.3s; /* Smooth color transition on hover */
+}
+
+.highlighted-name:hover {
+  color: #e27832; /* New text color on hover */
+}
