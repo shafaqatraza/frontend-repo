@@ -547,7 +547,7 @@ const OrganizationInfo = () => {
               <div
                 className="upload-pic d-flex justify-content-center align-items-center"
                 style={{
-                  border: formData.new_thumbnail
+                  border: formData?.new_thumbnail
                     ? '2px solid #007BFF'
                     : '2px solid transparent',
                   borderRadius: '50%', // Change border radius to 50% for rounded shape

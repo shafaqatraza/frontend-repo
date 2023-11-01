@@ -1135,6 +1135,7 @@ const Charities = () => {
                   <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
                     Our mission is to provide a safe, supportive place where children and youth can experience new opportunities, overcome barriers, build positive relationships and develop confidence and skills for life.
                   </Text>
+                  <a href="https://bgca.org/ways-to-give?form=DonateSEM&gad=1&gclid=EAIaIQobChMIgPzE-IHGgQMVENTICh14ngFJEAAYASAAEgLh9vD_BwE" target="_blank">
                   <Button
                     variant={'solid'}
                     colorScheme={'orange'}
@@ -1147,6 +1148,7 @@ const Charities = () => {
                   >
                     Donate
                   </Button>
+                  </a>
                 </div>
               </div>
               <div className="c-single-card">
@@ -1157,6 +1159,7 @@ const Charities = () => {
                   <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
                     Our mission is to bring communities together to help families build strength, stability and independence through affordable home ownership.
                   </Text>
+                  <a href="https://secure.habitat.org/site/Donation2?df_id=6492&6492.donation=form1&keyword=button-header-single" target="_blank">
                   <Button
                     variant={'solid'}
                     colorScheme={'orange'}
@@ -1169,6 +1172,7 @@ const Charities = () => {
                   >
                     Donate
                   </Button>
+                  </a>
                 </div>
               </div>
               <div className="c-single-card">
@@ -1179,6 +1183,7 @@ const Charities = () => {
                   <Text fontSize="11px" fontWeight="500" lineHeight="14px" color="#212121" mt={'15px'}>
                     Our mission is to empower individuals with Autism Spectrum Disorder, and their families, to fully participate in their communities. We do this by providing direct support for families as well as professional training to share best practices around the world.
                   </Text>
+                  <a href="https://www.autism.net/foundation/donate-today" target="_blank">
                   <Button
                     variant={'solid'}
                     colorScheme={'orange'}
@@ -1191,6 +1196,7 @@ const Charities = () => {
                   >
                     Donate
                   </Button>
+                  </a>
                 </div>
               </div>
             </div>

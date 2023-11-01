@@ -39,6 +39,7 @@ const VolunteerApplicants = () => {
   const [showModal, setShowModal] = useState(false);
   const [applicationId, setApplicationId] = useState(0);
   const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
+  const [slug, setSlug] = useState("");
 
   const { listing } = router.query;
   const [formData, setFormData] = useState({
@@ -59,10 +60,27 @@ const VolunteerApplicants = () => {
     status_id: number;
   }
 
+  useEffect( ()=> {
+    axios
+    .get(`${baseUrl}/organizations`, {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .then((res) => {
+      setSlug(res.data[0].slug);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  }, [])
+
   const getApplicationsData = () => {
     axios
       .get(
-        `${baseUrl}/volunteer-applications/applicants/${currOrgSlug}?listing=${listing}`,
+        `${baseUrl}/volunteer-applications/applicants/${slug}?listing=${listing}`,
         {
           headers: {
             Authorization: "Bearer " + accessToken(),
@@ -78,26 +96,28 @@ const VolunteerApplicants = () => {
   }
 
   useEffect(() => {
-    axios
-      .get(
-        `${baseUrl}/volunteer-applications/${currOrgSlug}/statuses/all`,
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken(),
-            // 'Content-Type': 'application/x-www-form-urlencoded'
-          },
-        }
-      )
-      .then((res) => {
-        setApplicationStatuses(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if(slug !== ""){
+      axios
+        .get(
+          `${baseUrl}/volunteer-applications/${slug}/statuses/all`,
+          {
+            headers: {
+              Authorization: "Bearer " + accessToken(),
+              // 'Content-Type': 'application/x-www-form-urlencoded'
+            },
+          }
+        )
+        .then((res) => {
+          setApplicationStatuses(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-      getApplicationsData();
+        getApplicationsData();
+    }
 
-  }, [currOrgSlug, listing]);
+  }, [slug, listing]);
 
   const handleClickdown = (index: number) => {
 
@@ -162,7 +182,7 @@ const VolunteerApplicants = () => {
 
     axios
       .post(
-        `${baseUrl}/volunteer-applications/applicants/approve?org=${currOrgSlug}`,
+        `${baseUrl}/volunteer-applications/applicants/approve?org=${slug}`,
         formData,
         {
           headers: {
@@ -213,7 +233,7 @@ const VolunteerApplicants = () => {
         .post(
           `${baseUrl}/volunteer-applications/${applicationId}/status/update`,
           {
-            org: currOrgSlug,
+            org: slug,
             status_id: statusId,
           },
           {
@@ -255,7 +275,7 @@ const VolunteerApplicants = () => {
         },
       }),
       render: (text:any, record:any, index:any) => (
-        <span style={{ cursor: 'pointer' }}>{text}</span>
+        <span className="highlighted-name" style={{ cursor: 'pointer' }}>{text}</span>
       ),
     },
     {

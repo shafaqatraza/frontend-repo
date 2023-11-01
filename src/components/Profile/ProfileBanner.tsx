@@ -573,7 +573,7 @@ export const ProfileBanner = (props: any) => {
             }
           >
             <Text fontSize={14} style={{ textAlign: 'center', width: '81%' }}>
-              Invite your friends and get 10 credits
+              Invite your friends and get 10 deed dollars
             </Text>
             <Text fontSize={16} color="primary.300" fontWeight={600}>
               url link here
@@ -588,7 +588,7 @@ export const ProfileBanner = (props: any) => {
               style={isMobile ? { borderRadius: 70 } : {}}
             >
               {isMobile ? <LinkIcon fontSize={'md'} mr={'5px'} /> : null}
-              <img src={copyLink.src} width="15px" className="me-md-5 me-3" alt="" />
+              <img src={copyLink.src} width="15px" className="me-md-2 me-3" alt="" />
               Copy link {hasCopied ? 'Copied' : ''}
             </Button>
           </VStack>

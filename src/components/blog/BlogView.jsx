@@ -30,6 +30,7 @@ const BlogView = (props) => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [blogDetails, setBlogDetail] = useState({})
+  const [otherBlogs, setOtherBlogs] = useState([]);
 
   const getBlogDetails = useCallback(async (slug) => {
     setIsLoading(true)
@@ -41,12 +42,32 @@ const BlogView = (props) => {
     }
   }, [])
 
+  useEffect(async () =>  {
+    // setIsLoading(true)
+    if(slug){
+      const data = await axios.get(`${baseUrl}/blogs/other/${slug}`)
+
+      if (data.status === 200) {
+        setOtherBlogs(data.data.data)
+        // setIsLoading(false)
+      }
+    }
+  }, [slug])
+
+
   useEffect(() => {
     if (router.query.slug !== undefined && router.query.slug !== '') {
       getBlogDetails(slug)
     }
   }, [router.query])
 
+  function truncateText(text, maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.slice(0, maxLength) + '...';
+  }
+  
   return (
     <>
       <Box>
@@ -135,7 +156,7 @@ const BlogView = (props) => {
                     color={'rgba(151, 151, 151, 1)'}
                   >
                     {blogDetails.created_at_human_diff}
-                    {moment(blogDetails.updated_at).fromNow()}
+                    {/* {moment(blogDetails.updated_at).fromNow()} */}
                   </Text>
                 </div>
             </div>
@@ -173,49 +194,29 @@ const BlogView = (props) => {
                 </Box>
               </div>
               <div className="col-lg-4 d-flex d-lg-block justify-content-center justify-content-lg-start  ps-lg-5">
-                  <div className="other-post-card pb-5 mb-5">
-                      <h1 className="pt-4">Other Posts</h1>
-                      <div className="row my-4 pt-3 align-items-center">
+                <div className="other-post-card pb-5 mb-5">
+                  <h1 className="pt-4">Other Posts</h1>
+                  {otherBlogs.length > 0 ? (
+                    otherBlogs.map((blog) => (
+                      <a href={`/blogs/${blog.slug}`}>
+                      <div className="row my-4 pt-3 align-items-center" key={blog.id}>
                         <div className="col-5">
-                        <img src={otherPost.src}  alt='otherPost'/>
+                          <img src={blog.image} alt='otherPost' />
                         </div>
                         <div className="col-7 ps-0">
-                          <Text
-                            fontSize="12px"
-                            // className="ps-1"
-                          >
-                            Good Deeds is a 100% free platform.  In exchange for donating things that you no longer need or
+                          <Text fontSize="12px">
+                            {truncateText(blog?.description, 94)}
                           </Text>
                         </div>
                       </div>
-                      <div className="row pt-2 align-items-center">
-                        <div className="col-5">
-                        <img src={otherPost.src}  alt='otherPost'/>
-                        </div>
-                        <div className="col-7  ps-0">
-                          <Text
-                            fontSize="12px"
-                            // className="ps-1"
-                          >
-                            Good Deeds is a 100% free platform.  In exchange for donating things that you no longer need or
-                          </Text>
-                        </div>
-                      </div>
-                      <div className="row mt-4 pt-2 pb-5 align-items-center">
-                        <div className="col-5">
-                        <img src={otherPost.src}  alt='otherPost'/>
-                        </div>
-                        <div className="col-7 ps-0">
-                          <Text
-                            fontSize="12px"
-                            // className="ps-1"
-                          >
-                            Good Deeds is a 100% free platform.  In exchange for donating things that you no longer need or
-                          </Text>
-                        </div>
-                      </div>
-                  </div>
+                      </a>
+                    ))
+                  ) : (
+                    <Text>No other posts</Text>
+                  )}
+                </div>
               </div>
+
             </div>
             </Container>
           </>

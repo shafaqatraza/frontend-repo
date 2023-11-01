@@ -15,7 +15,7 @@ import { CardNumberElement, CardCvcElement, CardExpiryElement} from '@stripe/rea
 import { loadStripe } from "@stripe/stripe-js";
 import { useToast } from '@chakra-ui/toast'
 // import { GoogleMap, Autocomplete } from '@react-google-maps/api';
-
+import { getErrorMessage } from '../../../components/Helper/errorMessages';
 
 const calculateHST = (price: number): number => {
   const hst = parseFloat(price.toString()) * 0.13;
@@ -27,7 +27,7 @@ const calculateTotalPrice = (price: number, calculatedHST: number): number => {
   const tempPrice = parseFloat(price.toString()) + parseFloat(calculatedHST.toString());
   return tempPrice;
 };
-const stripePromise = loadStripe('pk_test_51MzNd8HXctCE4qHqr1vcficqBBBYQp6cFwZxDFefUmKIx6C11wm0pHZCG52m4NYghl36riJi7TZZbZ1ACNg8vJAZ00XFHi92vG');
+const stripePromise = loadStripe('pk_live_51MzNd8HXctCE4qHqlt3Cbhy44gHXe3704OiRbqwwrRv0ByEfuxCxQrs2GlkC7cMgpjQzZzHJBrCop9fDKrcC6xqA00acC3JRde');
 
 const StripeForm = () => {
   const toast = useToast()
@@ -118,7 +118,7 @@ const StripeForm = () => {
   useEffect(() => {
     if(orgData?.slug !== ''){
       axios
-        .get(`${baseUrl}/organization/packages/${id}?org=${// @ts-ignore: Unreachable code error
+        .get(`${baseUrl}/organization/packages/${id}?org=${// @ts-ignore:
           orgData?.slug}`, {
           headers: {
             Authorization: "Bearer " + accessToken(),
@@ -178,7 +178,7 @@ const StripeForm = () => {
   };
 
 
-  const handleSubmit = async (event:any) =>{
+  const createPaymentIntent = async (event:any) =>{
     setIsLoading(true);
     event.preventDefault();
 
@@ -220,6 +220,8 @@ const StripeForm = () => {
           line1: formData.address_line1,
           line2: formData.address_line2,
           country: formData.country,
+          state: formData.state,
+          city: formData.city,
           postal_code: formData.postal_code,
         },
         email: formData.email,
@@ -229,8 +231,6 @@ const StripeForm = () => {
 
     // Check for errors
     if (error) {
-      // Handle the payment error
-      // console.log(error);
       toast({ position: 'top', title: 'Please fill in the card details!', status: 'info' })
       setIsLoading(false);
       return;
@@ -239,7 +239,6 @@ const StripeForm = () => {
     // Check if paymentMethod is defined
     if (!paymentMethod) {
       // Handle the case where paymentMethod is undefined
-      // console.log("Payment method is undefined");
       toast({ position: 'top', title: 'Payment method is undefined!', status: 'error' })
       setIsLoading(false);
       return; 
@@ -247,9 +246,49 @@ const StripeForm = () => {
 
     // Get the payment method ID
     const paymentToken = paymentMethod.id;
+    // Collect form data.
+    const form = collectFormData(paymentToken);
 
+    try {
+      const response = await axios.post(`${baseUrl}/organization/subscriptions/payment?org=${orgData?.slug}`, form, {
+        headers: {
+          Authorization: "Bearer " + accessToken(),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+      
+      const { errorr, success } = response.data;
+
+      setIsLoading(false);
+
+      if (success) {
+        console.log('Payment succeeded:', success);
+        toast({ position: "top", title: success, status: "success" });
+        router.push("/organization")
+      }
+    } catch (err: any) {
+      // Network or other errors
+
+      setIsLoading(false);
+      if (err.response) {
+        if(err.response.status === 422){
+          toast({ position: "top", title: err.response.data.message, status: "warning" });
+          router.push("/organization")
+        }else{
+          console.log('Error response:', err.response.data.errorr);
+          toast({ position: "top", title: err.response.data.errorr, status: "error" });
+        }
+      }else{
+        toast({ position: "top", title: "Network error, please try again later.", status: "error" });
+      }
+
+    }
+
+  }
+
+  const collectFormData = (paymentToken: any) => {
     const form = new FormData();
-    // @ts-ignore: Unreachable code error
+    // @ts-ignore:
     form.append("package_id", id);
     form.append("first_name", formData.first_name);
     form.append("last_name", formData.last_name);
@@ -259,7 +298,6 @@ const StripeForm = () => {
     form.append("email", formData.email);
     // Append the payment_token to the form data
     form.append("payment_token", paymentToken);
-
     form.append("postal_code", formData.postal_code);
     form.append("state", formData.state);
     form.append("city", formData.city);
@@ -269,39 +307,8 @@ const StripeForm = () => {
     form.append("card_number", formData.card_detail.card_number);
     form.append("expiry_date", formData.card_detail.expiry_date);
     form.append("cvv", formData.card_detail.cvv);
-    axios.post(`${baseUrl}/organization/subscriptions/payment?org=${ // @ts-ignore: Unreachable code error
-      orgData?.slug}`, form,  {
-      headers: {
-        Authorization: "Bearer " + accessToken(),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },}).then((res)=>{
-        if(res.status == 200){
-          setIsLoading(false);
-          setMessage(res.data.message)
-          toast({ position: "top", title: res.data.message, status: "success" })
-          router.push("/organization")
-          handleShowModal();
-        }
-    }).catch((error)=>{
-     
-      setPaymentStatus('failed')
-      if (error.response) {
-        // Handle API response errors
-        const { data } = error.response;
-        setIsLoading(false);
-        // Extract the error message from the API response
-        if (data && data.message) {
-          setErrorMessage(data.message)
-          toast({ position: "top", title: 'You already have an active subscription', status: "warning" })
-        } else {
-          toast({ position: "top", title: 'An error occurred. Please try again later.', status: "error" })
-        }
-      } else {
-        // Handle other types of errors (e.g., network errors)
-        toast({ position: "top", title: 'An error occurred. Please try again later.', status: "error" })
-      }
-    })
 
+    return form;
   }
 
   const goToDashboard = () =>{
@@ -339,7 +346,7 @@ const StripeForm = () => {
             <div className="mt-5">
               <p className="modal-txt">Billing Information</p>
             </div>
-            <form id="payment-form" onSubmit={handleSubmit}>
+            <form id="payment-form" onSubmit={createPaymentIntent}>
             <Row>
               
                 <Col md={6}>
@@ -683,6 +690,40 @@ const StripeForm = () => {
                 </Col>
                 <Col md={6}>
                   <div className="mb-3">
+                    <label className="form-label fw-bold">State</label>
+                    <Input
+                      // style={{ backgroundColor: "#E8E8E8" }}
+                      type="text"
+                      className="form-control"
+                      value={formData.state}
+                      onChange={(event: any) =>
+                      setFormData({ ...formData, state: event.target.value })
+                      }
+                      name="state"
+                      id="state"
+                      placeholder="Enter state"
+                    />
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <label className="form-label fw-bold">City</label>
+                    <Input
+                      // style={{ backgroundColor: "#E8E8E8" }}
+                      type="text"
+                      className="form-control"
+                      value={formData.city}
+                      onChange={(event: any) =>
+                      setFormData({ ...formData, city: event.target.value })
+                      }
+                      name="city"
+                      id="city"
+                      placeholder="Enter city"
+                    />
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
                     <label className="form-label fw-bold">Billing address</label>
                     <Input
                       // style={{ backgroundColor: "#E8E8E8" }}
@@ -694,7 +735,6 @@ const StripeForm = () => {
                       }
                       name="address_line1"
                       id="address_line1"
-                      required
                       placeholder="Enter address line 1"
                     />
                   </div>
@@ -713,7 +753,6 @@ const StripeForm = () => {
                       }
                       name="address_line2"
                       id="address_line2"
-                      required
                       placeholder="Enter address line 2"
                     />
                   </div>
@@ -743,7 +782,7 @@ const StripeForm = () => {
               </Col>
               <Col md={4}>
                 <div className="mb-3">
-                  <label className="form-label fw-bold">Postal Code</label>
+                  <label className="form-label fw-bold">Postal Code/Zip Code</label>
                   <Input
                     // style={{ backgroundColor: "#E8E8E8" }}
                     type="text"
@@ -755,17 +794,19 @@ const StripeForm = () => {
                     name="postal_code"
                     id="postal_code"
                     required
-                    placeholder="Enter postal code"
+                    placeholder="Enter postal or zip code"
                     maxLength={8}
                   />
                 </div>
               </Col>
               {/* <div className="col-md-6"></div> */}
-              <button disabled={isLoading || !stripe || !elements} id="submit" className="sub-btn mt-5 mb-5">
-                <span id="button-text">
-                  {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Pay now"}
-                </span>
-              </button>
+              <Col>
+                <button disabled={isLoading || !stripe || !elements} id="submit" className="sub-btn mt-5 mb-5">
+                  <span id="button-text">
+                    {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Submit Payment"}
+                  </span>
+                </button>
+              </Col>
             </Row>
             {/* Show any error or success messages */}
             {message && <div id="payment-message">{message}</div>}
@@ -804,6 +845,9 @@ const StripeForm = () => {
                     </span>
                   <p style={{fontSize:"24px", lineHeight:"30px", fontWeight:"700"}}>{packageData?.currency_symbol}{(totalPrice).toFixed(2)}</p>
                 </div>
+              </div>
+              <div className="d-flex justify-content-around mt-3">
+                <p style={{ color: 'red' }}>Free Trial: Payment will be charged after 3 months.</p>
               </div>
             </div>
           </Col>
