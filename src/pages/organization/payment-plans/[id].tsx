@@ -220,6 +220,8 @@ const StripeForm = () => {
           line1: formData.address_line1,
           line2: formData.address_line2,
           country: formData.country,
+          state: formData.state,
+          city: formData.city,
           postal_code: formData.postal_code,
         },
         email: formData.email,
@@ -688,6 +690,40 @@ const StripeForm = () => {
                 </Col>
                 <Col md={6}>
                   <div className="mb-3">
+                    <label className="form-label fw-bold">State</label>
+                    <Input
+                      // style={{ backgroundColor: "#E8E8E8" }}
+                      type="text"
+                      className="form-control"
+                      value={formData.state}
+                      onChange={(event: any) =>
+                      setFormData({ ...formData, state: event.target.value })
+                      }
+                      name="state"
+                      id="state"
+                      placeholder="Enter state"
+                    />
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <label className="form-label fw-bold">City</label>
+                    <Input
+                      // style={{ backgroundColor: "#E8E8E8" }}
+                      type="text"
+                      className="form-control"
+                      value={formData.city}
+                      onChange={(event: any) =>
+                      setFormData({ ...formData, city: event.target.value })
+                      }
+                      name="city"
+                      id="city"
+                      placeholder="Enter city"
+                    />
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
                     <label className="form-label fw-bold">Billing address</label>
                     <Input
                       // style={{ backgroundColor: "#E8E8E8" }}
@@ -699,7 +735,6 @@ const StripeForm = () => {
                       }
                       name="address_line1"
                       id="address_line1"
-                      required
                       placeholder="Enter address line 1"
                     />
                   </div>
@@ -718,7 +753,6 @@ const StripeForm = () => {
                       }
                       name="address_line2"
                       id="address_line2"
-                      required
                       placeholder="Enter address line 2"
                     />
                   </div>
@@ -748,7 +782,7 @@ const StripeForm = () => {
               </Col>
               <Col md={4}>
                 <div className="mb-3">
-                  <label className="form-label fw-bold">Postal Code</label>
+                  <label className="form-label fw-bold">Postal Code/Zip Code</label>
                   <Input
                     // style={{ backgroundColor: "#E8E8E8" }}
                     type="text"
@@ -760,17 +794,19 @@ const StripeForm = () => {
                     name="postal_code"
                     id="postal_code"
                     required
-                    placeholder="Enter postal code"
+                    placeholder="Enter postal or zip code"
                     maxLength={8}
                   />
                 </div>
               </Col>
               {/* <div className="col-md-6"></div> */}
-              <button disabled={isLoading || !stripe || !elements} id="submit" className="sub-btn mt-5 mb-5">
-                <span id="button-text">
-                  {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Pay now"}
-                </span>
-              </button>
+              <Col>
+                <button disabled={isLoading || !stripe || !elements} id="submit" className="sub-btn mt-5 mb-5">
+                  <span id="button-text">
+                    {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Submit Payment"}
+                  </span>
+                </button>
+              </Col>
             </Row>
             {/* Show any error or success messages */}
             {message && <div id="payment-message">{message}</div>}
