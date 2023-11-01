@@ -2036,6 +2036,12 @@ color: #E27832;
   }
 }
 @media (max-width: 600px) {
+  .permission-category p{
+    font-size: 12px !important;
+  }
+  .permission-heading p{
+    font-size: 14px !important;
+  }
   .select-plan-tabs{
     margin: auto !important;
   }
