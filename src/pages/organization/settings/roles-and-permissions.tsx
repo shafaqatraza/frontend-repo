@@ -29,9 +29,12 @@ const NotificationSetting = () => {
   const toast = useToast()
   const [isLoading, setIsLoading] = useState(true)
   const [donationData, setDonationData] = useState([]);
+  const [orgRolesPermissions, setOrgRolesPermissions] = useState([]);
   const [slug, setSlug] = useState("");
   const [show, setShow] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [checkboxState, setCheckboxState] = useState({});
+  const [permissionsLength, setPermissionsLength] = useState(0);
   const [notificationSetting, setNotificationSetting] = useState<NotificationSettingType>({
     news_and_updates: false,
     tips_and_tutorials: false,
@@ -61,7 +64,7 @@ const NotificationSetting = () => {
     })
     .then((res) => {
       setSlug(res.data[0].slug);
-      setIsLoading(false);
+
     })
     .catch((err) => {
       console.log(err);
@@ -70,13 +73,92 @@ const NotificationSetting = () => {
   }, [])
 
 
+
+  useEffect( ()=> {
+    if(slug){
+        axios
+        .get(`${baseUrl}/org-role-permissions?org=${slug}`, {
+            headers: {
+                Authorization: "Bearer " + accessToken(),
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        })
+        .then((res) => {
+
+            // Iterate through the permissions and group them by group_name
+            const initialCheckboxState = {};
+            
+            setPermissionsLength(Object.keys(res.data.permissions).length)
+
+            for (const groupName in res.data.permissions) {
+                if (Object.prototype.hasOwnProperty.call(res.data.permissions, groupName)) {
+                  const group = res.data.permissions[groupName];
+            
+                  // Iterate through the permissions in the group
+                  for (const permission of group) {
+                    // Initialize an object for the permission with roleInfo
+                    const permissionInfo = {};
+            
+                    for (const role in permission.roleInfo) {
+                      if (Object.prototype.hasOwnProperty.call(permission.roleInfo, role)) {
+                        // Use the role name (e.g., 'Admin', 'Manager', 'Member') as the key
+                        // and the roleInfo value as the value
+                        permissionInfo[role] = permission.roleInfo[role];
+                      }
+                    }
+            
+                    // Use the permission ID as the key and the roleInfo object as the value
+                    initialCheckboxState[permission.id] = permissionInfo;
+                  }
+                }
+            }
+
+            setCheckboxState(initialCheckboxState);
+            setOrgRolesPermissions(res.data);
+            setIsLoading(false);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+
+  }, [slug])
+  
+  function handleCheckboxChange(permissionId, role, isChecked) {
+    setCheckboxState((prevState) => ({
+      ...prevState,
+      [permissionId]: {
+        ...prevState[permissionId],
+        [role]: isChecked,
+      },
+    }));
+  }
  
-
-
 
   const handleSaveSetting = (e: any) => {
     e.preventDefault();
-    setIsUpdating(true);
+    if(slug){
+        setIsUpdating(true);
+        axios.post(`${baseUrl}/org-role-permissions/attach?org=${slug}`, checkboxState, {
+            headers: {
+                Authorization: "Bearer " + accessToken(),
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        })
+        .then((response) => { 
+            setIsUpdating(false);
+            
+            toast({ position: "top", title: response.data.message, status: "success" });
+        })
+        .catch((error) => {
+            setIsUpdating(false);
+            console.error('Error saving data:', error);
+            toast({ position: "top", title: 'Something went wrong, please try later.', status: "error" });
+        });
+    }else{
+        setIsUpdating(false);
+        toast({ position: "top", title: 'Something went wrong.', status: "warning" });
+    }
   };
 
 
@@ -96,18 +178,18 @@ const NotificationSetting = () => {
       </div>}
       
       <div className="col">
-      {isLoading && (
+        {isLoading && (
         <Center h="900px">
-          <Spinner
+            <Spinner
             thickness="4px"
             speed="0.65s"
             emptyColor="orange.200"
             color="orange.500"
             size="xl"
-          />
+            />
         </Center>
-      )}
-      {!isLoading && ( 
+        )}
+        {!isLoading && ( 
         <>
         <div className="row">
           <div className='mt-md-5 mt-4'>
@@ -125,929 +207,68 @@ const NotificationSetting = () => {
           </div>
         </div>
         <div className='ps-md-4 ps-2 ps-lg-0 pe-md-4 pe-2 permission-category'>
-        <div className="row mt-5 py-1 permission-heading" style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className='text-start'>Users</p>
-          </div>
-          <div className='col-md-1 col-2 px-0'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center text-md-start'>Member</p>
-          </div>
-          <div className='col-md-2 col-3'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center'>Manager</p>
-          </div>
-          <div className='col-md-1 col-2 px-0'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center'>Admin</p>
-          </div>
-        </div>
-        <div className="row mt-3" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='textstart'>Create Users</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>View Users</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Update Users</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Delete Users</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        
-
-        <div className="row mt-3 py-1 permission-heading" style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
-          <div className='col-md-8'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className='text-start'>Roles</p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row mt-3" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Create Roles</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>View Roles</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Update Roles</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Delete Roles</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-       
-        <div className="row py-1 permission-heading mt-3" style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
-          <div className='col-md-8'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className=' text-start'>Listings</p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row mt-3" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Create Listings</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>View Listings</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Update Listings</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Delete Listings</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div> 
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        
-
-        <div className="row py-1 permission-heading mt-3" style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
-          <div className='col-md-8'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className='text-start'>Applications</p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row mt-3" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Create Applications</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>View Applications</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Update Applications <span className='d-none d-sm-block'>Status</span></p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Delete Applications</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-
-        <div className="row mt-3 py-1 permission-heading" style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
-          <div className='col-md-8'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className='text-start'>Messages</p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row mt-3" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Create Messages</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>View Messages</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Update Messages</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Delete Messages</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-
-
-        <div className="row py-1 permission-heading mt-3" style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
-          <div className='col-md-8'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className='text-start'>Certificates</p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row mt-3" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Create Certificates</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>View Certificates</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Update Certificates</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Delete Certificates</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-
-        <div className="row py-1 permission-heading mt-3" style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
-          <div className='col-md-8'>
-            <p style={{fontSize:"19px", fontWeight:"600"}} className='text-start'>Payments</p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'>
-            <p style={{fontSize:"20px", fontWeight:"600"}} className='text-center text-md-start'></p>
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row mt-3" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>Edit Payments</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>View Payments</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
-        <div className="row mb-5 pb-4" style={{'padding': 'inherit'}}>
-          <div className='col-md-7 col-5'>
-            <p style={{fontSize:"15px"}} className='text-start'>View Invoices</p>
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            /> 
-          </div>
-          <div className='col-md-2 col-3 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1 col-2 text-center'>
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='news_and_updates'
-            />
-          </div>
-          <div className='col-md-1'></div>
-        </div>
+            {orgRolesPermissions?.permissions && Object.keys(orgRolesPermissions.permissions).map((groupIndex, index) => (
+                <>
+                <div className={`row ${index === 0 ? 'mt-5' : 'mt-3'} py-1 permission-heading`} style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
+                    <div className='col-md-7 col-5'>
+                    <p style={{fontSize:"19px", fontWeight:"600"}} className='text-start'>{groupIndex}</p>
+                    </div>
+                    { index == 0 &&(
+                        <>
+                        <div className='col-md-1 col-2 px-0'>
+                        <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center text-md-start'>Member</p>
+                        </div>
+                        <div className='col-md-2 col-3'>
+                        <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center'>Manager</p>
+                        </div>
+                        <div className='col-md-1 col-2 px-0'>
+                        <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center'>Admin</p>
+                        </div>
+                        </>
+                    )}
+                </div>
+                <div className={`row mt-3 ${permissionsLength === index+1 ? 'mb-5 pb-4' : ''}`}  style={{'padding': 'inherit'}}>
+                    {orgRolesPermissions.permissions[groupIndex].map((permission) => (
+                        <>
+                        <div className='col-md-7 col-5'>
+                            <p style={{fontSize:"15px"}} className='textstart'>{permission.title}</p>
+                        </div>
+                        <div className='col-md-1 col-2 text-center'>
+                        <input
+                            className="mt-2"
+                            style={{ height: "18px", width: "18px" }}
+                            type="checkbox"
+                            name='news_and_updates'
+                            checked={checkboxState[permission.id].Member}
+                            onChange={(e) => handleCheckboxChange(permission.id, 'Member', e.target.checked)}
+                        /> 
+                        </div>
+                        <div className='col-md-2 col-3 text-center'>
+                        <input
+                            className="mt-2"
+                            style={{ height: "18px", width: "18px" }}
+                            type="checkbox"
+                            name='news_and_updates'
+                            checked={checkboxState[permission.id].Manager}
+                            onChange={(e) => handleCheckboxChange(permission.id, 'Manager', e.target.checked)}
+                        />
+                        </div>
+                        <div className='col-md-1 col-2 text-center'>
+                        <input
+                            className="mt-2"
+                            style={{ height: "18px", width: "18px" }}
+                            type="checkbox"
+                            name='news_and_updates'
+                            checked={checkboxState[permission.id].Admin}
+                            onChange={(e) => handleCheckboxChange(permission.id, 'Admin', e.target.checked)}
+                        />
+                        </div>
+                        </>
+                    ))}
+                    <div className='col-md-1'></div>
+                </div>
+                </>
+            ))}
         </div>
         </>
         )}
