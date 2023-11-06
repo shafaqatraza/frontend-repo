@@ -34,20 +34,22 @@ const Sidebar = (props) => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(`${baseUrl}/organizations/${slug}`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-       
-        setData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if(slug){
+      axios
+        .get(`${baseUrl}/organizations/${slug}`, {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+        .then((res) => {
+        
+          setData(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [slug]);
   return (
     <>

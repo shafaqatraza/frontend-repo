@@ -142,7 +142,8 @@ const Contact = (props) => {
             handleSubmit();
         } else if (document.getElementById("cpatchaTextBox").value == '') {
             toast({
-                title: 'Please enter the above code',
+                position: "top",
+                title: 'Please fill in the required fields.',
                 status: 'error'
             })
         } else {

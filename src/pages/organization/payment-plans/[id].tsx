@@ -430,8 +430,9 @@ const StripeForm = () => {
                       name="country" 
                       value={formData.country} 
                       onChange={(event) => setFormData({ ...formData, country: event.target.value })}
+                      required
                      >
-                      <option>select country</option>
+                      <option value="">select country</option>
                       <option value="AF">Afghanistan</option>
                       <option value="AX">Aland Islands</option>
                       <option value="AL">Albania</option>
@@ -719,6 +720,7 @@ const StripeForm = () => {
                       name="city"
                       id="city"
                       placeholder="Enter city"
+                      required
                     />
                   </div>
                 </Col>
@@ -736,6 +738,7 @@ const StripeForm = () => {
                       name="address_line1"
                       id="address_line1"
                       placeholder="Enter address line 1"
+                      required
                     />
                   </div>
                 </Col>

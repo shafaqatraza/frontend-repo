@@ -66,7 +66,7 @@ const InviteUser = () => {
       .catch((error) => {
         // console.log(error.response);
         router.push("/organization/profile");
-        toast({ position: 'top', title: error.response.data.message, status: 'error' })
+        toast({ position: 'top', title: error.response.data.message, status: 'warning' })
       });
 
 

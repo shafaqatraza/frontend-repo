@@ -11,7 +11,7 @@ import "antd/dist/antd.css";
 import { FaCheck } from "react-icons/fa";
 import Sidebar from "../../../components/Sidebar";
 import axios from "axios";
-import { accessToken, baseUrl, currOrgSlug } from "../../../components/Helper/index";
+import { accessToken, baseUrl} from "../../../components/Helper/index";
 import placeholder from "../../../assets/imgs/placeholder.png";
 import camera from "../../../assets/imgs/camera.png";
 import { useRouter } from 'next/router'
@@ -86,12 +86,30 @@ const OrganizationInfo = () => {
   const [inviteData, setInviteData] = useState([]);
   const [packageData, setPackageData] = useState([]);
   const [statuses, setStatuses] = useState([]);
+  const [orgSlug, setOrgSlug] = useState("");
   const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
   
 
+  useEffect( ()=> {
+    axios
+    .get(`${baseUrl}/organizations`, {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .then((res) => {
+      setOrgSlug(res.data[0].slug);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  }, [])
+
   const getInvitedMembers = () => {
     axios
-    .get(`${baseUrl}/organizations/${currOrgSlug}/invitations`, {
+    .get(`${baseUrl}/organizations/${orgSlug}/invitations`, {
       headers: {
         Authorization: "Bearer " + accessToken(),
         "Content-Type": "application/x-www-form-urlencoded",
@@ -106,28 +124,30 @@ const OrganizationInfo = () => {
   }
 
   useEffect(()=>{
-    
-    getInvitedMembers();
+    if(orgSlug){
+      getInvitedMembers();
 
-    axios
-    .get(`${baseUrl}/organizations/${currOrgSlug}/invitations/statuses/all`, {
-      headers: {
-        Authorization: "Bearer " + accessToken(),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-    .then((res) => {
-      setStatuses(res.data.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      axios
+      .get(`${baseUrl}/organizations/${orgSlug}/invitations/statuses/all`, {
+        headers: {
+          Authorization: "Bearer " + accessToken(),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
+      .then((res) => {
+        setStatuses(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
 
-  },[currOrgSlug])
+  },[orgSlug])
 
   useEffect(() => {
+    if(orgSlug){
     axios
-      .get(`${baseUrl}/organizations/${currOrgSlug}`, {
+      .get(`${baseUrl}/organizations/${orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
@@ -142,7 +162,7 @@ const OrganizationInfo = () => {
       });
 
 
-      axios.get(`${baseUrl}/organization/subscriptions/subscribed-package?org=${currOrgSlug}`, {
+      axios.get(`${baseUrl}/organization/subscriptions/subscribed-package?org=${orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
@@ -154,8 +174,8 @@ const OrganizationInfo = () => {
         console.log(err);
 
       })
-
-  }, [currOrgSlug, refresh]);
+    }
+  }, [orgSlug, refresh]);
 
 
   const handleThumbnailClick = () => {
@@ -234,7 +254,7 @@ const OrganizationInfo = () => {
     // form.append("organization_type_id" , formData.organization_type_id);
     
     axios
-      .post(`${baseUrl}/organizations/${currOrgSlug}`, form, {
+      .post(`${baseUrl}/organizations/${orgSlug}`, form, {
         headers: {
           Authorization: "Bearer " + accessToken(),
         },
@@ -284,7 +304,7 @@ const OrganizationInfo = () => {
 
     axios
       .post(
-        `${baseUrl}/organizations/${currOrgSlug}/invitations/${memberId}/update-status`,
+        `${baseUrl}/organizations/${orgSlug}/invitations/${memberId}/update-status`,
         form,
         {
           headers: {
@@ -309,7 +329,7 @@ const OrganizationInfo = () => {
   const removeMember = (memberId: number) => {
     axios
       .delete(
-        `${baseUrl}/organizations/${currOrgSlug}/invitations/${memberId}`,
+        `${baseUrl}/organizations/${orgSlug}/invitations/${memberId}`,
         {
           headers: {
             Authorization: "Bearer " + accessToken(),
@@ -447,7 +467,7 @@ const OrganizationInfo = () => {
     setIsDeletingOrganization(true);
     axios
       .delete(
-        `${baseUrl}/organizations/${currOrgSlug}`,
+        `${baseUrl}/organizations/${orgSlug}`,
         {
           headers: {
             Authorization: "Bearer " + accessToken()

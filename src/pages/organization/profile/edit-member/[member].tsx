@@ -96,7 +96,7 @@ const EditMember = () => {
       })
       .catch((err) => {
         setIsUpdating(false);
-        toast({ position: "top", title: err.response.data.message, status: "error" })
+        toast({ position: "top", title: err.response.data.message, status: "warning" })
         console.log(err);
       });
   }
@@ -135,7 +135,7 @@ const EditMember = () => {
           </div>
           <div className="col-md-5">
             <form>
-              <div className="mb-3 mt-5">
+              {/* <div className="mb-3 mt-5">
                 <label className="form-label fw-bold">Name</label>
                 <Input
                   style={{ backgroundColor: "#E8E8E8" }}
@@ -147,7 +147,7 @@ const EditMember = () => {
                   placeholder="Name"
                   disabled
                 />
-              </div>
+              </div> */}
               <div className="mb-3 mt-3">
                 <label className="form-label fw-bold">Email</label>
                 <Input

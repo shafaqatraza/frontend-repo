@@ -32,6 +32,23 @@ const organization = () => {
   const [hours, setHours] = useState({});
   const router = useRouter()
   const [show, setShow] = React.useState(false);
+  useEffect(() => {
+    axios 
+        .get(`${baseUrl}/organizations`, {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+        .then((res) => {
+          
+          setSlug(res.data[0]?.full_name);
+          setOrganization(res.data[0]?.slug);
+        })
+        .catch((err) => {
+          console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     axios
@@ -48,36 +65,10 @@ const organization = () => {
       .catch((err) => {
         console.log(err);
       });
-    axios 
-      .get(`${baseUrl}/organizations`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        console.log(res.data[0]?.slug, "datatatata");
-        setSlug(res.data[0]?.full_name);
-        setOrganization(res.data[0]?.slug);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    axios
-      .get(`${baseUrl}/organizations/${organization}`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        setSlug(res.data[0]?.full_name);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }, []);
+
   useEffect(() => {
+    if(organization){
     axios
       .get(`${baseUrl}/volunteer-listings/all/${organization}`, {
         headers: {
@@ -86,7 +77,6 @@ const organization = () => {
         },
       })
       .then((res) => {
-        console.log(res.data, "data");
         setData(res.data.data);
         setLoading(false);
       })
@@ -95,20 +85,22 @@ const organization = () => {
         setLoading(false);
       });
 
-    axios.get(`${baseUrl}/organization/subscriptions/hours-data?org=${organization}`, {
-      headers: {
-        Authorization: "Bearer " + accessToken(),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    }).then((res) => {
-      setHours(res.data);
-      if (res.data) {
-        setSubscriptionLoading(false);
-      }
-    }).catch((err) => {
-      // console.log(err.response.message,"mes");
-      setSubscriptionLoading(false)
-    })
+    
+      axios.get(`${baseUrl}/organization/subscriptions/hours-data?org=${organization}`, {
+        headers: {
+          Authorization: "Bearer " + accessToken(),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }).then((res) => {
+        setHours(res.data);
+        if (res.data) {
+          setSubscriptionLoading(false);
+        }
+      }).catch((err) => {
+        // console.log(err.response.message,"mes");
+        setSubscriptionLoading(false)
+      })
+    }
   }, [organization]);
   
 
