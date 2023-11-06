@@ -79,12 +79,13 @@ const StudentLanding = () => {
   const [isSmallerThan850] = useMediaQuery('(max-width: 850px)');
   const [showCreateOrgModal, setShowCreateOrgModal] = useState(false);
   const [companyName, setCompanyName] = useState('')
-  const [expertise, setExpertise] = useState('')
+  const [department, setDepartment] = useState('')
   const [description, setDescription] = useState('')
   const toast = useToast()
   const router = useRouter();
   const [refer, setRefer] = useState<any>('')
   const [isRefer, setIsRefer] = useState<boolean>(true);
+  const [isSendingRequest, setIsSendingRequest] = useState(false);
   const [showModel, setShowModel] = useState<ModelType>({
     login: false,
     forgotPassword: false,
@@ -108,18 +109,41 @@ const StudentLanding = () => {
     refer: '',
     email: '',
   })
-
   
 
   const submitForm = () => {
-    // console.log('companyName', companyName, 'expertise', expertise, 'description', description)
-    if (companyName == '' || expertise == '' || description == '') {
-      toast({ position: "top", title: "Please fill form.", status: "error" })
+    setIsSendingRequest(true);
+    if (companyName == '' || department == '' || description == '') {
+      toast({ position: "top", title: "Please fill out the complete form.", status: "error" })
+      setIsSendingRequest(false)
     } else {
-      setCompanyName('')
-      setExpertise('')
-      setDescription('')
-      toast({ position: "top", title: "Form submitted successfully.", status: "success" })
+    
+    const form = new FormData();
+    form.append("company_name", companyName);
+    form.append("department", department);
+    form.append("description", description);
+
+    axios
+      .post(`${baseUrl}/volunteer-request`,
+        form,
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            // 'Content-Type': 'application/x-www-form-urlencoded'
+          },
+        }
+      )
+      .then((res) => {
+        setCompanyName(''); setDepartment(''); setDescription('')
+        
+        toast({ position: "top", title: res.data.message, status: "success" })
+        setIsSendingRequest(false)
+      })
+      .catch((err) => {
+        setIsSendingRequest(false)
+        toast({ position: "top", title: err.response.data.message, status: "error" })
+        console.log(err);
+      });
     }
   }
 
@@ -1059,8 +1083,8 @@ const StudentLanding = () => {
                     id="phone-number"
                     placeholder="Marketing Department"
                     required
-                    onChange={(e) => setExpertise(e.target.value)}
-                    value={expertise}
+                    onChange={(e) => setDepartment(e.target.value)}
+                    value={department}
                   />
                 </div>
                 <div className="mb-3 mt-3">
@@ -1101,8 +1125,11 @@ const StudentLanding = () => {
                 onClick={submitForm}
                 minW="285px"
                 className="ms-md-5"
+                disabled={isSendingRequest}
               >
-                Submit a Volunteer Request
+                <span id="button-text">
+                  {isSendingRequest ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Submit a Volunteer Request"}
+                </span>
               </Button>
             </div>
           </div>

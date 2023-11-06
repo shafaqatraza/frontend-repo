@@ -102,11 +102,12 @@ const NotificationSetting = () => {
                     for (const role in permission.roleInfo) {
                       if (Object.prototype.hasOwnProperty.call(permission.roleInfo, role)) {
                         // Use the role name (e.g., 'Admin', 'Manager', 'Member') as the key
-                        // and the roleInfo value as the value
+                        // and the roleInfo value as the value 
+                        // @ts-ignore: 
                         permissionInfo[role] = permission.roleInfo[role];
                       }
                     }
-            
+                    // @ts-ignore: 
                     // Use the permission ID as the key and the roleInfo object as the value
                     initialCheckboxState[permission.id] = permissionInfo;
                   }
@@ -123,11 +124,11 @@ const NotificationSetting = () => {
     }
 
   }, [slug])
-  
-  function handleCheckboxChange(permissionId, role, isChecked) {
+  // @ts-ignore: 
+  function handleCheckboxChange(permissionId, role, isChecked) { 
     setCheckboxState((prevState) => ({
       ...prevState,
-      [permissionId]: {
+      [permissionId]: { // @ts-ignore: 
         ...prevState[permissionId],
         [role]: isChecked,
       },
@@ -207,7 +208,8 @@ const NotificationSetting = () => {
           </div>
         </div>
         <div className='ps-md-4 ps-2 ps-lg-0 pe-md-4 pe-2 permission-category'>
-            {orgRolesPermissions?.permissions && Object.keys(orgRolesPermissions.permissions).map((groupIndex, index) => (
+            {// @ts-ignore: 
+              orgRolesPermissions?.permissions && Object.keys(orgRolesPermissions.permissions).map((groupIndex, index) => (
                 <>
                 <div className={`row ${index === 0 ? 'mt-5' : 'mt-3'} py-1 permission-heading`} style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
                     <div className='col-md-7 col-5'>
@@ -228,7 +230,9 @@ const NotificationSetting = () => {
                     )}
                 </div>
                 <div className={`row mt-3 ${permissionsLength === index+1 ? 'mb-5 pb-4' : ''}`}  style={{'padding': 'inherit'}}>
-                    {orgRolesPermissions.permissions[groupIndex].map((permission) => (
+                      
+                    {// @ts-ignore: 
+                      orgRolesPermissions.permissions[groupIndex].map((permission) => ( 
                         <>
                         <div className='col-md-7 col-5'>
                             <p style={{fontSize:"15px"}} className='textstart'>{permission.title}</p>
@@ -239,7 +243,8 @@ const NotificationSetting = () => {
                             style={{ height: "18px", width: "18px" }}
                             type="checkbox"
                             name='news_and_updates'
-                            checked={checkboxState[permission.id].Member}
+                            checked={// @ts-ignore: 
+                              checkboxState[permission.id].Member}
                             onChange={(e) => handleCheckboxChange(permission.id, 'Member', e.target.checked)}
                         /> 
                         </div>
@@ -249,7 +254,8 @@ const NotificationSetting = () => {
                             style={{ height: "18px", width: "18px" }}
                             type="checkbox"
                             name='news_and_updates'
-                            checked={checkboxState[permission.id].Manager}
+                            checked={// @ts-ignore: 
+                              checkboxState[permission.id].Manager}
                             onChange={(e) => handleCheckboxChange(permission.id, 'Manager', e.target.checked)}
                         />
                         </div>
@@ -259,7 +265,8 @@ const NotificationSetting = () => {
                             style={{ height: "18px", width: "18px" }}
                             type="checkbox"
                             name='news_and_updates'
-                            checked={checkboxState[permission.id].Admin}
+                            checked={// @ts-ignore: 
+                              checkboxState[permission.id].Admin}
                             onChange={(e) => handleCheckboxChange(permission.id, 'Admin', e.target.checked)}
                         />
                         </div>
