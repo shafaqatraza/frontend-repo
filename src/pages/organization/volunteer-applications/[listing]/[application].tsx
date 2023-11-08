@@ -251,8 +251,12 @@ const CompletedApplication = () => {
                         </p>
                         
                         <p>
-                          <span style={questionStyle}>Date: </span>
+                          <span style={questionStyle}>Start Date: </span>
                           <span style={answerStyle}>{question?.date_availability}</span>
+                        </p>
+                        <p>
+                          <span style={questionStyle}>End Date: </span>
+                          <span style={answerStyle}>{question?.end_date}</span>
                         </p>
                         <p style={questionStyle}>Availabilities</p>
                         {question.availabilities?.map((avaiability: any)=> (

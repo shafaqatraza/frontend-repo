@@ -52,7 +52,7 @@ const CreateApplication = (props: Props) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const handleCloseSuccess = () => setShowSuccess(false);
   const handleShowSuccess = () => setShowSuccess(true);
-
+  const [isCreatingFrom, setIsCreatingFrom] = React.useState(false);
   
 
   const handleChildCheckbox = (childCheckbox: any) => {
@@ -98,7 +98,8 @@ const CreateApplication = (props: Props) => {
       [id]: false, // Reset the error state for the specific question ID
     }));
   };
-
+console.log('questions', questions)
+console.log('questionErrors', questionErrors)
   const handleSelectChange = (value: string) => {
     setListingId(value);
   };
@@ -121,7 +122,7 @@ const CreateApplication = (props: Props) => {
       });
     }
   };
-  console.log('asss', options)
+  
   const handleOptionChange = (id: string, index: number, value: string, options: Option[][]) => { // @ts-ignore: Unreachable code error
     if (options[id]) { 
       setOptions((prevOptions) => { // @ts-ignore: Unreachable code error
@@ -358,16 +359,34 @@ const CreateApplication = (props: Props) => {
     );
   };
 
-  const askAvailabilityHTML = (id: string, options: []) => {
+  const askAvailabilityHTML = (id: string, options: [], questionErrors: []) => {
     return (
       <Row>
         <Col md={12}>
           <p className="listing-txt mt-2">Availability</p>
           <div className="card shadow p-4 mt-3">
-            <p className="fw-bold">* I am available and agree to commit to:</p>
-            {// @ts-ignore: Unreachable code error
+            <div className="row">
+              <div className="col-md-6">
+                <p className="fw-bold">* I am available and agree to commit to:</p>
+              </div>
+              <div className="col-md-6">
+                <Input 
+                  type="text" 
+                  style={{ backgroundColor: "#E8E8E8" }} 
+                  placeholder="Begin Typing here" 
+                  id={`ask-availability-${id}`}
+                  // @ts-ignore:
+                  className={`${questionErrors[`ask-availability-${id}`] ? 'input-error' : ''}`}
+                  onChange={(e) => handleInputChange(`ask-availability-${id}`)}
+                />
+              </div>
+              {// @ts-ignore:
+              questionErrors[`ask-availability-${id}`] && <p className="error-message">Please fill out the field.</p>}
+            </div>
+
+            {// @ts-ignore: 
             options[id] &&
-            // @ts-ignore: Unreachable code error
+            // @ts-ignore: 
               options[id].map((option, index) => (
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
@@ -378,7 +397,7 @@ const CreateApplication = (props: Props) => {
                       type="radio"
                       disabled
                     />
-                    <span style={// @ts-ignore: Unreachable code error
+                    <span style={// @ts-ignore: 
                       {"font-size": "16px"} }>{option.value}</span>
                   </div>
                 </div>
@@ -402,13 +421,28 @@ const CreateApplication = (props: Props) => {
               <p className="fw-bold fs-5">Date I am available to start</p>
             </div>
             <div className="col-md-10">
-              <Input
-                style={{ backgroundColor: "#E8E8E8", height: "50px" }}
-                type="date"
-                className="form-control mt-2"
-                placeholder="Begin Typing Here"
-                disabled
-              />
+              <div className="row">
+                <div className="col-md-6">
+                  <label><b> Start Date </b></label>
+                  <input
+                    type="date"
+                    className="form-control mt-2"
+                    placeholder="Select Start Date"
+                    style={{ height: "50px" }}
+                   disabled
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label><b> End Date </b></label>
+                  <input
+                    type="date"
+                    className="form-control mt-2"
+                    placeholder="Select End Date"
+                    style={{ height: "50px" }}
+                    disabled
+                  />
+                </div>
+              </div>
             </div>
             <div>
               <p className="fw-bold fs-5 mt-2">*Availability to</p>
@@ -644,7 +678,7 @@ const handleAddQuestion = (type: string, length:any) => {
       }));
       break;
     case 'ConditionalQuestion':
-      type_id = 4; // @ts-ignore: Unreachable code error
+      type_id = 4; // @ts-ignore:
       newQuestion = (options, questionErrors) => conditionalQuestionHTML(id, options, questionErrors);
 
       setOptions((prevOptions) => ({
@@ -656,8 +690,8 @@ const handleAddQuestion = (type: string, length:any) => {
       }));
       break;
     case 'AskAvailability':
-      type_id = 5; // @ts-ignore: Unreachable code error
-      newQuestion = (options) => askAvailabilityHTML(id, options);
+      type_id = 5; // @ts-ignore:
+      newQuestion = (options, questionErrors) => askAvailabilityHTML(id, options, questionErrors);
 
       setOptions((prevOptions) => ({
         ...prevOptions,
@@ -668,7 +702,7 @@ const handleAddQuestion = (type: string, length:any) => {
       }));
       break;
     case 'WorkExperience':
-      type_id = 6; // @ts-ignore: Unreachable code error
+      type_id = 6; // @ts-ignore:
       newQuestion = (options, questionErrors) => workExperienceHTML(id, options, questionErrors);
 
       setOptions((prevOptions) => ({
@@ -680,7 +714,7 @@ const handleAddQuestion = (type: string, length:any) => {
       }));
       break;
     case 'AskVaccination':
-      type_id = 7; // @ts-ignore: Unreachable code error
+      type_id = 7; // @ts-ignore:
       newQuestion = (options) => askVaccinationHTML(id, options);
 
       setOptions((prevOptions) => ({
@@ -725,7 +759,7 @@ const handleAddQuestion = (type: string, length:any) => {
   const handleSubmit = (event: any) => { 
     event.preventDefault();
     let hasErrors = false; // Validate the form and set error states for questions with empty values
-
+    setIsCreatingFrom(true)
     if (!listingId) {
       setQuestionErrors((prevErrors) => ({
         ...prevErrors,
@@ -876,7 +910,17 @@ const handleAddQuestion = (type: string, length:any) => {
           }
 
         }else{
-          completeQuestion = 'I am available and agree to commit to:';
+          const questionInput = document.getElementById(`ask-availability-${question.id}`) as HTMLInputElement;
+          const questionValue = questionInput ? questionInput.value : '';
+          completeQuestion = `I am available and agree to commit to: ${questionValue}`;
+
+          if (!questionValue) {
+            setQuestionErrors((prevErrors) => ({
+              ...prevErrors,
+              [`ask-availability-${question.id}`]: true, 
+            }));
+            hasErrors = true;
+          }
         }
 
         // Get the checkbox options
@@ -899,6 +943,7 @@ const handleAddQuestion = (type: string, length:any) => {
     // If there are errors, prevent form submission
     if (hasErrors) {
       toast({ position: "top", title: 'Please fill out the complete form.', status: "warning" })
+      setIsCreatingFrom(false)
       return;
     }
 
@@ -917,11 +962,13 @@ const handleAddQuestion = (type: string, length:any) => {
       .then((response) => {
         // setSuccessMessage(response.data.message);
         // setShowSuccess(true);
+        setIsCreatingFrom(false)
         toast({ position: "top", title: response.data.message, status: "success" })
-        router.push('/organization/listings');
+        router.push('/organization/listings?page=volunteer');
       })
       .catch((error) => { 
         // Handle error here
+        setIsCreatingFrom(false)
         toast({ position: "top", title: "Something went wrong, please try again.", status: "error" })
       });
 
@@ -1012,31 +1059,28 @@ const handleAddQuestion = (type: string, length:any) => {
               {questions.map((question, index) => (
                 <div key={question.id} className="component-container">
               
-                {question.type === 'ShortQuestion' ? ( // @ts-ignore: Unreachable code error
+                {question.type === 'ShortQuestion' ? ( // @ts-ignore:
                     question.html(questionErrors)
-                ) : question.type === 'CheckboxQuestion' ? ( // @ts-ignore: Unreachable code error
+                ) : question.type === 'CheckboxQuestion' ? ( // @ts-ignore:
                     question.html(options, questionErrors)
-                ) : question.type === 'RadioButtonQuestion' ? (// @ts-ignore: Unreachable code error
+                ) : question.type === 'RadioButtonQuestion' ? (// @ts-ignore:
                     question.html(options, questionErrors)
-                ) : question.type === 'ConditionalQuestion' ? (// @ts-ignore: Unreachable code error
+                ) : question.type === 'ConditionalQuestion' ? (// @ts-ignore:
                     question.html(options, questionErrors)
-                ) : question.type === 'AskAvailability' ? (// @ts-ignore: Unreachable code error
-                    question.html(options)
-                ) : question.type === 'WorkExperience' ? (// @ts-ignore: Unreachable code error
+                ) : question.type === 'AskAvailability' ? (// @ts-ignore:
+                    question.html(options, questionErrors)
+                ) : question.type === 'WorkExperience' ? (// @ts-ignore:
                   question.html(options, questionErrors)
-                ) : question.type === 'AskVaccination' ? (// @ts-ignore: Unreachable code error
+                ) : question.type === 'AskVaccination' ? (// @ts-ignore:
                   question.html(options)
                 ) : null }
               </div>
               ))}
-              <button
-                type="submit"
-                className="update-v-btn mb-5 mt-5 col-md-2 ms-3"
-                onClick={handleSubmit}
-                disabled={questions.length === 0}
-              >
-                Submit
-              </button>
+                  <button type="submit" onClick={handleSubmit} disabled={isCreatingFrom} id="submit" className="update-v-btn mb-5 mt-5 col-md-2 ms-3" disabled={questions.length === 0}>
+                    <span id="button-text">
+                      {isCreatingFrom ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Submit"}
+                    </span>
+                  </button>
               </Col>
             </Row>
           </form>

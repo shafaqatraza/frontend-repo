@@ -265,7 +265,7 @@ const CreateDonationListing = () => {
       })
       .then((response) => {
         // setShowSuccess(true);
-        router.push("/organization/listings");
+        router.push('/organization/listings?page=donation');
         toast({ position: "top", title: response.data.message, status: "success" })
         setIsSubmitting(false);
       })

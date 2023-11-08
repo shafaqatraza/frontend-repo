@@ -293,10 +293,10 @@ const CreateListing = () => {
       }
     })
       .then((response) => {
-        router.push("/organization/listings");
         toast({ position: "top", title: response.data.message, status: "success" })
         // @ts-ignore:
         setIsSubmitting(false);
+        router.push('/organization/listings?page=volunteer');
       })
       .catch((error) => {
         console.error(error);

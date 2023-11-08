@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Navbar from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
 import Sidebar from "../../../components/Sidebar.jsx";
@@ -6,11 +6,21 @@ import { Link } from '@chakra-ui/react';
 import VolunteerListing from '../../../components/VolunteerListing';
 import DonationListing from '../../../components/DonationListing';
 import { HamburgerIcon } from "@chakra-ui/icons";
-
+import { useRouter } from 'next/router';
 const Listings = () => {
   const [selectedButton, setSelectedButton] = useState(1);
   const [show, setShow] = useState(false);
+  const router = useRouter();
+  const selectedTab = router.query.page;
 
+  useEffect(() => {
+    if (selectedTab === 'volunteer') {
+      setSelectedButton(2); 
+    } else if (selectedTab === 'donation') {
+      setSelectedButton(1); 
+    }
+  }, [selectedTab]);
+  
   const handleClickOne = () => {
     setSelectedButton(1);
   };
