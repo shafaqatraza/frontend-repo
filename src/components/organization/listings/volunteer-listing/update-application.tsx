@@ -698,7 +698,7 @@ console.log('PreviousQuestions', previousQuestions)
                           .split("Do you have experience working with")[1]
                       : ""
                   }
-                  className={`${questionErrors[id] ? 'input-error' : ''}`}
+                  className={`${questionErrors[id as any] ? 'input-error' : ''}`}
                   onChange={(e: any) => {
                     const inputValue = e.target.value;
 
@@ -1157,7 +1157,7 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
               </div>
               ))}
               {totalApplications == 0? (
-                  <button type="submit" onClick={handleSubmit} disabled={isUpdatingFrom} id="submit" className="update-v-btn mb-5 mt-5 col-md-2 ms-3" disabled={questions.length === 0}>
+                  <button type="submit" onClick={handleSubmit} disabled={isUpdatingFrom && questions.length === 0} id="submit" className="update-v-btn mb-5 mt-5 col-md-2 ms-3">
                     <span id="button-text">
                       {isUpdatingFrom ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Update"}
                     </span>

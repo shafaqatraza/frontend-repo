@@ -1076,7 +1076,7 @@ const handleAddQuestion = (type: string, length:any) => {
                 ) : null }
               </div>
               ))}
-                  <button type="submit" onClick={handleSubmit} disabled={isCreatingFrom} id="submit" className="update-v-btn mb-5 mt-5 col-md-2 ms-3" disabled={questions.length === 0}>
+                  <button type="submit" onClick={handleSubmit} disabled={isCreatingFrom && questions.length === 0} id="submit" className="update-v-btn mb-5 mt-5 col-md-2 ms-3">
                     <span id="button-text">
                       {isCreatingFrom ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Submit"}
                     </span>
