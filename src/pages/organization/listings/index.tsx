@@ -7,11 +7,33 @@ import VolunteerListing from '../../../components/VolunteerListing';
 import DonationListing from '../../../components/DonationListing';
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useRouter } from 'next/router';
+import axios from "axios";
+import { accessToken, baseUrl } from "../../../components/Helper/index";
+
 const Listings = () => {
   const [selectedButton, setSelectedButton] = useState(1);
   const [show, setShow] = useState(false);
   const router = useRouter();
   const selectedTab = router.query.page;
+  const [orgSlug, setOrgSlug] = useState("");
+
+  useEffect( ()=> {
+    axios
+    .get(`${baseUrl}/organizations`, {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .then((res) => {
+      setOrgSlug(res.data[0].slug);
+
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  }, [])
 
   useEffect(() => {
     if (selectedTab === 'volunteer') {
@@ -74,7 +96,7 @@ const Listings = () => {
               </Link>
             </div>
         </div>
-        {selectedButton === 1 ? <DonationListing /> : <VolunteerListing />}
+        {selectedButton === 1 ? <DonationListing orgSlug = {orgSlug} /> : <VolunteerListing orgSlug = {orgSlug}/>}
       </div>
     </div>
     <Footer/>

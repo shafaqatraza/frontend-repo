@@ -17,7 +17,8 @@ interface Donation {
 }
 
 
-const DonationListing = () => {
+const DonationListing = (props: any) => {
+  const {orgSlug} = props;
   const [data, setData] = useState<Donation[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,7 +27,7 @@ const DonationListing = () => {
   const getDonationListings = () => {
     axios
       .get(`${baseUrl}/donation-listings/all/${// @ts-ignore: Unreachable code error
-        currentOrganization?.slug}`, {
+        orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
@@ -41,17 +42,17 @@ const DonationListing = () => {
       });
   }
   useEffect(() => {
-    if(currentOrganization){
+    if(orgSlug !== ""){
       setLoading(true)
       getDonationListings();
     }
-  }, [currentOrganization]);
+  }, [orgSlug]);
 
   const deleteDonation = (charity: any) => {
     setLoading(true)
     axios
       .delete(`${baseUrl}/donation-listings/${charity}/delete?org=${// @ts-ignore: Unreachable code error
-        currentOrganization?.slug}`, {
+        orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'

@@ -7,7 +7,8 @@ import axios from "axios";
 import { useToast } from '@chakra-ui/toast'
 import { accessToken, baseUrl, currentOrganization } from "./Helper/index";
 
-const VolunteerListing = () => {
+const VolunteerListing = (props: any) => {
+  const {orgSlug} =props;
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ const VolunteerListing = () => {
   const getVolunteerListings = () => {
     axios
       .get(`${baseUrl}/volunteer-listings/all/${ // @ts-ignore: Unreachable code error
-        currentOrganization?.slug}`, {
+        orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
@@ -32,17 +33,17 @@ const VolunteerListing = () => {
   }
 
   useEffect(() => {
-    if(currentOrganization){
+    if(orgSlug !== ""){
       setLoading(true)
       getVolunteerListings();
     }
-  }, [currentOrganization]);
+  }, [orgSlug]);
 
   const deleteVolunteer = (charity: any) => {
     setLoading(true)
     axios
       .delete(`${baseUrl}/volunteer-listings/${charity}/delete?org=${ // @ts-ignore: Unreachable code error
-        currentOrganization?.slug}`, {
+        orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
