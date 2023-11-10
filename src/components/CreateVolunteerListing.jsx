@@ -1,11 +1,14 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import CreateListing from "../components/CreateListing"
 import CreateApplication from "../components/CreateApplication"
 
-const Listings = () => {
+const Listings = (props) => {
+  const {selectedForm} = props; 
   const [selectedButton, setSelectedButton] = useState(1);
   const [showDiv, setShowDiv] = useState(true);
   const [showDiv2, setShowDiv2] = useState(false);
+
+  
 
   const handleClickOne = () => {
     setSelectedButton(1);
@@ -17,8 +20,18 @@ const Listings = () => {
     setSelectedButton(2);
     setShowDiv2(true)
     setShowDiv(false)
-
   };
+
+  useEffect(() => {
+    if(selectedForm){
+      if (selectedForm === 'application') {
+        handleClickTwo(); 
+      } else if (selectedForm === 'volunteer') {
+        handleClickOne(); 
+      }
+    }
+  }, [selectedForm]);
+
   return (
     <>
       <div className="row container-fluid main-side">

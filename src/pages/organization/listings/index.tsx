@@ -65,9 +65,13 @@ const Listings = () => {
                 </div>
               </div>
             <div className='mt-5 align-items-center d-flex'>
-              <Link href='listings/create'>
+              <Link href={`listings/create?type=${selectedButton === 1? 'donation' : 'volunteer'}`}>
                     <button className='create-list-btn'>Create Listing</button>
-                </Link>
+              </Link>
+
+              <Link href='listings/create?type=volunteer&form=application' className='ml-2'>
+                    <button className='create-list-btn'>Create Application</button>
+              </Link>
             </div>
         </div>
         {selectedButton === 1 ? <DonationListing /> : <VolunteerListing />}
