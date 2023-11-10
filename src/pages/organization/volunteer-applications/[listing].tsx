@@ -464,7 +464,7 @@ const dataSource =
             height={297}
             className="img-fluid"
             // @ts-ignore: Unreachable code error
-            src={applicationsData?.thumbnail?.path}
+            src={`${applicationsData?.thumbnail?.path}/${applicationsData?.thumbnail?.image}`}
           />
           <p className="ms-4 fw-bold fs-4">
             {
