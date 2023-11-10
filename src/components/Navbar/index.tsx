@@ -21,12 +21,13 @@ import {
   Text,
   Avatar,
   Spacer,
-  Spinner
+  Spinner,
 } from '@chakra-ui/react'
+
 import { ReactNode, useEffect, useState, useCallback, useRef } from 'react'
 import { FaUserCircle } from 'react-icons/fa'
 import { Modal } from "react-bootstrap";
-import { FiHeart, FiMessageSquare, FiLogIn } from 'react-icons/fi'
+import { FiHeart, FiMessageSquare, FiLogIn, FiBell } from 'react-icons/fi'
 import { NavbarDrawer } from './drawer'
 import { useMediaQuery } from '@chakra-ui/react'
 import Image from 'next/image'
@@ -819,7 +820,60 @@ export default function Navbar(props: any) {
                     </MenuButton>
                     }
                   </Menu>
-
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      rounded={'full'}
+                      variant={'link'}
+                      cursor={'pointer'}
+                      minW={0}
+                      _focus={{
+                        boxShadow: 'none'
+                      }}
+                    >
+                      <FiBell
+                          size={23}
+                          style={{ marginRight: 5, marginLeft: 5, color: '#000' }}
+                      />
+                    </MenuButton>
+                    <MenuList px={'10px'}>
+                      <Link href="#"
+                        _hover={{
+                          textDecoration: 'none',
+                          color: '#dd6b20'
+                        }}>
+                        <MenuItem>New Applicant</MenuItem>
+                      </Link>
+                      <Link href="#"
+                        _hover={{
+                          textDecoration: 'none',
+                          color: '#dd6b20'
+                        }}>
+                        <MenuItem>New Donation</MenuItem>
+                      </Link>
+                      <Link href="#"
+                        _hover={{
+                          textDecoration: 'none',
+                          color: '#dd6b20'
+                        }}>
+                        <MenuItem>New Message</MenuItem>
+                      </Link>
+                      <Link href="#"
+                        _hover={{
+                          textDecoration: 'none',
+                          color: '#dd6b20'
+                        }}>
+                        <MenuItem>New Applicant</MenuItem>
+                      </Link>
+                      <Link href="#"
+                        _hover={{
+                          textDecoration: 'none',
+                          color: '#dd6b20'
+                        }}>
+                        <MenuItem>New Applicant</MenuItem>
+                      </Link>
+                    </MenuList>
+                  </Menu>
                   <Menu>
                     <MenuButton
                       as={Button}
@@ -909,6 +963,7 @@ export default function Navbar(props: any) {
                       </Button>
                     </MenuList>
                   </Menu>
+                  
                 </div>
               </Flex>
             )}
