@@ -88,7 +88,23 @@ const OrganizationInfo = () => {
   const [statuses, setStatuses] = useState([]);
   const [orgSlug, setOrgSlug] = useState("");
   const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
-  
+  const [userPermissions, setUserPermissions] = useState({
+    role: '',
+    permissions: [] as any
+  });
+
+  useEffect(() => {
+    const rolePermissionsString = localStorage.getItem('rolePermissions');
+    if (rolePermissionsString !== null) {
+      const rolePermissions = JSON.parse(rolePermissionsString);
+      setUserPermissions(rolePermissions);
+
+      if (rolePermissions?.role !== 'Superadmin' && !rolePermissions?.permissions?.includes('view_profile')) {
+        // router.push('/organization/access-denied');
+        router.push('/organization');
+      }
+    }
+  }, []);
 
   useEffect( ()=> {
     axios
@@ -376,6 +392,8 @@ const OrganizationInfo = () => {
       dataIndex: 'action',
       render: (text: string, record: any, rowIndex: number) => {
         return(
+          <>
+          {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_users') && userPermissions.permissions.includes('delete_users'))) ? (
           <div className="ms-3">
             {record.role !== 'Superadmin' && (
               <button style={{ color: '#E27832', borderRight:'1px solid #0000001F' }} className="pe-4" onClick={() => handleActionClick(rowIndex)}>+ Action</button>
@@ -420,16 +438,19 @@ const OrganizationInfo = () => {
               )
             }
           </div>
-          
+          ) : null}
+          </>
         );
       }
     },
     {
       title: () => (
         <div>
+          {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('create_users'))) ? (
           <Link href="/organization/profile/invite-user">
             <button className="up-btn">+ New</button>
           </Link>
+          ) : null}
         </div>
       ),
       dataIndex: "New",
@@ -483,6 +504,14 @@ const OrganizationInfo = () => {
         toast({ position: "top", title: err.response.data.message, status: "error" })
         console.log(err);
       });
+  }
+
+  function handleUpdatePaymentPlan(){
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_payments'))){
+      router.push('/organization/payment-plans');
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+    }
   }
 
   return (
@@ -666,11 +695,13 @@ const OrganizationInfo = () => {
                    style={{display: isLoaded ? "block" : "none",height:"189px",width:"189px",objectFit:"cover",borderRadius:"50%"}}
                   />
                 </div>
+                {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_profile'))) ? (
                 <Image
                   src={edit.src}
                   onClick={handleShowModal}
                   className="position-absolute end-0 top-0"
                 />
+                ) : null}
               </div>
             </div>
             <div className="text-center">
@@ -769,6 +800,7 @@ const OrganizationInfo = () => {
                       />
                       {formErrors['about'] && <p className="error-message">Please fill out the field.</p>}
                     </div>
+                    {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_profile'))) ? (
                     <div className="d-flex justify-content-end">
                       <button type="submit" onClick={(e) => {handleSubmit(e,'normalform')}} disabled={isUpdating} id="submit" className="btn-reset mb-5">
                         <span id="button-text">
@@ -776,13 +808,16 @@ const OrganizationInfo = () => {
                         </span>
                       </button>
                     </div>
+                    ) : null}
                   </form>
+                  {(userPermissions?.role === 'Superadmin') ? (
                   <div className="d-flex align-items-center">
                     <button onClick={handleShow} className="del-btn">
                       Delete Account
                     </button>
                     <img src={profilTrash.src} style={{height:"20px"}} className="img-fluid ms-3"   alt=""/>
                   </div>
+                  ) : null}
                   <div></div>
                 </div>
               </div>
@@ -837,10 +872,10 @@ const OrganizationInfo = () => {
                     </div>
                     <div className="btns d-flex justify-content-center">
                       <Link href="/organization/payment-plans">
-                        <button className="up-btn mt-5 mb-5">Upgrade</button>
+                        <button className="up-btn mt-5 mb-5" onClick={handleUpdatePaymentPlan}>Upgrade</button>
                       </Link>
-                      <Link href="/edit-payment">
-                        <button className="ed-btn ms-3 mt-5 mb-5">
+                      <Link href="/organization/payment-plans">
+                        <button className="ed-btn ms-3 mt-5 mb-5" onClick={handleUpdatePaymentPlan}>
                           Edit Payment
                         </button>
                       </Link>
@@ -853,11 +888,14 @@ const OrganizationInfo = () => {
                   </div>
                 )}
               </div>
+              {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_users'))) ? (
+              <>
               <div className="mt-5">
               <p className="info-txt mb-4" style={{color:"black",fontSize:"30px", fontWeight:"600"}}>Members</p>
                 <Table dataSource={inviteData} className="table-responsive" columns={columns} />
               </div>
-              
+              </>
+              ) : null}
             </div>
           </div>
       </div>

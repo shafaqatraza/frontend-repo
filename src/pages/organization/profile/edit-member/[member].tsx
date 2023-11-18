@@ -34,29 +34,31 @@ const EditMember = () => {
   });
 
   useEffect(() => {
-    axios
-      .get(
-        `${baseUrl}/organizations/${currOrgSlug}/invitations/${member}`,
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken(),
-            // 'Content-Type': 'application/x-www-form-urlencoded'
-          },
-        }
-      )
-      .then((res) => {
-        setInvitedMember(res.data.data);
-        setFormData(preFormData => ({
-          ...preFormData,
-          name: res.data.data.name,
-          email: res.data.data.email,
-          role_id: res.data.data.role_id,
-        }));
+    if(currOrgSlug && member){
+      axios
+        .get(
+          `${baseUrl}/organizations/${currOrgSlug}/invitations/${member}`,
+          {
+            headers: {
+              Authorization: "Bearer " + accessToken(),
+              // 'Content-Type': 'application/x-www-form-urlencoded'
+            },
+          }
+        )
+        .then((res) => {
+          setInvitedMember(res.data.data);
+          setFormData(preFormData => ({
+            ...preFormData,
+            name: res.data.data.name,
+            email: res.data.data.email,
+            role_id: res.data.data.role_id,
+          }));
 
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
   }, [currOrgSlug, member]);
 
@@ -101,7 +103,7 @@ const EditMember = () => {
       });
   }
 
-  const handleRadioChange = (roleId: number) => {
+  const handleRadioChange = (roleId: number) => { console.log('roleIdroleIdroleId', roleId)
     setFormData(preFormData => ({
       ...preFormData,
       role_id: roleId,
@@ -221,8 +223,8 @@ const EditMember = () => {
                   type="radio"
                   name="radio-group"
                   id="radio-option-1"
-                  checked={formData.role_id === 8}
-                  onChange={() => handleRadioChange(8)} // Call a function to handle radio button change
+                  checked={formData.role_id === 9}
+                  onChange={() => handleRadioChange(9)} // Call a function to handle radio button change
                 />
               </div>
               <div>

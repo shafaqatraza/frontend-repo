@@ -4,11 +4,29 @@ import Navbar from "../../../../../components/Navbar";
 import Sidebar from "../../../../../components/Sidebar.jsx";
 import UpdateListing from "../../../../../components/organization/listings/volunteer-listing/update-volunteer"
 import UpdateApplication from "../../../../../components/organization/listings/volunteer-listing/update-application"
+import { useToast } from '@chakra-ui/toast'
 
 const EditVolunteerListing = () => {
   const [selectedButton, setSelectedButton] = useState(1);
   const [showDiv, setShowDiv] = useState(true);
   const [showDiv2, setShowDiv2] = useState(false);
+  const [userPermissions, setUserPermissions] = useState({
+    role: '',
+    permissions: [] as any
+  });
+  const toast = useToast()
+
+  function getPermissions(){ 
+    const rolePermissionsString = localStorage.getItem('rolePermissions');
+    if (rolePermissionsString !== null) {
+      const rolePermissions = JSON.parse(rolePermissionsString);
+      setUserPermissions(rolePermissions);
+    }
+  }
+
+  useEffect( ()=> {
+    getPermissions()
+  }, [])
 
   const handleClickOne = () => {
     setSelectedButton(1);
@@ -17,9 +35,14 @@ const EditVolunteerListing = () => {
   };
  
   const handleClickTwo = () => {
-    setSelectedButton(2);
-    setShowDiv2(true)
-    setShowDiv(false)
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_applications'))){
+      setSelectedButton(2);
+      setShowDiv2(true)
+      setShowDiv(false)
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+    }
+    
 
   };
   return (
@@ -40,7 +63,7 @@ const EditVolunteerListing = () => {
               {showDiv && <div className="h-r"></div>}
               </div>
               <div>
-              <button onClick={handleClickTwo} className="listing-txt ms-5">Update an Application</button>
+              <button onClick={handleClickTwo} className="listing-txt ms-5">Update Application Form</button>
               {showDiv2 && <div className="h-r ms-5"></div>}
               </div>
             </div>

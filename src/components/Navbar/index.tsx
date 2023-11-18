@@ -114,14 +114,11 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 )
 
 export default function Navbar(props: any) {
-
-  // console.log('getLoginData', getLoginData())
-
-  // const audio= new Audio('https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7');
-
+  
   const musicPlayers = useRef<HTMLAudioElement | undefined>(
     typeof Audio !== "undefined" ? new Audio("https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7") : undefined
   );
+  
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   // const [isChatLoading, setIsChatLoading] = useState(true)
@@ -135,6 +132,7 @@ export default function Navbar(props: any) {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [showCreateOrg, setShowCreateOrg] = useState(false);
   const [orgData, setOrgData] = useState([]);
+  const [orgSlug, setOrgSlug] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
@@ -310,6 +308,7 @@ export default function Navbar(props: any) {
           }
         }).then((res) => {
           setOrgData(res.data);
+          setOrgSlug(res.data[0].slug)
         }).catch((err) => {
           // console.log(err);
         })
@@ -346,7 +345,21 @@ export default function Navbar(props: any) {
       getOrganizationNotifications()
     }
 
-  }, [])
+  }, [isLogin()])
+
+  useEffect (() => {
+    if(orgSlug !== ""){
+      axios.get(`${baseUrl}/org-role-permissions/member?org=${orgSlug}`, {
+        headers: {
+          Authorization: 'Bearer ' + accessToken(),
+        }
+      }).then((res) => {
+        localStorage.setItem("rolePermissions", JSON.stringify(res.data));
+      }).catch((err) => {
+        // console.log(err);
+      })
+    }
+  }, [orgSlug])
 
   useEffect(() => {
 

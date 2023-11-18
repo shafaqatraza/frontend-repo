@@ -51,6 +51,23 @@ const NotificationSetting = () => {
     amount: string;
   }
 
+  const [userPermissions, setUserPermissions] = useState({
+    role: '',
+    permissions: [] as any
+  });
+
+  function getPermissions(){ 
+    const rolePermissionsString = localStorage.getItem('rolePermissions');
+    if (rolePermissionsString !== null) {
+      const rolePermissions = JSON.parse(rolePermissionsString);
+      setUserPermissions(rolePermissions);
+    }
+  }
+
+  useEffect( ()=> {
+    getPermissions()
+  }, [])
+
 
   useEffect( ()=> {
     axios
@@ -102,51 +119,56 @@ const NotificationSetting = () => {
   };
 
   const handleSaveSetting = (e: any) => {
-    e.preventDefault();
-    setIsUpdating(true);
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_notifications'))){
+      e.preventDefault();
+      setIsUpdating(true);
 
-    // Prepare the notification settings data to be sent
-    const notificationSettingsData = {
-      news_and_updates: notificationSetting.news_and_updates,
-      tips_and_tutorials: notificationSetting.tips_and_tutorials,
-      user_research: notificationSetting.user_research,
-      new_applicant: notificationSetting.new_applicant,
-      new_donation: notificationSetting.new_donation,
-      new_favourite: notificationSetting.new_favourite,
-      in_app_notify: notificationSetting.in_app_notify,
-      new_message: notificationSetting.new_message,
-    };
+      // Prepare the notification settings data to be sent
+      const notificationSettingsData = {
+        news_and_updates: notificationSetting.news_and_updates,
+        tips_and_tutorials: notificationSetting.tips_and_tutorials,
+        user_research: notificationSetting.user_research,
+        new_applicant: notificationSetting.new_applicant,
+        new_donation: notificationSetting.new_donation,
+        new_favourite: notificationSetting.new_favourite,
+        in_app_notify: notificationSetting.in_app_notify,
+        new_message: notificationSetting.new_message,
+      };
 
-    // Send a POST request to your Laravel API
-    fetch(`${baseUrl}/notification-settings/${slug}/update`, {
-      method: 'POST',
-      headers: {
-        Authorization: "Bearer " + accessToken(),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: JSON.stringify(notificationSettingsData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          toast({ position: 'top', title: 'Failed to save notification settings', status: 'warning' })
-          throw new Error('Failed to save notification settings');
-          
-        }
-        return response.json();
+      // Send a POST request to your Laravel API
+      fetch(`${baseUrl}/notification-settings/${slug}/update`, {
+        method: 'POST',
+        headers: {
+          Authorization: "Bearer " + accessToken(),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify(notificationSettingsData),
       })
-      .then((data) => {
-        // Handle the API response (if needed)
-        toast({ position: 'top', title: 'Notification settings saved successfully', status: 'success' })
-        console.log('Notification settings saved successfully', data);
-      })
-      .catch((error) => {
-        // Handle errors here
-        toast({ position: 'top', title: 'Error saving notification settings', status: 'error' })
-        console.error('Error saving notification settings:', error);
-      })
-      .finally(() => {
-        setIsUpdating(false);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            toast({ position: 'top', title: 'Failed to save notification settings', status: 'warning' })
+            throw new Error('Failed to save notification settings');
+            
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Handle the API response (if needed)
+          toast({ position: 'top', title: 'Notification settings saved successfully', status: 'success' })
+          console.log('Notification settings saved successfully', data);
+        })
+        .catch((error) => {
+          // Handle errors here
+          toast({ position: 'top', title: 'Error saving notification settings', status: 'error' })
+          console.error('Error saving notification settings:', error);
+        })
+        .finally(() => {
+          setIsUpdating(false);
+        });
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+      return;
+    }
   };
 
 

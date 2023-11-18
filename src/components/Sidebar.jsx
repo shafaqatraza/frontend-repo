@@ -11,11 +11,14 @@ import placeholder from "../assets/imgs/placeholder.png";
 import axios from "axios";
 import { accessToken, baseUrl } from "../components/Helper/index";
 import Spinner from 'react-bootstrap/Spinner';
-
+ 
 const Sidebar = (props) => {
   const [slug, setSlug] = useState([]);
   const [data, setData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [userPermissions, setUserPermissions] = useState('')
+
+  
 
   useEffect(() => {
     axios
@@ -33,6 +36,21 @@ const Sidebar = (props) => {
       });
   }, []);
 
+  // useEffect (() => {
+  //   if(slug !== ""){
+  //     axios.get(`${baseUrl}/org-role-permissions/member?org=${slug}`, {
+  //       headers: {
+  //         Authorization: 'Bearer ' + accessToken(),
+  //       }
+  //     }).then((res) => {
+  //       localStorage.setItem("rolePermissions", JSON.stringify(res.data));
+  //       setUserPermissions(res.data)
+  //     }).catch((err) => {
+  //       // console.log(err);
+  //     })
+  //   }
+  // }, [slug])
+
   useEffect(() => {
     if(slug){
       axios
@@ -49,8 +67,14 @@ const Sidebar = (props) => {
         .catch((err) => {
           console.log(err);
         });
+
     }
   }, [slug]);
+
+  useEffect(() => {
+    setUserPermissions(JSON.parse(localStorage.getItem('rolePermissions')));
+  }, [])
+ 
   return (
     <>
       <div className="row container-fluid pe-0 m-0 pe-md-2 main-side">
@@ -93,6 +117,7 @@ const Sidebar = (props) => {
                     </div>
                   </div>
                 </li>
+                {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_profile'))) ? (
                 <li>
                   <div className="list-icon">
                     <div>
@@ -106,6 +131,9 @@ const Sidebar = (props) => {
                     </div>
                   </div>
                 </li>
+                ) : null}
+
+                {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && (userPermissions.permissions.includes('view_volunteer_listings') || userPermissions.permissions.includes('view_donation_listings')))) ? (
                 <li>
                   <div className="list-icon">
                     <div>
@@ -119,6 +147,8 @@ const Sidebar = (props) => {
                     </div>
                   </div>
                 </li>
+                ) : null}
+                {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_volunteer_applications'))) ? (
                 <li>
                   <div className="list-icon">
                     <div>
@@ -132,6 +162,8 @@ const Sidebar = (props) => {
                     </div>
                   </div>
                 </li>
+                ) : null}
+                {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_donation_analytics'))) ? (
                 <li>
                   <div className="list-icon">
                     <div>
@@ -145,6 +177,8 @@ const Sidebar = (props) => {
                     </div>
                   </div>
                 </li>
+                ) : null}
+                {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_settings'))) ? (
                 <li>
                   <div className="list-icon">
                     <div>
@@ -158,6 +192,7 @@ const Sidebar = (props) => {
                     </div>
                   </div>
                 </li>
+                ) : null}
               </ul>
             </div>
           </div>

@@ -9,6 +9,7 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import { useRouter } from 'next/router';
 import axios from "axios";
 import { accessToken, baseUrl } from "../../../components/Helper/index";
+import { useToast } from '@chakra-ui/toast'
 
 const Listings = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -16,6 +17,11 @@ const Listings = () => {
   const router = useRouter();
   const selectedTab = router.query.page;
   const [orgSlug, setOrgSlug] = useState("");
+  const [userPermissions, setUserPermissions] = useState({
+    role: '',
+    permissions: [] as any
+  });
+  const toast = useToast()
 
   useEffect( ()=> {
     axios
@@ -35,6 +41,18 @@ const Listings = () => {
 
   }, [])
 
+  function getPermissions(){ 
+    const rolePermissionsString = localStorage.getItem('rolePermissions');
+    if (rolePermissionsString !== null) {
+      const rolePermissions = JSON.parse(rolePermissionsString);
+      setUserPermissions(rolePermissions);
+    }
+  }
+
+  useEffect( ()=> {
+    getPermissions()
+  }, [])
+
   useEffect(() => {
     if (selectedTab === 'volunteer') {
       setSelectedButton(2); 
@@ -44,12 +62,38 @@ const Listings = () => {
   }, [selectedTab]);
   
   const handleClickOne = () => {
+    getPermissions()
     setSelectedButton(1);
   };
 
   const handleClickTwo = () => {
+    getPermissions()
     setSelectedButton(2);
   };
+
+
+  function handleCreateListing(selectedButton: number){
+    if(userPermissions?.role === 'Superadmin' 
+      || (userPermissions?.permissions && userPermissions.permissions.includes(`${selectedButton === 1? 'create_donation_listings' : 'create_volunteer_listings'}`))){
+        
+      const btnRoute = `listings/create?type=${selectedButton === 1? 'donation' : 'volunteer'}`;
+      router.push(btnRoute);
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+    }
+  }
+
+  function handleCreateApplication(){
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('create_applications'))){
+      const btnRoute = `listings/create?type=volunteer&form=application`;
+      router.push(btnRoute);
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+    }
+  }
+
+  
+
 
   return (
     <div style={{overflowX:"hidden"}}>
@@ -87,16 +131,20 @@ const Listings = () => {
                 </div>
               </div>
             <div className='mt-5 align-items-center d-flex'>
-              <Link href={`listings/create?type=${selectedButton === 1? 'donation' : 'volunteer'}`}>
-                    <button className='create-list-btn'>Create Listing</button>
-              </Link>
-
-              <Link href='listings/create?type=volunteer&form=application' className='ml-2'>
-                    <button className='create-list-btn'>Create Application</button>
-              </Link>
+                <button className='create-list-btn' onClick={() => handleCreateListing(selectedButton)}>Create Listing</button>
+              {selectedButton === 2 ? 
+                <button className='create-list-btn ml-2' onClick={handleCreateApplication}>Create Application</button>
+              :null}
             </div>
         </div>
-        {selectedButton === 1 ? <DonationListing orgSlug = {orgSlug} /> : <VolunteerListing orgSlug = {orgSlug}/>}
+        {selectedButton === 1 ? 
+        <DonationListing 
+          orgSlug = {orgSlug} 
+          userPermissions = {userPermissions} 
+        /> : <VolunteerListing 
+          orgSlug = {orgSlug}
+          userPermissions = {userPermissions} 
+        />}
       </div>
     </div>
     <Footer/>

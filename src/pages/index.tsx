@@ -108,8 +108,11 @@ const Home: NextPage = () => {
       if(isLogin()){
         if(showModel.signUp === false && showModel.signUpVerification === false && showModel.step1 === false && showModel.step2 === false && showModel.welcomeScreen1 === false 
           && showModel.welcomeScreen2 === false && showModel.welcomeScreen3 === false && showModel.welcomeScreen4 === false){
-          axios.get(`${baseUrl}/accept-invite?invitationtoken=${token}`)
-            .then((response) => {
+          axios.get(`${baseUrl}/accept-invite?invitationtoken=${token}`, {
+            headers: {
+              Authorization: 'Bearer ' + accessToken(),
+            }
+          }).then((response) => {
               if(response.data.status === 'accepted'){
                 toast({ position: 'top', title: response.data.message, status: 'warning' })
                 goToOrganizatonDashboard()
@@ -129,8 +132,11 @@ const Home: NextPage = () => {
               toast({ position: 'top', title: error.response.data.message, status: 'warning' })
             });
         }else if(showModel.signUp === true){
-          axios.get(`${baseUrl}/accept-invite?invitationtoken=${token}`)
-            .then((response) => {
+          axios.get(`${baseUrl}/accept-invite?invitationtoken=${token}`, {
+            headers: {
+              Authorization: 'Bearer ' + accessToken(),
+            }
+          }).then((response) => {
               if(response.data.status === 'accepted'){
                 toast({ position: 'top', title: response.data.message, status: 'warning' })
               }
