@@ -149,36 +149,7 @@ const Message = (props) => {
 		}
 	}, []);
 
-	//	New chat notification handler
-    useEffect(() => {
-		Pusher.logToConsole = false;
-		var pusher = new Pusher(`${Pusher_key}`, {
-		cluster: 'mt1'
-		});
-		var channel2 = pusher.subscribe('new_chat_notification_'+userId);
-		channel2.bind('pusher:subscription_succeeded', function() {
-			channel2.bind('newChat', function(data) {
-				const newData=data.newchat
-				if(newData && newData[0].model_type != 'Organization'){
-					setChatRoom(newData);
-				}else if(newData && newData[0].model_type == 'Organization' && userId == newData[0].receiver.id){
-					setChatRoom(newData);
-				}
-			});
-		});
-
-		var channel = pusher.subscribe('sender_chat_'+userId);
-		channel.bind('pusher:subscription_succeeded', function() {
-			channel.bind('sender_notify', function(data) {
-					let senderData=data.chat
-					if(senderData && senderData[0].model_type != 'Organization'){
-						setChatRoom(senderData);
-					}else if(senderData && senderData[0].model_type == 'Organization' && userId == senderData[0].receiver.id){
-						setChatRoom(senderData);
-					}
-			});
-			});
-	}, [])
+	
 
 
 	//	Set insufficient credits handler
@@ -592,8 +563,10 @@ const Message = (props) => {
 					setTimeout(() => {
 						scrollToBottom()
 					}, 200);
-				})
 
+					
+				})
+				
 		}
 	}
 
@@ -867,13 +840,17 @@ const Message = (props) => {
 							setTimeout(() => {
 								scrollToBottom()
 							}, 200);
+							
 						})
-				})
-				.catch((error) => {
-				})
+					})
+					.catch((error) => {
+					})
+					
+					
 		}
 		Pusher.logToConsole = false
 	}, [])
+
 
 	// Image upload handler
 	const onFileUpload = (e) => {
@@ -974,6 +951,114 @@ const Message = (props) => {
 		}
 	}
 	
+	// console.log('chatroom outside: ', chatRoom)
+
+	//	New chat notification handler
+    useEffect(() => {
+		Pusher.logToConsole = false;
+		var pusher = new Pusher(`${Pusher_key}`, {
+		cluster: 'mt1'
+		});
+
+		// Channel for 'new_chat_notification_'+userId
+		const handleNewChatChannel = () => {
+			var channel2 = pusher.subscribe('new_chat_notification_'+userId);
+			channel2.bind('pusher:subscription_succeeded', function() {
+				channel2.bind('newChat', function(data) {
+					const newData=data.newchat
+					
+					if(newData && newData[0].model_type != 'Organization'){
+						const chatId = newData[0].id;
+							
+						let updatedChatList = [...chatRoom];
+
+						const existingChatIndex = updatedChatList.findIndex((chat) => chat.id === chatId);
+						console.log('existingChatIndex', existingChatIndex)
+						if (existingChatIndex !== -1) { 
+							updatedChatList[existingChatIndex] = newData[0];
+						} else { 
+							updatedChatList.push(newData[0]);
+						}
+				
+						setChatRoom(updatedChatList);
+
+					}else if(newData && newData[0].model_type == 'Organization' && userId == newData[0].receiver.id){
+						const chatId = newData[0].id;
+						
+						let updatedChatList = [...chatRoom];
+						const existingChatIndex = updatedChatList.findIndex((chat) => chat.id === chatId);
+						
+						if (existingChatIndex !== -1) { // Update existing chat
+							updatedChatList[existingChatIndex] = newData[0];
+						} else { // Create new chat
+							updatedChatList.push(newData[0]);
+						}
+				
+						setChatRoom(updatedChatList);
+					}
+				});
+			});
+
+			// Cleanup function to unsubscribe when the component unmounts
+			return () => {
+				pusher.unsubscribe('new_chat_notification_'+userId);
+			};
+		}
+
+		// Channel for 'sender_chat_'+userId
+		const handleSenderChatChannel = () => {
+			var channel = pusher.subscribe('sender_chat_'+userId);
+			channel.bind('pusher:subscription_succeeded', function() {
+				channel.bind('sender_notify', function(data) {
+						let senderData=data.chat
+						
+						if(senderData && senderData[0].model_type != 'Organization'){
+							const chatId = senderData[0].id;
+							
+							let updatedChatList = [...chatRoom];
+
+							const existingChatIndex = updatedChatList.findIndex((chat) => chat.id === chatId);
+							console.log('existingChatIndex', existingChatIndex)
+							if (existingChatIndex !== -1) { 
+								updatedChatList[existingChatIndex] = senderData[0];
+							} else { 
+								updatedChatList.push(senderData[0]);
+							}
+					
+							setChatRoom(updatedChatList);
+						}else if(senderData && senderData[0].model_type == 'Organization' && userId == senderData[0].receiver.id){
+							const chatId = senderData[0].id;
+						
+							let updatedChatList = [...chatRoom];
+							const existingChatIndex = updatedChatList.findIndex((chat) => chat.id === chatId);
+							
+							if (existingChatIndex !== -1) { // Update existing chat
+								updatedChatList[existingChatIndex] = senderData[0];
+							} else { // Create new chat
+								updatedChatList.push(senderData[0]);
+							}
+					
+							setChatRoom(updatedChatList);
+						}
+				});
+			});
+
+			// Cleanup function to unsubscribe when the component unmounts
+			return () => {
+				pusher.unsubscribe('sender_chat_'+userId);
+			};
+		}
+
+		// Call the functions to handle each channel
+		handleNewChatChannel();
+		handleSenderChatChannel();
+
+		// Cleanup function to unsubscribe from all channels when the component unmounts
+		return () => {
+			pusher.unsubscribe('new_chat_notification_'+userId);
+			pusher.unsubscribe('sender_chat_'+userId);
+		};
+	}, [chatRoom])
 	//=========================================================RETURN==================================================================	
 
 	return (

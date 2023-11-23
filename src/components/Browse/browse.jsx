@@ -248,8 +248,7 @@ function Browse(props) {
     let bURL = "";
 
     if (isLogin() && props.isBookmark) {
-      bURL = `${baseUrl}/user/bookmarked/${filterListingType}?post_type=${filterPostType}&page=${page}&credit_range_from=${miPrice}&credit_range_to=${obj.maxPrice || ''}${locationData
-        }`;
+      bURL = `${baseUrl}/user/bookmarked/${filterListingType}?post_type=${filterPostType}&page=${page}&credit_range_from=${miPrice}&credit_range_to=${obj.maxPrice || ''}${locationDataFilter}`;
     } else if (props.isSearch) {
       bURL = `${baseUrl}/browse/${filterListingType}?post_type=${filterPostType}&page=${page}&credit_range_from=${miPrice}&credit_range_to=${obj.maxPrice || ''}${locationDataFilter}&title=${router.query.search}`;
     } else {
