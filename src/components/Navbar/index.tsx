@@ -850,14 +850,8 @@ export default function Navbar(props: any) {
                       />
                     </MenuButton>
                     <MenuList px={'10px'}>
-                      <Link href="#"
-                        _hover={{
-                          textDecoration: 'none',
-                          color: '#dd6b20'
-                        }}>
-                        <MenuItem>New Applicant</MenuItem>
-                      </Link>
-                      <Link href="#"
+                    <MenuItem>No New Notification</MenuItem>
+                      {/* <Link href="#"
                         _hover={{
                           textDecoration: 'none',
                           color: '#dd6b20'
@@ -884,7 +878,7 @@ export default function Navbar(props: any) {
                           color: '#dd6b20'
                         }}>
                         <MenuItem>New Applicant</MenuItem>
-                      </Link>
+                      </Link> */}
                     </MenuList>
                   </Menu>
                   <Menu>
