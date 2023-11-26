@@ -40,6 +40,22 @@ const VolunteerApplicants = () => {
   const [applicationId, setApplicationId] = useState(0);
   const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors);
   const [slug, setSlug] = useState("");
+  const [userPermissions, setUserPermissions] = useState({
+    role: '',
+    permissions: [] as any
+  });
+
+  function getPermissions(){ 
+    const rolePermissionsString = localStorage.getItem('rolePermissions');
+    if (rolePermissionsString !== null) {
+      const rolePermissions = JSON.parse(rolePermissionsString);
+      setUserPermissions(rolePermissions);
+    }
+  }
+
+  useEffect( ()=> {
+    getPermissions()
+  }, [])
 
   const { listing } = router.query;
   const [formData, setFormData] = useState({
@@ -120,13 +136,17 @@ const VolunteerApplicants = () => {
   }, [slug, listing]);
 
   const handleClickdown = (index: number) => {
-
-    if (selectedRowIndex === index) {
-      setSelectedRowIndex(-1);
-      setShowCard(true); 
-    } else {
-      setSelectedRowIndex(index);
-      setShowCard(true);
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_applications_status'))){
+      if (selectedRowIndex === index) {
+        setSelectedRowIndex(-1);
+        setShowCard(true); 
+      } else {
+        setSelectedRowIndex(index);
+        setShowCard(true);
+      }
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+      return;
     }
   };
 
@@ -219,6 +239,7 @@ const VolunteerApplicants = () => {
 
   const handleStatus = (statusId: number, applicationId: number, rowIndex: number) => { 
     setSelectedRowIndex(-1);
+
     if(statusId === 8){
       setUpdatingRowIndex(rowIndex);
       setFormData((formData) => ({
@@ -464,7 +485,7 @@ const dataSource =
             height={297}
             className="img-fluid"
             // @ts-ignore: Unreachable code error
-            src={applicationsData?.thumbnail?.path}
+            src={`${applicationsData?.thumbnail?.path}/${applicationsData?.thumbnail?.image}`}
           />
           <p className="ms-4 fw-bold fs-4">
             {

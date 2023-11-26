@@ -15,11 +15,12 @@ import { useRouter } from "next/router";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
 const VolunteerApplications = () => {
-  const [volunteerData, setVolunteerData] = useState([]);
+  const [orgSlug, setOrgSlug] = useState('');
   const [applicantName, setApplicantName] = useState([]);
   const [volunteerName, setVolunteerName] = useState([]);
   const [volunteerSlug, setVolunteerSlug] = useState([]);
   const [show, setShow] = useState(false);
+  
   useEffect(() => {
     axios
       .get(`${baseUrl}/organizations`, {
@@ -29,12 +30,15 @@ const VolunteerApplications = () => {
         },
       })
       .then((res) => {
-        setVolunteerData(res.data[0]?.slug);
+        setOrgSlug(res.data[0]?.slug);
       })
       .catch((err) => {
       });
+  }, []);
+  
+  useEffect(() => {
     axios
-      .get(`${baseUrl}/volunteer-applications/${volunteerData}`, {
+      .get(`${baseUrl}/volunteer-applications/${orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
@@ -46,7 +50,7 @@ const VolunteerApplications = () => {
       })
       .catch((err) => {
       });
-  }, [volunteerData]);
+  }, [orgSlug]);
 
   // useEffect(() => {
   //   volunteerName.map((item, index) => {
@@ -61,7 +65,7 @@ const VolunteerApplications = () => {
     event.preventDefault();
     router.push({
       pathname: "volunteer-applications/applicants",
-      query: { slug: `${volunteerData}` },
+      query: { slug: `${orgSlug}` },
     });
   };
   return (
@@ -92,7 +96,7 @@ const VolunteerApplications = () => {
                       <a className="">
                         <Image className="applicant-image m-auto mx-md-0 my-3" src={
                           // @ts-ignore: Unreachable code error
-                          item?.path} />
+                          `${item?.path}/${item?.image}`} />
                       </a>
                     </Link>
                     <div>{

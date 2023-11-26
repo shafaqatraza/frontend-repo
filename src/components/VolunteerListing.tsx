@@ -5,18 +5,28 @@ import deletelogo from "../assets/imgs/deletelogo.png";
 import edit2 from "../assets/imgs/edit2.png";
 import axios from "axios";
 import { useToast } from '@chakra-ui/toast'
+import { useRouter } from 'next/router';
 import { accessToken, baseUrl, currentOrganization } from "./Helper/index";
 
-const VolunteerListing = () => {
-  const [data, setData] = useState([]);
+interface Volunteer {
+  slug: string;
+  title: string;
+  price: number;
+}
+
+const VolunteerListing = (props: any) => {
+  const {orgSlug, userPermissions} =props;
+  const [data, setData] = useState<Volunteer[]>([]);
   const [refresh, setRefresh] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const toast = useToast()
+  const [accessDenied, setAccessDenied] = useState(false)
+  const router = useRouter();
 
   const getVolunteerListings = () => {
     axios
       .get(`${baseUrl}/volunteer-listings/all/${ // @ts-ignore: Unreachable code error
-        currentOrganization?.slug}`, {
+        orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
@@ -32,17 +42,25 @@ const VolunteerListing = () => {
   }
 
   useEffect(() => {
-    if(currentOrganization){
+    if(orgSlug !== "" && userPermissions?.role === 'Superadmin' || orgSlug !== "" && (userPermissions?.permissions && userPermissions.permissions.includes('view_volunteer_listings'))){
       setLoading(true)
       getVolunteerListings();
+      setAccessDenied(false)
+    }else{
+      setAccessDenied(true)
     }
-  }, [currentOrganization]);
+  }, [orgSlug, userPermissions]);
 
   const deleteVolunteer = (charity: any) => {
+    if(userPermissions?.role !== 'Superadmin' || !(userPermissions?.permissions && userPermissions.permissions.includes('delete_volunteer_listings'))){
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+      return;
+    }
+
     setLoading(true)
     axios
       .delete(`${baseUrl}/volunteer-listings/${charity}/delete?org=${ // @ts-ignore: Unreachable code error
-        currentOrganization?.slug}`, {
+        orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
@@ -60,8 +78,25 @@ const VolunteerListing = () => {
       .catch((err) => {
       });
   };
+
+  const handleUpdateVolunteer = (listingSlug: string) => { console.log('userPermissions', userPermissions)
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_volunteer_listings'))){
+      const updateRoute = `listings/volunteer-listing/${listingSlug}/update`;
+      router.push(updateRoute); 
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+    }
+  }
+
   return (
     <>
+    {accessDenied? (
+       <div className="access-denied-container">
+        <h1 className="access-denied-title">Access Denied</h1>
+        <p className="access-denied-message">You don't have the necessary permissions to access volunteer listings.</p>
+      </div>
+    ):(
+
       <div className="row">
         {loading ? (
           <div
@@ -107,13 +142,9 @@ const VolunteerListing = () => {
                       </Link>
                       </div>
                       <div className="d-flex align-items-center me-2">
-                      <Link href={`listings/volunteer-listing/${
-                        // @ts-ignore: Unreachable code error
-                        item?.slug}/update`}>
                         <a>
-                          <img src={edit2.src} />
+                          <img src={edit2.src} onClick={()=> handleUpdateVolunteer(item?.slug)} />
                         </a>
-                      </Link>
                       </div>
                       <div className="d-flex align-items-center me-2">
                         <Image
@@ -139,6 +170,7 @@ const VolunteerListing = () => {
           ))
         )}
       </div>
+    )}
     </>
   );
 };

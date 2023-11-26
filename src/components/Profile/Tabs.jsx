@@ -23,8 +23,9 @@ import {
 
   export const MyTabs = (props) => {
 
-    const { listingData, transactionData } = props;
+    const { listingData, transactionData, applicationsData } = props;
     const [transactionList, setTransactionList] = useState([]);
+    const [applicationsList, setApplicationsList] = useState([]);
 
     useEffect(() => {
       let tmp = transactionData;
@@ -100,6 +101,50 @@ import {
       });
       setTransactionList(allData)
     }, [transactionData])
+
+
+    useEffect(() => {
+      let tmp = applicationsData;
+      const getStatusButtonInfo = (status) => {
+        switch (status) {
+          case "Contacted":
+            return { color: "fi-btn", label: "Contacted" };
+          case "New":
+            return { color: "sec-btn", label: "New" };
+          case "Rejected":
+            return { color: "f-btn", label: "Rejected" };
+          case "Approved":
+            return { color: "tir-btn", label: "Approved" };
+          case "Pending":
+            return { color: "pen-btn", label: "Pending" };
+          default:
+            return { color: "f-btn", label: "Unknown" };
+        }
+      };
+      // tmp.sort((a, b) => a.id < b.id ? 1 : -1);
+      let allData = tmp.length > 0 && tmp.map((item) => {
+          const { color, label } = getStatusButtonInfo(item.status);
+          return (
+            <>
+              <div style={{ display: "flex", justifyContent: "space-around", alignItems: "right" }} className="mt-4">
+                <div style={{ width: "40%" }}>
+                  <h2 className="font-bold">{item.title}</h2>
+                  
+                  <p className="text-sm text-gray-400">{item.created_at_human_diff}</p>
+                </div>
+                <div>
+                  <button className={color}>
+                    {item.status}
+                  </button>
+                </div>
+              </div>
+              <Divider my="5" borderColor="grey.300" />
+            </>
+          )
+      });
+      setApplicationsList(allData)
+    }, [applicationsData])
+
     return (
       <Box mt="10">
         <Box minH={"400px"}>
@@ -177,6 +222,13 @@ import {
                 <Center>
                   <Box w={isMobile ? "100%" : "60%"}>
                     {transactionList}
+                  </Box>
+                </Center>
+              </TabPanel>
+              <TabPanel minH={"40%"} className="mt-5">
+                <Center>
+                  <Box w={isMobile ? "100%" : "60%"}>
+                    {applicationsList}
                   </Box>
                 </Center>
               </TabPanel>

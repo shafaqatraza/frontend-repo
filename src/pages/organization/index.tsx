@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Footer } from "../../components/Footer";
 import Navbar from "../../components/Navbar";
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import user from "../../assets/imgs/user.png";
 import userB from "../../assets/imgs/userB.png";
 import heartB from "../../assets/imgs/heartB.png";
@@ -20,11 +20,16 @@ import { accessToken, baseUrl } from "../../components/Helper/index";
 import axios from "axios";
 import { useRouter } from 'next/router'
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { useToast } from '@chakra-ui/toast'
+// import { fetchPermissions } from '../../utils/orgPermissions';
+// import { useOrganization } from '../../components/Helper/OrganizationProvider';
 
 const organization = () => {
+  const toast = useToast()
   const [user, setUser] = useState(null);
   const [slug, setSlug] = useState([]);
-  const [organization, setOrganization] = useState(null);
+  const [organization, setOrganization] = useState([]);
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [subscriptionLoading, setSubscriptionLoading] = useState(true);
@@ -32,6 +37,24 @@ const organization = () => {
   const [hours, setHours] = useState({});
   const router = useRouter()
   const [show, setShow] = React.useState(false);
+  const [userPermissions, setUserPermissions] = useState({
+    role: '',
+    permissions: [] as any
+  });
+
+
+  function getPermissions(){ 
+    const rolePermissionsString = localStorage.getItem('rolePermissions');
+    if (rolePermissionsString !== null) {
+      const rolePermissions = JSON.parse(rolePermissionsString);
+      setUserPermissions(rolePermissions);
+    }
+  }
+
+  useEffect( ()=> {
+    getPermissions()
+  }, [])
+
   useEffect(() => {
     axios 
         .get(`${baseUrl}/organizations`, {
@@ -49,6 +72,11 @@ const organization = () => {
           console.log(err);
       });
   }, []);
+
+
+
+
+  
 
   useEffect(() => {
     axios
@@ -104,6 +132,29 @@ const organization = () => {
   }, [organization]);
   
 
+  function handleCrearePaymentPlan(){
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('create_payments'))){
+      router.push('/organization/payment-plans');
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+    }
+  }
+
+  function handleUpdatePaymentPlan(){
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_payments'))){
+      router.push('/organization/payment-plans');
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+    }
+  }
+  
+  function handleViewPostings(){
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_postings'))){
+      router.push('/organization/listings')
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+    }
+  }
   
   return (
     <div style={{overflowX:"hidden"}}>
@@ -158,7 +209,7 @@ const organization = () => {
                           }
                         </p>
                         <div className="mt-3">
-                          <a className="orga-txt" href="/organization/profile">
+                          <a className="orga-txt" href="/profile">
                             Edit Profile
                           </a>
                         </div>
@@ -249,7 +300,7 @@ const organization = () => {
                         fontWeight="600"
                         width="170px"
                         maxW="100%"
-                        onClick={() => { data?.length > 1 ? router.push('/organization/listings') : router.push('/organization/listings/create') }}
+                        onClick={() => { handleViewPostings() }}
                       >
                         View Postings
                       </Button>
@@ -298,21 +349,17 @@ const organization = () => {
                                 aria-valuemax={100}
                               ></div>
                             </div>
-                            <Link href="/organization/payment-plans">
-                              <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
+                              <button className="upgrade-btn d-block mx-auto mt-4 mb-3" onClick={handleUpdatePaymentPlan}>
                                 Upgrade
                               </button>
-                            </Link>
                           </div>
                         </div>
                       ) : (
                         <>
                           <p className="text-center mt-3 p-txt2 mb-3">There is no plan subscribed</p>
-                          <Link href="/organization/payment-plans">
-                            <button className="upgrade-btn d-block mx-auto mt-4 mb-3">
+                            <button className="upgrade-btn d-block mx-auto mt-4 mb-3" onClick={handleCrearePaymentPlan}>
                               Subscribe
                             </button>
-                          </Link>
                         </>
                       )
 

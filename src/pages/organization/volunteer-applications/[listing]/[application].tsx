@@ -8,6 +8,7 @@ import Link from "next/link";
 import axios from "axios";
 import { accessToken, baseUrl, currentOrganization } from "../../../../components/Helper/index";
 import { useRouter } from "next/router";
+import { useToast } from '@chakra-ui/toast'
 interface ApplicationData {
   application: any[]; // Assuming the application array contains any type of data
   applicant: {
@@ -17,6 +18,7 @@ interface ApplicationData {
 }
 const CompletedApplication = () => {
   const router = useRouter();
+  const toast = useToast()
   const { listing, application } = router.query;
   const [applicationData, setApplicationData] = useState<ApplicationData>({
     application: [{}],
@@ -35,6 +37,23 @@ const CompletedApplication = () => {
     receiver_id: '',
     listing_type: 'VolunteerListing',
   });
+  const [userPermissions, setUserPermissions] = useState({
+    role: '',
+    permissions: [] as any
+  });
+
+  function getPermissions(){ 
+    const rolePermissionsString = localStorage.getItem('rolePermissions');
+    if (rolePermissionsString !== null) {
+      const rolePermissions = JSON.parse(rolePermissionsString);
+      setUserPermissions(rolePermissions);
+    }
+  }
+
+  useEffect( ()=> {
+    getPermissions()
+  }, [])
+
   useEffect(()=>{
  
     if(application){
@@ -92,6 +111,7 @@ const CompletedApplication = () => {
   }, [receiverId]);
 
   const handleApplicant = () => {
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('create_messages'))){
     setIsContacting(true);
     // @ts-ignore: Unreachable code error
     const apiUrl = `${baseUrl}/messages/${listing}`;
@@ -108,16 +128,30 @@ const CompletedApplication = () => {
       .catch((err) => {
         setIsContacting(false);
       });
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+      return;
+    }
   };
 
   const markAsComplete = () =>{
-    setIsMarkCompleteBtnClicked(true);
-    router.push(`/organization/volunteer-applications/${listing}/${application}/mark-as-complete`);
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('create_certificates'))){
+      setIsMarkCompleteBtnClicked(true);
+      router.push(`/organization/volunteer-applications/${listing}/${application}/mark-as-complete`);
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+      return;
+    }
   }
 
   const viewCertificate = () =>{
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_certificates'))){
     setIsCertificateBtnClicked(true);
     router.push(`/organization/volunteer-applications/${listing}/${application}/certification`);
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+      return;
+    }
   }
   
 
@@ -251,8 +285,12 @@ const CompletedApplication = () => {
                         </p>
                         
                         <p>
-                          <span style={questionStyle}>Date: </span>
+                          <span style={questionStyle}>Start Date: </span>
                           <span style={answerStyle}>{question?.date_availability}</span>
+                        </p>
+                        <p>
+                          <span style={questionStyle}>End Date: </span>
+                          <span style={answerStyle}>{question?.end_date}</span>
                         </p>
                         <p style={questionStyle}>Availabilities</p>
                         {question.availabilities?.map((avaiability: any)=> (

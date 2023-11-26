@@ -21,12 +21,13 @@ import {
   Text,
   Avatar,
   Spacer,
-  Spinner
+  Spinner,
 } from '@chakra-ui/react'
+
 import { ReactNode, useEffect, useState, useCallback, useRef } from 'react'
 import { FaUserCircle } from 'react-icons/fa'
 import { Modal } from "react-bootstrap";
-import { FiHeart, FiMessageSquare, FiLogIn } from 'react-icons/fi'
+import { FiHeart, FiMessageSquare, FiLogIn, FiBell } from 'react-icons/fi'
 import { NavbarDrawer } from './drawer'
 import { useMediaQuery } from '@chakra-ui/react'
 import Image from 'next/image'
@@ -113,14 +114,11 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 )
 
 export default function Navbar(props: any) {
-
-  // console.log('getLoginData', getLoginData())
-
-  // const audio= new Audio('https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7');
-
+  
   const musicPlayers = useRef<HTMLAudioElement | undefined>(
     typeof Audio !== "undefined" ? new Audio("https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7") : undefined
   );
+  
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   // const [isChatLoading, setIsChatLoading] = useState(true)
@@ -134,6 +132,7 @@ export default function Navbar(props: any) {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [showCreateOrg, setShowCreateOrg] = useState(false);
   const [orgData, setOrgData] = useState([]);
+  const [orgSlug, setOrgSlug] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
@@ -309,6 +308,7 @@ export default function Navbar(props: any) {
           }
         }).then((res) => {
           setOrgData(res.data);
+          setOrgSlug(res.data[0].slug)
         }).catch((err) => {
           // console.log(err);
         })
@@ -345,7 +345,21 @@ export default function Navbar(props: any) {
       getOrganizationNotifications()
     }
 
-  }, [])
+  }, [isLogin()])
+
+  useEffect (() => {
+    if(orgSlug !== ""){
+      axios.get(`${baseUrl}/org-role-permissions/member?org=${orgSlug}`, {
+        headers: {
+          Authorization: 'Bearer ' + accessToken(),
+        }
+      }).then((res) => {
+        localStorage.setItem("rolePermissions", JSON.stringify(res.data));
+      }).catch((err) => {
+        // console.log(err);
+      })
+    }
+  }, [orgSlug])
 
   useEffect(() => {
 
@@ -696,8 +710,8 @@ export default function Navbar(props: any) {
                       <Link href="/about" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>About us</Link>
                       <Link href="/browse?type=offering&activeTab=0" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Items</Link>
                       <Link href="/browse?type=offering&activeTab=1" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Services</Link>
-                      <Link href="/browse?type=offering&activeTab=3" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Donate</Link>
-                      <Link href="/browse?type=offering&activeTab=2" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Volunteer</Link>
+                      <Link href="/browse?type=donation&activeTab=3" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Donate</Link>
+                      <Link href="/browse?type=volunteer&activeTab=2" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Volunteer</Link>
                       <Link href="../../students-landing" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>40 Hours Program</Link>
                       <Link href="/blogs" style={{ color: "black", margin: "0 2rem 1rem", fontWeight: "500", fontSize: "14px" }}>Blogs</Link>
                     </Stack>
@@ -819,7 +833,54 @@ export default function Navbar(props: any) {
                     </MenuButton>
                     }
                   </Menu>
-
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      rounded={'full'}
+                      variant={'link'}
+                      cursor={'pointer'}
+                      minW={0}
+                      _focus={{
+                        boxShadow: 'none'
+                      }}
+                    >
+                      <FiBell
+                          size={23}
+                          style={{ marginRight: 5, marginLeft: 5, color: '#000' }}
+                      />
+                    </MenuButton>
+                    <MenuList px={'10px'}>
+                    <MenuItem>No New Notification</MenuItem>
+                      {/* <Link href="#"
+                        _hover={{
+                          textDecoration: 'none',
+                          color: '#dd6b20'
+                        }}>
+                        <MenuItem>New Donation</MenuItem>
+                      </Link>
+                      <Link href="#"
+                        _hover={{
+                          textDecoration: 'none',
+                          color: '#dd6b20'
+                        }}>
+                        <MenuItem>New Message</MenuItem>
+                      </Link>
+                      <Link href="#"
+                        _hover={{
+                          textDecoration: 'none',
+                          color: '#dd6b20'
+                        }}>
+                        <MenuItem>New Applicant</MenuItem>
+                      </Link>
+                      <Link href="#"
+                        _hover={{
+                          textDecoration: 'none',
+                          color: '#dd6b20'
+                        }}>
+                        <MenuItem>New Applicant</MenuItem>
+                      </Link> */}
+                    </MenuList>
+                  </Menu>
                   <Menu>
                     <MenuButton
                       as={Button}
@@ -909,6 +970,7 @@ export default function Navbar(props: any) {
                       </Button>
                     </MenuList>
                   </Menu>
+                  
                 </div>
               </Flex>
             )}

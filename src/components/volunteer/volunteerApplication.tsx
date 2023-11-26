@@ -252,6 +252,7 @@ function handleAvailabilityCheckbox(question_id, day, timeOfDay, checked) {
   useEffect(() => {
     localStorage.removeItem("listingData");
   }, []);
+  console.log('questionErrors', questionErrors)
   // @ts-ignore: Unreachable code error
   const handleShortAnswer = (question_id, answer, type) => {
     setApplicationFormData((prevFormData) => { // @ts-ignore: Unreachable code error
@@ -266,9 +267,15 @@ function handleAvailabilityCheckbox(question_id, day, timeOfDay, checked) {
         } else if(type === "availability"){
           setQuestionErrors((prevErrors) => ({
             ...prevErrors,
-            [`${question_id}-date`]: false, // Reset the error state for the specific question ID
+            [`${question_id}-date`]: false,
           }));
           updatedFormData[formDataIndex].date_availability = answer;
+        }else if(type === 'availabilityEndDate'){
+          setQuestionErrors((prevErrors) => ({
+            ...prevErrors,
+            [`${question_id}-end-date`]: false,
+          }));
+          updatedFormData[formDataIndex].end_date = answer;
         }else {
           setQuestionErrors((prevErrors) => ({
             ...prevErrors,
@@ -611,7 +618,7 @@ function handleAvailabilityCheckbox(question_id, day, timeOfDay, checked) {
       </Box>
     );
   };
-
+console.log('formQuestions', formQuestions)
   const askAvailabilityHTML = (id: string, questionErrors: any, formQuestions: any, applicationFormData: any, availability: any) => {
     const question_id = formQuestions[id].question_id;
     // @ts-ignore: Unreachable code error
@@ -650,22 +657,42 @@ function handleAvailabilityCheckbox(question_id, day, timeOfDay, checked) {
                         key={id}>
       <FormControl mb={'20px'} isRequired={formQuestions[id].is_required? true: false}>
         <FormLabel color="#000000" pb={'15px'} fontSize="16px" fontWeight={500}>
-          Date I am available to start
+          Date I am available to
         </FormLabel>
         <div className="col-md-10 mb-3">
-        <Input
-          variant="filled"
-          bg={'#F6F6F6'}
-          border="1px"
-          borderColor={'#E8E8E8'}
-          className={`${questionErrors[`${question_id}-date`] ? 'input-error' : ''}`}
-          type="date"
-          maxLength={255}
-          placeholder="Begin typing here"
-          onChange={(e) => handleShortAnswer(question_id, e.target.value, 'availability')}
-        />
-        {// @ts-ignore: Unreachable code error
-          questionErrors[`${question_id}-date`] && <p className="error-message">Please select a date.</p>}
+          <div className="row">
+              <div className="col-md-6">
+                <label><b> Start Date </b></label>
+                <Input
+                  variant="filled"
+                  bg={'#F6F6F6'}
+                  border="1px"
+                  borderColor={'#E8E8E8'}
+                  className={`${questionErrors[`${question_id}-date`] ? 'input-error' : ''}`}
+                  type="date"
+                  maxLength={255}
+                  placeholder="Begin typing here"
+                  onChange={(e) => handleShortAnswer(question_id, e.target.value, 'availability')}
+                />
+                {questionErrors[`${question_id}-date`] && <p className="error-message">Please select start date.</p>}
+              </div>
+              <div className="col-md-6">
+                <label><b> End Date </b></label>
+                <Input
+                  variant="filled"
+                  bg={'#F6F6F6'}
+                  border="1px"
+                  borderColor={'#E8E8E8'}
+                  className={`${questionErrors[`${question_id}-end-date`] ? 'input-error' : ''}`}
+                  type="date"
+                  maxLength={255}
+                  placeholder="Begin typing here"
+                  onChange={(e) => handleShortAnswer(question_id, e.target.value, 'availabilityEndDate')}
+                />
+                {questionErrors[`${question_id}-end-date`] && <p className="error-message">Please select end date.</p>}
+              </div>
+            </div>
+          
         </div>
         <Text color="#000000" pb={'15px'} fontSize="16px" fontWeight={500}>
           Availability to
@@ -740,7 +767,7 @@ function handleAvailabilityCheckbox(question_id, day, timeOfDay, checked) {
                         key={id}>
       <FormControl isRequired={formQuestions[id].is_required? true: false}>
         <FormLabel color="#000000" pb={'15px'} fontSize="16px" fontWeight={500}>
-          Do you have experience working with {formQuestions[id].question}
+          {formQuestions[id].question}
         </FormLabel>
         <RadioGroup
           onChange={(value) => handleRadioChange(question_id, value, 'experience')} // Pass an array containing the selected option ID
@@ -893,6 +920,7 @@ function handleAvailabilityCheckbox(question_id, day, timeOfDay, checked) {
             question_id: question_id,
             selected_options: [],
             date_availability: "", 
+            end_date: "", 
             availability_to: [],
             is_required: is_required,
             type_id: type
@@ -982,7 +1010,8 @@ function handleAvailabilityCheckbox(question_id, day, timeOfDay, checked) {
     }
 }, [formData])
 // @ts-ignore: Unreachable code error
-const submitApplicationForm = (e) => {
+console.log('applicationFormData', applicationFormData);
+const submitApplicationForm = (e: any) => {
   e.preventDefault();
   setIsSubmitting(true)
   let hasErrors = false;
@@ -1015,6 +1044,7 @@ const submitApplicationForm = (e) => {
       }else if(question.type_id == 5){
         const options = question.selected_options;
         const date = question.date_availability;
+        const end_date = question.end_date;
         const shifts = question.availability_to;
         if (options.length == 0) { 
           setQuestionErrors((prevErrors) => ({
@@ -1028,6 +1058,14 @@ const submitApplicationForm = (e) => {
           setQuestionErrors((prevErrors) => ({
             ...prevErrors,
             [`${question_id}-date`]: true,
+          }));
+          hasErrors = true;
+        }
+
+        if (end_date == "") { 
+          setQuestionErrors((prevErrors) => ({
+            ...prevErrors,
+            [`${question_id}-end-date`]: true,
           }));
           hasErrors = true;
         }
@@ -1090,7 +1128,8 @@ const submitApplicationForm = (e) => {
       setIsSubmitting(false)
     })
     .catch((error) => {
-      toast({ position: "top", title: `${error.message.message}`, status: "error" })
+      toast({ position: "top", title: error.response.data.message, status: "error" })
+      setIsSubmitting(false)
     });
 
 }

@@ -8,7 +8,7 @@ import axios from "axios";
 import { useToast } from '@chakra-ui/toast'
 import { accessToken, baseUrl, currentOrganization } from "./Helper/index";
 import Link from "next/link";
-
+import { useRouter } from 'next/router';
 
 interface Donation {
   slug: string;
@@ -17,41 +17,55 @@ interface Donation {
 }
 
 
-const DonationListing = () => {
+const DonationListing = (props: any) => {
+  const {orgSlug, userPermissions} = props;
   const [data, setData] = useState<Donation[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const toast = useToast()
+  const router = useRouter();
+  const [accessDenied, setAccessDenied] = useState(false)
 
   const getDonationListings = () => {
-    axios
-      .get(`${baseUrl}/donation-listings/all/${// @ts-ignore: Unreachable code error
-        currentOrganization?.slug}`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => {
-        setData(res.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
+    if(orgSlug !== ""){
+      axios
+        .get(`${baseUrl}/donation-listings/all/${// @ts-ignore: Unreachable code error
+          orgSlug}`, {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+        .then((res) => {
+          setData(res.data.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
+    }
   }
-  useEffect(() => {
-    if(currentOrganization){
+
+  useEffect(() => { 
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_donation_listings'))){
       setLoading(true)
       getDonationListings();
+      setAccessDenied(false)
+    }else{
+      setAccessDenied(true)
     }
-  }, [currentOrganization]);
+  }, [orgSlug, userPermissions]);
 
   const deleteDonation = (charity: any) => {
+    if(userPermissions?.role !== 'Superadmin' || !(userPermissions?.permissions && userPermissions.permissions.includes('delete_donation_listings'))){
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+      return;
+    }
+
     setLoading(true)
     axios
       .delete(`${baseUrl}/donation-listings/${charity}/delete?org=${// @ts-ignore: Unreachable code error
-        currentOrganization?.slug}`, {
+        orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           // 'Content-Type': 'application/x-www-form-urlencoded'
@@ -69,8 +83,24 @@ const DonationListing = () => {
       .catch((err) => {
       });
   };
+
+  const handleUpdateDonation = (listingSlug: string) => {
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_donation_listings'))){
+      const updateRoute = `listings/donation-listing/${listingSlug}/update`;
+      router.push(updateRoute);
+    }else{
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+    }
+  }
+
   return (
     <>
+    {accessDenied? (
+       <div className="access-denied-container">
+        <h1 className="access-denied-title">Access Denied</h1>
+        <p className="access-denied-message">You don't have the necessary permissions to access donation listings.</p>
+      </div>
+    ):(
       <div className="row">
         {loading ? (
           <div
@@ -95,7 +125,7 @@ const DonationListing = () => {
                  src={
                  // @ts-ignore: Unreachable code error
                   item?.thumbnail}
-/>
+                  />
                  </div>
                  <div>
                 {
@@ -113,11 +143,9 @@ const DonationListing = () => {
                       </Link>
                       </div>
                       <div className="d-flex align-items-center me-2">
-                      <Link href={`listings/donation-listing/${item?.slug}/update`}>
-                        <a>
-                          <img src={edit2.src} />
-                        </a>
-                      </Link>
+                      <a>
+                        <img src={edit2.src} onClick={()=> handleUpdateDonation(item?.slug)}/>
+                      </a>
                       </div>
                       <div className="d-flex align-items-center me-2">
                         <Image
@@ -140,6 +168,7 @@ const DonationListing = () => {
           ))
         )}
       </div>
+    )}
     </>
   );
 };

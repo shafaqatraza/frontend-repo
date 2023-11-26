@@ -287,7 +287,7 @@ const MessageBoxOrgWeb = (props) => {
                     <Image
                         boxSize="75px"
                         objectFit="cover"
-                        src={userChatInformation[0].listing.image_path}
+                        src={`${userChatInformation[0]?.listing?.image_path}/${userChatInformation[0]?.listing?.image}`}
                         alt="Dan Abramov 4"
                         borderRadius={5}
                     />

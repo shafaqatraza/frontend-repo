@@ -17,6 +17,7 @@ function Profile() {
   const [listingData, setListingData] = useState([]);
   const [profileData, setProfileData] = useState([]);
   const [transactionData, setTransactionData] = useState([]);
+  const [applicationsData, setApplicationsData] = useState([]);
   const [referCode, setReferCode] = useState("");
 
   const getProfileDetails = useCallback(async () => {
@@ -72,6 +73,19 @@ function Profile() {
     }
   }, []);
 
+  const getApplicationsData = useCallback(async () => {
+    setIsLoading(true);
+    const data = await axios.get(`${baseUrl}/application`, {
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+      },
+    });
+    if (data.status === 200) {
+      setApplicationsData(data.data.data)
+      // setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
 
     if (!isLogin()) {
@@ -86,6 +100,7 @@ function Profile() {
         getProfileDetails();
         getProfileListing();
         getTransactionData();
+        getApplicationsData();
       }
 
     }
@@ -152,6 +167,7 @@ function Profile() {
           <MyTabs
             listingData={listingData}
             transactionData={transactionData}
+            applicationsData={applicationsData}
           />
         </>
       }

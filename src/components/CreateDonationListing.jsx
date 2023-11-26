@@ -265,7 +265,7 @@ const CreateDonationListing = () => {
       })
       .then((response) => {
         // setShowSuccess(true);
-        router.push("/organization/listings");
+        router.push('/organization/listings?page=donation');
         toast({ position: "top", title: response.data.message, status: "success" })
         setIsSubmitting(false);
       })
@@ -283,8 +283,7 @@ const CreateDonationListing = () => {
         setIsSubmitting(false);
       });
   };
-  console.log('eeeee', formErrors)
-  console.log('eeeee2', formData)
+
   return (
     <>
       <div className="d-flex justify-content-between col-md-8">

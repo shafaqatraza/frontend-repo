@@ -2441,3 +2441,22 @@ color: #E27832;
 .highlighted-name:hover {
   color: #e27832; /* New text color on hover */
 }
+
+/* Access Denied Style Start */
+.access-denied-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.access-denied-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: red;
+}
+
+.access-denied-message {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Access Denied Style End */

@@ -53,6 +53,23 @@ const NotificationSetting = () => {
     amount: string;
   }
 
+  const [userPermissions, setUserPermissions] = useState({
+    role: '',
+    permissions: [] as any
+  });
+
+  function getPermissions(){ 
+    const rolePermissionsString = localStorage.getItem('rolePermissions');
+    if (rolePermissionsString !== null) {
+      const rolePermissions = JSON.parse(rolePermissionsString);
+      setUserPermissions(rolePermissions);
+    }
+  }
+
+  useEffect( ()=> {
+    getPermissions()
+  }, [])
+
 
   useEffect( ()=> {
     axios
@@ -137,28 +154,33 @@ const NotificationSetting = () => {
  
 
   const handleSaveSetting = (e: any) => {
-    e.preventDefault();
-    if(slug){
-        setIsUpdating(true);
-        axios.post(`${baseUrl}/org-role-permissions/attach?org=${slug}`, checkboxState, {
-            headers: {
-                Authorization: "Bearer " + accessToken(),
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        })
-        .then((response) => { 
-            setIsUpdating(false);
-            
-            toast({ position: "top", title: response.data.message, status: "success" });
-        })
-        .catch((error) => {
-            setIsUpdating(false);
-            console.error('Error saving data:', error);
-            toast({ position: "top", title: 'Something went wrong, please try later.', status: "error" });
-        });
+    if(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('update_roles_permissions'))){
+      e.preventDefault();
+      if(slug){
+          setIsUpdating(true);
+          axios.post(`${baseUrl}/org-role-permissions/attach?org=${slug}`, checkboxState, {
+              headers: {
+                  Authorization: "Bearer " + accessToken(),
+                  "Content-Type": "application/x-www-form-urlencoded",
+              },
+          })
+          .then((response) => { 
+              setIsUpdating(false);
+              
+              toast({ position: "top", title: response.data.message, status: "success" });
+          })
+          .catch((error) => {
+              setIsUpdating(false);
+              console.error('Error saving data:', error);
+              toast({ position: "top", title: 'Something went wrong, please try later.', status: "error" });
+          });
+      }else{
+          setIsUpdating(false);
+          toast({ position: "top", title: 'Something went wrong.', status: "warning" });
+      }
     }else{
-        setIsUpdating(false);
-        toast({ position: "top", title: 'Something went wrong.', status: "warning" });
+      toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
+      return;
     }
   };
 

@@ -1,16 +1,13 @@
 import '../styles/globals.css'
 import { AppProps } from 'next/app'
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ChakraProvider } from '@chakra-ui/react'
 import customTheme from '../theme'
 import 'tailwindcss/tailwind.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { accessToken, baseUrl, currentOrganization } from "../components/Helper/index";
-import axios from "axios";
 import fav from "../assets/imgs/favicon.ico"
+import { OrganizationProvider } from '../components/Helper/OrganizationProvider';
 
 function MyApp ({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({
@@ -21,20 +18,6 @@ function MyApp ({ Component, pageProps }: AppProps) {
     }
   });
 
-  const router = useRouter();
-  // useEffect(() => {
-  //   const handleRouteChange = () => {
-  //     // Check if the current route is not an organization-related route
-  //     if (!router.asPath.startsWith('/organization')) {
-  //       // Remove the `currentOrganization` local storage variable
-  //       // @ts-ignore: Unreachable code error
-  //       localStorage.setItem('currentOrganization', null);
-  //     }
-  //   };
-  //   handleRouteChange();
-
-  // }, [router, currentOrganization]);
-
   return (
     <>
     <head >
@@ -42,7 +25,9 @@ function MyApp ({ Component, pageProps }: AppProps) {
     </head>
     <ChakraProvider theme={customTheme}>
       <QueryClientProvider client={queryClient}>
+        <OrganizationProvider>
         <Component {...pageProps} />
+        </OrganizationProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ChakraProvider>

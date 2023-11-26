@@ -69,13 +69,13 @@ const CreateApplication = (props: Props) => {
 
   const [showCard, setShowcard] = useState(false);
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
-
+  const [isUpdatingFrom, setIsUpdatingFrom] = React.useState(false);
   const handleButtonClick = () => {
     setShowcard(!showCard);
     setSelectedButton(null);
   };
 // ===============================================================================================
-  
+
   const [questions, setQuestions] = useState<{ id: string; type: string; is_deleted:boolean, type_id:number; html: JSX.Element }[]>([]);
 
   const [availability, setAvailability] = useState<AvailabilityState>({
@@ -89,18 +89,18 @@ const CreateApplication = (props: Props) => {
   });
   const [questionErrors, setQuestionErrors] = useState<{ [key: string]: boolean }>({});
   const [previousQuestions, setPreviousQuestions] = useState<{ id: string; question: any }[]>([]);
-  
 
-  
-  
-  const handleInputChange = (id: string, value: string) => { 
+
+
+
+  const handleInputChange = (id: string, value: string) => {
     if(id.includes("conditional")){
       let splitString  = id.split("conditional-");
       id = splitString[1];
       setPreviousQuestions((prevQuestions) => ({
         ...prevQuestions,
         [id]: { // @ts-ignore: Unreachable code error
-          ...prevQuestions[id], 
+          ...prevQuestions[id],
           conditional_question: value,
         },
       }));
@@ -109,44 +109,44 @@ const CreateApplication = (props: Props) => {
         ...prevErrors,
         [`conditional-${id}`]: false, // Reset the error state for the specific question ID
       }));
-    }else if(id.includes("option")){ 
+    }else if(id.includes("option")){
       let splitString  = id.split("-option-");
       id = splitString[0];
       let optionIndex = splitString[1];
-  
+
       setPreviousQuestions((prevQuestions) => {  // @ts-ignore: Unreachable code error
-        const questionToUpdate = prevQuestions[id]; 
+        const questionToUpdate = prevQuestions[id];
         if (!questionToUpdate) {
           return prevQuestions; // Question with the given ID not found, return the original state
         }
-    
+
         // Create a new copy of the options array
         const updatedOptions = [...questionToUpdate.options]; // @ts-ignore: Unreachable code error
         updatedOptions[optionIndex] = { // @ts-ignore: Unreachable code error
           ...updatedOptions[optionIndex],
           option: value,
         };
-    
+
         // Create a new copy of the question with the updated options
         const updatedQuestion = {
           ...questionToUpdate,
           options: updatedOptions,
         };
-    
+
         // Create a new copy of the previousQuestions state with the updated question
         const updatedQuestions = {
           ...prevQuestions,
           [id]: updatedQuestion,
         };
-    
+
         return updatedQuestions;
       });
-      
+
       setQuestionErrors((prevErrors) => ({
         ...prevErrors,
         [`${id}-option-${optionIndex}`]: false, // Reset the error state for the specific question ID
       }));
-    }else {
+    }else { console.log('cccccccccccc', id, value)
       setPreviousQuestions((prevQuestions) => ({
         ...prevQuestions,
         [id]: { // @ts-ignore: Unreachable code error
@@ -162,7 +162,7 @@ const CreateApplication = (props: Props) => {
     }
 
   };
-
+console.log('PreviousQuestions', previousQuestions)
   const handleRequiredChange = (id: string, value:boolean) => {
     setPreviousQuestions((prevQuestions) => ({
       ...prevQuestions,
@@ -172,7 +172,7 @@ const CreateApplication = (props: Props) => {
       },
     }));
   };
-  
+
   useEffect(() => {
     // Get application-form data for specific listing.
     axios
@@ -185,7 +185,7 @@ const CreateApplication = (props: Props) => {
       .then((res) => {
         setApplicationQuestions(res.data.data)
         setApplicationFormId(res.data.application_form_id)
-        setTotalApplications(res.data.applications)  
+        setTotalApplications(res.data.applications)
       })
       .catch((err) => {
       });
@@ -200,36 +200,36 @@ const CreateApplication = (props: Props) => {
   // Get the length of the filtered array
   const nonDeletedOptionsLength = nonDeletedOptions.length;
 
-    if (nonDeletedOptionsLength < 10) { 
+    if (nonDeletedOptionsLength < 10) {
       setPreviousQuestions((prevQuestions) => { // @ts-ignore: Unreachable code error
         const questionToUpdate = prevQuestions[id];
         if (!questionToUpdate) {
           return prevQuestions; // Question with the given ID not found, return the original state
         }
-    
+
         // Create a new copy of the options array and add the new option
         const updatedOptions = [...questionToUpdate.options, { id: 0, option: "", type: "new", is_deleted:false }];
-    
+
         // Create a new copy of the question with the updated options
         const updatedQuestion = {
           ...questionToUpdate,
           options: updatedOptions,
         };
-    
+
         // Create a new copy of the previousQuestions state with the updated question
         const updatedQuestions = {
           ...prevQuestions,
           [id]: updatedQuestion,
         };
-    
+
         return updatedQuestions;
       });
     }
   };
 
-  
+
   const handleRemoveOption = (id: string, optionIndex: number, previousQuestions: []) => { // @ts-ignore: Unreachable code error
-    
+
     setPreviousQuestions((prevQuestions) => { // @ts-ignore: Unreachable code error
       const questionToUpdate = prevQuestions[id];
       if (!questionToUpdate) {
@@ -249,23 +249,23 @@ const CreateApplication = (props: Props) => {
         }
         return option;
       }).filter(Boolean); // Remove null values from the array (options of type 'new')
-  
+
       // Create a new copy of the question with the updated options
       const updatedQuestion = {
         ...questionToUpdate,
         options: options,
       };
-  
+
       // Create a new copy of the previousQuestions state with the updated question
       const updatedQuestions = {
         ...prevQuestions,
         [id]: updatedQuestion,
       };
-  
+
       return updatedQuestions;
     });
   };
-  
+
   const handleDeleteComponent = (id: string) => {
 
     setPreviousQuestions((prevQuestions) => { // @ts-ignore: Unreachable code error
@@ -273,15 +273,15 @@ const CreateApplication = (props: Props) => {
       if (!questionToDelete) {
         return prevQuestions; // Question with the given ID not found, return the original state
       }
-  
+
       // If is_new is true, remove the question from the previousQuestions array
-      if (questionToDelete.is_new) { 
-        const updatedQuestions = { ...prevQuestions }; 
+      if (questionToDelete.is_new) {
+        const updatedQuestions = { ...prevQuestions };
         // @ts-ignore: Unreachable code error
         delete updatedQuestions[id];
         return updatedQuestions;
       }
-  
+
       // If is_new is false, update is_deleted to true for the question
       return {
         ...prevQuestions,
@@ -299,22 +299,22 @@ const CreateApplication = (props: Props) => {
       return updatedQuestions;
     });
   };
-  
+
   const handleResetForm = () => {
     setQuestions([]);
     setQuestionErrors({});
-     // @ts-ignore: Unreachable code error 
-    setPreviousQuestions((prevQuestions) => { 
+     // @ts-ignore: Unreachable code error
+    setPreviousQuestions((prevQuestions) => {
       const updatedQuestions = {};
-  
+
       for (const key in prevQuestions) {
-        const question = prevQuestions[key]; 
+        const question = prevQuestions[key];
         // @ts-ignore: Unreachable code error
         if (question.is_new) {
           // If is_new is true, skip the question (remove from previousQuestions)
           continue;
         }
-  
+
         // If is_new is false, update is_deleted to true
         // @ts-ignore: Unreachable code error
         updatedQuestions[key] = {
@@ -322,10 +322,10 @@ const CreateApplication = (props: Props) => {
           is_deleted: true,
         };
       }
-  
+
       return updatedQuestions;
     });
-      
+
   }
 
 // ===============================================================================================
@@ -370,7 +370,7 @@ const CreateApplication = (props: Props) => {
 
   const checkboxAndRadioQuestionHTML = (id: string, type_id: number, questionErrors: any, previousQuestions: any) => {
     return (
-      <Row> 
+      <Row>
         <Col md={12}>
           <div className="card shadow p-4 mt-3">
           <p className="listing-txt">Question</p>
@@ -445,11 +445,11 @@ const CreateApplication = (props: Props) => {
       </Row>
     );
   };
-  
+
   const conditionalQuestionHTML = (id: string, questionErrors: [], previousQuestions: any) => {
-  
+
     return (
-      <Row> 
+      <Row>
         <Col md={12}>
           <div className="card shadow p-4 mt-3">
           <p className="listing-txt">Question</p>
@@ -461,7 +461,7 @@ const CreateApplication = (props: Props) => {
               placeholder="Question"
               value={previousQuestions[id]?.question}
               onChange={(e: any) => handleInputChange(id, e.target.value)}
-            /> 
+            />
             {// @ts-ignore: Unreachable code error
             questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
             {// @ts-ignore: Unreachable code error
@@ -542,7 +542,43 @@ const CreateApplication = (props: Props) => {
         <Col md={12}>
           <p className="listing-txt mt-2">Availability</p>
           <div className="card shadow p-4 mt-3">
-            <p className="fw-bold">* I am available and agree to commit to:</p>
+            <div className="row">
+              <div className="col-md-6">
+                <p className="fw-bold">* I am available and agree to commit to:</p>
+              </div>
+              <div className="col-md-6">
+              <Input
+                type="text"
+                style={{ backgroundColor: "#E8E8E8" }}
+                placeholder="Begin Typing here"
+                id={id}
+                value={
+                  previousQuestions[id]?.question
+                    ? previousQuestions[id]?.question
+                        .split("I am available and agree to commit to:")[1]
+                    : ""
+                }
+                className={`${questionErrors[id] ? 'input-error' : ''}`}
+                onChange={(e: any) => {
+                  const inputValue = e.target.value;
+
+                  if (previousQuestions[id] && previousQuestions[id].question) {
+                    const splitQuestion = previousQuestions[id].question.split("I am available and agree to commit to:");
+                    if (splitQuestion[1]) {
+                      handleInputChange(id, splitQuestion[1].trim());
+                    } else {
+                      handleInputChange(id, inputValue); // Handle the input when the split didn't work
+                    }
+                  } else {
+                    handleInputChange(id, inputValue); // Handle the input when there's no previous question
+                  }
+                }}
+              />
+
+              </div>
+              {// @ts-ignore:
+              questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
+            </div>
             {// @ts-ignore: Unreachable code error
             previousQuestions[id] && // @ts-ignore: Unreachable code error
             previousQuestions[id].options.reduce((acc, option, index) => {
@@ -550,7 +586,7 @@ const CreateApplication = (props: Props) => {
                 acc.push(
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
-                    
+
                     <input
                       className="mr-2"
                       style={{ height: "18px", width: "18px" }}
@@ -585,13 +621,28 @@ const CreateApplication = (props: Props) => {
               <p className="fw-bold fs-5">Date I am available to start</p>
             </div>
             <div className="col-md-10">
-              <Input
-                style={{ backgroundColor: "#E8E8E8", height: "50px" }}
-                type="date"
-                className="form-control mt-2"
-                placeholder="Begin Typing Here"
-                disabled
-              />
+              <div className="row">
+                <div className="col-md-6">
+                  <label><b> Start Date </b></label>
+                  <input
+                    type="date"
+                    className="form-control mt-2"
+                    placeholder="Select Start Date"
+                    style={{ height: "50px" }}
+                   disabled
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label><b> End Date </b></label>
+                  <input
+                    type="date"
+                    className="form-control mt-2"
+                    placeholder="Select End Date"
+                    style={{ height: "50px" }}
+                    disabled
+                  />
+                </div>
+              </div>
             </div>
             <div>
               <p className="fw-bold fs-5 mt-2">*Availability to</p>
@@ -620,7 +671,7 @@ const CreateApplication = (props: Props) => {
             </div>
           </div>
         </Col>
-      </Row>  
+      </Row>
     );
   };
 
@@ -636,43 +687,46 @@ const CreateApplication = (props: Props) => {
                 <p className="fw-bold">* Do you have experience working with</p>
               </div>
               <div className="col-md-6">
-                {/* <Input 
-                  type="text" 
-                  style={{ backgroundColor: "#E8E8E8" }} 
-                  placeholder="Begin Typing here" 
-                  id={id} // @ts-ignore: Unreachable code error
-                  value={previousQuestions[id]?.question} // @ts-ignore: Unreachable code error
-                  className={`${questionErrors[id] ? 'input-error' : ''}`}
-                  onChange={(e:any) => handleInputChange(id, e.target.value)}
-                /> */}
                 <Input
                   type="text"
                   style={{ backgroundColor: "#E8E8E8" }}
                   placeholder="Begin Typing here"
-                  id={id} // @ts-ignore:
+                  id={id}
                   value={
                     previousQuestions[id]?.question
                       ? previousQuestions[id]?.question
-                          .split("Do you have experience working with")[1] // Get text after the delimiter
-                          .trim() // Remove leading/trailing whitespace
+                          .split("Do you have experience working with")[1]
                       : ""
-                  } // @ts-ignore:
-                  className={`${questionErrors[id] ? 'input-error' : ''}`}
-                  onChange={(e: any) => handleInputChange(id, e.target.value)}
+                  }
+                  className={`${questionErrors[id as any] ? 'input-error' : ''}`}
+                  onChange={(e: any) => {
+                    const inputValue = e.target.value;
+
+                    if (previousQuestions[id] && previousQuestions[id].question) {
+                      const splitQuestion = previousQuestions[id].question.split("Do you have experience working with");
+                      if (splitQuestion[1]) {
+                        handleInputChange(id, splitQuestion[1].trim());
+                      } else {
+                        handleInputChange(id, inputValue); // Handle the input when the split didn't work
+                      }
+                    } else {
+                      handleInputChange(id, inputValue); // Handle the input when there's no previous question
+                    }
+                  }}
                 />
               </div>
-              {// @ts-ignore: Unreachable code error
+              {// @ts-ignore:
               questionErrors[id] && <p className="error-message">Please fill out the field.</p>}
             </div>
-            
-            {// @ts-ignore: Unreachable code error
+
+            {// @ts-ignore:
              previousQuestions[id] && // @ts-ignore: Unreachable code error
              previousQuestions[id].options.reduce((acc, option, index) => {
                if (!option.is_deleted) {
                  acc.push(
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
-                    
+
                     <input
                       className="mr-2"
                       style={{ height: "18px", width: "18px" }}
@@ -745,7 +799,7 @@ const CreateApplication = (props: Props) => {
                 acc.push(
                 <div key={index}>
                   <div className="d-flex align-items-center mt-3">
-                    
+
                     <input
                       className="mr-2"
                       style={{ height: "18px", width: "18px" }}
@@ -781,7 +835,7 @@ const CreateApplication = (props: Props) => {
       </>
     );
   };
-  
+
 // ===============================================================================================
 
 const handleAddQuestion = (type: string, question_length: number, is_new:boolean) => {
@@ -876,8 +930,8 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
     default:
       return;
   }
-  
-  
+
+
   const question = {
     id: id,
     type: type,
@@ -898,14 +952,14 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
 };
 
 
-  const handleSubmit = (event: any) => { 
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     let hasErrors = false; // Validate the form and set error states for questions with empty values
-
+    setIsUpdatingFrom(true)
     // Iterate over each question
     Object.keys(previousQuestions).forEach((questionId) => { // @ts-ignore: Unreachable code error
       const question = previousQuestions[questionId];
-      if (question.question_type_id === 1) { 
+      if (question.question_type_id === 1) {
 
         if (!question.question) {
           setQuestionErrors((prevErrors) => ({
@@ -914,8 +968,8 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
           }));
           hasErrors = true;
         }
-      }else if (question.question_type_id === 2 || question.question_type_id === 3) { 
-    
+      }else if (question.question_type_id === 2 || question.question_type_id === 3) {
+
         if (!question.question) {
           setQuestionErrors((prevErrors) => ({
             ...prevErrors,
@@ -930,7 +984,7 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
           if (!option.option) {
             setQuestionErrors((prevErrors) => ({
               ...prevErrors,
-              [`${questionId}-option-${optIndex}`]: true, 
+              [`${questionId}-option-${optIndex}`]: true,
             }));
             hasErrors = true;
           }
@@ -961,13 +1015,13 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
           if (!option.option) {
             setQuestionErrors((prevErrors) => ({
               ...prevErrors,
-              [`${questionId}-option-${optIndex}`]: true, 
+              [`${questionId}-option-${optIndex}`]: true,
             }));
             hasErrors = true;
           }
         });
 
-      }else if (question.question_type_id === 5 || question.question_type_id === 6) { 
+      }else if (question.question_type_id === 5 || question.question_type_id === 6) {
           if (!question.question) {
             setQuestionErrors((prevErrors) => ({
               ...prevErrors,
@@ -982,7 +1036,7 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
           if (!option.option) {
             setQuestionErrors((prevErrors) => ({
               ...prevErrors,
-              [`${questionId}-option-${optIndex}`]: true, 
+              [`${questionId}-option-${optIndex}`]: true,
             }));
             hasErrors = true;
           }
@@ -993,6 +1047,7 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
     // If there are errors, prevent form submission
     if (hasErrors) {
       toast({ position: "top", title: 'Please fill out the complete form.', status: "warning" })
+      setIsUpdatingFrom(false)
       return;
     }
 
@@ -1011,28 +1066,30 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
       .then((response) => {
         // setSuccessMessage(response.data.message);
         // setShowSuccess(true);
+        setIsUpdatingFrom(false)
         toast({ position: "top", title: response.data.message, status: "success" })
         // router.push('/organization/listings');
       })
-      .catch((error) => { 
+      .catch((error) => {
         // Handle error here
-        // toast({ position: "top", title: "Something went wrong, please try again.", status: "error" })
+        toast({ position: "top", title: "Something went wrong, please try again.", status: "error" })
+        setIsUpdatingFrom(false)
       });
 
   };
-  
+
   useEffect(() => {
-	
-      if(applicationQuestions.length > 0){ 
-			setQuestions([]); 
-			setQuestionErrors({});
-      
-			applicationQuestions.forEach((question, index) => {
+
+      if(applicationQuestions.length > 0){
+      setQuestions([]);
+      setQuestionErrors({});
+
+      applicationQuestions.forEach((question, index) => {
         let id = index+1;
         let key = 'question-'+id;
-				let type = question.question_type_id;
-        setPreviousQuestions((prevQuestions) => ({ 
-          ...prevQuestions,  
+        let type = question.question_type_id;
+        setPreviousQuestions((prevQuestions) => ({
+          ...prevQuestions,
           [key]: {
             ...question,
             is_deleted: false,
@@ -1040,24 +1097,24 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
           },
         }));
 
-				if(type === 1){
-					handleAddQuestion("ShortQuestion", id, false)
-				}else if(type === 2){
-					handleAddQuestion("CheckboxQuestion", id, false)
-				}else if(type === 3){
-					handleAddQuestion("RadioButtonQuestion", id, false)
-				}else if(type === 4){
-					handleAddQuestion("ConditionalQuestion", id, false)
-				}else if(type === 5){
-					handleAddQuestion("AskAvailability", id, false)
-				}else if(type === 6){
-					handleAddQuestion("WorkExperience", id, false)
-				}else if(type === 7){
-					handleAddQuestion("AskVaccination", id, false)
-				}
-				
-			});
-			
+        if(type === 1){
+          handleAddQuestion("ShortQuestion", id, false)
+        }else if(type === 2){
+          handleAddQuestion("CheckboxQuestion", id, false)
+        }else if(type === 3){
+          handleAddQuestion("RadioButtonQuestion", id, false)
+        }else if(type === 4){
+          handleAddQuestion("ConditionalQuestion", id, false)
+        }else if(type === 5){
+          handleAddQuestion("AskAvailability", id, false)
+        }else if(type === 6){
+          handleAddQuestion("WorkExperience", id, false)
+        }else if(type === 7){
+          handleAddQuestion("AskVaccination", id, false)
+        }
+
+      });
+
       }
   }, [applicationQuestions])
 
@@ -1075,13 +1132,13 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
           </button>
         </div>
       </Modal>
-      
+
       <Row>
         <Col md="6">
           <form onSubmit={handleSubmit}>
               {questions.map((question, index) => (
                 <div key={question.id} className="component-container">
-                
+
                 {   !question.is_deleted && question.type === 'ShortQuestion' ? ( // @ts-ignore: Unreachable code error
                     question.html(questionErrors, previousQuestions)
                 ) : !question.is_deleted &&  question.type === 'CheckboxQuestion' ? ( // @ts-ignore: Unreachable code error
@@ -1100,20 +1157,17 @@ const handleAddQuestion = (type: string, question_length: number, is_new:boolean
               </div>
               ))}
               {totalApplications == 0? (
-                  <button
-                    type="submit"
-                    className="update-v-btn mb-5 mt-5 col-md-2 ms-3"
-                    onClick={handleSubmit}
-                    disabled={questions.length === 0}
-                  >
-                    Update
+                  <button type="submit" onClick={handleSubmit} disabled={isUpdatingFrom && questions.length === 0} id="submit" className="update-v-btn mb-5 mt-5 col-md-2 ms-3">
+                    <span id="button-text">
+                      {isUpdatingFrom ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Update"}
+                    </span>
                   </button>
               ): (
                 <div className="mb-10 mt-3">
                   <span>You can't update the the form.</span>
                 </div>
               )}
-              
+
           </form>
         </Col>
         <Col md="6">
