@@ -19,6 +19,10 @@ import { useToast } from '@chakra-ui/toast'
 import profilTrash from '../../../assets/imgs/profile-trash.png'
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Spinner from 'react-bootstrap/Spinner';
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng
+} from 'react-places-autocomplete';
 
 interface FormErrors {
   full_name:boolean,
@@ -47,9 +51,12 @@ const OrganizationInfo = () => {
     about: "",
     website_url: "",
     location: "",
+    coordinates: "",
     profile_picture:"",
     new_thumbnail:"",
   });
+  const [location, setLocation] = useState([])
+  const [latLng, setLatLng] = useState({})
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeletingOrganization, setIsDeletingOrganization] = useState(false);
   const [image, setImage] = useState(null);
@@ -172,12 +179,16 @@ const OrganizationInfo = () => {
       .then((res) => {
         setFormData(res.data.data);
         setData(res.data.data);
+        setLocation(res.data.data.location)
       })
       .catch((err) => {
         console.log(err);
       });
+    }
+  }, [orgSlug, refresh]);
 
-
+  useEffect(() => {
+    if(orgSlug){
       axios.get(`${baseUrl}/organization/subscriptions/subscribed-package?org=${orgSlug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
@@ -188,10 +199,9 @@ const OrganizationInfo = () => {
 
       }).catch((err)=>{
         console.log(err);
-
       })
     }
-  }, [orgSlug, refresh]);
+  }, [])
 
 
   const handleThumbnailClick = () => {
@@ -208,6 +218,27 @@ const OrganizationInfo = () => {
       setFormData({ ...formData, profile_picture: [file] });
     };
   };
+
+  
+  const handleChange = (address: any) => {
+    setLocation(address)
+  }
+
+  const handleSelect = (address2: any) => { 
+    setLocation(address2)
+    geocodeByAddress(address2)
+      .then((results: any) => getLatLng(results[0]))
+      .then((coordinates: any) => 
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          'location': address2,
+          'coordinates': coordinates.lat+','+coordinates.lng 
+        }))
+      )
+      .catch((error: any) => console.error('Error', error))
+  }
+
+
   const handleSubmit = (e: any, type: string) => {
     e.preventDefault();
     setIsUpdating(true);
@@ -245,7 +276,7 @@ const OrganizationInfo = () => {
         hasErrors = true;
       }
 
-      if (!formData.location) {
+      if (!location) {
         setFormErrors((prevErrors) => ({ ...prevErrors, ['location']: true}));
         hasErrors = true;
       }
@@ -264,6 +295,7 @@ const OrganizationInfo = () => {
     form.append("business_number", formData.business_number);
     form.append("about", formData.about);
     form.append("location", formData.location);
+    form.append("coordinates", formData.coordinates);
     form.append("website_url", formData.website_url);
     form.append("business_email", formData.business_email);
     form.append("new_thumbnail", formData.new_thumbnail);
@@ -460,7 +492,7 @@ const OrganizationInfo = () => {
 
 
   const [hover, setHover] = useState(false); // Track the hover state
-  const handleFileChange = (info: any) => {  console.log('aaa',info)
+  const handleFileChange = (info: any) => {  
   
     const file = info.file.originFileObj;
     if (file) {
@@ -513,6 +545,8 @@ const OrganizationInfo = () => {
       toast({ position: "top", title: "You don't have the necessary permissions.", status: "warning" })
     }
   }
+
+  
 
   return (
     <div style={{overflowX:"hidden"}}>
@@ -732,29 +766,62 @@ const OrganizationInfo = () => {
                       />
                       {formErrors['business_email'] && <p className="error-message">Please fill out the field.</p>}
                     </div>
-                    {/* <div className="mb-3">
-                      <label className="form-label fw-bold">Organization Name</label>
-                      <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
-                        type="text"
-                        className="form-control"
-                        value={formData?.full_name || ""}
-                        onChange={handleInputChange}
-                        name="full_name"
-                        required
-                      />
-                    </div> */}
                     <div className="mb-3">
                       <label className="form-label " style={{fontSize:'20px', fontWeight:'500'}}>Address</label>
-                      <Input
-                        style={{ backgroundColor: "#F6F6F6", height:'50px' }}
-                        type="text"
-                        className={`form-control ${formErrors['location'] ? 'input-error' : ''}`}
-                        value={formData?.location || ""}
-                        onChange={handleInputChange}
-                        name="location"
-                        required
-                      />
+                      <PlacesAutocomplete
+                      value={location}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+                      onSelect={(e: React.ChangeEvent<HTMLInputElement>) => handleSelect(e)}
+                    >
+                      {({
+                        getInputProps,
+                        suggestions,
+                        getSuggestionItemProps,
+                        loading
+                      }: {
+                        //Defining types of perameters
+                        getInputProps: any;
+                        suggestions: any[];
+                        getSuggestionItemProps: any;
+                        loading: boolean;
+                      }) => (
+                        <div>
+                          <input
+                            {...getInputProps({
+                              placeholder: 'Search address...',
+                              className: 'location-search-input'
+                            })}
+                          />
+                          <div className="autocomplete-dropdown-container">
+                            {loading && <div>Loading...</div>}
+                            {suggestions.map((suggestion) => {
+                              const className = suggestion.active
+                                ? 'suggestion-item--active'
+                                : 'suggestion-item'
+                              const style = suggestion.active
+                                ? {
+                                  backgroundColor: '#fafafa',
+                                  cursor: 'pointer'
+                                }
+                                : {
+                                  backgroundColor: '#ffffff',
+                                  cursor: 'pointer'
+                                }
+                              return (
+                                <div
+                                  {...getSuggestionItemProps(suggestion, {
+                                    className,
+                                    style
+                                  })}
+                                >
+                                  <span>{suggestion.description}</span>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </PlacesAutocomplete>
                       {formErrors['location'] && <p className="error-message">Please fill out the field.</p>}
                     </div>
                     <div className="mb-3">
