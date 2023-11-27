@@ -58,13 +58,11 @@ const scrollToRef = (ref) => {
   }
 }
 
-let centerLatLng = {};
+let currentLatLng = {};
 
 function Browse(props) {
-  // console.log('@@@ isSearch', props.isSearch);
+
   const router = useRouter()
-  // console.log('@@@ router', router);
-  // console.log('@@@ router.query.search', router.query.search);
   const myRef = useRef(null)
   const toast = useToast()
   const [isSmallerThan767] = useMediaQuery('(max-width: 767px)')
@@ -110,10 +108,6 @@ function Browse(props) {
   const [donationData, setDonationData] = useState([])
   const [selectedTab, setSelectedTab] = useState(null)
 
-  // console.log("selectedVolunteerCategory", selectedVolunteerCategory)
-  // console.log("selectedServiceCategory", selectedServiceCategory)
-
-  // const [tmpLoading, setTmpLoading] = useState(false)
   let tmpLoading = true;
   
   useEffect(() => {
@@ -228,17 +222,17 @@ function Browse(props) {
 
 
     let locationDataFilter = "";
-    if (centerLatLng.lat !== undefined && centerLatLng.lng !== undefined) {
+    if (currentLatLng.lat !== undefined && currentLatLng.lng !== undefined) {
       let minAddress = obj.minAddress !== undefined && obj.minAddress !== '' ? obj.minAddress : '';
       let maxAddress = obj.maxAddress !== undefined && obj.maxAddress !== '' ? obj.maxAddress : '';
-      if (minAddress !== "" && minAddress !== 0) {
+      if (minAddress >= 0) {
         locationDataFilter += '&distance_from=' + minAddress;
       } else {
         locationDataFilter += '&distance_from=1';
       }
       if (maxAddress !== 0 && maxAddress !== "") {
         locationDataFilter += '&distance_to=' + maxAddress;
-        locationDataFilter += '&coordinates=' + centerLatLng.lat + "," + centerLatLng.lng;
+        locationDataFilter += '&coordinates=' + currentLatLng.lat + "," + currentLatLng.lng;
       }
 
     } else {
@@ -304,12 +298,21 @@ function Browse(props) {
     let expertiesLevel = generateDataFromArray('experties_level', obj.level)
     let keywordsArray = generateDataFromArray('keywords', obj.keyword)
     let sortBy = obj.sortBy !== undefined ? `&sort_by=${obj.sortBy}` : ''
-    // console.log('categoryArray', categoryArray)
+    let locationDataFilter = "";
+
+    if (currentLatLng.lat == undefined && maxAddress > 0 || currentLatLng.lng == undefined && maxAddress > 0) {
+      toast({ position: "top", title: "You try to apply the location filter, Please enabled the location for proper results.", status: "warning" })
+    }else if(currentLatLng.lat !== undefined && currentLatLng.lng !== undefined && maxAddress > 0){
+      locationDataFilter += '&distance_from=' + minAddress;
+      locationDataFilter += '&distance_to=' + maxAddress;
+      locationDataFilter += '&coordinates=' + currentLatLng.lat + "," + currentLatLng.lng;
+    }
+
     let bURL = "";
     bURL = `${baseUrl}/browse/volunteer-listings?page=${page}&credit_range_from=${creditRangeFrom}&credit_range_to=${creditRangeTo}`;
 
-    let url = `${bURL}${categoryArray}${expertiesLevel}${keywordsArray}${sortBy}`
-    // console.log('categoryArray',obj.volunteerCategory)
+    let url = `${bURL}${categoryArray}${expertiesLevel}${keywordsArray}${sortBy}${locationDataFilter}`
+
     let data = []
     if (isLogin() && props.isBookmark) {
       data = await axios.get(url, {
@@ -347,12 +350,20 @@ function Browse(props) {
 
     let categoryArray = generateDataFromArray('category', obj.donationCategory)
     let keywordsArray = generateDataFromArray('keywords', obj.keyword)
-    // let sortBy = obj.sortBy !== undefined ? `&sort_by=${obj.sortBy}` : ''
+    let locationDataFilter = "";
+
+    if (currentLatLng.lat == undefined && maxAddress > 0 || currentLatLng.lng == undefined && maxAddress > 0) {
+      toast({ position: "top", title: "You try to apply the location filter, Please enabled the location for proper results.", status: "warning" })
+    }else if(currentLatLng.lat !== undefined && currentLatLng.lng !== undefined && maxAddress > 0){
+      locationDataFilter += '&distance_from=' + minAddress;
+      locationDataFilter += '&distance_to=' + maxAddress;
+      locationDataFilter += '&coordinates=' + currentLatLng.lat + "," + currentLatLng.lng;
+    }
 
     let bURL = "";
     bURL = `${baseUrl}/browse/donation-listings?page=${page}`;
 
-    let url = `${bURL}${categoryArray}${keywordsArray}`
+    let url = `${bURL}${categoryArray}${keywordsArray}${locationDataFilter}`
 
     let data = []
     if (isLogin() && props.isBookmark) {
@@ -520,7 +531,7 @@ function Browse(props) {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          centerLatLng = obj;
+          currentLatLng = obj;
         });
       } else {
         alert("Please allow location for the map");
@@ -598,7 +609,7 @@ function Browse(props) {
       .then(() => setresetSlider(false))
   }
 
-  const removeFilter = (tmptype = '', id = '') => { console.log('xxxxxxxxxxx', tmptype) 
+  const removeFilter = (tmptype = '', id = '') => { 
     let filterKeyword = [...selectedKeywords],
       filterCategory = [...selectedCategory],
       filterServiceCategory = [...selectedServiceCategory],
@@ -664,7 +675,7 @@ function Browse(props) {
     } else if (tmptype === 'sort') {
       tmpSortBy = 'most_recent'
       setSortBy(tmpSortBy)
-    } else if (tmptype === 'all') { console.log('hererererrer'),
+    } else if (tmptype === 'all') { 
       (filterKeyword = []),
       (filterCategory = []),
       (filterServiceCategory = []),
@@ -709,7 +720,7 @@ function Browse(props) {
       tmpSortBy = 'most_recent'
       setSortBy(tmpSortBy)
     }
-console.log('MaxPrice',maxPrice);
+
     let obj = getCurerntFilter({
       type: type,
       tab: activeTab,
