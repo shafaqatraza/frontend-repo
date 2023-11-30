@@ -6,6 +6,7 @@ import back from "../../../assets/imgs/back.png";
 import { Image } from "@chakra-ui/react";
 import MonthlyPlan from "../../../components/organization/paymentplans/MonthlyPlan";
 import AnualPlan from "../../../components/organization/paymentplans/AnualPlan";
+import Link from "next/link";
 
 const SelectPlan = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -23,7 +24,9 @@ const SelectPlan = () => {
       <Sidebar>
         <div className="plan-main"></div>
         <div className="ms-2">
-          <Image src={back.src}/>
+          <Link href={`/organization`}>
+            <Image src={back.src} style={{ cursor: 'pointer' }} />
+          </Link>
         </div>
         <div className="ms-5 mt-5">
           <p className="modal-txt ms-3">Select Plan</p>

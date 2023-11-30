@@ -132,7 +132,9 @@ const EditMember = () => {
         <div className="col-md-8">
           <div className="empty-div"></div>
           <div className="d-flex align-items-center">
-          <Image src={back.src}/>
+            <Link href={`/organization/profile`}>
+              <Image src={back.src} style={{ cursor: 'pointer' }} />
+            </Link>
             <p className="modal-txt ms-5">Edit Member</p>
           </div>
           <div className="col-md-5">

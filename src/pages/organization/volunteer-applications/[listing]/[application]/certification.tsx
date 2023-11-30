@@ -8,6 +8,7 @@ import certLogo from "../../../../../assets/imgs/certLogo.png";
 import { useRouter } from 'next/router';
 import axios from "axios";
 import { accessToken, baseUrl, currentOrganization } from "../../../../../components/Helper/index";
+import Link from "next/link";
 
 const Certification = () => {
   const [organizationName, setOrganizationName] = useState([]);
@@ -65,7 +66,9 @@ const Certification = () => {
     <div className="plan-main"></div>
         <div className="row">
           <div className="col-md-1 mt-2">
-            <Image alt="image" src={back.src} />
+          <Link href={`/organization/volunteer-applications/${listing}/${application}`}>
+            <Image src={back.src} style={{ cursor: 'pointer' }} />
+          </Link>
           </div>
           <div className="col-md-2">
             <span className="app-txt">Certification</span>

@@ -49,7 +49,7 @@ import { SignUpVerificationForm } from '../onboarding/Signup/Verification/Verifi
 import { Step2Form } from '../createProfileModels/step2/step2Form'
 import { WelcomeScreen1 } from '../createProfileModels/welcomeScreen/screen1'
 import { InnerSection } from '../createProfileModels/welcomeScreen/innerSection'
-import NoImage from '../../assets/imgs/no-image.png'
+import NoImage from '../../assets/imgs/profile/default-profile.png'
 import gdlogo from '../../assets/imgs/gdlogopegiun.png'
 import explorepegiun from '../../assets/imgs/explorepegiun.png'
 import exchangepegiun from '../../assets/imgs/exchangepegiun.png'
@@ -796,7 +796,7 @@ export default function Navbar(props: any) {
 
                         <FiMessageSquare
                           size={23}
-                          style={{ marginRight: 5, marginLeft: 5, color: 'red' }}
+                          style={{ marginRight: 5, marginLeft: 5, color: '#e27832' }}
                         />
                       </>
                     </MenuButton>
@@ -897,7 +897,12 @@ export default function Navbar(props: any) {
                         getLoginData()?.avatar !== null && getLoginData()?.avatar !== ''
                         ? getLoginData()?.avatar
                         : 'https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png'
-                      } style={{ borderRadius: '50px', border: '2px solid black', width: '30px', height: '30px', objectFit: 'cover' }} />
+                      } style={{ borderRadius: '50px', border: '2px solid black', width: '30px', height: '30px', objectFit: 'cover' }} 
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = NoImage.src;
+                        }}
+                      />
                     </MenuButton>
                     <MenuList px={'10px'}>
                       <Link href="/profile"

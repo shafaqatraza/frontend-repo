@@ -37,19 +37,21 @@ const VolunteerApplications = () => {
   }, []);
   
   useEffect(() => {
-    axios
-      .get(`${baseUrl}/volunteer-applications/${orgSlug}`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          // 'Content-Type': 'application/x-www-form-urlencoded'
-        },
-      })
-      .then((res) => {
-        setApplicantName(res.data.data);
-        setVolunteerName(res.data.data)
-      })
-      .catch((err) => {
-      });
+    if(orgSlug){
+      axios
+        .get(`${baseUrl}/volunteer-applications/${orgSlug}`, {
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            // 'Content-Type': 'application/x-www-form-urlencoded'
+          },
+        })
+        .then((res) => {
+          setApplicantName(res.data.data);
+          setVolunteerName(res.data.data)
+        })
+        .catch((err) => {
+        });
+    }
   }, [orgSlug]);
 
   // useEffect(() => {

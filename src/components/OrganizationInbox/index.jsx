@@ -45,7 +45,7 @@ import { ChevronLeftIcon } from '@chakra-ui/icons'
 import { BiCamera } from 'react-icons/bi'
 import { Upload } from 'antd';
 import { useMutation } from 'react-query'
-import NoImage from '../../assets/imgs/no-image.png'
+import NoImage from '../../assets/imgs/profile/default-profile.png'
 import {Pusher_key} from '../../../config'
 
 let pusher = {};
@@ -479,6 +479,9 @@ const Message = (props) => {
 															src={data.receiver.avatar  ? data.receiver.avatar : NoImage.src}
 															alt="Dan Abramov 1"
 															borderRadius={10}
+															onError={(e) => {
+																e.target.src = NoImage.src;
+															}}
 
 														/>
 
@@ -599,6 +602,9 @@ const Message = (props) => {
 															src={data.receiver.avatar  ? data.receiver.avatar : NoImage.src}
 															alt="Dan Abramov 2"
 															borderRadius={5}
+															onError={(e) => {
+																e.target.src = NoImage.src;
+															}}
 														/>
 													</Box>
 													<Box flexGrow={1}>
