@@ -399,6 +399,9 @@ const ListingView = (props) => {
 
   // console.log('listing', listingData)
 
+  const getMoreDeedDollars = () =>{
+    window.location.href = "/browse?type=donation&activeTab=3";
+  }
 
 
   return (
@@ -1352,8 +1355,8 @@ const ListingView = (props) => {
                             borderRadius='100px'
                             loading={isContactLoading}
                             disabled={isContactLoading}
-                          // onClick={() => onContactButtonClick()}
-                          >
+                            onClick={() => getMoreDeedDollars()}
+                          > 
                             Get More Deed <br />Dollars
                           </Button>
                         </Flex>

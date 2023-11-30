@@ -80,7 +80,9 @@ const InviteUser = () => {
         <div className="col-md-12">
           <div className="empty-div"></div>
           <div className="d-flex align-items-center">
-          <Image src={back.src}/>
+            <Link href={`/organization/profile`}>
+              <Image src={back.src} style={{ cursor: 'pointer' }} />
+            </Link>
             <p className="modal-txt ms-5">Invite a User</p>
           </div>
           <form onSubmit={handleSubmit}>

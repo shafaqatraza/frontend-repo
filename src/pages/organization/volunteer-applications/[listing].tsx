@@ -13,6 +13,7 @@ import axios from "axios";
 import { accessToken, baseUrl, currOrgSlug } from "../../../components/Helper/index";
 import { useRouter } from "next/router";
 import { useToast } from '@chakra-ui/toast'
+import defaultImage from  '../../../assets/imgs/default-image.png';
 
 interface FormErrors {
   number_of_hours:boolean,
@@ -477,7 +478,9 @@ const dataSource =
         </Modal>
         <div className="plan-main"></div>
         <div className="ms-2">
-          <Image src={back.src} />
+          <Link href="/organization/volunteer-applications">
+            <Image src={back.src} style={{ cursor: 'pointer' }} />
+          </Link>
         </div>
         <div className="d-flex mt-4">
           <Image
@@ -485,7 +488,11 @@ const dataSource =
             height={297}
             className="img-fluid"
             // @ts-ignore: Unreachable code error
-            src={`${applicationsData?.thumbnail?.path}/${applicationsData?.thumbnail?.image}`}
+            src={applicationsData?.thumbnail?.image ? `${applicationsData?.thumbnail?.path}/${applicationsData?.thumbnail?.image}`: defaultImage.src} 
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = defaultImage.src;
+            }}
           />
           <p className="ms-4 fw-bold fs-4">
             {

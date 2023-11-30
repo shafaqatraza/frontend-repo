@@ -538,7 +538,7 @@ const EditListingForm = () => {
               </Flex>
             )}
 
-            <ListingBox step="1" heading="Listing Type">
+            {/* <ListingBox step="1" heading="Listing Type">
               <RadioGroup onChange={setListingtype} defaultValue={listingtype}>
                 <Radio
                   size="lg"
@@ -579,10 +579,10 @@ const EditListingForm = () => {
                   </Flex>
                 </Radio>
               </RadioGroup>
-            </ListingBox>
+            </ListingBox> */}
 
             {/* card2 */}
-            <ListingBox step="2" heading="Listing Details">
+            <ListingBox step="1" heading="Listing Details">
               <FormControl mt="8" id="name" isRequired>
                 <FormLabel color="gray.500">Listing Title</FormLabel>
                 <Input
@@ -795,7 +795,7 @@ const EditListingForm = () => {
               </FormControl>
             </ListingBox>
 
-            <ListingBox step="3" heading="Update Media">
+            <ListingBox step="2" heading="Update Media">
               <FormControl mt="8" id="name" isRequired>
 
                 <FormHelperText pt="2" mb="5">
@@ -849,7 +849,7 @@ const EditListingForm = () => {
 
             </ListingBox>
 
-            <ListingBox step="4" heading="Location">
+            <ListingBox step="3" heading="Location">
               <FormControl mt="8" id="name">
                 <Flex alignItems="center" mt="4">
                   <Switch

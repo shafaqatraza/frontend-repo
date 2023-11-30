@@ -14,6 +14,7 @@ import { CardElement, Elements, useStripe, useElements } from '@stripe/react-str
 import { CardNumberElement, CardCvcElement, CardExpiryElement} from '@stripe/react-stripe-js';
 import { loadStripe } from "@stripe/stripe-js";
 import { useToast } from '@chakra-ui/toast'
+import Link from "next/link";
 // import { GoogleMap, Autocomplete } from '@react-google-maps/api';
 import { getErrorMessage } from '../../../components/Helper/errorMessages';
 
@@ -341,7 +342,9 @@ const StripeForm = () => {
           <Col md={6}>
             <div className="payment-plan-main"></div>
             <div className="ms-2">
-              <Image src={back.src} />
+              <Link href="/organization/payment-plans">
+                <Image src={back.src!} style={{ cursor: 'pointer' }} />
+              </Link>
             </div>
             <div className="mt-5">
               <p className="modal-txt">Billing Information</p>

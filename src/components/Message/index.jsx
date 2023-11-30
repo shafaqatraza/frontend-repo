@@ -58,7 +58,7 @@ import { ChevronLeftIcon } from '@chakra-ui/icons'
 import { BiCamera } from 'react-icons/bi'
 import { Upload } from 'antd';
 import { useMutation } from 'react-query'
-import NoImage from '../../assets/imgs/no-image.png'
+import NoImage from '../../assets/imgs/profile/default-profile.png'
 import {Pusher_key} from '../../../config'
 import chatAttached from '../../assets/imgs/chat-attached.png'
 import iconChat from '../../assets/imgs/chat.png'
@@ -1247,6 +1247,9 @@ const Message = (props) => {
 															src={data.organization? data.organization.avatar : data.listing.user_id===userId ? data.sender.avatar : data.receiver.avatar}
 															alt="Dan Abramov 2"
 															borderRadius={5}
+															onError={(e) => {
+																e.target.src = NoImage.src;
+															}}
 														/>
 													</Box>
 													<Box flexGrow={1}>

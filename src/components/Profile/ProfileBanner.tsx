@@ -140,6 +140,7 @@ export const ProfileBanner = (props: any) => {
   }
 
   return (
+    <>
     <Container
       as={SimpleGrid}
       maxW={'10xl'}
@@ -595,5 +596,6 @@ export const ProfileBanner = (props: any) => {
         </HStack>
       </div>
     </Container>
-  )
+    </>
+  );
 }

@@ -6,7 +6,7 @@ import back from "../../../../assets/imgs/back.png";
 import { Center, Image } from '@chakra-ui/react';
 import Link from "next/link";
 import axios from "axios";
-import { accessToken, baseUrl, currentOrganization } from "../../../../components/Helper/index";
+import { accessToken, baseUrl, currOrgSlug } from "../../../../components/Helper/index";
 import { useRouter } from "next/router";
 import { useToast } from '@chakra-ui/toast'
 interface ApplicationData {
@@ -16,6 +16,7 @@ interface ApplicationData {
     email: string;
   };
 }
+
 const CompletedApplication = () => {
   const router = useRouter();
   const toast = useToast()
@@ -27,6 +28,7 @@ const CompletedApplication = () => {
       email: '',
     },
   });
+
   const [receiverId, setReceiverId] = useState<string | undefined>();
   const [isContacting, setIsContacting] = React.useState(false); 
   const [isCertificateExists, setIsCertificateExists] = React.useState(false); 
@@ -56,13 +58,12 @@ const CompletedApplication = () => {
 
   useEffect(()=>{
  
-    if(application){
+    if(application && currOrgSlug){
       setIsMarkCompleteBtnClicked(true);
       setIsChecking(true)
       axios
         .get(
-          `${baseUrl}/volunteer-certificates/${application}/certificate-exists?org=${// @ts-ignore: Unreachable code error
-            currentOrganization?.slug}`,
+          `${baseUrl}/volunteer-certificates/${application}/certificate-exists?org=${currOrgSlug}`,
           {
             headers: {
               Authorization: "Bearer " + accessToken(),
@@ -78,29 +79,29 @@ const CompletedApplication = () => {
           setIsChecking(false)
         })
     }
+    
+    if(application && currOrgSlug){
+      axios
+        .get(
+          `${baseUrl}/volunteer-applications/applicants/${application}/show?org=${currOrgSlug}`,
+          {
+            headers: {
+              Authorization: "Bearer " + accessToken(),
+              // 'Content-Type': 'application/x-www-form-urlencoded'
+            },
+          }
+        )
+        .then((res) => {
+          setApplicationData(res.data);
+          setReceiverId(res.data.applicant.id);
+        })
+        .catch((err) => {
+          // console.log(err);
+        });
+    }
 
+  },[currOrgSlug, application])
 
-    axios
-      .get(
-        `${baseUrl}/volunteer-applications/applicants/${application}/show?org=${// @ts-ignore: Unreachable code error
-          currentOrganization?.slug}`,
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken(),
-            // 'Content-Type': 'application/x-www-form-urlencoded'
-          },
-        }
-      )
-      .then((res) => {
-        setApplicationData(res.data);
-        setReceiverId(res.data.applicant.id);
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
-
-  },[currentOrganization, application])
-  
   useEffect(() => {
     if (receiverId) {
       setFormData((prevFormData) => ({
@@ -176,7 +177,9 @@ const CompletedApplication = () => {
 
         <div className='row'>
         <div className="col-md-1 mt-2">
-        <Image alt='image' src={back.src}/>
+        <Link href={`/organization/volunteer-applications/${listing}`}>
+          <Image src={back.src} style={{ cursor: 'pointer' }} />
+        </Link>
         </div>
         <div className="col-md-2">
         <span className='app-txt'>Application</span>
