@@ -89,9 +89,6 @@ const columns: ColumnsType[] = [
           pagination={false}
           className="custom-table"
         />
-        <div>
-          <p className='fw-bold mt-2'>Filter: by range (month/day/year)/ amount/ username / location</p>
-        </div>
           </div>
           <div className="col-md-2">
             <p className='fw-bold mt-2'>Download List</p>
