@@ -322,18 +322,18 @@ const Home: NextPage = () => {
     <Box style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds</title> */}
-        <title>Good Deeds | An Online Marketplace of Opportunities</title>
+        <title>Good Deeds: The First Peer 2 Peer Marketplace That Rewards Kindness</title>
         <link rel="icon" href={fav.src} />
-        <meta name="title" content="A marketplace of opportunity" />
-        <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+        <meta name="title" content="Good Deeds: The First Peer 2 Peer Marketplace That Rewards Kindness" />
+        <meta name="description" content="Discover Good Deeds, the groundbreaking P2P marketplace where kindness gets rewarded. List unwanted items or offer services, earn Deed Dollars, and shop for real rewards. Sign up now." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />
         <meta name="robots" content="index, follow" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="1 days" />
 
-        <meta property="og:title" content="A marketplace of opportunity" />
-        <meta property="og:description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+        <meta property="og:title" content="Good Deeds: The First Peer 2 Peer Marketplace That Rewards Kindness" />
+        <meta property="og:description" content="Discover Good Deeds, the groundbreaking P2P marketplace where kindness gets rewarded. List unwanted items or offer services, earn Deed Dollars, and shop for real rewards. Sign up now." />
         <meta property="og:image" content="/gd-favicon.ico" />
         {/* <meta property="og:url" content="" /> */}
         <meta property="og:site_name" content="Good Deeds" />
@@ -354,6 +354,34 @@ const Home: NextPage = () => {
                     `,
           }}
         />
+        <meta name="google-site-verification" content="g7v358l0lU7mhI5NfaVJw1gqRT6XWkYaMELw_5uObe4"></meta>
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": "Good Deeds",
+              "image": "https://gooddeeds.ca/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnewlogo.bf5beb6b.png&w=384&q=75",
+              "@id": "https://gooddeeds.ca/",
+              "url": "https://gooddeeds.ca/",
+              "telephone": "+1 800-535-8054",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "",
+                "addressLocality": "Brampton",
+                "addressRegion": "ON",
+                "postalCode": "",
+                "addressCountry": "CA"
+              },
+              "sameAs": [
+                "https://www.facebook.com/gooddeeds.ca",
+                "https://www.instagram.com/gooddeedsllc/",
+                "https://www.linkedin.com/company/good-deeds-llc-1/about/"
+              ]
+            }
+          `}
+        </script>
+        
         {/* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqal6LVnvttE3KHG-Xk9z3cVMRVUWFjY4&libraries=places"></script> */}
       </Head>
       <Navbar />

@@ -24,18 +24,18 @@ const ContactUs = () => {
     <Box>
       <Head>
         {/* <title>Good Deeds | Contact Us</title> */}
-        <title>Good Deeds | An Online Marketplace of Opportunities</title>
+        <title>Connect with Good Deeds: Pioneering Peer-to-Peer Kindness Marketplace</title>
         <link rel="icon" href={fav.src}  />
-        <meta name="title" content="A marketplace of opportunity" />
-        <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+        <meta name="title" content="Connect with Good Deeds: Pioneering Peer-to-Peer Kindness Marketplace" />
+        <meta name="description" content="Discover Good Deeds, the first Peer-to-Peer marketplace rewarding kindness! List your skills or items with us and turn your goodwill into tangible rewards. Contact us." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />
         <meta name="robots" content="index, follow" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="1 days" />
 
-        <meta property="og:title" content="A marketplace of opportunity" />
-        <meta property="og:description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+        <meta property="og:title" content="Connect with Good Deeds: Pioneering Peer-to-Peer Kindness Marketplace" />
+        <meta property="og:description" content="Discover Good Deeds, the first Peer-to-Peer marketplace rewarding kindness! List your skills or items with us and turn your goodwill into tangible rewards. Contact us." />
         <meta property="og:image" content="/gd-favicon.ico" />
         {/* <meta property="og:url" content="" /> */}
         <meta property="og:site_name" content="Good Deeds" />
@@ -56,6 +56,34 @@ const ContactUs = () => {
                     `,
           }}
         />
+
+        <meta name="google-site-verification" content="g7v358l0lU7mhI5NfaVJw1gqRT6XWkYaMELw_5uObe4"></meta>
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": "Good Deeds",
+              "image": "https://gooddeeds.ca/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnewlogo.bf5beb6b.png&w=384&q=75",
+              "@id": "https://gooddeeds.ca/",
+              "url": "https://gooddeeds.ca/",
+              "telephone": "+1 800-535-8054",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "",
+                "addressLocality": "Brampton",
+                "addressRegion": "ON",
+                "postalCode": "",
+                "addressCountry": "CA"
+              },
+              "sameAs": [
+                "https://www.facebook.com/gooddeeds.ca",
+                "https://www.instagram.com/gooddeedsllc/",
+                "https://www.linkedin.com/company/good-deeds-llc-1/about/"
+              ]
+            }
+          `}
+        </script>
       </Head>
       <Navbar />
       {/* <Section1 title="Contact Us" /> */}
@@ -70,8 +98,8 @@ const ContactUs = () => {
       >
         <Box>
           <Flex gap={isSmallerThan767 ? '' : '70px'} alignItems={'center'} justifyContent={'center'} flexDirection={isSmallerThan767 ? 'column' : 'row'} py={'40px'} ps={isSmallerThan767 ? '' :'250px'} className="mt-5" >
-            <Text fontSize={isSmallerThan767 ? '34px' : '60px'} color="#183553" textAlign="center" fontWeight={'700'} lineHeight="76px">Contact Us</Text>
-            <Image style={{ width: "200px", height: "203px" }} src={gdlogopegiun.src} />
+            <Text fontSize={isSmallerThan767 ? '34px' : '60px'} color="#183553" textAlign="center" fontWeight={'700'} lineHeight="76px">Contact Good Deeds</Text>
+            <Image style={{ width: "200px", height: "203px" }} src={gdlogopegiun.src} alt='Connect with Good Deeds: Pioneering Peer-to-Peer Kindness Marketplace'/>
           </Flex>
           <Text fontSize={isSmallerThan767 ? '24px' : '36px'} lineHeight="42px" fontWeight={'700'} color="#183553" textAlign="center">Any questions? Let us help</Text>
           <Text fontSize={isSmallerThan767 ? '16px' : '22px'} color="#212121"  fontWeight={'500'} textAlign="center" mt="40px" className="pt-md-4">A safe and secure community is important to Good Deeds.</Text>
