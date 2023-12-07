@@ -144,7 +144,7 @@ const ourPartners = () => {
                     <Image
                       // style={{ maxWidth: "92px", height: "106px" }}
                       src={partp1.src}
-                      alt={"Image"}
+                      alt={"Pioneering the First Peer-to-Peer Kindness Marketplace"}
                     />
                   </div>
                   <div className="card-body facility-card">

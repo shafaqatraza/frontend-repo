@@ -184,18 +184,18 @@ const About = () => {
       <Box style={isMobile ? { width: '100%' } : {}}>
         <Head>
           {/* <title>Good Deeds | About Good Deeds</title> */}
-          <title>Good Deeds | An Online Marketplace of Opportunities</title>
+          <title>About Good Deeds: Transforming Communities through Kindness.</title>
           <link rel="icon" href={fav.src} />
-          <meta name="title" content="A marketplace of opportunity" />
-          <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+          <meta name="title" content="About Good Deeds: Transforming Communities through Kindness." />
+          <meta name="description" content="Explore the heart of Good Deeds, where kindness is currency. Learn about our unique approach to fostering giving, earning Deed Dollars, and building sustainable communities." />
           <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />
           <meta name="robots" content="index, follow" />
           {/* <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> */}
           <meta name="language" content="English" />
           <meta name="revisit-after" content="1 days" />
 
-          <meta property="og:title" content="A marketplace of opportunity" />
-          <meta property="og:description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+          <meta property="og:title" content="About Good Deeds: Transforming Communities through Kindness." />
+          <meta property="og:description" content="Explore the heart of Good Deeds, where kindness is currency. Learn about our unique approach to fostering giving, earning Deed Dollars, and building sustainable communities." />
           <meta property="og:image" content="/gd-favicon.ico" />
           {/* <meta property="og:url" content="" /> */}
           <meta property="og:site_name" content="Good Deeds" />
@@ -214,13 +214,45 @@ const About = () => {
                           page_path: window.location.pathname,
                           });
                       `,
-            }}
+            }}  
           />
+
+          <meta name="google-site-verification" content="g7v358l0lU7mhI5NfaVJw1gqRT6XWkYaMELw_5uObe4"></meta>
+          <script type="application/ld+json">
+            {`
+              {
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "Good Deeds",
+                "image": "https://gooddeeds.ca/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnewlogo.bf5beb6b.png&w=384&q=75",
+                "@id": "https://gooddeeds.ca/",
+                "url": "https://gooddeeds.ca/",
+                "telephone": "+1 800-535-8054",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "",
+                  "addressLocality": "Brampton",
+                  "addressRegion": "ON",
+                  "postalCode": "",
+                  "addressCountry": "CA"
+                },
+                "sameAs": [
+                  "https://www.facebook.com/gooddeeds.ca",
+                  "https://www.instagram.com/gooddeedsllc/",
+                  "https://www.linkedin.com/company/good-deeds-llc-1/about/"
+                ]
+              }
+            `}
+          </script>
         </Head>
         <Navbar />
         <div className='container my-5 py-4 px-0'>
           <div className='d-flex align-items-center justify-content-center flex-column flex-md-row about-good-deed'>
-            <h1 className='good-deeds' style={{color:"#183553"}}>This is <span style={{color:"#E27832"}}>Good Deeds.</span></h1>
+          <h1 className='good-deeds' style={{ color: "#183553" }}>
+            <p>Inspiring <span style={{ color: "#E27832" }}>Kindness</span> for a</p>
+            <p><span style={{ color: "#E27832" }}>Sustainable</span> Tomorrow</p>
+          </h1>
+            {/* <p className="good-deeds ms-3 ms-md-0 and">Inspiring<span className="donors"> Kindness</span> <span >for a</span> <span className="volunteers">Sustainable</span> <span className="and">Tomorrow</span></p> */}
             <img src={banner.src} className='mt-5 mt-md-0' width="250px" alt="banner" />
           </div>
         </div>
@@ -235,13 +267,13 @@ const About = () => {
                 </div>
                 <div className='col-lg-3 col-md-4 order-1 order-md-2 flex-column justify-content-center justify-content-md-end  py-5 d-flex'>
                 <h1 className='d-block d-md-none text-center' style={{color:"#183553"}}><span style={{color:"#E27832"}} >What</span> we do?</h1>
-                  <img src={whatsdo.src} className='px-2 px-md-0' alt="what we do" />
+                  <img src={whatsdo.src} className='px-2 px-md-0' alt="About Good Deeds: Inspiring Kindness for a Sustainable Tomorrow" />
                 </div>
               </div>
               <div className='row mt-md-5 mt-4 pt-md-5 mb-md-5 mx-0 px-4 px-md-0'>
                 <div className='col-lg-3 col-md-4 d-flex pb-5 pb-md-0 justify-content-center flex-column pt-4'>
                 <h1 className='text-center d-block d-md-none' style={{color:"#183553"}}><span style={{color:"#E27832"}}>Who</span> we are?</h1>
-                  <img src={whowe.src} className='px-2 px-md-0' alt="who we are" />
+                  <img src={whowe.src} className='px-2 px-md-0' alt="About Good Deeds: Empower Communities to Help Others" />
                 </div>
                 <div className='col-lg-9 col-md-8 ps-md-5'>
                   <h1 className='text-end me-5 d-none d-md-block' style={{color:"#183553"}}><span style={{color:"#E27832"}}>Who</span> we are?</h1>
@@ -338,13 +370,13 @@ const About = () => {
 
                 <Popover trigger={"hover"} placement='right-start' >
                   <PopoverTrigger >
-                    <Image borderRadius='full' boxSize='219px' src={amber.src} alt='Amber Yakutchik' />
+                    <Image borderRadius='full' boxSize='219px' src={amber.src} alt='Amber Yakutchik, Founder and CEO' />
                   </PopoverTrigger>
                   <PopoverContent width={'580px'}>
                     <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverBody display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} px={16} pb={10}>
-                      <Image boxSize='176px' src={team1.src} alt='Amber Yakutchik' />
+                      <Image boxSize='176px' src={team1.src} alt='Amber Yakutchik, Founder and CEO' />
                       <Text fontSize={35} color={'primary.300'} fontWeight={'600'}>Amber Yakutchik</Text>
                       <Text fontSize={20} color={'black'} fontWeight={'500'} mb={'20px'}>Founder and CEO</Text>
                       <Text fontSize={12} color={'black'} textAlign={'center'} mb={'10px'}>Amber is no stranger to the profound impact of care and kindness, having over 18 years of experience in the Canadian healthcare industry. Her unbridled passion for the act of giving led to the founding of Good Deeds, the world’s first free non-monetized digital marketplace where individuals can gather to build thoughtful and sustainable communities one good deed at a time.</Text>

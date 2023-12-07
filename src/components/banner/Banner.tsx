@@ -146,7 +146,7 @@ export const Banner: React.FC<{}> = () => {
             </div>
           </div>
           <div className="col-md-4 mt-5 pt-md-4 px-0 charity-img">
-            <Image src={giving.src} alt={"Charity"} className='ms-md-4' />
+            <Image src={giving.src} alt={"The First Peer 2 Peer Marketplace That Rewards Kindness"} className='ms-md-4' />
           </div>
         </div>
       </div>

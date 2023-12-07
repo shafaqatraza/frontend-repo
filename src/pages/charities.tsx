@@ -427,18 +427,18 @@ const Charities = () => {
     <div style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds</title> */}
-        <title>Good Deeds | An Online Marketplace of Opportunities</title>
+        <title>Charities - Connect with Motivated Volunteers & Donors | Good Deeds</title>
         <link rel="icon" href={fav.src}  />
-        <meta name="title" content="A marketplace of opportunity" />
-        <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+        <meta name="title" content="Charities - Connect with Motivated Volunteers & Donors | Good Deeds" />
+        <meta name="description" content="Unlock the power of Good Deeds for your charity or nonprofit organization. Effortlessly manage and reward your volunteers and donors with our secure platform. Join for a free trial." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />
         <meta name="robots" content="index, follow" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="1 days" />
 
-        <meta property="og:title" content="A marketplace of opportunity" />
-        <meta property="og:description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+        <meta property="og:title" content="Charities - Connect with Motivated Volunteers & Donors | Good Deeds" />
+        <meta property="og:description" content="Unlock the power of Good Deeds for your charity or nonprofit organization. Effortlessly manage and reward your volunteers and donors with our secure platform. Join for a free trial." />
         <meta property="og:image" content="/gd-favicon.ico" />
         {/* <meta property="og:url" content="" /> */}
         <meta property="og:site_name" content="Good Deeds" />
@@ -459,6 +459,35 @@ const Charities = () => {
                     `,
           }}
         />
+
+        <meta name="google-site-verification" content="g7v358l0lU7mhI5NfaVJw1gqRT6XWkYaMELw_5uObe4"></meta>
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": "Good Deeds",
+              "image": "https://gooddeeds.ca/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnewlogo.bf5beb6b.png&w=384&q=75",
+              "@id": "https://gooddeeds.ca/",
+              "url": "https://gooddeeds.ca/",
+              "telephone": "+1 800-535-8054",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "",
+                "addressLocality": "Brampton",
+                "addressRegion": "ON",
+                "postalCode": "",
+                "addressCountry": "CA"
+              },
+              "sameAs": [
+                "https://www.facebook.com/gooddeeds.ca",
+                "https://www.instagram.com/gooddeedsllc/",
+                "https://www.linkedin.com/company/good-deeds-llc-1/about/"
+              ]
+            }
+          `}
+        </script>
+
         {/* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqal6LVnvttE3KHG-Xk9z3cVMRVUWFjY4&libraries=places"></script> */}
       </Head>
       <Navbar />
@@ -680,8 +709,8 @@ const Charities = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-8 mt-5">
-            <p className="good-deeds ms-3 ms-md-0 and">Good Deeds <span className="donors"> connects</span> <span >you with motivated</span> <span className="volunteers">volunteers</span> <span className="and">and</span> <span className="donors">donors</span></p>
-            <Image src={Charity.src} className='d-block d-md-none px-5' alt={"Charity"} />
+            <p className="good-deeds ms-3 ms-md-0 and">Effortless<span className="donors"> Volunteer</span> <span >and</span> <span className="volunteers">Donor</span> <span className="and">Management</span></p>
+            <Image src={Charity.src} className='d-block d-md-none px-5' alt={"Good Deeds Charities - Connect with Motivated Volunteers & Donors"} />
             <div className="mt-2 mb-2">
               <p className="our-platform px-4 px-md-0" style={{fontWeight:"600"}}>Our platform makes it effortless to manage and reward your donors and volunteers in one convenient place.</p>
             </div>
@@ -715,7 +744,7 @@ const Charities = () => {
           </div>
           <div className="col-md-4 d-none d-md-block">
             <div className="mt-5">
-              <Image src={Charity.src} alt={"Charity"} />
+              <Image src={Charity.src} alt={"Good Deeds Charities - Connect with Motivated Volunteers & Donors"} />
             </div>
           </div>
         </div>
@@ -898,7 +927,7 @@ const Charities = () => {
                   <Image
                     style={{ width: "130px" }}
                     src={pennyevent.src}
-                    alt={"Skilled Workers"}
+                    alt={"Diverse And Growing Database Of Volunteers With Varying Levels Of Unique Skills"}
                   />
                   <span className="text-center mb-2 skill-txt">
                     Event Management
@@ -1055,7 +1084,7 @@ const Charities = () => {
               </div>
             </div>
           </Col>
-          <img src={addorg.src} alt='' style={{width:"315px"}} />
+          <img src={addorg.src} alt='Platform To Connect With Vetted And Age-Suitable Volunteers' style={{width:"315px"}} />
         </Row>
 
 

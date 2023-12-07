@@ -310,7 +310,7 @@ const VolunteerCategories = () => {
                 <p className="good-deeds mb-4 mb-md-0 px-3"><span style={{ color: "#183553" }}>Seeking</span> <span style={{ color: "#E27832" }}>Volunteer</span> <span style={{ color: "#183553" }}>Hours for</span> <span style={{ color: "#E27832" }}>High</span> <span className="d-md-inline d-lg-block" style={{ color: "#E27832" }}>School graduation?</span></p>
               </div>
               <div className="col-md-5 px-md-0 d-flex align-items-end align-items-xxl-start">
-                <Image src={pennyandstudents.src} className="ms-md-3" alt="Image" />
+                <Image src={pennyandstudents.src} className="ms-md-3" alt="Convenient Solution For Accumulating Community Hours." />
               </div>
             </div>
             <div className="d-flex row">
