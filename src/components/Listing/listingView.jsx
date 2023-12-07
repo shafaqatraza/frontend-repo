@@ -1131,7 +1131,7 @@ const ListingView = (props) => {
                                         href={`#`}
                                       >
                                         <Text fontSize={"16px"} fontWeight={"bold"}>
-                                          {listingData.organization.name || ""}
+                                          {listingData.organization?.name || ""}
                                         </Text>
                                       </Link>
                                       <HStack>
@@ -1396,9 +1396,9 @@ const ListingView = (props) => {
                         {listingData.credit_amount ? `${listingData.credit_amount} Deed Dollars` : ''}
                       </Text>
                     </Flex>
-                    {listingData.organization.address !== null ? (
+                    {listingData.organization?.address !== null ? (
                       <Text fontSize={"14px"} fontWeight={400}>
-                        {listingData.organization.address}
+                        {listingData.organization?.address}
                       </Text>
                     ) : (
                       <Text fontSize={"14px"} fontWeight={400}>Virtual Deed</Text>
