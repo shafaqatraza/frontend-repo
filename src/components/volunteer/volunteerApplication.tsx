@@ -252,7 +252,7 @@ function handleAvailabilityCheckbox(question_id, day, timeOfDay, checked) {
   useEffect(() => {
     localStorage.removeItem("listingData");
   }, []);
-  console.log('questionErrors', questionErrors)
+  
   // @ts-ignore: Unreachable code error
   const handleShortAnswer = (question_id, answer, type) => {
     setApplicationFormData((prevFormData) => { // @ts-ignore: Unreachable code error
@@ -618,7 +618,7 @@ function handleAvailabilityCheckbox(question_id, day, timeOfDay, checked) {
       </Box>
     );
   };
-console.log('formQuestions', formQuestions)
+
   const askAvailabilityHTML = (id: string, questionErrors: any, formQuestions: any, applicationFormData: any, availability: any) => {
     const question_id = formQuestions[id].question_id;
     // @ts-ignore: Unreachable code error
@@ -1010,7 +1010,7 @@ console.log('formQuestions', formQuestions)
     }
 }, [formData])
 // @ts-ignore: Unreachable code error
-console.log('applicationFormData', applicationFormData);
+
 const submitApplicationForm = (e: any) => {
   e.preventDefault();
   setIsSubmitting(true)

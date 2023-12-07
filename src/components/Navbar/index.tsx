@@ -55,7 +55,7 @@ import explorepegiun from '../../assets/imgs/explorepegiun.png'
 import exchangepegiun from '../../assets/imgs/exchangepegiun.png'
 import camera from "../../assets/imgs/camera.png";
 import { useToast } from '@chakra-ui/toast'
-
+import { formatDistanceToNow } from 'date-fns';
 import Head from "next/head";
 
 import {
@@ -113,6 +113,13 @@ const NavLink = ({ children }: { children: ReactNode }) => (
   </Link>
 )
 
+interface Notification {
+  id: number;
+  message: any;
+  timestamp: any;
+}
+
+
 export default function Navbar(props: any) {
   
   const musicPlayers = useRef<HTMLAudioElement | undefined>(
@@ -124,6 +131,8 @@ export default function Navbar(props: any) {
   // const [isChatLoading, setIsChatLoading] = useState(true)
   const [chatList, setChatList] = useState(0)
   const [organizationNotifications, setOrganizationNotifications] = useState(0)
+  const [notificationsCount, setNotificationsCount] = useState(0)
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [conversations, setConversations] = useState()
   const toast = useToast()
   const [isSmallerThan850] = useMediaQuery('(max-width: 850px)');
@@ -380,7 +389,7 @@ export default function Navbar(props: any) {
         channel3.bind('OrganizationNotifications', function(data: any) {
             setOrganizationNotifications(data.notifications_count);
         });
-        
+
       }else{
         var channel = pusher.subscribe('new_message_notification_'+userId);
         channel.bind('notification', function(data: any) {
@@ -397,6 +406,58 @@ export default function Navbar(props: any) {
 
 
 
+
+    useEffect(() => {
+      // Enable console logging for Pusher
+      Pusher.logToConsole = true;
+  
+      // Initialize Pusher with your API key and cluster
+      var pusher = new Pusher(`${Pusher_key}`, {
+        cluster: 'mt1',
+      });
+  
+      // Subscribe to the channel if currOrgId is available
+      if (currOrgId) {
+        var newVolunteer = `new_volunteer_notification_${currOrgId}`;
+        var newVolunteerChannel = pusher.subscribe(newVolunteer);
+  
+        // Bind to the event on the channel
+        newVolunteerChannel.bind('NewVolunteer', (data: any) => { console.log('pusher worked!!!', data)
+          musicPlayers.current?.play();
+          const timestampString = data.notification.created_at;
+          const parsedTimestamp = Date.parse(timestampString);
+
+          const oldTimestamp = new Date(parsedTimestamp);
+          const timeDifference = formatDistanceToNow(oldTimestamp, { addSuffix: true });
+
+          // Add the new notification to the array
+          const newNotification = {
+            id: data.notification.id, // You might want to replace this with a unique identifier
+            message: data.notification.content, // Replace with the actual notification message from data
+            timestamp: timeDifference, // Replace with the actual timestamp
+          };
+  
+          // Update the notifications array
+          setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
+  
+          // Update the notification count
+          setNotificationsCount((prevCount) => prevCount + 1);
+        });
+  
+        // Clean up the subscription when the component unmounts
+        return () => {
+          pusher.unsubscribe(newVolunteer);
+        };
+      }
+      
+    }, [currOrgId, Pusher_key]);
+
+    const timestampString = "2023-12-07T10:29:28.000000Z";
+          const parsedTimestamp = Date.parse(timestampString);
+
+          const oldTimestamp = new Date(parsedTimestamp);
+          const timeDifference = formatDistanceToNow(oldTimestamp, { addSuffix: true });
+          console.log('timeDifference', timeDifference);
   const getChats = async () => {
     if (isLogin()) {
     await axios
@@ -841,44 +902,30 @@ export default function Navbar(props: any) {
                       cursor={'pointer'}
                       minW={0}
                       _focus={{
-                        boxShadow: 'none'
+                        boxShadow: 'none',
                       }}
                     >
-                      <FiBell
-                          size={23}
-                          style={{ marginRight: 5, marginLeft: 5, color: '#000' }}
-                      />
+                      {notificationsCount != 0 && (
+                        <Badge colorScheme="red" position={'absolute'} top={'-7px'}>
+                          {notificationsCount}
+                        </Badge>
+                      )}
+                      <FiBell size={23} style={{ marginRight: 5, marginLeft: 5, color: '#000' }} />
                     </MenuButton>
                     <MenuList px={'10px'}>
-                    <MenuItem>No New Notification</MenuItem>
-                      {/* <Link href="#"
-                        _hover={{
-                          textDecoration: 'none',
-                          color: '#dd6b20'
-                        }}>
-                        <MenuItem>New Donation</MenuItem>
-                      </Link>
-                      <Link href="#"
-                        _hover={{
-                          textDecoration: 'none',
-                          color: '#dd6b20'
-                        }}>
-                        <MenuItem>New Message</MenuItem>
-                      </Link>
-                      <Link href="#"
-                        _hover={{
-                          textDecoration: 'none',
-                          color: '#dd6b20'
-                        }}>
-                        <MenuItem>New Applicant</MenuItem>
-                      </Link>
-                      <Link href="#"
-                        _hover={{
-                          textDecoration: 'none',
-                          color: '#dd6b20'
-                        }}>
-                        <MenuItem>New Applicant</MenuItem>
-                      </Link> */}
+                    {notifications.length > 0 ? (
+                      notifications.map((notification) => (
+                        <MenuItem key={notification.id}>
+                          <div>
+                            <span>{notification.message}</span>
+                            <br />
+                            <span style={{ fontSize: '0.8em', color: '#666' }}>{notification.timestamp}</span>
+                          </div>
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem>No New Notification</MenuItem>
+                    )}
                     </MenuList>
                   </Menu>
                   <Menu>
