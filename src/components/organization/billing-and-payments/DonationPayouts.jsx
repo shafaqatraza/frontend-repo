@@ -105,7 +105,7 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
         <div className="row">
             <div className="col-md-11 col-sm-6 pt-5">
                 <div className="card mb-1 shadow mt-3 border-0">
-                    <div className="mt-3 mb-3 ml-7">
+                    <div className="mt-3 mb-3" style={{marginLeft:"28px"}}>
                         <div className="row">
                             <div className="col-md-10">
                                 <div className="pt-3">
@@ -130,7 +130,7 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
         <div className="row">
             <div className="col-md-11 col-sm-6 pt-1">
                 <div className="card mb-3 shadow mt-3 border-0">
-                    <div className="mt-3 mb-3 ml-7 mr-7">
+                    <div className="mt-3 mb-3 mr-7" style={{marginLeft:"28px"}}>
                         <div className="row">
                             <div className="col-md-12">
                                 <table className="table">
@@ -190,7 +190,7 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
         <div className="row">
             <div className="col-md-11 col-sm-6 pt-1">
                 <div className="card mb-5 shadow mt-3 border-0">
-                    <div className="mt-3 mb-3 ml-7">
+                    <div className="mt-3 mb-3" style={{marginLeft:"28px"}}>
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="pt-3">

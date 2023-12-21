@@ -145,7 +145,7 @@ const PayoutMethodForm = () => {
         <div className="row mr-12 pr-5">
             <div className="col-md-12 col-sm-6 pt-5">
                 <div className="card mb-5 shadow mt-3 border-0">
-                    <div className="mt-3 mb-5+-+ ml-7">
+                    <div className="mt-3 mb-5" style={{marginLeft:"28px"}}>
                         <div className="d-flex justify-content-end pr-7">
                             <div className="pt-3" style={{ color: '#0393fb'}}>
                                 <Link href={`/organization/billing-and-payments/donation-payouts`}>View Donations</Link>

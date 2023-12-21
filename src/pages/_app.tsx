@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ChakraProvider } from '@chakra-ui/react'
 import customTheme from '../theme'
-import 'tailwindcss/tailwind.css'
+// import 'tailwindcss/tailwind.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import fav from "../assets/imgs/favicon.ico"
 import { OrganizationProvider } from '../components/Helper/OrganizationProvider';
