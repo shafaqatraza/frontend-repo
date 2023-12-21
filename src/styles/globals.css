@@ -2460,3 +2460,31 @@ color: #E27832;
 }
 
 /* Access Denied Style End */
+
+.billing-payments-btn{
+  width: 200px;
+  height: 36px;
+  color: white;
+  border-radius: 20px;
+  background-color: #E27832;
+}
+
+.payout-method-btn{
+  width: 100px;
+  height: 36px;
+  color: white;
+  border-radius: 20px;
+  background-color: #E27832;
+}
+
+
+.hover-link {
+  color: #22a0fb !important;
+  cursor: pointer;
+}
+
+.hover-link:hover,
+.hover-link:active,
+.hover-link:focus {
+  color: #e27832 !important;
+}

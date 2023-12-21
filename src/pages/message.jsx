@@ -14,6 +14,7 @@ function Profile() {
     return (
         <Box style={{overflowX:"hidden"}}>
             <Head>
+                {/* <html lang="en" /> */}
                 {/* <title>Good Deeds | Message</title> */}
                 <title>Good Deeds | An Online Marketplace of Opportunities</title>
                 <link rel="icon" href={fav.src} />

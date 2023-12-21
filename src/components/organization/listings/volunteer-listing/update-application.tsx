@@ -146,7 +146,7 @@ const CreateApplication = (props: Props) => {
         ...prevErrors,
         [`${id}-option-${optionIndex}`]: false, // Reset the error state for the specific question ID
       }));
-    }else { console.log('cccccccccccc', id, value)
+    }else {
       setPreviousQuestions((prevQuestions) => ({
         ...prevQuestions,
         [id]: { // @ts-ignore: Unreachable code error
@@ -162,7 +162,7 @@ const CreateApplication = (props: Props) => {
     }
 
   };
-console.log('PreviousQuestions', previousQuestions)
+
   const handleRequiredChange = (id: string, value:boolean) => {
     setPreviousQuestions((prevQuestions) => ({
       ...prevQuestions,

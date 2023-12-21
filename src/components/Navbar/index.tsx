@@ -55,7 +55,7 @@ import explorepegiun from '../../assets/imgs/explorepegiun.png'
 import exchangepegiun from '../../assets/imgs/exchangepegiun.png'
 import camera from "../../assets/imgs/camera.png";
 import { useToast } from '@chakra-ui/toast'
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import Head from "next/head";
 
 import {
@@ -116,7 +116,8 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 interface Notification {
   id: number;
   message: any;
-  timestamp: any;
+  created_at_for_humans: any;
+  created_at: any;
 }
 
 
@@ -142,6 +143,7 @@ export default function Navbar(props: any) {
   const [showCreateOrg, setShowCreateOrg] = useState(false);
   const [orgData, setOrgData] = useState([]);
   const [orgSlug, setOrgSlug] = useState("");
+  const [orgId, setOrgId] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
@@ -318,6 +320,7 @@ export default function Navbar(props: any) {
         }).then((res) => {
           setOrgData(res.data);
           setOrgSlug(res.data[0].slug)
+          setOrgId(res.data[0].id)
         }).catch((err) => {
           // console.log(err);
         })
@@ -403,26 +406,70 @@ export default function Navbar(props: any) {
         });
       }
     }, [])
+    
 
+    useEffect(() => {
+      
+        axios.get(`${baseUrl}/notifications`, {
+          headers: {
+            Authorization: 'Bearer ' + accessToken(),
+          }
+        })
+        .then((res) => { 
+          // Assuming res.data.notifications is an array of notifications
+          const newVolunteerNotifications = res.data.data.volunteer_notifications.map((notification: Notification) => ({
+            id: notification.id,
+            message: notification.message, 
+            created_at_for_humans: notification.created_at_for_humans,
+            created_at: notification.created_at,
+          }));
+          
+          const newDonationNotifications = res.data.data.donation_notifications.map((notification: Notification) => ({
+            id: notification.id,
+            message: notification.message,
+            created_at_for_humans: notification.created_at_for_humans,
+            created_at: notification.created_at,
+          }));
 
+          // Combine both arrays
+          const combinedNotifications = [...newVolunteerNotifications, ...newDonationNotifications];
+
+          // Sort the combined array based on created_at in descending order
+          const sortedNotifications = combinedNotifications.sort((a, b) => {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          });
+
+          // Update the notifications state with the sorted array
+          setNotifications(sortedNotifications);
+    
+          // Update the notification count
+          setNotificationsCount(res.data.data.total_new_notifications);
+        })
+        .catch((err) => {
+          console.error('Error fetching notifications:', err);
+        });
+    }, []);
+
+    
+    
 
 
     useEffect(() => {
       // Enable console logging for Pusher
-      Pusher.logToConsole = true;
+      Pusher.logToConsole = false;
   
       // Initialize Pusher with your API key and cluster
       var pusher = new Pusher(`${Pusher_key}`, {
         cluster: 'mt1',
       });
   
-      // Subscribe to the channel if currOrgId is available
-      if (currOrgId) {
-        var newVolunteer = `new_volunteer_notification_${currOrgId}`;
+      // Subscribe to the channel if orgId is available
+      if (orgId) {
+        var newVolunteer = `new_volunteer_notification_${orgId}`;
         var newVolunteerChannel = pusher.subscribe(newVolunteer);
   
         // Bind to the event on the channel
-        newVolunteerChannel.bind('NewVolunteer', (data: any) => { console.log('pusher worked!!!', data)
+        newVolunteerChannel.bind('NewVolunteer', (data: any) => { 
           musicPlayers.current?.play();
           const timestampString = data.notification.created_at;
           const parsedTimestamp = Date.parse(timestampString);
@@ -432,12 +479,13 @@ export default function Navbar(props: any) {
 
           // Add the new notification to the array
           const newNotification = {
-            id: data.notification.id, // You might want to replace this with a unique identifier
-            message: data.notification.content, // Replace with the actual notification message from data
-            timestamp: timeDifference, // Replace with the actual timestamp
+            id: data.notification.id, 
+            message: data.notification.content,
+            created_at_for_humans: timeDifference, 
+            created_at: format(new Date(data.notification.created_at), 'yyyy-MM-dd HH:mm:ss'),
           };
   
-          // Update the notifications array
+          // @ts-ignore:
           setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
   
           // Update the notification count
@@ -450,14 +498,52 @@ export default function Navbar(props: any) {
         };
       }
       
-    }, [currOrgId, Pusher_key]);
+    }, [orgId, Pusher_key]);
+    console.log('Notifications', notifications)
+   useEffect(() => {
 
-    const timestampString = "2023-12-07T10:29:28.000000Z";
-          const parsedTimestamp = Date.parse(timestampString);
+    // Initialize Pusher with your API key and cluster
+    var pusher = new Pusher(`${Pusher_key}`, {
+      cluster: 'mt1',
+    });
+    
+    if (orgId) {
+      var newDonation = `new_donation_notification_${orgId}`;
+      var newDonationChannel = pusher.subscribe(newDonation);
 
-          const oldTimestamp = new Date(parsedTimestamp);
-          const timeDifference = formatDistanceToNow(oldTimestamp, { addSuffix: true });
-          console.log('timeDifference', timeDifference);
+      // Bind to the event on the channel
+      newDonationChannel.bind('NewDonation', (data: any) => { 
+        musicPlayers.current?.play();
+        const timestampString = data.notification.created_at;
+        const parsedTimestamp = Date.parse(timestampString);
+
+        const oldTimestamp = new Date(parsedTimestamp);
+        const timeDifference = formatDistanceToNow(oldTimestamp, { addSuffix: true });
+
+        // Add the new notification to the array
+        const newNotification = {
+          id: data.notification.id,
+          message: data.notification.content,
+          created_at_for_humans: timeDifference,
+          created_at: format(new Date(data.notification.created_at), 'yyyy-MM-dd HH:mm:ss'),
+        };
+
+        // @ts-ignore:
+        setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
+
+        // Update the notification count
+        setNotificationsCount((prevCount) => prevCount + 1);
+      });
+
+      // Clean up the subscription when the component unmounts
+      return () => {
+        pusher.unsubscribe(newDonation);
+      };
+    }
+    
+  }, [orgId, Pusher_key]);
+
+
   const getChats = async () => {
     if (isLogin()) {
     await axios
@@ -912,21 +998,22 @@ export default function Navbar(props: any) {
                       )}
                       <FiBell size={23} style={{ marginRight: 5, marginLeft: 5, color: '#000' }} />
                     </MenuButton>
-                    <MenuList px={'10px'}>
-                    {notifications.length > 0 ? (
-                      notifications.map((notification) => (
-                        <MenuItem key={notification.id}>
-                          <div>
-                            <span>{notification.message}</span>
-                            <br />
-                            <span style={{ fontSize: '0.8em', color: '#666' }}>{notification.timestamp}</span>
-                          </div>
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem>No New Notification</MenuItem>
-                    )}
+                    <MenuList px={'10px'} style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                      {notifications.length > 0 ? (
+                        notifications.map((notification, index) => (
+                          <MenuItem key={index}>
+                            <div>
+                              <span>{notification.message}</span>
+                              <br />
+                              <span style={{ fontSize: '0.8em', color: '#666' }}>{notification.created_at_for_humans}</span>
+                            </div>
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem>No New Notification</MenuItem>
+                      )}
                     </MenuList>
+
                   </Menu>
                   <Menu>
                     <MenuButton

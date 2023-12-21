@@ -473,6 +473,7 @@ const StudentLanding = () => {
   return (
     <div style={{overflowX:"hidden"}}>
       <Head>
+        <html lang="en" />
         {/* <title>Good Deeds</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
         <link rel="icon" href={fav.src} />

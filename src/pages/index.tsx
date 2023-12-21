@@ -321,6 +321,7 @@ const Home: NextPage = () => {
   return (
     <Box style={{overflowX:"hidden"}}>
       <Head>
+        {/* <html lang="en" /> */}
         {/* <title>Good Deeds</title> */}
         <title>Good Deeds: The First Peer 2 Peer Marketplace That Rewards Kindness</title>
         <link rel="icon" href={fav.src} />
