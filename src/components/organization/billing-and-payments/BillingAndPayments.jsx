@@ -50,7 +50,7 @@ const BillingAndPayments = () => {
             </div>
             <div className="col-md-6 col-sm-6 pt-5 ">
                 <div className="card mb-5 shadow mt-5 border-0">
-                    <div className="mt-3 mb-3 ml-7">
+                    <div className="mt-3 mb-3" style={{marginLeft:"28px"}}>
                         <div className="pt-3">
                             <p>Manage your billing information and your plan</p>
                         </div>
@@ -70,7 +70,7 @@ const BillingAndPayments = () => {
             </div>
             <div className="col-md-6 col-sm-6">
                 <div className="card mb-5 shadow mt-5 border-0">
-                    <div className="mt-3 mb-3 ml-7">
+                    <div className="mt-3 mb-3" style={{marginLeft:"28px"}}>
                         <div className="pt-3">
                             <p>View monthly donor payouts and manage banking details</p>
                         </div>
