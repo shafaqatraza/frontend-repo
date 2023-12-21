@@ -426,6 +426,7 @@ const Charities = () => {
   return (
     <div style={{overflowX:"hidden"}}>
       <Head>
+        {/* <html lang="en" /> */}
         {/* <title>Good Deeds</title> */}
         <title>Charities - Connect with Motivated Volunteers & Donors | Good Deeds</title>
         <link rel="icon" href={fav.src}  />

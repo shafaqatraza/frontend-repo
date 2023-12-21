@@ -183,9 +183,10 @@ const About = () => {
     <div style={{overflowX:"hidden"}}>
       <Box style={isMobile ? { width: '100%' } : {}}>
         <Head>
+          {/* <html lang="en" /> */}
           {/* <title>Good Deeds | About Good Deeds</title> */}
           <title>About Good Deeds: Transforming Communities through Kindness.</title>
-          <link rel="icon" href={fav.src} />
+          <link rel="icon" href={fav.src}/>
           <meta name="title" content="About Good Deeds: Transforming Communities through Kindness." />
           <meta name="description" content="Explore the heart of Good Deeds, where kindness is currency. Learn about our unique approach to fostering giving, earning Deed Dollars, and building sustainable communities." />
           <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />

@@ -23,6 +23,7 @@ const ContactUs = () => {
   return (
     <Box>
       <Head>
+        {/* <html lang="en" /> */}
         {/* <title>Good Deeds | Contact Us</title> */}
         <title>Connect with Good Deeds: Pioneering Peer-to-Peer Kindness Marketplace</title>
         <link rel="icon" href={fav.src}  />

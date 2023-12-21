@@ -110,32 +110,32 @@ const Listings = () => {
       </div>}
       <div className="col">
         <div className='d-flex justify-content-md-between justify-content-center pb-4 flex-wrap'>
-        <div className="btn-list mt-5">
-                <div className="d-flex">
-                <button
-                  onClick={handleClickOne}
-                  className={
-                    selectedButton === 1 ? "donate-btn2 shadow" : "donatee-btn"
-                  }
-                >
-                  Donation Listing
-                </button>
-                <button
-                  onClick={handleClickTwo}
-                  className={
-                    selectedButton === 2 ? "donate-btn2 shadow" : "donatee-btn"
-                  }
-                >
-                  Volunteer Listing
-                </button>
-                </div>
-              </div>
-            <div className='mt-5 align-items-center d-flex'>
-                <button className='create-list-btn' onClick={() => handleCreateListing(selectedButton)}>Create Listing</button>
-              {selectedButton === 2 ? 
-                <button className='create-list-btn ml-2' onClick={handleCreateApplication}>Create Application</button>
-              :null}
-            </div>
+          <div className="btn-list mt-5">
+                  <div className="d-flex">
+                  <button
+                    onClick={handleClickOne}
+                    className={
+                      selectedButton === 1 ? "donate-btn2 shadow" : "donatee-btn"
+                    }
+                  >
+                    Donation Listing
+                  </button>
+                  <button
+                    onClick={handleClickTwo}
+                    className={
+                      selectedButton === 2 ? "donate-btn2 shadow" : "donatee-btn"
+                    }
+                  >
+                    Volunteer Listing
+                  </button>
+                  </div>
+          </div>
+          <div className='mt-5 align-items-center d-flex'>
+              <button className='create-list-btn' onClick={() => handleCreateListing(selectedButton)}>Create Listing</button>
+            {selectedButton === 2 ? 
+              <button className='create-list-btn ml-2' onClick={handleCreateApplication}>Create Application</button>
+            :null}
+          </div>
         </div>
         {selectedButton === 1 ? 
         <DonationListing 

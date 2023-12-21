@@ -18,10 +18,11 @@ function Profile() {
   return (
     <Box style={{overflowX:"hidden"}}>
       <Head>
+        {/* <html lang="en" /> */}
         {/* <title>Good Deeds | Browse</title> */}
         <title>Good Deeds | An Online Marketplace of Opportunities</title>
         <link rel="icon" href={fav.src}  />
-        <meta name="title" content="A marketplace of opportunity" />
+        <meta name="title" content="Good Deeds | Where Charity Meets Community" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />
         <meta name="robots" content="index, follow" />
@@ -29,7 +30,7 @@ function Profile() {
         <meta name="language" content="English" />
         <meta name="revisit-after" content="1 days" />
 
-        <meta property="og:title" content="A marketplace of opportunity" />
+        <meta property="og:title" content="Good Deeds | Where Charity Meets Community" />
         <meta property="og:description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta property="og:image" content="/gd-favicon.ico" />
         {/* <meta property="og:url" content="" /> */}

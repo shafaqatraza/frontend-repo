@@ -7,6 +7,7 @@ import volunteer from "../assets/imgs/volunteer.png";
 import listing from "../assets/imgs/listing.png";
 import Link from "next/link";
 import donation from "../assets/imgs/donation.png";
+import bill from "../assets/imgs/bill.png";
 import placeholder from "../assets/imgs/placeholder.png";
 import axios from "axios";
 import { accessToken, baseUrl } from "../components/Helper/index";
@@ -173,6 +174,21 @@ const Sidebar = (props) => {
                     <div className="ms-3">
                       <Link href="/organization/donation-analytics">
                         <a>Donation Analytics</a>
+                      </Link>
+                    </div>
+                  </div>
+                </li>
+                ) : null}
+                {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_donation_analytics'))) ? (
+                <li>
+                  <div className="list-icon">
+                    <div>
+                      <Image src={bill.src} alt={"user"} />
+                    </div>
+
+                    <div className="ms-3">
+                      <Link href="/organization/billing-and-payments">
+                        <a>Billing & Payments</a>
                       </Link>
                     </div>
                   </div>
