@@ -117,7 +117,7 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
                             </div>
                             <div className="col-md-2">
                                 <div className="pt-3" style={{ color: '#0393fb'}}>
-                                    <Link href={`/organization/billing-and-payments`}>View Donations</Link>
+                                    <Link href={`/organization/donation-analytics`}>View Donations</Link>
                                 </div>
                             </div>
                         </div>
