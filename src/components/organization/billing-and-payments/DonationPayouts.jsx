@@ -109,7 +109,7 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
                         <div className="row">
                             <div className="col-md-10">
                                 <div className="pt-3">
-                                    <p style={{fontSize:"25px", fontWeight:"600", lineHeight:"37px"}} className='text-center text-md-start'>Pauouts</p>
+                                    <p style={{fontSize:"25px", fontWeight:"600", lineHeight:"37px"}} className='text-center text-md-start'>Payouts</p>
                                 </div>
                                 <div className='mt-2 mb-4 align-items-center d-flex'>
                                     <p>Estimated Payout Date: {estimatedPayoutDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} via bank account (***{currentPayoutMethod})</p>
