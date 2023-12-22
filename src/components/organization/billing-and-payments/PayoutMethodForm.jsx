@@ -126,7 +126,7 @@ const PayoutMethodForm = () => {
   return (
     <>
     <div className="col">
-        <div className='d-flex justify-content-md-between justify-content-center mt-5 pb-4 pr-3 mr-4 flex-wrap'>
+        <div className='d-flex justify-content-md-between justify-content-center mt-5 pb-4 flex-wrap' style={{paddingRight: "12px", marginRight:"16px"}}>
             <div className='mt-md-5 d-flex align-items-center'>
                 <Link href={`/organization/billing-and-payments/donation-payouts`}>
                     <Image src={back.src} style={{ cursor: 'pointer' }} />
@@ -142,16 +142,16 @@ const PayoutMethodForm = () => {
                   </button>
             </div>
         </div>
-        <div className="row mr-12 pr-5">
+        <div className="row mr-12" style={{paddingRight: "20px"}}>
             <div className="col-md-12 col-sm-6 pt-5">
                 <div className="card mb-5 shadow mt-3 border-0">
                     <div className="mt-3 mb-5" style={{marginLeft:"28px"}}>
-                        <div className="d-flex justify-content-end pr-7">
+                        <div className="d-flex justify-content-end" style={{paddingRight: "28px"}}>
                             <div className="pt-3" style={{ color: '#0393fb'}}>
                                 <Link href={`/organization/donation-analytics`}>View Donations</Link>
                             </div>
                         </div>
-                        <div className="row pr-7">
+                        <div className="row" style={{paddingRight: "28px"}}>
                             <div className="col-md-12">
                                 <form onSubmit={handleSubmit}>
                                     <div className="row">

@@ -31,7 +31,7 @@ const BillingAndPayments = () => {
   }
 
   const handlePayoutMethod = () => {
-    router.push('/organization/billing-and-payments/donation-payouts/payout-method');
+    router.push('/organization/payment-plans');
   };
 
   return (

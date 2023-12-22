@@ -6,7 +6,7 @@ import { FaChevronLeft, FaChevronRight, FaChevronDown } from 'react-icons/fa';
 import { Dropdown } from 'react-bootstrap';
 import DonationPayoutsMonth from "./DonationPayoutsMonth";
 import { useRouter } from 'next/router'
-import { accessToken, baseUrl, currOrgSlug } from "../../../components/Helper/index";
+import { accessToken, baseUrl, currOrgSlug } from "../../Helper/index";
 import axios from "axios";
 
 const DonationPayouts = () => {
@@ -130,7 +130,7 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
         <div className="row">
             <div className="col-md-11 col-sm-6 pt-1">
                 <div className="card mb-3 shadow mt-3 border-0">
-                    <div className="mt-3 mb-3 mr-7" style={{marginLeft:"28px"}}>
+                    <div className="mt-3 mb-3" style={{marginLeft:"28px", marginRight: "28px"}}>
                         <div className="row">
                             <div className="col-md-12">
                                 <table className="table">
@@ -169,9 +169,9 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
                                 </Dropdown>
                                 <span>{`${startIndex + 1}-${endIndex} of ${donationPayouts.length}`}</span>
                                 <FaChevronLeft
-                                    className={`ml-2 ${currentPage === 1 ? 'disabled' : ''}`}
+                                    className={`${currentPage === 1 ? 'disabled' : ''}`}
                                     onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                                    style={{ marginRight: '1cm', cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+                                    style={{ marginRight: '1cm', marginLeft: '8px', cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
                                     title={currentPage === 1 ? 'Already on the first page' : 'Go to the previous page'}
                                 />
                                 <FaChevronRight
