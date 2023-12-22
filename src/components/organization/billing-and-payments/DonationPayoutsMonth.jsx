@@ -92,7 +92,7 @@ const DonationPayoutsTenure = (props) => {
         <div className="row">
             <div className="col-md-11 col-sm-6 pt-1">
                 <div className="card mb-3 shadow mt-3 border-0">
-                    <div className="mt-3 mb-3 mr-7" style={{marginLeft:"28px"}}>
+                    <div className="mt-3 mb-3" style={{marginLeft:"28px", marginRight: "28px"}}>
                         <div className="row">
                             <div className="col-md-12">
                             <table className="table">
@@ -118,7 +118,7 @@ const DonationPayoutsTenure = (props) => {
                         <div className="row">
                             <div className="col-md-12 d-flex justify-content-end align-items-center">
                                 <span>Rows per page: {itemsPerPage}</span>
-                                <Dropdown className="ml-2 mr-10">
+                                <Dropdown style={{marginLeft:"8px", marginRight: "40px"}}>
                                     <Dropdown.Toggle variant=""></Dropdown.Toggle>
 
                                     <Dropdown.Menu style={{ maxHeight: '150px', overflowY: 'auto', minWidth: 'unset', width: 'auto' }}>
@@ -131,15 +131,15 @@ const DonationPayoutsTenure = (props) => {
                                 </Dropdown>
                                 <span>{`${startIndex + 1}-${endIndex} of ${donations.length}`}</span>
                                 <FaChevronLeft
-                                    className={`ml-2 ${currentPage === 1 ? 'disabled' : ''}`}
+                                    className={`${currentPage === 1 ? 'disabled' : ''}`}
                                     onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                                    style={{ marginRight: '1cm', cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+                                    style={{ marginRight: '1cm', cursor: currentPage === 1 ? 'not-allowed' : 'pointer', marginLeft:"8px" }}
                                     title={currentPage === 1 ? 'Already on the first page' : 'Go to the previous page'}
                                 />
                                 <FaChevronRight
-                                    className={`ml-2 ${currentPage === totalPages ? 'disabled' : ''}`}
+                                    className={`${currentPage === totalPages ? 'disabled' : ''}`}
                                     onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                                    style={{ cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
+                                    style={{ cursor: currentPage === totalPages ? 'not-allowed' : 'pointer', marginLeft:"8px" }}
                                     title={currentPage === totalPages ? 'Already on the last page' : 'Go to the next page'}
                                 />
                             </div>
