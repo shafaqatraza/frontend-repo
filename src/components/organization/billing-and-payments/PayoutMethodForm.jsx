@@ -148,7 +148,7 @@ const PayoutMethodForm = () => {
                     <div className="mt-3 mb-5" style={{marginLeft:"28px"}}>
                         <div className="d-flex justify-content-end pr-7">
                             <div className="pt-3" style={{ color: '#0393fb'}}>
-                                <Link href={`/organization/billing-and-payments/donation-payouts`}>View Donations</Link>
+                                <Link href={`/organization/donation-analytics`}>View Donations</Link>
                             </div>
                         </div>
                         <div className="row pr-7">
