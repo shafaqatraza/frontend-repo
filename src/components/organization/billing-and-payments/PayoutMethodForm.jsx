@@ -90,7 +90,7 @@ const PayoutMethodForm = () => {
 
     axios
       .post(
-        `${baseUrl}/donation-method/store?org=${currOrgSlug}`,
+        `${baseUrl}/billing-and-payments/donation-method/store?org=${currOrgSlug}`,
         formData,
         {
           headers: {
