@@ -156,7 +156,7 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
                         <div className="row">
                             <div className="col-md-12 d-flex justify-content-end align-items-center">
                                 <span>Rows per page: {itemsPerPage}</span>
-                                <Dropdown className="ml-2 mr-10">
+                                <Dropdown style={{marginLeft:"8px", marginRight: "40px"}}>
                                     <Dropdown.Toggle variant=""></Dropdown.Toggle>
 
                                     <Dropdown.Menu style={{ maxHeight: '150px', overflowY: 'auto', minWidth: 'unset', width: 'auto' }}>
@@ -171,13 +171,13 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
                                 <FaChevronLeft
                                     className={`${currentPage === 1 ? 'disabled' : ''}`}
                                     onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                                    style={{ marginRight: '1cm', marginLeft: '8px', cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+                                    style={{ marginRight: '1cm', marginLeft: '8px', cursor: currentPage === 1 ? 'not-allowed' : 'pointer', marginLeft:"8px" }}
                                     title={currentPage === 1 ? 'Already on the first page' : 'Go to the previous page'}
                                 />
                                 <FaChevronRight
                                     className={`ml-2 ${currentPage === totalPages ? 'disabled' : ''}`}
                                     onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                                    style={{ cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
+                                    style={{ cursor: currentPage === totalPages ? 'not-allowed' : 'pointer', marginLeft:"8px" }}
                                     title={currentPage === totalPages ? 'Already on the last page' : 'Go to the next page'}
                                 />
                             </div>
