@@ -194,7 +194,7 @@ const currentData = donationPayouts.slice(startIndex, endIndex);
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="pt-3">
-                                    <p style={{fontSize:"25px", fontWeight:"800", lineHeight:"37px"}} className='text-center text-md-start'>Current Pauout Method</p>
+                                    <p style={{fontSize:"25px", fontWeight:"800", lineHeight:"37px"}} className='text-center text-md-start'>Current Payout Method</p>
                                 </div>
                                 <div className='mt-2 mb-4 align-items-center'>
                                     <p className="p-txt2">Bank account</p>
