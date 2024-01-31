@@ -1534,7 +1534,7 @@ const StudentLanding = () => {
                 display="block"
                 minW="320px"
                 m="50px auto 0"
-                onClick={() => router.push("/blog")}
+                onClick={() => router.push("/blogs")}
               >
                 Click here to Learn More
               </Button>
