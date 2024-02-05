@@ -499,7 +499,7 @@ export default function Navbar(props: any) {
       }
       
     }, [orgId, Pusher_key]);
-    console.log('Notifications', notifications)
+    // console.log('Notifications', notifications)
    useEffect(() => {
 
     // Initialize Pusher with your API key and cluster

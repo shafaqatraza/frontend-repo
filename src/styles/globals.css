@@ -2488,3 +2488,23 @@ color: #E27832;
 .hover-link:focus {
   color: #e27832 !important;
 }
+
+
+
+/* ----------------------------------------------- */
+.justify-content-center {
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.flex-container {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+}
+
+/* ------------------------------------------------- */

@@ -239,12 +239,34 @@ const ListingView = (props) => {
     }
   }, []);
 
-  const handleDonateButtonClick = (url) => {
+  // const handleDonateButtonClick = (url) => {
+  //   if (!isLogin()) {
+  //     toast({ title: "Please login for the donation", status: "error", position: "top" });
+  //   }else{
+  //     window.open(`${url}?username=${currentUserData?.user_profile?.username}&listing=${listingData.slug}`, '_blank');
+  //   }   
+  // };
+
+  const handleDonateButtonClick = () => {
+  
     if (!isLogin()) {
-      toast({ title: "Please login for the donation", status: "error", position: "top" });
-    }else{
-      window.open(`${url}?username=${currentUserData?.user_profile?.username}&listing=${listingData.slug}`, '_blank');
-    }   
+      toast({ title: 'Please sign in to make a donation', status: 'info', position: 'top' });
+
+    } else {
+      const donationData = {
+        title: listingData?.title,
+        description: listingData?.description,
+        slug: listingData?.slug,
+        thumbnail: listingData?.thumbnail,
+      };
+  
+      // Encode the donationData as a query parameter
+      const params = new URLSearchParams(donationData);
+      const queryParams = '?' + params.toString();
+  
+      // Navigate to the /donate page with donationData as a query parameter
+      router.push(`/donate${queryParams}`);
+    }
   };
 
   useEffect(() => {
@@ -1464,7 +1486,7 @@ const ListingView = (props) => {
                           color='#fff'
                           loading={isContactLoading}
                           disabled={isContactLoading}
-                          onClick={() => handleDonateButtonClick(listingData.url_to_donate)}
+                          onClick={() => handleDonateButtonClick()}
                         >
                           Donate Now
                         </Button>

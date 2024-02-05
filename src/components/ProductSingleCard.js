@@ -22,6 +22,7 @@ import { useToast } from '@chakra-ui/toast'
 import { BiCamera } from 'react-icons/bi'
 import moment from "moment";
 
+
 export const ProductSingleCard = (props) => {
   const {
     product,
@@ -40,13 +41,28 @@ export const ProductSingleCard = (props) => {
   const router = useRouter()
   const toast = useToast()
 
-  const handleDonateButtonClick = (url) => {
+  const handleDonateButtonClick = () => {
+  
     if (!isLogin()) {
-      toast({ title: "Please login for the donation", status: "error", position: "top" });
-    }else{
-      window.open(`${url}?username=${currentUserData?.user_profile?.username}&listing=${slug}`, '_blank');
-    }   
+      toast({ title: 'Please sign in to make a donation', status: 'info', position: 'top' });
+    } else {
+      const donationData = {
+        title: title,
+        description: description,
+        slug: slug,
+        thumbnail: thumbnail,
+      };
+  
+      // Encode the donationData as a query parameter
+      const params = new URLSearchParams(donationData);
+      const queryParams = '?' + params.toString();
+  
+      // Navigate to the /donate page with donationData as a query parameter
+      router.push(`/donate${queryParams}`);
+    }
   };
+
+
 
   function TruncateText({ text, limit }) {
     const truncatedText = text.length > limit ? text.slice(0, limit) + '..' : text;
@@ -219,7 +235,7 @@ export const ProductSingleCard = (props) => {
           borderRadius='100px'
           fontSize="12px"
           fontWeight={'600'}
-          onClick={() => handleDonateButtonClick(url_to_donate)}
+          onClick={() => handleDonateButtonClick()}
         >
           Donate
         </Button>
