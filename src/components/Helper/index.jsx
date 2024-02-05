@@ -1,4 +1,4 @@
-import { baseUrl as baseURL, baseImgUrl as baseImgURL, GOOGLE_API_KEY as GOOGLE_API } from "../../../config";
+import { baseUrl as baseURL, baseImgUrl as baseImgURL, GOOGLE_API_KEY as GOOGLE_API, STRIPE_PUB_KEY_TEST as Stripe_Pub_Key_Test, STRIPE_PUB_KEY_LIVE as Stripe_Pub_Key_Live } from "../../../config";
 export const isLogin = () => {
     if (typeof window !== 'undefined') {
         let storageVal = {};
@@ -182,3 +182,5 @@ export const currOrgId = currOrganizationId();
 export const currOrgSlug = currOrganizationSlug();
 export const listingData = contactListingData();
 export const GOOGLE_API_KEY = GOOGLE_API;
+export const STRIPE_PUB_KEY_TEST = Stripe_Pub_Key_Test;
+export const STRIPE_PUB_KEY_LIVE = Stripe_Pub_Key_Live;

@@ -66,7 +66,6 @@ function Browse(props) {
   const myRef = useRef(null)
   const toast = useToast()
   const [isSmallerThan767] = useMediaQuery('(max-width: 767px)')
-
   const [activeTab, setActiveTab] = useState(0)
   const [type, setType] = useState(
     router.query.type !== undefined ? router.query.type : 'offering'
@@ -110,6 +109,58 @@ function Browse(props) {
 
   let tmpLoading = true;
   
+  useEffect(() => {
+    const fetchData = async () => {
+        if (activeTab === 3 && router.query.success === 'true') {
+            
+            try {
+                const sessionId = window.sessionStorage.getItem('stripe_checkout_session');
+
+                const response = await fetch(`${baseUrl}/donation-analytics/store`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: "Bearer " + accessToken(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ sessionId }),
+                });
+
+                if (!response.ok) {
+                    // Check if the response status is not OK (e.g., 4xx or 5xx status)
+                    console.error(`Request failed with status ${response.status}`);
+                    // Handle the error, show a message, or perform other actions
+                } else {
+                    // Request was successful, you can process the response
+                    toast({ title: 'Thank you for your donation. Your contribution has been received successfully.', status: 'success', position: 'top' });
+                    const data = await response.json();
+                    console.log('Response data:', data);
+                    // Delete the sessionId from sessionStorage after a successful response
+                    window.sessionStorage.removeItem('stripe_checkout_session');
+
+                    // Remove the query parameter from the URL
+                    const hasSuccessParam = router.query.success === 'true';
+
+                    if (hasSuccessParam) {
+                      // Remove the success query parameter
+                      const { pathname, query } = router;
+                      delete query.success;
+
+                      // Perform the redirect without the success parameter
+                      router.replace({ pathname, query });
+                    }
+                }
+
+            } catch (error) {
+                console.error('An error occurred during the request:', error);
+            }
+        }
+    };
+
+    // Call fetchData once when the component mounts
+    fetchData();
+}, [activeTab, router.query.success, router]); // Empty dependency array to run the effect only once
+
+
   useEffect(() => {
     if(router.query.activeTab !== undefined){
       refreshFilter(Number(router.query.activeTab));
