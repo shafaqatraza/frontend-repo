@@ -159,7 +159,7 @@ const isValidAmount = (value) => {
       <form onSubmit={handleSubmit}>
         <Box
           bg="white"
-          maxWidth="45%"
+          width={{ base: '100%', md: '450px' }} // Set a fixed width for the Box
           p={{ base: '6', md: '8' }}
           rounded={{ sm: 'lg' }}
           shadow={{ md: 'base' }}
