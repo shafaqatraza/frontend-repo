@@ -126,7 +126,7 @@ export const Footer = () => (
           mt={{ base: "4", lg: "0" }}
         >
           <WrapItem>
-            <Box whiteSpace="nowrap" fontSize={{ base: "10px", sm: "10px" }} fontWeight="400">&copy; 2023 Good Deeds</Box>
+            <Box whiteSpace="nowrap" fontSize={{ base: "10px", sm: "10px" }} fontWeight="400">&copy; 2024 Good Deeds</Box>
           </WrapItem>
         </Wrap>
         <Wrap

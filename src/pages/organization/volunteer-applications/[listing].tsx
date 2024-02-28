@@ -14,7 +14,9 @@ import { accessToken, baseUrl, currOrgSlug } from "../../../components/Helper/in
 import { useRouter } from "next/router";
 import { useToast } from '@chakra-ui/toast'
 import defaultImage from  '../../../assets/imgs/default-image.png';
-
+import { Box } from "@chakra-ui/react";
+import Head from "next/head";
+import { HamburgerIcon } from "@chakra-ui/icons";
 interface FormErrors {
   number_of_hours:boolean,
   number_of_credits:boolean
@@ -35,6 +37,7 @@ const VolunteerApplicants = () => {
   const [approveBtnLoading, setApproveBtnLoading] = React.useState(false);
   const toast = useToast()
   const [show, setShow] = useState(false);
+  const [showApproveModel, setApproveModelShow] = useState(false);
   // const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showModal, setShowModal] = useState(false);
@@ -167,10 +170,10 @@ const VolunteerApplicants = () => {
       ['number_of_credits']: false
     });
     setUpdatingRowIndex(null);
-    setShow(false); // Close the modal
+    setApproveModelShow(false); // Close the modal
   };
   const handleShowModal = () => {
-    setShow(false);
+    setApproveModelShow(false);
     setShowModal(true);
   };
 
@@ -248,7 +251,7 @@ const VolunteerApplicants = () => {
         application_id: applicationId,
         status_id: statusId
       }));
-      setShow(true);
+      setApproveModelShow(true);
     }else{
       setUpdatingRowIndex(rowIndex);
       axios
@@ -409,10 +412,122 @@ const dataSource =
   
 
   return (
-    <>
+    // <Box style={{overflowX:"hidden"}}>
+    //   <Navbar />
+    //   <Sidebar>
+    //     <Modal show={showModal} onHide={handleCloseModal} closeButton>
+    //       <div className="">
+    //         <p className="modal-txt2 text-center p-4 mt-5">
+    //           Congrats your volunteer is approved!
+    //           <span className="d-block mt-4">
+    //             Send them a message to get started
+    //           </span>
+    //         </p>
+    //       </div>
+    //       <div className="d-flex justify-content-center pb-5 mt-5">
+    //         <button className="approve-btn" onClick={() => handleRowClick(applicationId) }>Send Message</button>
+    //         <button className="canc-btn2 ms-2" onClick={handleCloseModal}>Close</button>
+    //       </div>
+    //     </Modal>
+    //     <Modal show={show} onHide={handleClose} closeButton>
+    //       <div className="">
+    //         <p className="modal-txt text-center p-4">Approve Applicant</p>
+    //       </div>
+    //       <form onSubmit={handleApproveApplicant}>
+    //         <div className="mx-5 mt-3">
+    //           <Input
+    //             style={{ backgroundColor: "#E8E8E8" }}
+    //             type="number"
+    //             placeholder="Number of hours"
+    //             className={`form-control ${formErrors['number_of_hours'] ? 'input-error' : ''}`}
+    //             value={formData.number_of_hours}
+    //             onChange={(event) => {
+    //               setFormData({ ...formData, number_of_hours: event.target.value });
+    //               setFormErrors((prevErrors) => ({ ...prevErrors, ['number_of_hours']: false }));
+    //             }}
+    //             name="number_of_hours"
+    //             required
+    //           />
+    //           {formErrors['number_of_hours'] && <p className="error-message">Please fill out the field.</p>}
+    //         </div>
+    //         <div className="mx-5 mt-3">
+    //           <Input
+    //             style={{ backgroundColor: "#E8E8E8" }}
+    //             type="number"
+    //             placeholder="Number of deed dollars"
+    //             className={`form-control ${formErrors['number_of_credits'] ? 'input-error' : ''}`}
+    //             value={formData.number_of_credits}
+    //             onChange={(event) =>{
+    //               setFormData({ ...formData, number_of_credits: event.target.value });
+    //               setFormErrors((prevErrors) => ({ ...prevErrors, ['number_of_credits']: false }));
+    //             }}
+    //             name="number_of_credits"
+    //             required
+    //           />
+    //           {formErrors['number_of_credits'] && <p className="error-message">Please fill out the field.</p>}
+    //         </div>
+    //         <div className="d-flex justify-content-center pb-5 mt-5">
+    //           {/* type="submit" */} 
+    //           <button type="submit" onClick={handleApproveApplicant} disabled={approveBtnLoading} id="submit" className="approve-btn">
+    //             <span id="button-text">
+    //               {approveBtnLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Approve"}
+    //             </span>
+    //           </button>
+    //           <button className="canc-btn ms-2" onClick={handleClose}>Cancel</button>
+    //         </div>
+    //       </form>
+    //     </Modal>
+    //     <div className="plan-main"></div>
+    //     <div className="ms-2">
+    //       <Link href="/organization/volunteer-applications">
+    //         <Image src={back.src} style={{ cursor: 'pointer' }} />
+    //       </Link>
+    //     </div>
+    //     <div className="d-flex mt-4">
+    //       <Image
+    //         width={326}
+    //         height={297}
+    //         className="img-fluid"
+    //         // @ts-ignore: Unreachable code error
+    //         src={applicationsData?.thumbnail?.image ? `${applicationsData?.thumbnail?.path}/${applicationsData?.thumbnail?.image}`: defaultImage.src} 
+    //         onError={(e) => {
+    //           const target = e.target as HTMLImageElement;
+    //           target.src = defaultImage.src;
+    //         }}
+    //       />
+    //       <p className="ms-4 fw-bold fs-4">
+    //         {
+    //           // @ts-ignore: Unreachable code error
+    //           applicationsData?.listing_title
+    //         }
+    //       </p>
+    //     </div>
+    //     <div className="mt-3">
+    //       <Table columns={columns} dataSource={dataSource} />
+    //     </div>
+    //   </Sidebar>
+    //   <Footer />
+    // </Box>
+    
+
+
+
+
+
+    <div style={{overflowX:"hidden"}}>
       <Navbar />
-      <Sidebar>
-        <div>
+      <div className="row m-0">
+        <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShow(!show)}><HamburgerIcon/></button>
+        <div className="col-3 ps-0 organization-dash d-none d-lg-block">
+          <Sidebar />
+        </div>
+        {show && <div className="col-lg-3 px-0 wel-dashboard d-block d-lg-none">
+          <Sidebar/>
+        </div>
+        }
+        <div className="col">
+            {/* -------------------------------- */}
+
           <Modal show={showModal} onHide={handleCloseModal} closeButton>
             <div className="">
               <p className="modal-txt2 text-center p-4 mt-5">
@@ -427,86 +542,96 @@ const dataSource =
               <button className="canc-btn2 ms-2" onClick={handleCloseModal}>Close</button>
             </div>
           </Modal>
-        </div>
-        <Modal show={show} onHide={handleClose} closeButton>
-          <div className="">
-            <p className="modal-txt text-center p-4">Approve Applicant</p>
+          <Modal show={showApproveModel} onHide={handleClose} closeButton>
+            <div className="">
+              <p className="modal-txt text-center p-4">Approve Applicant</p>
+            </div>
+            <form onSubmit={handleApproveApplicant}>
+              <div className="mx-5 mt-3">
+                <Input
+                  style={{ backgroundColor: "#E8E8E8" }}
+                  type="number"
+                  placeholder="Number of hours"
+                  className={`form-control ${formErrors['number_of_hours'] ? 'input-error' : ''}`}
+                  value={formData.number_of_hours}
+                  onChange={(event) => {
+                    setFormData({ ...formData, number_of_hours: event.target.value });
+                    setFormErrors((prevErrors) => ({ ...prevErrors, ['number_of_hours']: false }));
+                  }}
+                  name="number_of_hours"
+                  required
+                />
+                {formErrors['number_of_hours'] && <p className="error-message">Please fill out the field.</p>}
+              </div>
+              <div className="mx-5 mt-3">
+                <Input
+                  style={{ backgroundColor: "#E8E8E8" }}
+                  type="number"
+                  placeholder="Number of deed dollars"
+                  className={`form-control ${formErrors['number_of_credits'] ? 'input-error' : ''}`}
+                  value={formData.number_of_credits}
+                  onChange={(event) =>{
+                    setFormData({ ...formData, number_of_credits: event.target.value });
+                    setFormErrors((prevErrors) => ({ ...prevErrors, ['number_of_credits']: false }));
+                  }}
+                  name="number_of_credits"
+                  required
+                />
+                {formErrors['number_of_credits'] && <p className="error-message">Please fill out the field.</p>}
+              </div>
+              <div className="d-flex justify-content-center pb-5 mt-5">
+                {/* type="submit" */} 
+                <button type="submit" onClick={handleApproveApplicant} disabled={approveBtnLoading} id="submit" className="approve-btn">
+                  <span id="button-text">
+                    {approveBtnLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Approve"}
+                  </span>
+                </button>
+                <button className="canc-btn ms-2" onClick={handleClose}>Cancel</button>
+              </div>
+            </form>
+          </Modal>
+          <div className="plan-main"></div>
+          <div className="ms-2">
+            <Link href="/organization/volunteer-applications">
+              <Image src={back.src} style={{ cursor: 'pointer' }} />
+            </Link>
           </div>
-          <form onSubmit={handleApproveApplicant}>
-            <div className="mx-5 mt-3">
-              <Input
-                style={{ backgroundColor: "#E8E8E8" }}
-                type="number"
-                placeholder="Number of hours"
-                className={`form-control ${formErrors['number_of_hours'] ? 'input-error' : ''}`}
-                value={formData.number_of_hours}
-                onChange={(event) => {
-                  setFormData({ ...formData, number_of_hours: event.target.value });
-                  setFormErrors((prevErrors) => ({ ...prevErrors, ['number_of_hours']: false }));
-                }}
-                name="number_of_hours"
-                required
-              />
-              {formErrors['number_of_hours'] && <p className="error-message">Please fill out the field.</p>}
-            </div>
-            <div className="mx-5 mt-3">
-              <Input
-                style={{ backgroundColor: "#E8E8E8" }}
-                type="number"
-                placeholder="Number of deed dollars"
-                className={`form-control ${formErrors['number_of_credits'] ? 'input-error' : ''}`}
-                value={formData.number_of_credits}
-                onChange={(event) =>{
-                  setFormData({ ...formData, number_of_credits: event.target.value });
-                  setFormErrors((prevErrors) => ({ ...prevErrors, ['number_of_credits']: false }));
-                }}
-                name="number_of_credits"
-                required
-              />
-              {formErrors['number_of_credits'] && <p className="error-message">Please fill out the field.</p>}
-            </div>
-            <div className="d-flex justify-content-center pb-5 mt-5">
-              {/* type="submit" */} 
-              <button type="submit" onClick={handleApproveApplicant} disabled={approveBtnLoading} id="submit" className="approve-btn">
-                <span id="button-text">
-                  {approveBtnLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Approve"}
-                </span>
-              </button>
-              <button className="canc-btn ms-2" onClick={handleClose}>Cancel</button>
-            </div>
-          </form>
-        </Modal>
-        <div className="plan-main"></div>
-        <div className="ms-2">
-          <Link href="/organization/volunteer-applications">
-            <Image src={back.src} style={{ cursor: 'pointer' }} />
-          </Link>
-        </div>
-        <div className="d-flex mt-4">
-          <Image
-            width={326}
-            height={297}
-            className="img-fluid"
-            // @ts-ignore: Unreachable code error
-            src={applicationsData?.thumbnail?.image ? `${applicationsData?.thumbnail?.path}/${applicationsData?.thumbnail?.image}`: defaultImage.src} 
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = defaultImage.src;
-            }}
-          />
-          <p className="ms-4 fw-bold fs-4">
-            {
+          <div className="d-flex mt-4">
+            <Image
+              width={326}
+              height={297}
+              className="img-fluid"
               // @ts-ignore: Unreachable code error
-              applicationsData?.listing_title
-            }
-          </p>
+              src={applicationsData?.thumbnail?.image ? `${applicationsData?.thumbnail?.path}/${applicationsData?.thumbnail?.image}`: defaultImage.src} 
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = defaultImage.src;
+              }}
+            />
+            <p className="ms-4 fw-bold fs-4">
+              {
+                // @ts-ignore: Unreachable code error
+                applicationsData?.listing_title
+              }
+            </p>
+          </div>
+          <div className="mt-3">
+            <Table columns={columns} dataSource={dataSource} />
+          </div>
+
+
+
+
+
+
+
+
+
+            {/* -------------------------------- */}
         </div>
-        <div className="mt-3">
-          <Table columns={columns} dataSource={dataSource} />
-        </div>
-      </Sidebar>
+      </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

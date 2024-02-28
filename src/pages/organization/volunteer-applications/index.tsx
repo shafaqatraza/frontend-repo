@@ -76,12 +76,10 @@ const VolunteerApplications = () => {
       <div className="row m-0">
       <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShow(!show)}><HamburgerIcon/></button>
         <div className="col-3 ps-0 organization-dash d-none d-lg-block">
-          <Sidebar>
-          </Sidebar>
+          <Sidebar />
         </div>
         {show && <div className="col-lg-3 px-0 wel-dashboard d-block d-lg-none">
-          <Sidebar>
-          </Sidebar>
+          <Sidebar/>
       </div>}
         <div className="col">
           <div className="plan-main"></div>

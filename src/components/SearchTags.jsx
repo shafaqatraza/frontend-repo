@@ -112,7 +112,7 @@ const SearchTags = (props) => {
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <Icon as={GoSettings} color="#E27832" transform="rotate(-90deg)" fontSize="23px" />
+                        {/* <Icon as={GoSettings} color="#E27832" transform="rotate(-90deg)" fontSize="23px" /> */}
                         <Text color="#E27832" pl={'16px'} fontSize="md" fontWeight="500">
                             Filter
                         </Text>
