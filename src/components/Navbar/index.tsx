@@ -328,22 +328,27 @@ export default function Navbar(props: any) {
 
       if (router.asPath.startsWith('/organization')) {
         if (isLogin()) {
-          setIsOrganization(true);
-          axios.get(`${baseUrl}/organizations`, {
-            headers: {
-              Authorization: 'Bearer ' + accessToken(),
-            }
-          }).then((res) => {
-            
-            if (router.asPath.startsWith('/organization')) {
-              if(!currOrgSlug){
-                localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
+          if(!isMobile){
+            setIsOrganization(true);
+            axios.get(`${baseUrl}/organizations`, {
+              headers: {
+                Authorization: 'Bearer ' + accessToken(),
               }
-            }
-  
-          }).catch((err) => {
-            // console.log(err);
-          })
+            }).then((res) => {
+              
+              if (router.asPath.startsWith('/organization')) {
+                if(!currOrgSlug){
+                  localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
+                }
+              }
+    
+            }).catch((err) => {
+              // console.log(err);
+            })
+          }else{
+            router.push("/");
+            toast({ title: 'Please log in using the web version.', status: 'info'});
+          }
         }else{
           router.push("/");
         }
@@ -577,6 +582,27 @@ export default function Navbar(props: any) {
     
   }
 
+  const openOrganization = () => {
+    if (isMobile) {
+      toast({
+        title: 'Please log in using the web version.',
+        status: 'info',
+      });
+    } else {
+      router.push('/organization');
+    }
+  };
+
+  const createOrganization = () => {
+    if(isMobile){
+      toast({
+        title: 'Please log in using the web version.',
+        status: 'info',
+      });
+    }else{
+      setShowCreateOrg(true)
+    }
+  }
 
   return (
     <>
@@ -1047,7 +1073,9 @@ export default function Navbar(props: any) {
                         <MenuItem>My Profile</MenuItem>
                       </Link>
                       {Array.isArray(orgData) && orgData.length > 0 ?
-                        <Link href="/organization"
+                        <Link 
+                          href='javascript:void(0)'
+                          onClick={ () => openOrganization()}
                           _hover={{
                             textDecoration: 'none',
                             color: '#dd6b20'
@@ -1057,7 +1085,7 @@ export default function Navbar(props: any) {
                         :
                         <Link
                           href='javascript:void(0)'
-                          onClick={() => setShowCreateOrg(true)}
+                          onClick={() => createOrganization()}
                           _hover={{
                             textDecoration: 'none',
                             color: '#dd6b20'

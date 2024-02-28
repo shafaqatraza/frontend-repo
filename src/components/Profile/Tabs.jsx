@@ -10,7 +10,8 @@ import {
     Tabs,
     Text,
     Center,
-    Stack
+    Stack,
+    Image
   } from "@chakra-ui/react";
   import { Rating } from "../../components/Rating";
   import React, { useState, useEffect } from "react";
@@ -19,7 +20,7 @@ import {
   import moment from 'moment';
   import { userId } from '../../components/Helper/index';
   import { isMobile } from "react-device-detect";
-
+  import NoImage from '../../assets/imgs/placeholder.png'
 
   export const MyTabs = (props) => {
 
@@ -45,15 +46,31 @@ import {
         if (userId !== item.received_by.id && item.status === "On Hold" || item.status === "Completed") {
           return (
             <>
-              <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
+              <div style={{
+                display: "flex",
+                justifyContent: isMobile ? "space-around" : "center",
+                alignItems: "center",
+              }}>
+                <div className={`item-image ${isMobile ? '' : 'profile-transactions'}`}>
+                  <Image
+                    boxSize="60px"
+                    objectFit="cover"
+                    src={item.transection_type === "sale"? item.listing?.thumbnail? item.listing?.thumbnail: NoImage.src : item.sent_by.avatar}
+                    alt={item.listing?.title}
+                    borderRadius={5}
+                    onError={(e) => {
+                      e.target.src = NoImage.src;
+                    }}
+                  />
+                </div>
                 <div style={{ width: "40%" }}>
-                  <h2 className="font-bold">{item.transection_type === "referral" ? "Referral" : item.transection_type === "signup" ? "Sign Up" : item.listing.title}</h2>
+                  <h2 className="font-bold">{item.transection_type === "referral" ? "Referral" : item.transection_type === "signup" ? "Sign Up" : item.listing?.title}</h2>
                   {showRating &&
                     <div className="py-2">
                       <Rating />
                     </div>
                   }
-                  <p className="text-sm">{item.received_by.full_name}</p>
+                  <p className="text-sm">{item.sent_by.full_name}</p>
                   <p className="text-sm text-gray-400">{moment(item.created_at).fromNow()}</p>
                 </div>
                 <div>
@@ -73,9 +90,25 @@ import {
         if (userId === item.received_by.id && item.status === "Completed") {
             return (
               <>
-                <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
+                <div style={{
+                  display: "flex",
+                  justifyContent: isMobile ? "space-around" : "center",
+                  alignItems: "center",
+                }}>
+                  <div className="item-image">
+                  <Image
+                    boxSize="60px"
+                    objectFit="cover"
+                    src={item.transection_type !== "sale"? item.listing?.thumbnail? item.listing?.thumbnail: NoImage.src : item.sent_by.avatar}
+                    alt={item.listing?.title}
+                    borderRadius={5}
+                    onError={(e) => {
+                      e.target.src = NoImage.src;
+                    }}
+                  />
+                  </div>
                   <div style={{ width: "40%" }}>
-                    <h2 className="font-bold">{item.transection_type === "referral" ? "Referral" : item.transection_type === "signup" ? "Sign Up" : item.listing.title}</h2>
+                    <h2 className="font-bold">{item.transection_type === "referral" ? "Referral" : item.transection_type === "signup" ? "Sign Up" : item.listing?.title}</h2>
                     {showRating &&
                       <div className="py-2">
                         <Rating />
@@ -126,7 +159,24 @@ import {
           const { color, label } = getStatusButtonInfo(item.status);
           return (
             <>
-              <div style={{ display: "flex", justifyContent: "space-around", alignItems: "right" }} className="mt-4">
+              <div style={{
+                  display: "flex",
+                  justifyContent: isMobile ? "space-around" : "center",
+                  alignItems: "center",
+                }}>
+                
+                <div className={`item-image ${isMobile ? '' : 'profile-transactions'}`}>
+                  <Image
+                    boxSize="60px"
+                    objectFit="cover"
+                    src={item.thumbnail? item.thumbnail : NoImage.src}
+                    alt={item.title}
+                    borderRadius={5}
+                    onError={(e) => {
+                      e.target.src = NoImage.src;
+                    }}
+                  />
+                </div>
                 <div style={{ width: "40%" }}>
                   <h2 className="font-bold">{item.title}</h2>
                   
@@ -195,7 +245,6 @@ import {
               </TabList>
             </Flex>
             <TabPanels>
-
               <TabPanel>
                 <Box
                   maxW="7xl"
