@@ -2511,3 +2511,12 @@ color: #E27832;
 .profile-transactions {
   margin-right: 10px;
 }
+
+.stripe-connect{
+  width: 130px;
+  height: 36px;
+  color: white;
+  font-weight: bold;
+  border-radius: 20px;
+  background-color: #E27832;
+}

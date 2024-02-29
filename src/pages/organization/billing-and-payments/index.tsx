@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { Footer } from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
-import BillingAndPayments from "../../../components/organization/billing-and-payments/BillingAndPayments";
+import BillingAndPayments from '../../../components/organization/billing-and-payments/BillingAndPayments';
+
 import { useState} from "react";
 import Sidebar from "../../../components/Sidebar";
 import { accessToken, baseUrl } from "../../../components/Helper/index";
@@ -49,8 +50,9 @@ const organization = () => {
                     </Sidebar>
                 </div>
                 }
-            
+                
                 <BillingAndPayments />
+          
             </div>
         </div>
         <Footer />

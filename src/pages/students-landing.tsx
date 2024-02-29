@@ -546,7 +546,7 @@ const StudentLanding = () => {
           <MyModal
             show={showModel}
             setShow={setShowModel}
-            TitleModal="Login In"
+            TitleModal="Login"
             body={<LoginForm show={showModel} setShowModel={setShowModel} />}
           />
         )}
