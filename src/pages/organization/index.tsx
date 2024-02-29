@@ -16,7 +16,7 @@ import { color, Image, Button } from "@chakra-ui/react";
 import Candadogo from "../../assets/imgs/Canadogo.png";
 import Link from "next/link";
 import Sidebar from "../../components/Sidebar";
-import { accessToken, baseUrl } from "../../components/Helper/index";
+import { accessToken, baseUrl, currOrgId } from "../../components/Helper/index";
 import axios from "axios";
 import { useRouter } from 'next/router'
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -25,6 +25,7 @@ import { useToast } from '@chakra-ui/toast'
 // import { useOrganization } from '../../components/Helper/OrganizationProvider';
 
 const organization = () => {
+  const router = useRouter();
   const toast = useToast()
   const [user, setUser] = useState(null);
   const [slug, setSlug] = useState([]);
@@ -35,13 +36,47 @@ const organization = () => {
   const [subscriptionLoading, setSubscriptionLoading] = useState(true);
 
   const [hours, setHours] = useState({});
-  const router = useRouter()
   const [show, setShow] = React.useState(false);
   const [userPermissions, setUserPermissions] = useState({
     role: '',
     permissions: [] as any
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      // Extract parameters from the query string
+      const code = router.query.code;
+      if(code){
+        try {
+          
+          // Make a request to your backend API with the extracted parameters
+          const response = await fetch(`${baseUrl}/organization/connect-account/callback`, {
+            method: 'POST',
+            headers: {
+              Authorization: "Bearer " + accessToken(),
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ currOrgId, code }),
+          });
+
+          if (response.ok) {
+              // Handle success (e.g., display a success message to the user)
+              toast({ position: "top", title: "Connect account created successfully", status: "success" })
+              
+          } else {
+              // Handle error (e.g., display an error message to the user)
+              console.error('Error creating connect account', response.statusText);
+          }
+
+          // Process the response if needed
+        } catch (error) {
+          console.error('Error calling connect-account-redirect API:', error);
+        }
+      }
+    };
+
+    fetchData(); // Call the async function immediately
+  }, [router.query.state, router.query.code]); // Dependency array includes the parameters
 
   function getPermissions(){ 
     const rolePermissionsString = localStorage.getItem('rolePermissions');
@@ -54,6 +89,7 @@ const organization = () => {
   useEffect( ()=> {
     getPermissions()
   }, [])
+
 
   useEffect(() => {
     axios 
