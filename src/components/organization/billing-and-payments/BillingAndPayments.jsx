@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from "react";
 import { useRouter } from 'next/router';
+import { accessToken, baseUrl, currOrgId} from '../../Helper/index'
+import axios from 'axios';
+import { useToast } from '@chakra-ui/toast'
 
 const BillingAndPayments = () => {
   const router = useRouter();
-
+  const toast = useToast()
   const [userPermissions, setUserPermissions] = useState({
     role: '',
     permissions: []
@@ -34,6 +37,33 @@ const BillingAndPayments = () => {
     router.push('/organization/payment-plans');
   };
 
+
+const handleCreateAccount = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/organization/create-stripe-link`, {
+      method: 'POST',
+      headers: {
+        Authorization: "Bearer " + accessToken(),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ currOrgId }),
+    });
+
+    if (!response.ok) {
+      toast({ position: "top", title: "Something gone wrong, please try again later.", status: "success" })
+      // throw new Error('Could not create Stripe link');
+    }
+
+    // Retrieve the OAuth link from the response
+    const { url } = await response.json();
+
+    // Redirect the user to the OAuth link
+    window.location.href = url;
+  } catch (error) {
+    console.error('Error creating connect account link', error);
+  }
+};
+
   return (
     <>
     <div className="col">
@@ -56,6 +86,7 @@ const BillingAndPayments = () => {
                         </div>
                         <div className='mt-4 align-items-center d-flex'>
                             <button className='billing-payments-btn' onClick={handlePayoutMethod}>View Billing Information</button>
+                            <button className='billing-payments-btn' onClick={handleCreateAccount}>Connect Account</button>
                         </div>
                     </div>
                 </div>
