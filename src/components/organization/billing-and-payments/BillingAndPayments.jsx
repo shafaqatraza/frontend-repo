@@ -6,32 +6,20 @@ import { useToast } from '@chakra-ui/toast'
 import StripeIcon from '../../../assets/imgs/stripe/stripe-icon.png'
 import StripeLogo from '../../../assets/imgs/stripe/stripe-logo-blue.png'
 import {
-  Box,
-  Flex,
-  Divider,
-  Tab,
-  TabIndicator,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-  Center,
-  Stack,
-  Image,
-  CheckCircleIcon
+  Image
 } from "@chakra-ui/react";
-const BillingAndPayments = () => {
+import { CheckCircleIcon } from "@chakra-ui/icons";
+const BillingAndPayments = (props) => {
+
+  const connectAccountId = props.connectAccountId;
   const router = useRouter();
   const toast = useToast()
   const [userPermissions, setUserPermissions] = useState({
     role: '',
     permissions: []
   });
-  const [loading, setLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(false); 
   const [isAccountConnected, setIsAccountConnected] = useState(false);
-  const [account, setAccount] = useState(false);
-  const [connectAccountData, setConnectAccountData] = useState("");
   
   function getPermissions(){ 
     const rolePermissionsString = localStorage.getItem('rolePermissions');
@@ -58,60 +46,64 @@ const BillingAndPayments = () => {
     router.push('/organization/payment-plans');
   };
 
-//   useEffect(() => {  
-//     if (connectAccountData == "") {
-//         try {
-// 			axios.get(`${baseUrl}/billing-and-payments/stripe-connect-account/${currOrgSlug}`,
-// 				{
-// 				headers: {
-// 					Authorization: "Bearer " + accessToken(),
-// 					'Content-Type': 'application/json',
-// 				},
-// 				})
-// 				.then((res) => {
-// 					if (res.status === 200) {  // Check HTTP status directly
-					
-// 						setConnectAccountData(res.data.account_id);
-// 						setAccount(true);
-// 					} else {
-// 						console.error('Error fetching connect account data:', res.status);
-// 					}
-// 				})
-// 				.catch((err) => {});
 
-				
-//         } catch (error) {
-//             console.error('Error fetching connect account data', error);
-//         }
-//     }
-// }, [currOrgSlug]);
 
-console.log('111111',isAccountConnected,  connectAccountData);
-const handleCreateAccount = async () => {
-  try {
-    const response = await fetch(`${baseUrl}/organization/create-stripe-link`, {
-      method: 'POST',
-      headers: {
-        Authorization: "Bearer " + accessToken(),
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ currOrgId }),
-    });
+	const handleCreateAccount = async () => {
+		setIsLoading(true)
+		try {
+		  const response = await fetch(`${baseUrl}/organization/create-stripe-link`, {
+			method: 'POST',
+			headers: {
+			  Authorization: 'Bearer ' + accessToken(),
+			  'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ currOrgId }),
+		  });
 
-    if (!response.ok) {
-      toast({ position: "top", title: "Something gone wrong, please try again later.", status: "error" })
-      // throw new Error('Could not create Stripe link');
-    }
-
-    // Retrieve the OAuth link from the response
-    const { url } = await response.json();
-
-    // Redirect the user to the OAuth link
-    window.location.href = url;
-  } catch (error) {
-    console.error('Error creating connect account link', error);
-  }
-};
+		  setIsLoading(false)
+		  
+		  if (!response.ok) {
+			const errorMessage = await response.json();
+			
+			// Check for the specific error message
+			if (errorMessage.error === 'already_connected') {
+			  toast({
+				title: 'Error',
+				description: 'Stripe account is already connected.',
+				status: 'error',
+				position: 'top',
+				duration: 5000,
+				isClosable: true,
+			  });
+			} else {
+			  toast({
+				title: 'Error',
+				description: errorMessage.error || 'Something went wrong, please try again later.',
+				status: 'error',
+				position: 'top',
+				duration: 5000,
+				isClosable: true,
+			  });
+			}
+			
+			return;
+		  }
+		  
+		  const { url } = await response.json();
+		  window.location.href = url;
+		} catch (error) {
+			setIsLoading(false)
+		  console.error('Error creating connect account link', error);
+		  toast({
+			title: 'Error',
+			description: 'Something went wrong, please try again later.',
+			status: 'error',
+			position: 'top',
+			duration: 5000,
+			isClosable: true,
+		  });
+		}
+	};
 
   return (
     <>
@@ -193,20 +185,26 @@ const handleCreateAccount = async () => {
                               />
                             </div>
                             <div className="mt-2 mb-1 mt-2">
-                              <p>**************4563</p>
+								{connectAccountId !== ""? (
+									<p>{connectAccountId} <CheckCircleIcon boxSize={4} color="green.500" /></p>
+								):(
+									<p className="stripe-link">stripe.com</p>
+								)}
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="col-md-6 d-flex justify-content-end align-items-center">
-					  <button className='stripe-connect' onClick={() => handleCreateAccount()}>Connect</button>
-					  	{/* {connectAccountData 1? (
-							<button className='stripe-connect'>Connected
-								<CheckCircleIcon boxSize={6} color="green.500" />
+					  
+					  	{connectAccountId === ""? (
+							<button className='stripe-connect' disabled={isLoading} onClick={() => handleCreateAccount()}>
+								<span id="button-text">
+									{isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Connect"}
+								</span>
 							</button>
 						):(
-							<button className='stripe-connect' onClick={() => handleCreateAccount()}>Connect</button>
-						)} */}
+							<button className='stripe-connect' disabled style={{ opacity: 0.7, cursor: 'not-allowed' }}>Connected</button>
+						)}
                       </div>
                     </div>
                   </div>

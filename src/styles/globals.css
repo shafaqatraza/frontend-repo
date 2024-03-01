@@ -2513,10 +2513,15 @@ color: #E27832;
 }
 
 .stripe-connect{
-  width: 130px;
+  width: 120px;
   height: 36px;
   color: white;
   font-weight: bold;
   border-radius: 20px;
   background-color: #E27832;
+}
+
+.stripe-link{
+  font-weight: bold;
+  font-size: larger;
 }
