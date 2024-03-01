@@ -1264,7 +1264,13 @@ const Charities = () => {
             <p className="save-txt mt-4 mt-md-0">Save 20% Anually</p>
           </div>
           {selectedButton === 1 ? <MonthlyPlan handlePlanButtonClick = { handlePlanButtonClick } /> : <AnualPlan handlePlanButtonClick = { handlePlanButtonClick } />}
+         
+          <p className="centered-bold-text mt-3">
+            The Donor Management Portal is accessible to all Charities and Non-Profit Organizations. <br />
+            A standard 5.5% transaction fee will apply.
+          </p>
         </Container>
+        
       </div>
 
       {/* testimonials */}
