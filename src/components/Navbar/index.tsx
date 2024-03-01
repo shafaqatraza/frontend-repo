@@ -328,7 +328,7 @@ export default function Navbar(props: any) {
 
       if (router.asPath.startsWith('/organization')) {
         if (isLogin()) {
-          if(!isMobile){
+          // if(!isMobile){
             setIsOrganization(true);
             axios.get(`${baseUrl}/organizations`, {
               headers: {
@@ -345,10 +345,9 @@ export default function Navbar(props: any) {
             }).catch((err) => {
               // console.log(err);
             })
-          }else{
-            router.push("/");
-            toast({ title: 'Please log in using the web version.', status: 'info'});
-          }
+          // }else{
+          //   router.push('/donor-management-portal');
+          // }
         }else{
           router.push("/");
         }
@@ -584,10 +583,7 @@ export default function Navbar(props: any) {
 
   const openOrganization = () => {
     if (isMobile) {
-      toast({
-        title: 'Please log in using the web version.',
-        status: 'info',
-      });
+      router.push('/donor-management-portal');
     } else {
       router.push('/organization');
     }
@@ -595,10 +591,7 @@ export default function Navbar(props: any) {
 
   const createOrganization = () => {
     if(isMobile){
-      toast({
-        title: 'Please log in using the web version.',
-        status: 'info',
-      });
+      router.push('/donor-management-portal');
     }else{
       setShowCreateOrg(true)
     }

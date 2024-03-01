@@ -8,8 +8,12 @@ import 'tailwindcss/tailwind.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import fav from "../assets/imgs/favicon.ico"
 import { OrganizationProvider } from '../components/Helper/OrganizationProvider';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { isMobile } from 'react-device-detect';
 
 function MyApp ({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -17,6 +21,15 @@ function MyApp ({ Component, pageProps }: AppProps) {
       }
     }
   });
+
+  useEffect(() => {
+    const shouldRedirect = isMobile && router.asPath.includes('/organization');
+  
+    if (shouldRedirect) {
+      router.push('/donor-management-portal');
+    }
+  }, [router.asPath]);
+  
 
   return (
     <>
