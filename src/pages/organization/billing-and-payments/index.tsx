@@ -5,7 +5,7 @@ import BillingAndPayments from '../../../components/organization/billing-and-pay
 
 import { useState} from "react";
 import Sidebar from "../../../components/Sidebar";
-import { accessToken, baseUrl } from "../../../components/Helper/index";
+import { accessToken, baseUrl, currOrgId, currOrgSlug } from "../../../components/Helper/index";
 import axios from "axios";
 import { useRouter } from 'next/router'
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -21,7 +21,8 @@ const organization = () => {
     role: '',
     permissions: [] as any
   });
-
+  const [connectAccountId, setConnectAccountId] = useState("");
+  
   function getPermissions(){ 
     const rolePermissionsString = localStorage.getItem('rolePermissions');
     if (rolePermissionsString !== null) {
@@ -33,6 +34,72 @@ const organization = () => {
   useEffect( ()=> {
     getPermissions()
   }, [])
+
+
+  useEffect(() => {
+    if (currOrgSlug !== "") {
+      axios.get(`${baseUrl}/billing-and-payments/stripe-connect-account/${currOrgSlug}`, {
+        headers: {
+          Authorization: 'Bearer ' + accessToken(),
+        }
+      })
+        .then((res) => {
+          setConnectAccountId(res.data.account_id);
+        })
+        .catch((error) => {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error('Server responded with an error:', error.response.data);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.error('No response received:', error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error setting up the request:', error.message);
+          }
+
+        });
+    }
+  }, [currOrgSlug]);
+  
+
+useEffect(() => {
+  const fetchData = async () => {
+    // Extract parameters from the query string
+    const code = router.query.code;
+    if(code){
+      try {
+        // Make a request to your backend API with the extracted parameters
+        const response = await fetch(`${baseUrl}/organization/connect-account/callback`, {
+          method: 'POST',
+          headers: {
+            Authorization: "Bearer " + accessToken(),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ currOrgId, code }),
+        });
+
+        if (response.ok) {
+            // Handle success (e.g., display a success message to the user)
+            const data = await response.json();
+            setConnectAccountId(data.account_id);
+            toast({ position: "top", title: "Connect account created successfully", status: "success" })
+            
+        } else {
+            // Handle error (e.g., display an error message to the user)
+            console.error('Error creating connect account', response.statusText);
+        }
+
+        // Process the response if needed
+      } catch (error) {
+        console.error('Error calling connect-account-redirect API:', error);
+      }
+    }
+  };
+
+  fetchData(); // Call the async function immediately
+}, [router.query.state, router.query.code]); // Dependency array includes the parameters
 
   return (
     <div style={{overflowX:"hidden"}}>
@@ -51,7 +118,7 @@ const organization = () => {
                 </div>
                 }
                 
-                <BillingAndPayments />
+                <BillingAndPayments connectAccountId = {connectAccountId} />
           
             </div>
         </div>
