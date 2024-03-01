@@ -2525,3 +2525,10 @@ color: #E27832;
   font-weight: bold;
   font-size: larger;
 }
+
+.centered-bold-text {
+  color: #e27832;
+  font-weight: bold;
+  text-align: center;
+}
+/* color: '#e27832', fontWeight: 'bold', textIndent: '-0.5em', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' */
