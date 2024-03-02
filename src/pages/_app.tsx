@@ -11,6 +11,7 @@ import { OrganizationProvider } from '../components/Helper/OrganizationProvider'
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isMobile } from 'react-device-detect';
+import withMobileRedirect from '../utils/withMobileRedirect';
 
 function MyApp ({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -22,13 +23,13 @@ function MyApp ({ Component, pageProps }: AppProps) {
     }
   });
 
-  useEffect(() => {
-    const shouldRedirect = isMobile && router.asPath.includes('/organization');
+  // useEffect(() => {
+  //   const shouldRedirect = isMobile && router.asPath.includes('/organization');
   
-    if (shouldRedirect) {
-      router.push('/donor-management-portal');
-    }
-  }, [router.asPath]);
+  //   if (shouldRedirect) {
+  //     router.push('/donor-management-portal');
+  //   }
+  // }, [router.asPath]);
   
 
   return (
@@ -49,4 +50,4 @@ function MyApp ({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default withMobileRedirect(MyApp);

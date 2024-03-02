@@ -41,26 +41,26 @@ export const ProductSingleCard = (props) => {
   const router = useRouter()
   const toast = useToast()
 
-  const handleDonateButtonClick = () => {
+  // const handleDonateButtonClick = () => {
   
-    if (!isLogin()) {
-      toast({ title: 'Please sign in to make a donation', status: 'info', position: 'top' });
-    } else {
-      const donationData = {
-        title: title,
-        description: description,
-        slug: slug,
-        thumbnail: thumbnail,
-      };
+  //   if (!isLogin()) {
+  //     toast({ title: 'Please sign in to make a donation', status: 'info', position: 'top' });
+  //   } else {
+  //     const donationData = {
+  //       title: title,
+  //       description: description,
+  //       slug: slug,
+  //       thumbnail: thumbnail,
+  //     };
   
-      // Encode the donationData as a query parameter
-      const params = new URLSearchParams(donationData);
-      const queryParams = '?' + params.toString();
+  //     // Encode the donationData as a query parameter
+  //     const params = new URLSearchParams(donationData);
+  //     const queryParams = '?' + params.toString();
   
-      // Navigate to the /donate page with donationData as a query parameter
-      router.push(`/donate${queryParams}`);
-    }
-  };
+  //     // Navigate to the /donate page with donationData as a query parameter
+  //     router.push(`/donate${queryParams}`);
+  //   }
+  // };
 
 
 
@@ -235,7 +235,7 @@ export const ProductSingleCard = (props) => {
           borderRadius='100px'
           fontSize="12px"
           fontWeight={'600'}
-          onClick={() => handleDonateButtonClick()}
+          onClick={() => router.push(`/listing/${slug}?type=${post_type}`)} 
         >
           Donate
         </Button>

@@ -1,64 +1,38 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { accessToken, baseUrl, STRIPE_PUB_KEY_TEST, STRIPE_PUB_KEY_LIVE } from '../Helper/index'
-
 import {
-  Button,
   Box,
   Flex,
   Text,
-  Spacer,
-  Switch,
-  NumberInput,
-  NumberInputField,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Textarea,
+  Button,
+  RadioGroup, 
   Radio,
-  RadioGroup,
-  Spinner,
-  Stack
-} from '@chakra-ui/react'
+  Input 
+} from "@chakra-ui/react";
 import { useToast } from '@chakra-ui/toast'
 import NoImage from '../../assets/imgs/no-image.png'
 import { isMobile } from 'react-device-detect'
-const DonationForm = (props) => {
-  const donationData = props.donationData;
-  const [amount, setAmount] = useState(''); // Initial donation amount, you can set it to whatever you want
-  const title = donationData.get('title');
-  const slug = donationData.get('slug');
-  const description = donationData.get('description');
-  const thumbnail = donationData.get('thumbnail');
-  const titleRef = useRef();
-  const [isLoading, setIsLoading] = useState(false);
-  const [donationThumbnail, setDonationThumbnail] = useState(NoImage.src)
+const DonationForm = forwardRef(({ donationData, onDonate }, ref) => {
+  const title = donationData.title;
+  const slug = donationData.slug;
+  const description = donationData.description;
+  const thumbnail = donationData.thumbnail;
   const toast = useToast()
+  const [donationAmount, setDonationAmount] = useState(0);
+  const [donationType, setDonationType] = useState("oneTime");
+  
 
-  useEffect(() => {
-    if(thumbnail){
-      setDonationThumbnail(thumbnail)
-    }
-  }, []);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const floatValue = parseFloat(amount);
-    if(floatValue < 0.50){
+  const handleSubmit = async () => {
+    
+    onDonate(true)
+    const floatValue = parseFloat(donationAmount);
+    
+    if(floatValue < 0.50 || isNaN(floatValue)){
       toast({ title: 'The donation amount must be at least $0.50 CAD.', status: 'info', position: 'top' });
+      onDonate(false)
       return;
     }
-    setIsLoading(true)
-    const donationData = {
-        title: title,
-        description: description,
-        slug: slug,
-        thumbnail: thumbnail,
-    };
-
-    const params = new URLSearchParams(donationData);
-    const queryParams = '?' + params.toString();
 
     try {
         // Call your backend to create a Checkout session
@@ -68,11 +42,11 @@ const DonationForm = (props) => {
                 Authorization: "Bearer " + accessToken(),
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ amount, title, slug, description, thumbnail, queryParams }),
+            body: JSON.stringify({donationType, donationAmount, title, slug, description, thumbnail }),
         });
 
         if (!response.ok) {
-            setIsLoading(false)
+            onDonate(false)
             // Handle non-successful response (HTTP status code other than 2xx)
             const errorResponse = await response.json();
             console.error('Failed to create Checkout session:', errorResponse.error);
@@ -90,16 +64,17 @@ const DonationForm = (props) => {
         });
 
         if (error) {
-          setIsLoading(false)
+          onDonate(false)
           toast({ title: 'Sorry, something went wrong. Please try again later.', status: 'error', position: 'top' });
           console.error('Failed to redirect to Checkout:', error);
         }
     } catch (error) {
-        setIsLoading(false)
+        onDonate(false)
         toast({ title: 'Sorry, something went wrong. Please try again later.', status: 'error', position: 'top' });
         console.error('An unexpected error occurred:', error);
     }
 };
+
 
 const isValidAmount = (value) => {
   // Regular expression to match numbers and decimals
@@ -113,120 +88,139 @@ const isValidAmount = (value) => {
   // Check if the value is within the specified range
   return value <= 999999999999;
 };
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-    
-  //   const donationData = {
-  //     title: title,
-  //     description: description,
-  //     slug: slug,
-  //     thumbnail: thumbnail,
-  //   };
 
-  //   const params = new URLSearchParams(donationData);
-  //   const queryParams = '?' + params.toString();
-
-  //   try {
-  //     // Call your backend to create a Checkout session
-  //     const response = await fetch(`${baseUrl}/donate/create-checkout-session`, {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: "Bearer " + accessToken(),
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ amount, title, slug, description, thumbnail, queryParams }),
-  //     });
-
-  //     const session = await response.json();
-  //     window.sessionStorage.setItem('stripe_checkout_session', session.sessionId);
-
-  //     // Load Stripe.js and redirect to Checkout
-  //     const stripe = await loadStripe('pk_test_51MzNd8HXctCE4qHqr1vcficqBBBYQp6cFwZxDFefUmKIx6C11wm0pHZCG52m4NYghl36riJi7TZZbZ1ACNg8vJAZ00XFHi92vG');
-  //     const { error } = await stripe.redirectToCheckout({
-  //       sessionId: session.sessionId,
-  //     });
-
-  //     if (error) {
-  //       console.log(error);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleAmountButtonClick = (value) => {
+    setDonationAmount(value);
+  };
   
-  return (
-    <div className='flex-container justify-content-center'>
-      <form onSubmit={handleSubmit}>
-        <Box
-          bg="white"
-          width={{ base: '100%', md: '450px' }} // Set a fixed width for the Box
-          p={{ base: '6', md: '8' }}
-          rounded={{ sm: 'lg' }}
-          shadow={{ md: 'base' }}
-          boxShadow={isMobile ? 'lg' : {}}
-          mb="4"
-          border={isMobile ? '0' : '1px'}
-          borderColor="gray.200"
-          borderRadius={isMobile ? '8px' : 0}
-          className='mt-10 mb-10'
+
+  const handleRadioChange = (type) => {
+    setDonationType(type);
+  };
+  
+
+  // Expose the handleSubmit function via the ref
+  React.useImperativeHandle(ref, () => ({
+    handleSubmit,
+  }));
+
+return (
+    <Flex direction="column" justifyContent={"space-between"} mt={3}>
+      <Text
+        fontSize={"20px"}
+        fontWeight={600}
+        color={"#000000"}
+        textTransform="capitalize"
+      >
+      Monthly or One-Time Donation
+      </Text>
+      <RadioGroup defaultValue="oneTime" mt={3}>
+        <Box mb={2}>
+          <Radio value="oneTime" size="lg" colorScheme="teal"
+            isChecked={donationType == 'oneTime'? true : false}
+            onChange={() => handleRadioChange('oneTime')}
+            style={{
+              backgroundColor: donationType === 'oneTime' ? '#e27832' : 'transparent',
+              borderColor: donationType === 'oneTime' ? '#e27832' : 'transparent',
+            }}
           >
-            <Flex justifyContent="start" alignItems="center" >
-                <Text fontSize={24}
-                  pl="3"
-                  fontWeight={500}>
-                  {title}
-                </Text>
-            </Flex>
-            <FormControl mt="8" id="name" isRequired>
-              <Input
-                autoComplete="fake"
-                autoCorrect="off"
-                spellCheck="false"
-                id="customUnitAmount"
-                name="customUnitAmount"
-                type="text"
-                inputMode="decimal"
-                placeholder="CA$0.00"
-                aria-invalid="false"
-                aria-describedby=""
-                data-1p-ignore="false"
-                value={amount}
-                // onChange={(e) => setAmount(e.target.value)}
-                onChange={(e) => {
-                    const inputValue = e.target.value;
-                    // Check if the input value is valid
-                    if (isValidAmount(inputValue)) {
-                        // Update the state if the input is valid
-                        setAmount(inputValue);
-                    }
-                }}
-              />
-            </FormControl>
-            <FormControl mt="8" id="name">
-              <FormHelperText pt="2" pb={'3'} mb="4">{description}</FormHelperText>
-            </FormControl>
-            <FormControl mt="3" id="donation-thumbnail">
-            <img
-                src={donationThumbnail}
-                alt={title}
-            /></FormControl>
-            <Button
-              width="100%"
-              my="4"
-              size="lg"
-              // isDisabled={isLoading}
-              onClick={handleSubmit}
-              disabled={isLoading}
-              colorScheme="orange"
-            >
-              <span id="button-text">
-                {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden"></span></div> : "Next"}
-              </span>
-            </Button>
+            One-Time
+          </Radio>
         </Box>
-      </form>
-    </div>
+        <Box mb={2}>
+          <Radio value="monthly" size="lg" colorScheme="teal" 
+            isChecked={donationType == 'monthly'? true : false}
+            onChange={() => handleRadioChange('monthly')}
+            style={{
+              backgroundColor: donationType === 'monthly' ? '#e27832' : 'transparent',
+              borderColor: donationType === 'monthly' ? '#e27832' : 'transparent',
+            }}
+          >
+            Monthly
+          </Radio>
+        </Box>
+      </RadioGroup>
+      <Text
+        fontSize={"20px"}
+        fontWeight={600}
+        color={"#000000"}
+        textTransform="capitalize"
+      >
+        Donation Amount
+      </Text>
+      <Flex direction="column" alignItems="">
+        <Flex mb={5} mt={3}>
+          <Button
+            class="donation-amount-btn donation-btn"
+            onClick={() => handleAmountButtonClick(10)}
+            marginRight={3}
+          >
+            $10
+          </Button>
+
+          <Button
+            class="donation-amount-btn donation-btn"
+            onClick={() => handleAmountButtonClick(25)}
+            
+          >
+            $25
+          </Button>
+
+          <Button
+            class="donation-amount-btn"
+            onClick={() => handleAmountButtonClick(50)}
+          >
+            $50
+          </Button>
+        </Flex>
+        <Flex>
+          <Button
+            class="donation-amount-btn donation-btn"
+            onClick={() => handleAmountButtonClick(75)}
+          >
+            $75
+          </Button>
+
+          <Button
+            class="donation-amount-btn donation-btn"
+            onClick={() => handleAmountButtonClick(100)}
+          >
+            $100
+          </Button>
+
+          <Button
+            class="donation-amount-btn"
+            onClick={() => handleAmountButtonClick(150)}
+          >
+            $150
+          </Button>
+        </Flex>
+      </Flex>
+      <Flex alignItems="flex-start" flexDirection="column" mt={5}>
+        <Text fontSize={"18px"} fontWeight={600} color={"#000000"} textTransform="capitalize">
+          Custom Amount
+        </Text>
+        <Input
+          type="number"
+          placeholder="Custom amount"
+          borderRadius="10px"
+          border="1px solid #183553"
+          width={"150px"}
+          value={donationAmount}
+          onChange={(e) => {
+            const inputValue = e.target.value;
+            // Check if the input value is valid
+            if (isValidAmount(inputValue)) {
+                // Update the state if the input is valid
+                setDonationAmount(inputValue);
+            }
+          }}
+          p="10px"
+          mt="2"
+        />
+      </Flex>
+    </Flex>
   );
-};
+});
 
 export default DonationForm;
