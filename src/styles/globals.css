@@ -2531,4 +2531,26 @@ color: #E27832;
   font-weight: bold;
   text-align: center;
 }
-/* color: '#e27832', fontWeight: 'bold', textIndent: '-0.5em', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' */
+
+.donation-amount-btn {
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #183553;
+  width: 130px;
+  height: 45px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.donation-amount-btn:hover {
+  background-color: #bfbfbf;
+}
+
+.donation-amount-btn:active,
+.donation-amount-btn:focus {
+  background-color: #bfbfbf;
+}
+
+.donation-btn {
+  margin-right: 10px;
+}

@@ -40,8 +40,11 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  RadioGroup, 
+  Radio,
+  Input 
 } from "@chakra-ui/react";
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import Head from "next/head";
 import axios from "axios";
 import {
@@ -78,7 +81,7 @@ import { useMediaQuery } from "@chakra-ui/react";
 import { ShareListingSection } from "./shareListingSection";
 import ProductGrids from "../ProductGrids";
 import { ProductSingleCard } from "../ProductSingleCard";
-// import { Carousel, Image } from 'antd';
+import DonationForm from '../donate/donationForm';
 
 const ListingView = (props) => {
 
@@ -101,6 +104,8 @@ const ListingView = (props) => {
   const [shareLoading, setShareLoading] = useState(false);
   const [hotDeals, setHotDeals] = useState([]);
   const [wihslistIds, setWishListIds] = useState([]);
+  const childRef = useRef();
+  const [donateBtnLoading, setDonateBtnLoading] = useState(false);
 
   const settings = {
     dots: true,
@@ -239,35 +244,27 @@ const ListingView = (props) => {
     }
   }, []);
 
-  // const handleDonateButtonClick = (url) => {
+  // const handleDonateButtonClick = () => {
+  
   //   if (!isLogin()) {
-  //     toast({ title: "Please login for the donation", status: "error", position: "top" });
-  //   }else{
-  //     window.open(`${url}?username=${currentUserData?.user_profile?.username}&listing=${listingData.slug}`, '_blank');
-  //   }   
+  //     toast({ title: 'Please sign in to make a donation', status: 'info', position: 'top' });
+
+  //   } else {
+  //     const donationData = {
+  //       title: listingData?.title,
+  //       description: listingData?.description,
+  //       slug: listingData?.slug,
+  //       thumbnail: listingData?.thumbnail,
+  //     };
+  
+  //     // Encode the donationData as a query parameter
+  //     const params = new URLSearchParams(donationData);
+  //     const queryParams = '?' + params.toString();
+  
+  //     // Navigate to the /donate page with donationData as a query parameter
+  //     router.push(`/donate${queryParams}`);
+  //   }
   // };
-
-  const handleDonateButtonClick = () => {
-  
-    if (!isLogin()) {
-      toast({ title: 'Please sign in to make a donation', status: 'info', position: 'top' });
-
-    } else {
-      const donationData = {
-        title: listingData?.title,
-        description: listingData?.description,
-        slug: listingData?.slug,
-        thumbnail: listingData?.thumbnail,
-      };
-  
-      // Encode the donationData as a query parameter
-      const params = new URLSearchParams(donationData);
-      const queryParams = '?' + params.toString();
-  
-      // Navigate to the /donate page with donationData as a query parameter
-      router.push(`/donate${queryParams}`);
-    }
-  };
 
   useEffect(() => {
     // console.log("slug getting", router.query.id, router.query.type);
@@ -419,13 +416,31 @@ const ListingView = (props) => {
     localStorage.removeItem("listingData");
   }, []);
 
-  // console.log('listing', listingData)
-
   const getMoreDeedDollars = () =>{
     window.location.href = "/browse?type=donation&activeTab=3";
   }
 
+  const donationData = {
+    title: listingData?.title,
+    description: listingData?.description,
+    slug: listingData?.slug,
+    thumbnail: listingData?.thumbnail,
+  };
 
+
+  const handleDonateButtonClick = () => { 
+    if (!isLogin()) {
+      toast({ title: 'Please sign in to make a donation', status: 'info', position: 'top' });
+      return;
+    }
+
+    if (childRef.current) { 
+      childRef.current.handleSubmit();
+    }
+    
+  };
+
+  
   return (
     <>
       <Box mt="20" mb="20">
@@ -1204,6 +1219,7 @@ const ListingView = (props) => {
                     </Flex>
                   }
                 </Box>
+                {/* Listing Title, Tags and Description */}
                 {listingData.post_type == 'item' || listingData.post_type == 'service' ?
                   <Box w={["100%", "100%", "100%", "50%"]} mr={[0, 0, 10, 20]}>
                     <Flex justifyContent={"space-between"} mt={28}>
@@ -1427,7 +1443,6 @@ const ListingView = (props) => {
                     )}
 
                     <Text mt={"20px"}>
-
                       {listingData.keywords.length > 0 &&
                         listingData.keywords.map((item) => (
                           <Tag
@@ -1448,6 +1463,19 @@ const ListingView = (props) => {
                         ))}
                     </Text>
                     <Text mt={"20px"}>{listingData.description}</Text>
+                    
+                    {/* Monthly or One-Time Donation */}
+                    
+                    {listingData.post_type == 'donation' && (
+                        <DonationForm 
+                          donationData = {donationData} 
+                          onDonate={setDonateBtnLoading}
+                          ref={childRef} 
+                        />
+                    ) }
+
+
+                    {/* Buttons for volunteer and donation listings */}
                     {listingData.post_type == 'volunteer' ?
                       <Flex gap={'20px'} mt={'70px'} justifyContent={["center", "center", "center", "start"]}>
                         <Button
@@ -1471,7 +1499,7 @@ const ListingView = (props) => {
                         </Button>
                       </Flex>
                       :
-                      <Flex gap={'20px'} mt={'70px'} justifyContent={["center", "center", "center", "start"]}>
+                      <Flex gap={'20px'} mt={'40px'} justifyContent={["center", "center", "center", "start"]}>
                         <Button
                           type="submit"
                           fontSize='16px'
@@ -1484,11 +1512,14 @@ const ListingView = (props) => {
                           height="51px"
                           borderRadius='100px'
                           color='#fff'
-                          loading={isContactLoading}
-                          disabled={isContactLoading}
+                          loading={donateBtnLoading}
+                          disabled={donateBtnLoading}
                           onClick={() => handleDonateButtonClick()}
                         >
-                          Donate Now
+                          <span id="button-text">
+                            {donateBtnLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden"></span></div> : "Donate Now"}
+                          </span>
+                          
                         </Button>
                       </Flex>
                     }
