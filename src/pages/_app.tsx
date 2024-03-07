@@ -8,10 +8,13 @@ import 'tailwindcss/tailwind.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import fav from "../assets/imgs/favicon.ico"
 import { OrganizationProvider } from '../components/Helper/OrganizationProvider';
+import { OrganizationFormProvider } from '../components/organizationForm/organizationFormContext';
+import OrganizationFormModal from '../components/organizationForm/OrganizationFormModal';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isMobile } from 'react-device-detect';
 import withMobileRedirect from '../utils/withMobileRedirect';
+import Navbar from '../components/Navbar'; // Import your Navbar component
 
 function MyApp ({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -39,9 +42,13 @@ function MyApp ({ Component, pageProps }: AppProps) {
     </head>
     <ChakraProvider theme={customTheme}>
       <QueryClientProvider client={queryClient}>
-        <OrganizationProvider>
-        <Component {...pageProps} />
-        </OrganizationProvider>
+        {/* <OrganizationProvider> */}
+          <OrganizationFormProvider>
+            {/* <Navbar /> */}
+            <OrganizationFormModal />
+            <Component {...pageProps} />
+          </OrganizationFormProvider>
+        {/* </OrganizationProvider> */}
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ChakraProvider>

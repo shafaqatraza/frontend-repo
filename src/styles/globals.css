@@ -213,6 +213,13 @@ a {
   font-weight: 500;
 }
 
+.create-profile-form .error-msg {
+  text-align: left;
+  flex-direction: column;
+  font-size: 15px;
+  font-weight: 400;
+}
+
 .create-profile-image {
   background-color: var(--chakra-colors-gray-50);
   border-radius: 50%;
@@ -348,6 +355,13 @@ a {
 .avatar-uploader .ant-upload.ant-upload-select-picture-card{
   width: 180px;
   height: 180px;
+  background: none;
+  border: none;
+}
+
+.avatar-uploader-organization .ant-upload.ant-upload-select-picture-card{
+  width: 180px;
+  height: 150px;
   background: none;
   border: none;
 }

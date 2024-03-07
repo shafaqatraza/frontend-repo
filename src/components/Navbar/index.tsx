@@ -57,7 +57,8 @@ import camera from "../../assets/imgs/camera.png";
 import { useToast } from '@chakra-ui/toast'
 import { formatDistanceToNow, format } from 'date-fns';
 import Head from "next/head";
-
+import { useOrganizationFormContext } from '../organizationForm/organizationFormContext';
+import FormScreen1 from '../organizationForm/FormScreen1';
 import {
 
   baseImgUrl,
@@ -126,7 +127,7 @@ export default function Navbar(props: any) {
   const musicPlayers = useRef<HTMLAudioElement | undefined>(
     typeof Audio !== "undefined" ? new Audio("https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7") : undefined
   );
-  
+ 
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   // const [isChatLoading, setIsChatLoading] = useState(true)
@@ -148,7 +149,7 @@ export default function Navbar(props: any) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
   const [isOrganization, setIsOrganization] = useState(false);
-
+  const { openModal } = useOrganizationFormContext();
   const [showModel, setShowModel] = useState<ModelType>({
     login: false,
     forgotPassword: false,
@@ -1078,7 +1079,8 @@ export default function Navbar(props: any) {
                         :
                         <Link
                           href='javascript:void(0)'
-                          onClick={() => createOrganization()}
+                          // onClick={() => createOrganization()}
+                          onClick={openModal}
                           _hover={{
                             textDecoration: 'none',
                             color: '#dd6b20'
