@@ -17,6 +17,7 @@ const Listings = () => {
   const router = useRouter();
   const selectedTab = router.query.page;
   const [orgSlug, setOrgSlug] = useState("");
+  const [orgType, setOrgType] = useState(null);
   const [userPermissions, setUserPermissions] = useState({
     role: '',
     permissions: [] as any
@@ -33,6 +34,10 @@ const Listings = () => {
     })
     .then((res) => {
       setOrgSlug(res.data[0].slug);
+      setOrgType(res.data[0].organization_type_id);
+      if(res.data[0].organization_type_id === 3){
+        setSelectedButton(2)
+      }
 
     })
     .catch((err) => {
@@ -92,8 +97,6 @@ const Listings = () => {
     }
   }
 
-  
-
 
   return (
     <div style={{overflowX:"hidden"}}>
@@ -111,24 +114,26 @@ const Listings = () => {
       <div className="col">
         <div className='d-flex justify-content-md-between justify-content-center pb-4 flex-wrap'>
           <div className="btn-list mt-5">
-                  <div className="d-flex">
-                  <button
-                    onClick={handleClickOne}
-                    className={
-                      selectedButton === 1 ? "donate-btn2 shadow" : "donatee-btn"
-                    }
-                  >
-                    Donation Listing
-                  </button>
-                  <button
-                    onClick={handleClickTwo}
-                    className={
-                      selectedButton === 2 ? "donate-btn2 shadow" : "donatee-btn"
-                    }
-                  >
-                    Volunteer Listing
-                  </button>
-                  </div>
+            <div className="d-flex">
+              {orgType && orgType !== 3 && (
+                <button
+                  onClick={handleClickOne}
+                  className={
+                    selectedButton === 1 ? "donate-btn2 shadow" : "donatee-btn"
+                  }
+                >
+                  Donation Listing
+                </button>
+              )}
+              <button
+                onClick={handleClickTwo}
+                className={
+                  selectedButton === 2 ? "donate-btn2 shadow" : "donatee-btn"
+                }
+              >
+                Volunteer Listing
+              </button>
+            </div>
           </div>
           <div className='mt-5 align-items-center d-flex'>
               <button className='create-list-btn' onClick={() => handleCreateListing(selectedButton)}>Create Listing</button>
