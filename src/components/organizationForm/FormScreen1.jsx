@@ -35,41 +35,61 @@ const FormScreen1 = () => {
         organization_name: "",
         work_email: "",
         phone_number: "",
-        organization_type: 1,
+        organization_type: 1,  // Set the default value to 1
         charity_registration_number: "",
     });
 
-    useEffect(() => {
-        const fetchOrganizationTypes = async () => {     
-            const response = await fetch(`${baseUrl}/organization-types`, {
-                method: 'GET',
-                headers: {
-                    Authorization: "Bearer " + accessToken(),
-                    'Content-Type': 'application/json',
-                }
-            });
+    // useEffect(() => {
+    //     const fetchOrganizationTypes = async () => {     
+    //         const response = await fetch(`${baseUrl}/organization-types`, {
+    //             method: 'GET',
+    //             headers: {
+    //                 Authorization: "Bearer " + accessToken(),
+    //                 'Content-Type': 'application/json',
+    //             }
+    //         });
 
-            if (!response.ok) {
-                const errorResponse = await response.json();
-                console.error('Failed to create Checkout session:', errorResponse.error);
-                return;
-            }
+    //         if (!response.ok) {
+    //             const errorResponse = await response.json();
+    //             console.error('Failed to create Checkout session:', errorResponse.error);
+    //             return;
+    //         }
     
-            const data = await response.json();
-            setOrganizationTypes(data.data)
-        }
+    //         const data = await response.json();
+    //         setOrganizationTypes(data.data)
+    //     }
 
-        fetchOrganizationTypes()
-    }, []);
+    //     fetchOrganizationTypes()
+    // }, []);
+
+    const isNumeric = (str) => {
+        return !isNaN(str);
+    };
 
     const handleCharityRegistrationNumberChange = (e) => {
         const inputValue = e.target.value;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            charity_registration_number: inputValue,
-        }));
-        setRegistrationNumberError('')
+        const lastChar = inputValue.charAt(inputValue.length - 1);
+
+        if (inputValue.length <= 9 && isNumeric(inputValue)) {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                charity_registration_number: inputValue,
+            }));
+        } else if ((inputValue.length === 10 || inputValue.length === 11) && lastChar === 'R') {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                charity_registration_number: inputValue,
+            }));
+        } else if (inputValue.length >= 12 && inputValue.length <= 15 && isNumeric(lastChar)) {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                charity_registration_number: inputValue,
+            }));
+        }
+
+        setRegistrationNumberError('');
     };
+
 
     const handlePhoneNumber = (number) => {
         setFormData((prevFormData) => ({
@@ -85,8 +105,16 @@ const FormScreen1 = () => {
           ...formData,
           organization_type: selectedType,
         });
+
+        if(selectedType == 3){
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                charity_registration_number: "",
+            }));
+            setRegistrationNumberError('');
+        }
     };
- 
+
     const handleNext = async(e) => {
         
         e.preventDefault();
@@ -105,12 +133,19 @@ const FormScreen1 = () => {
             setPhoneNumberError('The phone number is required.')
             return;
         }
-console.log('type', formData.organization_type)
-        if(!formData.charity_registration_number && formData.organization_type === 1 || !formData.charity_registration_number && formData.organization_type === 2){ 
+
+        const charityNum = formData.charity_registration_number; 
+
+        if(!charityNum && formData.organization_type === 1 || !charityNum && formData.organization_type === 2){ 
             setRegistrationNumberError('The charitys registration number is required.')
             return;
         }
-        
+
+        if((formData.organization_type === 1 || formData.organization_type === 2) && charityNum.length < 15){
+            setRegistrationNumberError('The charitys registration number is not correct.')
+            return;
+        }
+     
         setIsSubmitting(true);
         const form = new FormData();
         form.append("organization_name", formData.organization_name);
@@ -175,8 +210,8 @@ console.log('type', formData.organization_type)
                     </FormControl>
                     <FormControl id="work_email">
                         <Input
-                            name="work_email"
                             type="email"
+                            name="work_email"
                             autoComplete="work_email"
                             required
                             placeholder="Work Email"
@@ -203,7 +238,7 @@ console.log('type', formData.organization_type)
                         />
                         {phoneNumberError? <p style={{color:'red'}} className='text text-danger text-align-center'>{phoneNumberError}</p>:''}
                     </FormControl>
-                    <RadioGroup mt={3}>
+                    <RadioGroup defaultValue="1" mt={3}>
                         <Box mb={2}>
                             <Radio
                                 value="1"
