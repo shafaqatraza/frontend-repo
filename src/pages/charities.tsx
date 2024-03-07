@@ -98,6 +98,7 @@ import addorg from '../assets/imgs/add-organization.png'
 import recruit from '../assets/imgs/recruit.png'
 import createListing1 from '../assets/imgs/create-listing1.png'
 import createListing2 from '../assets/imgs/create-listing2.png'
+import { useOrganizationFormContext } from '../components/organizationForm/organizationFormContext';
 
 interface ModelType {
   login: boolean
@@ -118,6 +119,7 @@ const Charities = () => {
   const [isSmallerThan767] = useMediaQuery('(max-width: 767px)')
   const [isSmallerThan850] = useMediaQuery('(max-width: 850px)');
   const [showCreateOrgModal, setShowCreateOrgModal] = useState(false);
+  const { openModal } = useOrganizationFormContext();
   const router = useRouter()
   const [orgData, setOrgData] = useState([]);
   const handleClickOne = () => {
@@ -166,7 +168,8 @@ const Charities = () => {
   })
 
   const openCreateOrgModal = () => { 
-    setShowCreateOrgModal(true);
+    // setShowCreateOrgModal(true);
+    openModal()
   };
 
   const closeCreateOrgModal = () => {
@@ -188,7 +191,7 @@ const Charities = () => {
   // Callback function to handle the "Select" button click in child component
   const handlePlanButtonClick = (plan_id: any) => { 
     if (!isLogin()) {
-      setOpenOrganization(true)
+      setOpenOrganization(false)
       let dubShow = { ...showModel }
       dubShow.login = true
       setShowModel(dubShow)

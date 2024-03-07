@@ -43,6 +43,7 @@ import explorepegiun from '../assets/imgs/explorepegiun.png'
 import exchangepegiun from '../assets/imgs/exchangepegiun.png'
 import { useRouter } from 'next/router'
 import { useToast } from '@chakra-ui/toast'
+import { useOrganizationFormContext } from '../components/organizationForm/organizationFormContext';
 interface ModelType {
   login: boolean
   forgotPassword: boolean
@@ -73,7 +74,8 @@ const Home: NextPage = () => {
   const [orgData, setOrgData] = useState([]);
   const router = useRouter()
   const { token, 'accept-invite': acceptInvite, 'decline-invitation': declineInvitation} = router.query;
-  
+  const { openModal } = useOrganizationFormContext();
+
   const [showModel, setShowModel] = useState<ModelType>({
     login: false,
     forgotPassword: false,
@@ -313,7 +315,8 @@ const Home: NextPage = () => {
       dubShow.login = true
       setShowModel(dubShow)
     } else if(isLogin() && orgData.length == 0) {
-      openCreateOrgModal()
+      // openCreateOrgModal()
+      openModal()
       setOpenOrganization(true)
     }
   };

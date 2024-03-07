@@ -58,7 +58,6 @@ import { useToast } from '@chakra-ui/toast'
 import { formatDistanceToNow, format } from 'date-fns';
 import Head from "next/head";
 import { useOrganizationFormContext } from '../organizationForm/organizationFormContext';
-import FormScreen1 from '../organizationForm/FormScreen1';
 import {
 
   baseImgUrl,

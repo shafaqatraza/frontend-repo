@@ -33,9 +33,10 @@ import { ReactNode } from 'react';
 import location from '../../assets/imgs/location.png'
 import copyLink from '../../assets/imgs/copylink.png'
 import defaultprofile from '../../assets/imgs/profile/default-profile.png'
-
+import { useOrganizationFormContext } from '../organizationForm/organizationFormContext';
 
 export const ProfileBanner = (props: any) => {
+  const { openModal } = useOrganizationFormContext();
   const { profileData } = props
   const [orgData, setOrgData] = useState([]);
   const [show, setShow] = useState(false);
@@ -436,7 +437,7 @@ export const ProfileBanner = (props: any) => {
             {
               Array.isArray(orgData) && orgData.length > 0 ? (<Link href="/organization">
                 <button className='mt-2 btn-organization'>My Organization</button>
-              </Link>) : (<><button onClick={handleShow} className='mt-2 btn-organization'>Create Organization</button></>)
+              </Link>) : (<><button onClick={openModal} className='mt-2 btn-organization'>Create Organization</button></>)
             }
             {profileData.user_profile.website_url !== null &&
               profileData.user_profile.website_url !== '' &&
