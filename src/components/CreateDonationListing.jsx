@@ -58,7 +58,7 @@ const CreateDonationListing = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    url_to_donate: "",
+    url_to_donate: "gooddeeds.ca",
     keywords: [],
     category_id: null,
     thumbnail: "",
@@ -338,7 +338,7 @@ const CreateDonationListing = () => {
             />
             {formErrors['title'] && <p className="error-message">Please fill out the field.</p>}
           </div>
-          <div className="mb-3 mt-4 col-md-5">
+          {/* <div className="mb-3 mt-4 col-md-5">
             <label
               style={{
                 fontWeight: "500",
@@ -360,7 +360,7 @@ const CreateDonationListing = () => {
               required
             />
             {formErrors['url_to_donate'] && <p className="error-message">Please fill out the field.</p>}
-          </div>
+          </div> */}
           <div className="mb-3 mt-3 col-md-4">
             <div className="mt-2">
               <label

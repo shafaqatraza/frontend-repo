@@ -9,6 +9,8 @@ import { Image } from "@chakra-ui/react";
 import conversation from "../../../../assets/imgs/community-focused.jpg"
 import goforw from "../../../../assets/imgs/goforw.png"
 import threedot from "../../../../../assets/imgs/threedot.png"
+import Head from "next/head";
+import fav from "../../../../assets/imgs/favicon.ico"
 
 const DonationListingView = () => {
   const [donationData, setDonationData] = useState([]);
@@ -38,6 +40,10 @@ const DonationListingView = () => {
   }, [slug, currentOrganization]);
   return (
     <>
+      <Head>
+        <title>Good Deeds | Organization Donation Listing</title>
+        <link rel="icon" href={fav.src}  />
+      </Head>
       <Navbar />
       <Sidebar>
       <div className="d-flex justify-content-between">

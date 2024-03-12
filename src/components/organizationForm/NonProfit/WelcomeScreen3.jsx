@@ -20,7 +20,7 @@ const WelcomeScreen3 = () => {
   const handleNext = () => {
     setCurrentStep(1);
     closeModal(); 
-    router.push('/organization');
+    router.push('/profile');
   };
 
   return (

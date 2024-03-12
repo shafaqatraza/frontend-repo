@@ -5,6 +5,8 @@ import Sidebar from "../../../../../components/Sidebar.jsx";
 import UpdateListing from "../../../../../components/organization/listings/volunteer-listing/update-volunteer"
 import UpdateApplication from "../../../../../components/organization/listings/volunteer-listing/update-application"
 import { useToast } from '@chakra-ui/toast'
+import Head from "next/head";
+import fav from "../../../../../assets/imgs/favicon.ico"
 
 const EditVolunteerListing = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -47,6 +49,10 @@ const EditVolunteerListing = () => {
   };
   return (
     <div>
+      <Head>
+        <title>Good Deeds | Organization Update Volunteer Listing</title>
+        <link rel="icon" href={fav.src}  />
+      </Head>
       <Navbar/>
       <Sidebar>
         <div className="btn-list mt-5">

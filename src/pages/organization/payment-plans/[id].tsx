@@ -17,6 +17,8 @@ import { useToast } from '@chakra-ui/toast'
 import Link from "next/link";
 // import { GoogleMap, Autocomplete } from '@react-google-maps/api';
 import { getErrorMessage } from '../../../components/Helper/errorMessages';
+import Head from "next/head";
+import fav from "../../../assets/imgs/favicon.ico"
 
 const calculateHST = (price: number): number => {
   const hst = parseFloat(price.toString()) * 0.13;
@@ -318,6 +320,10 @@ const StripeForm = () => {
   }
   return (
     <>
+      <Head>
+        <title>Good Deeds | Organization Buy Package</title>
+        <link rel="icon" href={fav.src}  />
+      </Head>
       <Navbar />
 
       {/* Show Success Modal */}

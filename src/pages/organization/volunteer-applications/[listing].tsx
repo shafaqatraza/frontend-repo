@@ -17,6 +17,7 @@ import defaultImage from  '../../../assets/imgs/default-image.png';
 import { Box } from "@chakra-ui/react";
 import Head from "next/head";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import fav from "../../../assets/imgs/favicon.ico"
 interface FormErrors {
   number_of_hours:boolean,
   number_of_credits:boolean
@@ -515,6 +516,10 @@ const dataSource =
 
 
     <div style={{overflowX:"hidden"}}>
+      <Head>
+        <title>Good Deeds | Organization Manage Applications</title>
+        <link rel="icon" href={fav.src}  />
+      </Head>
       <Navbar />
       <div className="row m-0">
         <button className="d-block d-lg-none fs-2 text-start ps-3 mt-3" onClick={() => setShow(!show)}><HamburgerIcon/></button>

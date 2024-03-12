@@ -9,7 +9,8 @@ import axios from "axios";
 import { useRouter } from 'next/router'
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useToast } from '@chakra-ui/toast'
-
+import Head from "next/head";
+import fav from "../../../assets/imgs/favicon.ico"
 
 const organization = () => {
   const toast = useToast()
@@ -35,6 +36,10 @@ const organization = () => {
 
   return (
     <div style={{overflowX:"hidden"}}>
+      <Head>
+        <title>Good Deeds | Organization Donation Payouts</title>
+        <link rel="icon" href={fav.src}  />
+      </Head>
         <Navbar />
         <div>
             <div className="row container-md-fluid main-side m-0 justify-content-center">
