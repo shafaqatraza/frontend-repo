@@ -137,12 +137,12 @@ const FormScreen1 = () => {
         const charityNum = formData.charity_registration_number; 
 
         if(!charityNum && formData.organization_type === 1 || !charityNum && formData.organization_type === 2){ 
-            setRegistrationNumberError('The charitys registration number is required.')
+            setRegistrationNumberError('Charity registration number is mandatory.')
             return;
         }
 
         if((formData.organization_type === 1 || formData.organization_type === 2) && charityNum.length < 15){
-            setRegistrationNumberError('The charitys registration number is not correct.')
+            setRegistrationNumberError('Invalid charity registration number.')
             return;
         }
      
