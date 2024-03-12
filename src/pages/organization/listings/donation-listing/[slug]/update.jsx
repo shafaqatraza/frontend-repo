@@ -14,6 +14,8 @@ import camera from "../../../../../assets/imgs/camera.png";
 import { Footer } from "../../../../../components/Footer";
 import { CUIAutoComplete } from 'chakra-ui-autocomplete'
 import { useToast } from '@chakra-ui/toast'
+import Head from "next/head";
+import fav from "../../../../../assets/imgs/favicon.ico"
 
 const myData = [
   { value: "apple", label: "Volunteer" },
@@ -58,7 +60,7 @@ const EditDonationListing = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    url_to_donate: "",
+    url_to_donate: "gooddeeds.ca",
     keywords: [],
     category_id: null,
     thumbnail: [],
@@ -385,6 +387,10 @@ const handleFileChange = (info) => {
 
   return (
     <>
+      <Head>
+        <title>Good Deeds | Organization Update Donation Listing</title>
+        <link rel="icon" href={fav.src}  />
+      </Head>
       <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
         <div className="p-3">
           <p className="modal-txt text-center p-5 mt-3">
@@ -474,7 +480,7 @@ const handleFileChange = (info) => {
             />
             {formErrors['description'] && <p className="error-message">Please fill out the field.</p>}
           </div>
-          <div className="mb-3 mt-4 col-md-5">
+          {/* <div className="mb-3 mt-4 col-md-5">
             <label
               style={{
                 fontWeight: "500",
@@ -496,7 +502,7 @@ const handleFileChange = (info) => {
               required
             />
             {formErrors['url_to_donate'] && <p className="error-message">Please fill out the field.</p>}
-          </div>
+          </div> */}
           <div className="mb-3 mt-3 col-md-4">
             <div className="mt-2">
               <label

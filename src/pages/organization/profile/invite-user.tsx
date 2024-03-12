@@ -17,6 +17,8 @@ import axios from "axios";
 import { accessToken, baseUrl } from '../../../components/Helper/index'
 import { useRouter } from "next/router";
 import { useToast } from '@chakra-ui/toast'
+import Head from "next/head";
+import fav from "../../../assets/imgs/favicon.ico"
 
 const InviteUser = () => {
   const [email, setEmail] = useState('');
@@ -74,6 +76,10 @@ const InviteUser = () => {
   }
   return (
     <>
+      <Head>
+          <title>Good Deeds | Organization Invite-Member</title>
+          <link rel="icon" href={fav.src}  />
+      </Head>
      <Navbar />
       <div className="row container-fluid main-side">
         <Sidebar>

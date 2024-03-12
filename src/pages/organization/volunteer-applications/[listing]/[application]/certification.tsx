@@ -9,6 +9,8 @@ import { useRouter } from 'next/router';
 import axios from "axios";
 import { accessToken, baseUrl, currentOrganization } from "../../../../../components/Helper/index";
 import Link from "next/link";
+import Head from "next/head";
+import fav from "../../../../../assets/imgs/favicon.ico"
 
 const Certification = () => {
   const [organizationName, setOrganizationName] = useState([]);
@@ -61,6 +63,10 @@ const Certification = () => {
   },[application, currentOrganization])
   return (
     <>
+    <Head>
+      <title>Good Deeds | Organization Volunteer Certificate</title>
+      <link rel="icon" href={fav.src}  />
+    </Head>
     <Navbar/>
     <Sidebar>
     <div className="plan-main"></div>

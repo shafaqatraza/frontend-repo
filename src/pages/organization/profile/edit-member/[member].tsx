@@ -12,6 +12,8 @@ import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { accessToken, baseUrl, currOrgSlug } from "../../../../components/Helper/index";
 import { useToast } from '@chakra-ui/toast'
+import Head from "next/head";
+import fav from "../../../../assets/imgs/favicon.ico"
 
 interface FormErrors {
   email:boolean,
@@ -126,6 +128,10 @@ const EditMember = () => {
 
   return (
     <>
+      <Head>
+          <title>Good Deeds | Organization Edit-Member</title>
+          <link rel="icon" href={fav.src}  />
+      </Head>
       <Navbar />
       <div className="row container-fluid main-side">
       <Sidebar>

@@ -6,6 +6,8 @@ import CreateDonationListing from "../../../components/CreateDonationListing"
 import CreateVolunteerListing from "../../../components/CreateVolunteerListing"
 import { useRouter } from 'next/router';
 import { useToast } from '@chakra-ui/toast'
+import Head from "next/head";
+import fav from "../../../assets/imgs/favicon.ico"
 
 const CreateListing = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -53,6 +55,10 @@ const CreateListing = () => {
   };
   return (
     <>
+      <Head>
+        <title>Good Deeds | Organization Create Listing</title>
+        <link rel="icon" href={fav.src}  />
+      </Head>
       <Navbar />
       <Sidebar>
         <div className="btn-list mt-5">

@@ -11,6 +11,7 @@ import { isLogin, accessToken, baseUrl, isProfileCompleted, Logout } from '../..
 import Router from "next/router";
 import axios from "axios";
 import { isMobile } from "react-device-detect";
+import fav from "../../assets/imgs/favicon.ico"
 
 function Profile() {
   const [isLoading, setIsLoading] = useState(true);
@@ -111,8 +112,8 @@ function Profile() {
     <Box style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds | Profile</title> */}
-        <title>Good Deeds | An Online Marketplace of Opportunities</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Good Deeds | Profile</title>
+        <link rel="icon" href={fav.src}  />
         <meta name="title" content="A marketplace of opportunity" />
         <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
         <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />

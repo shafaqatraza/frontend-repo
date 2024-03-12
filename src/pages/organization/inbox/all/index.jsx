@@ -6,6 +6,7 @@ import { Footer } from "../../../../components/Footer";
 import Navbar from "../../../../components/Navbar";
 import Inbox from "../../../../components/OrganizationInbox/index";
 import { isMobile } from 'react-device-detect'
+import fav from "../../../../assets/imgs/favicon.ico"
 
 function Profile() {
     const router = useRouter();
@@ -13,9 +14,8 @@ function Profile() {
     return (
         <Box>
             <Head>
-                {/* <title>Good Deeds | Message</title> */}
-                <title>Good Deeds | An Online Marketplace of Opportunities</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>Good Deeds | Organization Messages</title>
+                <link rel="icon" href={fav.src}  />
                 <meta name="title" content="A marketplace of opportunity" />
                 <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
                 <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />

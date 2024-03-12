@@ -9,6 +9,8 @@ import axios from "axios";
 import { accessToken, baseUrl, currOrgSlug } from "../../../../components/Helper/index";
 import { useRouter } from "next/router";
 import { useToast } from '@chakra-ui/toast'
+import Head from "next/head";
+import fav from "../../../../assets/imgs/favicon.ico"
 interface ApplicationData {
   application: any[]; // Assuming the application array contains any type of data
   applicant: {
@@ -171,6 +173,10 @@ const CompletedApplication = () => {
 
   return (
     <>
+    <Head>
+      <title>Good Deeds | Organization Volunteer Application</title>
+      <link rel="icon" href={fav.src}  />
+    </Head>
     <Navbar/>
     <Sidebar>
       <div className="plan-main"></div>

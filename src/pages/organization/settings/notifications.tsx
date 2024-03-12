@@ -9,6 +9,8 @@ import moment from 'moment';
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { Button } from 'react-bootstrap';
 import { useToast } from '@chakra-ui/toast'
+import Head from "next/head";
+import fav from "../../../assets/imgs/favicon.ico"
 import {
   Spinner,
   Center,
@@ -174,6 +176,10 @@ const NotificationSetting = () => {
 
   return (
     <div style={{overflowX:"hidden"}}>
+    <Head>
+        <title>Good Deeds | Organization Notification-Settings</title>
+        <link rel="icon" href={fav.src}  />
+    </Head>
     <Navbar/>
     
     <div className="row m-0">

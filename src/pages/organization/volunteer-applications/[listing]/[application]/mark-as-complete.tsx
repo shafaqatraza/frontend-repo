@@ -9,6 +9,8 @@ import { useRouter } from 'next/router';
 import { accessToken, baseUrl, currentOrganization } from "../../../../../components/Helper/index";
 import axios from 'axios'
 import { useToast } from '@chakra-ui/toast'
+import Head from "next/head";
+import fav from "../../../../../assets/imgs/favicon.ico"
 
 interface FormErrors {
   full_name:boolean,
@@ -191,6 +193,10 @@ const CompletedVolunteer = () => {
 
   return (
     <>
+      <Head>
+        <title>Good Deeds | Organization Mark as Complete</title>
+        <link rel="icon" href={fav.src}  />
+      </Head>
       <Navbar />
       <Sidebar>
         <div className="plan-main"></div>

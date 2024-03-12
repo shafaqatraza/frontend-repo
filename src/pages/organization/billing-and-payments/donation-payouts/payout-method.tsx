@@ -9,7 +9,8 @@ import axios from "axios";
 import { useRouter } from 'next/router'
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useToast } from '@chakra-ui/toast'
-
+import Head from "next/head";
+import fav from "../../../../assets/imgs/favicon.ico"
 
 const Tenure  = () => {
   const toast = useToast()
@@ -37,6 +38,10 @@ console.log('aaaaaaaaaaa', tenure)
 
   return (
     <div style={{overflowX:"hidden"}}>
+        <Head>
+          <title>Good Deeds | Organization Manage Payout Method</title>
+          <link rel="icon" href={fav.src}  />
+        </Head>
         <Navbar />
         <div>
             <div className="row container-md-fluid main-side m-0 justify-content-center">

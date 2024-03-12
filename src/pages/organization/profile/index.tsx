@@ -19,6 +19,9 @@ import { useToast } from '@chakra-ui/toast'
 import profilTrash from '../../../assets/imgs/profile-trash.png'
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Spinner from 'react-bootstrap/Spinner';
+import Head from "next/head";
+import fav from "../../../assets/imgs/favicon.ico"
+
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
@@ -550,6 +553,40 @@ const OrganizationInfo = () => {
 
   return (
     <div style={{overflowX:"hidden"}}>
+      <Head>
+          <title>Good Deeds | Organization Profile</title>
+          <link rel="icon" href={fav.src}  />
+          <meta name="title" content="A marketplace of opportunity" />
+          <meta name="description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+          <meta name="keywords" content="Marketplace, Goodddeds, Canada, Toronto, Ontario, Community" />
+          <meta name="robots" content="index, follow" />
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+          <meta name="language" content="English" />
+          <meta name="revisit-after" content="1 days" />
+
+          <meta property="og:title" content="A marketplace of opportunity" />
+          <meta property="og:description" content="A marketplace of opportunity. An online community of do-gooders; paying it forward, and getting rewarded." />
+          <meta property="og:image" content="/gd-favicon.ico" />
+          {/* <meta property="og:url" content="" /> */}
+          <meta property="og:site_name" content="Good Deeds" />
+
+          <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=UA-230154537-1`}
+          />
+          <script
+              dangerouslySetInnerHTML={{
+                  __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', 'UA-230154537-1', {
+                  page_path: window.location.pathname,
+                  });
+              `,
+              }}
+          />
+      </Head>
       <Navbar />
       <Modal show={showSuccess} onHide={handleCloseSuccess} closeButton>
         <div className="p-3">

@@ -7,6 +7,8 @@ import { Image } from "@chakra-ui/react";
 import MonthlyPlan from "../../../components/organization/paymentplans/MonthlyPlan";
 import AnualPlan from "../../../components/organization/paymentplans/AnualPlan";
 import Link from "next/link";
+import Head from "next/head";
+import fav from "../../../assets/imgs/favicon.ico"
 
 const SelectPlan = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -20,6 +22,10 @@ const SelectPlan = () => {
   }
   return (
     <div style={{overflowX:"hidden"}}>
+      <Head>
+          <title>Good Deeds | Organization Payment Plans</title>
+          <link rel="icon" href={fav.src}  />
+      </Head>
       <Navbar />
       <Sidebar>
         <div className="plan-main"></div>
