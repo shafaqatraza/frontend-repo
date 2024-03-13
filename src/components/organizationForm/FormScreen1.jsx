@@ -68,6 +68,11 @@ const FormScreen1 = () => {
     const handleCharityRegistrationNumberChange = (e) => {
         const inputValue = e.target.value;
         const lastChar = inputValue.charAt(inputValue.length - 1);
+        const containsInvalidChars = inputValue.match(/[^0-9rR]/g) !== null;
+
+        if(containsInvalidChars){
+            return;
+        }
 
         if (inputValue.length <= 9 && isNumeric(inputValue)) {
             setFormData((prevFormData) => ({
@@ -82,7 +87,7 @@ const FormScreen1 = () => {
         } else if (inputValue.length >= 12 && inputValue.length <= 15 && isNumeric(lastChar)) {
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                charity_registration_number: inputValue,
+                charity_registration_number: inputValue.toUpperCase(),
             }));
         }
 
