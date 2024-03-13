@@ -21,7 +21,6 @@ import PhoneInput from "react-phone-input-2";
 
 const FormScreen1 = () => {
     const { setCurrentStep, openModal, setOrgType, setOrganizationSlug } = useOrganizationFormContext();
-    const [isLoading, setIsLoading] = React.useState(false);
     const toast = useToast()
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [organizationTypes, setOrganizationTypes] = React.useState();
@@ -75,10 +74,10 @@ const FormScreen1 = () => {
                 ...prevFormData,
                 charity_registration_number: inputValue,
             }));
-        } else if ((inputValue.length === 10 || inputValue.length === 11) && lastChar === 'R') {
+        } else if ((inputValue.length === 10 || inputValue.length === 11) && lastChar.toUpperCase() === 'R') {
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                charity_registration_number: inputValue,
+                charity_registration_number: inputValue.toUpperCase(),
             }));
         } else if (inputValue.length >= 12 && inputValue.length <= 15 && isNumeric(lastChar)) {
             setFormData((prevFormData) => ({
@@ -308,7 +307,6 @@ const FormScreen1 = () => {
                         colorScheme="orange"
                         size="lg"
                         fontSize="md"
-                        disabled={isLoading}
                         onClick={handleNext}
                         disabled={isSubmitting}
                     >
