@@ -301,7 +301,7 @@ const FormScreen1 = () => {
                                 backgroundColor={mode("gray.50", "whiteAlpha.900")}
                                 height={50}
                             />
-                            <p>Valid Format: (123456789RR1234)</p>
+                            <p className='mt-2 ml-1'>Valid Format: (123456789RR1234)</p>
                             {registrationNumberError? <p style={{color:'red'}} className='text text-danger text-align-center'>{registrationNumberError}</p>:''}
                         </FormControl>
                     )}
