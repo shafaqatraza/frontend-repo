@@ -279,7 +279,7 @@ const ListingView = (props) => {
     }
   }, [router.query]);
 
-  const onContactButtonClick = async () => {
+  const onContactButtonClick = async (type) => { 
     if (!isLogin()) {
       toast({
         title: "Please login for the contact",
@@ -443,7 +443,7 @@ const ListingView = (props) => {
   
   return (
     <>
-      <Box mt="20" mb="20">
+      <Box mt="10" mb="20">
         {isLoading && (
           <Center h={"300px"}>
             <Spinner
@@ -814,7 +814,7 @@ const ListingView = (props) => {
                     )
                   }
 
-
+                  {/* Information of listing owner */}
                   {listingData.post_type == 'item' || listingData.post_type == 'service' ? (
                     <Flex mr={[0, 0, 10, 20]} mt={"10"} gap={'35px'} direction={{ base: "column", lg: "row" }}>
                       <Box w={["100%", "100%", "100%", "50%"]}>
@@ -929,7 +929,7 @@ const ListingView = (props) => {
                                 fontSize="md"
                                 loading={isContactLoading}
                                 disabled={isContactLoading}
-                                onClick={() => onContactButtonClick()}
+                                onClick={() => onContactButtonClick(listingData.post_type)}
                               >
                                 Contact
                               </Button>
@@ -940,14 +940,16 @@ const ListingView = (props) => {
                                 <Button
                                   type="submit"
                                   mt={"5"}
-                                  colorScheme="orange"
+                                  bg='#183553'
+                                  color='#fff'
+                                  _hover={{ bg: '#bfbfbf' }}
                                   size="lg"
                                   w={"100%"}
                                   borderRadius='100px'
                                   fontSize="md"
                                   loading={isContactLoading}
                                   disabled={isContactLoading}
-                                  onClick={() => onContactButtonClick()}
+                                  onClick={() => onContactButtonClick(listingData.post_type)}
                                 >
                                   Contact
                                 </Button>
@@ -1134,7 +1136,7 @@ const ListingView = (props) => {
                         </Tabs>
                       </Box>
                     </Flex>
-                  ) :
+                    ):
                     <Flex mr={[0, 0, 10, 20]} mt={"10"} gap={'35px'} direction={{ base: "column", lg: "row" }}>
                       <Box w={["100%", "100%", "100%", "50%"]}>
                         <Accordion
@@ -1196,24 +1198,24 @@ const ListingView = (props) => {
                           </AccordionItem>
                         </Accordion>
                         {/* <Box mr={[0, 0, "50px", "50px"]} ml={[0, 0, "50px", "50px"]} mt={10}> */}
-                        {/* {listingData.post_type == 'volunteer' ?
-                          <Button
-                            type="submit"
-                            mt={"5"}
-                            colorScheme="orange"
-                            size="lg"
-                            w={"100%"}
-                            borderRadius='100px'
-                            fontSize="md"
-                            loading={isContactLoading}
-                            disabled={isContactLoading}
-                            onClick={() => onContactButtonClick()}
-                          >
-                            Contact
-                          </Button>
-                          :
-                          null} */}
-
+                        {/* {!isMobile && (
+                        <Button
+                          type="submit"
+                          mt={"5"}
+                          bg='#183553'
+                          size="lg"
+                          w={"100%"}
+                          color='#fff'
+                          _hover={{ bg: '#bfbfbf' }}
+                          borderRadius='100px'
+                          fontSize="md"
+                          loading={isContactLoading}
+                          disabled={isContactLoading}
+                          onClick={() => onContactButtonClick(listingData.post_type)}
+                        >
+                          Contact
+                        </Button>
+                        )} */}
                       </Box>
 
                     </Flex>
@@ -1222,7 +1224,7 @@ const ListingView = (props) => {
                 {/* Listing Title, Tags and Description */}
                 {listingData.post_type == 'item' || listingData.post_type == 'service' ?
                   <Box w={["100%", "100%", "100%", "50%"]} mr={[0, 0, 10, 20]}>
-                    <Flex justifyContent={"space-between"} mt={28}>
+                    <Flex justifyContent={"space-between"} mt={"12"}>
                       <Text
                         fontSize={"30px"}
                         fontWeight={600}
@@ -1419,7 +1421,7 @@ const ListingView = (props) => {
                   </Box>
                   :
                   <Box w={["100%", "100%", "100%", "50%"]} mr={[0, 0, 10, 20]}>
-                    <Flex justifyContent={"space-between"} mt={28}>
+                    <Flex justifyContent={"space-between"} mt={"12"}>
                       <Text
                         fontSize={"30px"}
                         fontWeight={600}
@@ -1523,7 +1525,31 @@ const ListingView = (props) => {
                         </Button>
                       </Flex>
                     }
-
+                    {/* {((listingData.post_type == 'volunteer' && isMobile) || (listingData.post_type == 'donation' && isMobile)) &&  (
+                     
+                      <Flex gap={'20px'} mt={'20px'} justifyContent={["center", "center", "center", "start"]}>
+                        <Button
+                            fontSize='16px'
+                            fontWeight='600'
+                            bg='#183553'
+                            _hover={{ bg: '#E27832' }}
+                            _active={{ bg: '#E27832' }}
+                            _focus={{ bg: '#E27832' }}
+                            width={"290px"}
+                            height="51px"
+                            borderRadius='100px'
+                            color='#fff'
+                            loading={isContactLoading}
+                            disabled={isContactLoading}
+                            onClick={() => onContactButtonClick(listingData.post_type)}
+                          >
+                            <span id="button-text">
+                              {donateBtnLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden"></span></div> : "Contact"}
+                            </span>
+                            
+                          </Button>
+                      </Flex>
+                    )} */}
 
                   </Box>
                 }
@@ -1576,7 +1602,7 @@ const ListingView = (props) => {
               )}
             </Box>
             {!(listingData.added_by === getLoginData()?.id) && (
-              <Box mr={[0, 0, 10, 20]} ml={[0, 0, 10, 20]} mt={50}>
+              <Box mr={isMobile? 5: 20} ml={isMobile? 5: 20} mt={50}>
                 <Text
                   fontSize={"30px"}
                   fontWeight={600}
@@ -1587,7 +1613,7 @@ const ListingView = (props) => {
                   Other Popular Listings
                 </Text>
 
-                <ProductGrids>
+                <ProductGrids >
                   {hotDeals.map(
                     (product, index) =>
                       index <= 4 && <ProductSingleCard

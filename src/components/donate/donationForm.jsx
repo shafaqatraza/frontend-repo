@@ -29,7 +29,7 @@ const DonationForm = forwardRef(({ donationData, onDonate }, ref) => {
     const floatValue = parseFloat(donationAmount);
     
     if(floatValue < 0.50 || isNaN(floatValue)){
-      toast({ title: 'The donation amount must be at least $0.50 CAD.', status: 'info', position: 'top' });
+      toast({ title: 'The minimum donation amount is $0.50 CAD.', status: 'info', position: 'top' });
       onDonate(false)
       return;
     }

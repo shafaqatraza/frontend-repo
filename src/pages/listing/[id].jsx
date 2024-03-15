@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { baseUrl, isLogin, accessToken } from "../../components/Helper/index";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
+import fav from "../../assets/imgs/favicon.ico"
 
 const EditListing = () => {
 
@@ -29,7 +30,7 @@ const EditListing = () => {
               href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
             />
             {/* <title>Good Deeds | An Online Marketplace of Opportunities</title> */}
-            <link rel="icon" href="/favicon.ico" />
+            <link rel="icon" href={fav.src}  />
             {/* <meta name="title" content="A marketplace of opportunity" /> */}
             {/* <meta name="description" content={listingData?.description} /> */}
             {/* <meta name="keywords" content={tagsAarray.toString()} /> */}
