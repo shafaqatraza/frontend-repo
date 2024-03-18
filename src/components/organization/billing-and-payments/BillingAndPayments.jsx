@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useRouter } from 'next/router';
-import { accessToken, baseUrl, currOrgId, currOrgSlug} from '../../Helper/index'
+import { accessToken, baseUrl, currOrgId, currentOrganization} from '../../Helper/index'
 import axios from 'axios';
 import { useToast } from '@chakra-ui/toast'
 import StripeIcon from '../../../assets/imgs/stripe/stripe-icon.png'
@@ -20,7 +20,8 @@ const BillingAndPayments = (props) => {
   });
   const [isLoading, setIsLoading] = useState(false); 
   const [isAccountConnected, setIsAccountConnected] = useState(false);
-  
+  const organizationType = currentOrganization.type;
+
   function getPermissions(){ 
     const rolePermissionsString = localStorage.getItem('rolePermissions');
     if (rolePermissionsString !== null) {
@@ -133,6 +134,8 @@ const BillingAndPayments = (props) => {
             </div>
             <hr style={{ borderTop: "2px solid #000", width: "100%", margin: "0 auto", fontWeight: "bold" }} />
         </div>
+        {organizationType !== 'For-Profit Organization' && (
+        <>
         <div className="row">
             <div className="col-md-5 col-sm-6">
                 <div className='mt-md-5 mt-4'>
@@ -185,26 +188,26 @@ const BillingAndPayments = (props) => {
                               />
                             </div>
                             <div className="mt-2 mb-1 mt-2">
-								{connectAccountId !== ""? (
-									<p>{connectAccountId} <CheckCircleIcon boxSize={4} color="green.500" /></p>
-								):(
-									<p className="stripe-link">stripe.com</p>
-								)}
+                            {connectAccountId !== ""? (
+                              <p>{connectAccountId} <CheckCircleIcon boxSize={4} color="green.500" /></p>
+                            ):(
+                              <p className="stripe-link">stripe.com</p>
+                            )}
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="col-md-6 d-flex justify-content-end align-items-center">
-					  
-					  	{connectAccountId === ""? (
-							<button className='stripe-connect' disabled={isLoading} onClick={() => handleCreateAccount()}>
-								<span id="button-text">
-									{isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Connect"}
-								</span>
-							</button>
-						):(
-							<button className='stripe-connect' disabled style={{ opacity: 0.7, cursor: 'not-allowed' }}>Connected</button>
-						)}
+                        
+                          {connectAccountId === ""? (
+                          <button className='stripe-connect' disabled={isLoading} onClick={() => handleCreateAccount()}>
+                            <span id="button-text">
+                              {isLoading ? <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div> : "Connect"}
+                            </span>
+                          </button>
+                        ):(
+                          <button className='stripe-connect' disabled style={{ opacity: 0.7, cursor: 'not-allowed' }}>Connected</button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -212,6 +215,8 @@ const BillingAndPayments = (props) => {
               </div>
             </div>
         </div>
+        </>
+        )}
     </div>
     </>
   );

@@ -16,7 +16,7 @@ import { color, Image, Button } from "@chakra-ui/react";
 import Candadogo from "../../assets/imgs/Canadogo.png";
 import Link from "next/link";
 import Sidebar from "../../components/Sidebar";
-import { accessToken, baseUrl, currOrgId } from "../../components/Helper/index";
+import { accessToken, baseUrl, currOrgId, currentOrganization, isLogin } from "../../components/Helper/index";
 import axios from "axios";
 import { useRouter } from 'next/router'
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -58,6 +58,10 @@ const organization = () => {
 
 
   useEffect(() => {
+    if(isLogin() && !currentOrganization){ 
+      window.location.reload();
+    }
+
     axios 
         .get(`${baseUrl}/organizations`, {
           headers: {
@@ -98,9 +102,9 @@ const organization = () => {
   }, []);
 
   useEffect(() => {
-    if(organization){
+    if(currentOrganization){
     axios
-      .get(`${baseUrl}/volunteer-listings/all/${organization}`, {
+      .get(`${baseUrl}/volunteer-listings/all/${currentOrganization?.slug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
@@ -116,7 +120,7 @@ const organization = () => {
       });
 
     
-      axios.get(`${baseUrl}/organization/subscriptions/hours-data?org=${organization}`, {
+      axios.get(`${baseUrl}/organization/subscriptions/hours-data?org=${currentOrganization?.slug}`, {
         headers: {
           Authorization: "Bearer " + accessToken(),
           "Content-Type": "application/x-www-form-urlencoded",
@@ -131,7 +135,7 @@ const organization = () => {
         setSubscriptionLoading(false)
       })
     }
-  }, [organization]);
+  }, [currentOrganization]);
   
 
   function handleCrearePaymentPlan(){

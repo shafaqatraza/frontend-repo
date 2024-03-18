@@ -4,7 +4,7 @@ import Navbar from '../../../components/Navbar'
 import { Footer } from '../../../components/Footer'
 import { Table } from "antd";
 import axios from "axios";
-import { accessToken, baseUrl, currOrgSlug } from '../../../components/Helper/index'
+import { accessToken, baseUrl, currentOrganization } from '../../../components/Helper/index'
 import moment from 'moment';
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { Button } from 'react-bootstrap';
@@ -57,6 +57,9 @@ const NotificationSetting = () => {
     role: '',
     permissions: [] as any
   });
+
+  // @ts-ignore: 
+  const organizationType = currentOrganization.type;
 
   function getPermissions(){ 
     const rolePermissionsString = localStorage.getItem('rolePermissions');
@@ -297,19 +300,22 @@ const NotificationSetting = () => {
             <p className="notification-description">
                 New applicant on a listing
             </p>
-
-            <input
-                className="mt-2"
-                style={{ height: "18px", width: "18px" }}
-                type="checkbox"
-                name='new_donation'
-                checked={notificationSetting?.new_donation === true}
-                onChange={() => toggleNotificationSetting("new_donation")}
-            /> 
-            <h3 className="notification-heading">New Donation</h3>
-            <p className="notification-description">
-                New donation
-            </p>
+            {organizationType !== 'For-Profit Organization' && (
+              <>
+                <input
+                    className="mt-2"
+                    style={{ height: "18px", width: "18px" }}
+                    type="checkbox"
+                    name='new_donation'
+                    checked={notificationSetting?.new_donation === true}
+                    onChange={() => toggleNotificationSetting("new_donation")}
+                /> 
+                <h3 className="notification-heading">New Donation</h3>
+                <p className="notification-description">
+                    New donation
+                </p>
+              </>
+            )}
 
             <input
                 className="mt-2"

@@ -38,7 +38,7 @@ const DonorManagement = () => {
           <Flex gap={'70px'} alignItems={'center'} justifyContent={'center'} flexDirection={'column'} pt={'30px'} pb={'20px'} >
             <Image style={{ width: "200px", height: "203px" }} src={gdlogopegiun.src} alt='Connect with Good Deeds: Pioneering Peer-to-Peer Kindness Marketplace'/>
           </Flex>
-          <Text fontSize={'26px'} lineHeight="42px" fontWeight={'700'} color="#183553" textAlign="center">To access the Donor Management Portal, please log into your desktop computer</Text>
+          <Text fontSize={'26px'} lineHeight="42px" fontWeight={'700'} color="#183553" textAlign="center">To access the Donor Management Portal, please login to your desktop computer</Text>
          </Box>
          <Button
               width="100%"
