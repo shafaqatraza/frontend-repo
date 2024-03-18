@@ -8,6 +8,11 @@ import { useRouter } from 'next/router';
 import { useToast } from '@chakra-ui/toast'
 import Head from "next/head";
 import fav from "../../../assets/imgs/favicon.ico"
+import { currentOrganization } from "../../../components/Helper/index";
+import {
+  Center,
+  Spinner,
+} from "@chakra-ui/react";
 
 const CreateListing = () => {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -19,6 +24,9 @@ const CreateListing = () => {
     role: '',
     permissions: [] as any
   });
+  const [isLoading, setIsLoading] = useState(true)
+  // @ts-ignore: 
+  const organizationType = currentOrganization.type;
 
   useEffect( ()=> {
     const rolePermissionsString = localStorage.getItem('rolePermissions');
@@ -31,8 +39,14 @@ const CreateListing = () => {
   useEffect(() => {
     if (selectedListing === 'volunteer') {
       setSelectedButton(2); 
+      setIsLoading(false)
     } else if (selectedListing === 'donation') {
-      setSelectedButton(1); 
+      if(organizationType !== 'For-Profit Organization'){
+        setSelectedButton(1); 
+      }else{
+        setSelectedButton(2); 
+      }
+      setIsLoading(false)
     }
   }, [selectedListing]);
   
@@ -63,6 +77,7 @@ const CreateListing = () => {
       <Sidebar>
         <div className="btn-list mt-5">
           <div className="d-flex">
+          {organizationType !== 'For-Profit Organization' && (
             <button
               onClick={handleClickOne}
               className={
@@ -71,6 +86,7 @@ const CreateListing = () => {
             >
               Donation Listing
             </button>
+            )}
             <button
               onClick={handleClickTwo}
               className={
@@ -81,7 +97,21 @@ const CreateListing = () => {
             </button>
           </div>
         </div>
-        {selectedButton === 1 ? <CreateDonationListing /> : <CreateVolunteerListing selectedForm = {selectedForm} userPermissions = {userPermissions} />}
+        {isLoading? (
+          <Center h={"300px"}>
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="orange.200"
+              color="orange.500"
+              size="xl"
+            />
+          </Center>
+        ): (
+          <>
+          {selectedButton === 1 ? <CreateDonationListing /> : <CreateVolunteerListing selectedForm = {selectedForm} userPermissions = {userPermissions} />}
+          </>
+        )}
       </Sidebar>
       <Footer />
     </>

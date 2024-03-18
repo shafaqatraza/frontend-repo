@@ -11,6 +11,7 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import { useToast } from '@chakra-ui/toast'
 import Head from "next/head";
 import fav from "../../../assets/imgs/favicon.ico"
+import { DonationGuard } from '../../../components/Guards';
 
 const organization = () => {
   const toast = useToast()
@@ -35,6 +36,7 @@ const organization = () => {
   }, [])
 
   return (
+    <DonationGuard>
     <div style={{overflowX:"hidden"}}>
       <Head>
         <title>Good Deeds | Organization Donation Payouts</title>
@@ -60,6 +62,7 @@ const organization = () => {
         </div>
         <Footer />
     </div>
+    </DonationGuard>
   );
 };
 

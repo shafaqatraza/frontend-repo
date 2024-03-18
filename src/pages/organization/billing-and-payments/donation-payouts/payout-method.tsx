@@ -11,7 +11,7 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import { useToast } from '@chakra-ui/toast'
 import Head from "next/head";
 import fav from "../../../../assets/imgs/favicon.ico"
-
+import { DonationGuard } from '../../../../components/Guards';
 const Tenure  = () => {
   const toast = useToast()
   const [organization, setOrganization] = useState([]);
@@ -37,6 +37,7 @@ console.log('aaaaaaaaaaa', tenure)
   }, [])
 
   return (
+    <DonationGuard>
     <div style={{overflowX:"hidden"}}>
         <Head>
           <title>Good Deeds | Organization Manage Payout Method</title>
@@ -64,6 +65,7 @@ console.log('aaaaaaaaaaa', tenure)
         </div>
         <Footer />
     </div>
+    </DonationGuard>
   );
 };
 

@@ -15,6 +15,8 @@ import { useRouter } from 'next/router';
 import { isMobile } from 'react-device-detect';
 import withMobileRedirect from '../utils/withMobileRedirect';
 import Navbar from '../components/Navbar'; // Import your Navbar component
+import { isLogin, accessToken, baseUrl} from '../components/Helper/index'
+import axios from 'axios'
 
 function MyApp ({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -26,14 +28,27 @@ function MyApp ({ Component, pageProps }: AppProps) {
     }
   });
 
-  // useEffect(() => {
-  //   const shouldRedirect = isMobile && router.asPath.includes('/organization');
-  
-  //   if (shouldRedirect) {
-  //     router.push('/donor-management-portal');
-  //   }
-  // }, [router.asPath]);
-  
+  useEffect(() => {
+    const handleSetOrganization = () => { 
+        if (isLogin()) { 
+            // Check if organization info is already in local storage
+            const organizationInfo = localStorage.getItem('currentOrganization');
+            if (!organizationInfo) { 
+                axios.get(`${baseUrl}/organizations`, {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken(),
+                    }
+                }).then((res: any) => {
+                    // Set organization info in local storage
+                    localStorage.setItem('currentOrganization', JSON.stringify(res.data[0]));
+                }).catch((err) => {})
+            }
+        }
+    };
+
+    handleSetOrganization()
+  }, [router]);
+
 
   return (
     <>

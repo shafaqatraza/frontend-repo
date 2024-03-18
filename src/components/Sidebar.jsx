@@ -10,18 +10,20 @@ import donation from "../assets/imgs/donation.png";
 import bill from "../assets/imgs/bill.png";
 import placeholder from "../assets/imgs/placeholder.png";
 import axios from "axios";
-import { accessToken, baseUrl } from "../components/Helper/index";
+import { accessToken, baseUrl, currentOrganization } from "../components/Helper/index";
 import Spinner from 'react-bootstrap/Spinner';
- 
+
 const Sidebar = (props) => {
   const [slug, setSlug] = useState([]);
   const [data, setData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [userPermissions, setUserPermissions] = useState('')
-
+  const [organizationType, setOrganizationType] = useState('')
   
-
+  
+  
   useEffect(() => {
+    if(!currentOrganization){
     axios
       .get(`${baseUrl}/organizations`, {
         headers: {
@@ -31,10 +33,18 @@ const Sidebar = (props) => {
       })
       .then((res) => {
         setSlug(res.data[0].slug);
+        setData(res.data[0])
+        setOrganizationType(res.data[0].type);
+
       })
       .catch((err) => {
         console.log(err);
       });
+    }else{
+      setOrganizationType(currentOrganization?.type);
+      setSlug(currentOrganization.slug);
+      setData(currentOrganization)
+    }
   }, []);
 
   // useEffect (() => {
@@ -52,25 +62,7 @@ const Sidebar = (props) => {
   //   }
   // }, [slug])
 
-  useEffect(() => {
-    if(slug){
-      axios
-        .get(`${baseUrl}/organizations/${slug}`, {
-          headers: {
-            Authorization: "Bearer " + accessToken(),
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        })
-        .then((res) => {
-        
-          setData(res.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
 
-    }
-  }, [slug]);
 
   useEffect(() => {
     setUserPermissions(JSON.parse(localStorage.getItem('rolePermissions')));
@@ -164,20 +156,20 @@ const Sidebar = (props) => {
                   </div>
                 </li>
                 ) : null}
-                {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_donation_analytics'))) ? (
-                <li>
-                  <div className="list-icon">
-                    <div>
-                      <Image src={donation.src} alt={"user"} />
-                    </div>
+                {((userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_donation_analytics'))) && organizationType !== 'For-Profit Organization') ? (
+                  <li>
+                    <div className="list-icon">
+                      <div>
+                        <Image src={donation.src} alt={"user"} />
+                      </div>
 
-                    <div className="ms-3">
-                      <Link href="/organization/donation-analytics">
-                        <a>Donation Analytics</a>
-                      </Link>
+                      <div className="ms-3">
+                        <Link href="/organization/donation-analytics">
+                          <a>Donation Analytics</a>
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                </li>
+                  </li>
                 ) : null}
                 {(userPermissions?.role === 'Superadmin' || (userPermissions?.permissions && userPermissions.permissions.includes('view_donation_analytics'))) ? (
                 <li>

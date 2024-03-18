@@ -4,7 +4,7 @@ import Navbar from '../../../components/Navbar'
 import { Footer } from '../../../components/Footer'
 import { Table } from "antd";
 import axios from "axios";
-import { accessToken, baseUrl, currOrgSlug } from '../../../components/Helper/index'
+import { accessToken, baseUrl, currentOrganization } from '../../../components/Helper/index'
 import moment from 'moment';
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { Button } from 'react-bootstrap';
@@ -27,7 +27,7 @@ interface NotificationSettingType {
   new_message: boolean
 }
 
-const NotificationSetting = () => {
+const RolesAndPermissions = () => {
   const toast = useToast()
   const [isLoading, setIsLoading] = useState(true)
   const [donationData, setDonationData] = useState([]);
@@ -47,7 +47,8 @@ const NotificationSetting = () => {
     in_app_notify: true,
     new_message: false
   });
-
+  // @ts-ignore: 
+  const organizationType = currentOrganization.type;
   interface DataSourceType {
     key: string;
     user: string;
@@ -239,69 +240,75 @@ const NotificationSetting = () => {
             {// @ts-ignore: 
               orgRolesPermissions?.permissions && Object.keys(orgRolesPermissions.permissions).map((groupIndex, index) => (
                 <>
-                <div className={`row ${index === 0 ? 'mt-5' : 'mt-3'} py-1 permission-heading`} style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
-                    <div className='col-md-7 col-5'>
-                    <p style={{fontSize:"19px", fontWeight:"600"}} className='text-start'>{groupIndex}</p>
-                    </div>
-                    { index == 0 &&(
-                        <>
-                        <div className='col-md-1 col-2 px-0'>
-                        <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center text-md-start'>Member</p>
-                        </div>
-                        <div className='col-md-2 col-3'>
-                        <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center'>Manager</p>
-                        </div>
-                        <div className='col-md-1 col-2 px-0'>
-                        <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center'>Admin</p>
-                        </div>
-                        </>
-                    )}
-                </div>
-                <div className={`row mt-3 ${permissionsLength === index+1 ? 'mb-5 pb-4' : ''}`}  style={{'padding': 'inherit'}}>
-                      
-                    {// @ts-ignore: 
-                      orgRolesPermissions.permissions[groupIndex].map((permission) => ( 
-                        <>
-                        <div className='col-md-7 col-5'>
-                            <p style={{fontSize:"15px"}} className='textstart'>{permission.title}</p>
-                        </div>
-                        <div className='col-md-1 col-2 text-center'>
-                        <input
-                            className="mt-2"
-                            style={{ height: "18px", width: "18px" }}
-                            type="checkbox"
-                            name='news_and_updates'
-                            checked={// @ts-ignore: 
-                              checkboxState[permission.id].Member}
-                            onChange={(e) => handleCheckboxChange(permission.id, 'Member', e.target.checked)}
-                        /> 
-                        </div>
-                        <div className='col-md-2 col-3 text-center'>
-                        <input
-                            className="mt-2"
-                            style={{ height: "18px", width: "18px" }}
-                            type="checkbox"
-                            name='news_and_updates'
-                            checked={// @ts-ignore: 
-                              checkboxState[permission.id].Manager}
-                            onChange={(e) => handleCheckboxChange(permission.id, 'Manager', e.target.checked)}
-                        />
-                        </div>
-                        <div className='col-md-1 col-2 text-center'>
-                        <input
-                            className="mt-2"
-                            style={{ height: "18px", width: "18px" }}
-                            type="checkbox"
-                            name='news_and_updates'
-                            checked={// @ts-ignore: 
-                              checkboxState[permission.id].Admin}
-                            onChange={(e) => handleCheckboxChange(permission.id, 'Admin', e.target.checked)}
-                        />
-                        </div>
-                        </>
-                    ))}
-                    <div className='col-md-1'></div>
-                </div>
+                {((groupIndex === 'Donation Listings' || groupIndex === 'Donation Analytics') && organizationType === 'For-Profit Organization') ? (
+                  null
+                ): (
+                  <>
+                  <div className={`row ${index === 0 ? 'mt-5' : 'mt-3'} py-1 permission-heading`} style={{'backgroundColor': '#dee3e6', 'padding': 'inherit'}}>
+                      <div className='col-md-7 col-5'>
+                      <p style={{fontSize:"19px", fontWeight:"600"}} className='text-start'>{groupIndex}</p>
+                      </div>
+                      { index == 0 &&(
+                          <>
+                          <div className='col-md-1 col-2 px-0'>
+                          <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center text-md-start'>Member</p>
+                          </div>
+                          <div className='col-md-2 col-3'>
+                          <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center'>Manager</p>
+                          </div>
+                          <div className='col-md-1 col-2 px-0'>
+                          <p style={{fontSize:"19px", fontWeight:"600"}} className='text-center'>Admin</p>
+                          </div>
+                          </>
+                      )}
+                  </div>
+                  <div className={`row mt-3 ${permissionsLength === index+1 ? 'mb-5 pb-4' : ''}`}  style={{'padding': 'inherit'}}>
+                        
+                      {// @ts-ignore: 
+                        orgRolesPermissions.permissions[groupIndex].map((permission) => ( 
+                          <>
+                          <div className='col-md-7 col-5'>
+                              <p style={{fontSize:"15px"}} className='textstart'>{permission.title}</p>
+                          </div>
+                          <div className='col-md-1 col-2 text-center'>
+                          <input
+                              className="mt-2"
+                              style={{ height: "18px", width: "18px" }}
+                              type="checkbox"
+                              name='news_and_updates'
+                              checked={// @ts-ignore: 
+                                checkboxState[permission.id].Member}
+                              onChange={(e) => handleCheckboxChange(permission.id, 'Member', e.target.checked)}
+                          /> 
+                          </div>
+                          <div className='col-md-2 col-3 text-center'>
+                          <input
+                              className="mt-2"
+                              style={{ height: "18px", width: "18px" }}
+                              type="checkbox"
+                              name='news_and_updates'
+                              checked={// @ts-ignore: 
+                                checkboxState[permission.id].Manager}
+                              onChange={(e) => handleCheckboxChange(permission.id, 'Manager', e.target.checked)}
+                          />
+                          </div>
+                          <div className='col-md-1 col-2 text-center'>
+                          <input
+                              className="mt-2"
+                              style={{ height: "18px", width: "18px" }}
+                              type="checkbox"
+                              name='news_and_updates'
+                              checked={// @ts-ignore: 
+                                checkboxState[permission.id].Admin}
+                              onChange={(e) => handleCheckboxChange(permission.id, 'Admin', e.target.checked)}
+                          />
+                          </div>
+                          </>
+                      ))}
+                      <div className='col-md-1'></div>
+                  </div>
+                  </>
+                )}
                 </>
             ))}
         </div>
@@ -316,4 +323,4 @@ const NotificationSetting = () => {
   )
 }
 
-export default NotificationSetting
+export default RolesAndPermissions

@@ -62,7 +62,6 @@ const Home: NextPage = () => {
   const toast = useToast()
   const [type, setType] = React.useState<string>('offering')
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [hotDeals, setHotDeals] = React.useState<any>([]);
   const [newListing, setNewListing] = React.useState<any>([]);
   const [wihslistIds, setWishListIds] = React.useState<any>([]);
   const [recentReviews, setRecentReviews] = React.useState<any>([]);
@@ -181,18 +180,6 @@ const Home: NextPage = () => {
   }, [token, declineInvitation])
 
 
-  const getHotDeals = React.useCallback(async () => {
-    setIsLoading(true);
-    let url = `${baseUrl}/listings/hot-deals`;
-    const data = await axios.get(url);
-    if (data.status === 200) {
-      setIsLoading(false);
-      setHotDeals(data.data.data);
-    } else {
-      setIsLoading(false)
-    }
-  }, []);
-
   const getNewListing = React.useCallback(async () => {
     setIsLoading(true);
     let url = `${baseUrl}/listings/new`;
@@ -267,7 +254,6 @@ const Home: NextPage = () => {
   }, []);
   
   React.useEffect(() => {
-    getHotDeals();
     getNewListing();
     getRecentReviews();
     getTrendingNow();
@@ -619,140 +605,6 @@ const Home: NextPage = () => {
         />
       </Flex>
       </>
-        {/* <InputBlock /> */}
-        {/* <InputBlock
-          type={type}
-          setType={(e: any) => setType(e)} /> */}
-
-      {/* <Box
-        maxW="7xl"
-        mx="auto"
-        px={{ base: "4", md: "8", lg: "12" }}
-        py={{ base: "6", md: "8", lg: "12" }}
-      >
-        <Text fontSize="2xl" fontWeight="semibold" py={2}>
-          Hot deals
-        </Text>
-        {isLoading &&
-          <Center h={"150px"} >
-            <Spinner
-              thickness='4px'
-              speed='0.65s'
-              emptyColor='orange.200'
-              color='orange.500'
-              size='xl'
-            />
-          </Center>
-        }
-        {!isLoading &&
-          <>
-            <ProductGrid>
-              {hotDeals.map(
-                (product: any, index: any) =>
-                  index <= 4 && <ProductSingleCard
-                    addToWhishList={(e: any) => addToWhishList(e)}
-                    removeFromWhiteList={(e: any) => removeFromWhiteList(e)}
-                    key={product.id}
-                    product={product}
-                    inWhishList={wihslistIds.some((o: any) => o.id === product.id)}
-                  />
-              )}
-            </ProductGrid>
-            {hotDeals.length === 0 &&
-              <Center h={"150px"} >
-                <Text>No Hot Deals found.</Text>
-              </Center>
-            }
-          </>
-        }
-
-      </Box>
-      <Box
-        maxW="7xl"
-        mx="auto"
-        px={{ base: "4", md: "8", lg: "12" }}
-        py={{ base: "6", md: "8", lg: "12" }}
-      >
-        <Text fontSize="2xl" fontWeight="semibold" py={2}>
-          Trending Now
-        </Text>
-        {isLoading &&
-          <Center h={"150px"} >
-            <Spinner
-              thickness='4px'
-              speed='0.65s'
-              emptyColor='orange.200'
-              color='orange.500'
-              size='xl'
-            />
-          </Center>
-        }
-        {!isLoading && (
-          <>
-            <ProductGrid>
-              {trendingNow.map(
-                (product: any, index: any) =>
-                  index <= 4 && <ProductSingleCard
-                    addToWhishList={(e: any) => addToWhishList(e)}
-                    removeFromWhiteList={(e: any) => removeFromWhiteList(e)}
-                    key={product.id}
-                    product={product}
-                    inWhishList={wihslistIds.some((o: any) => o.id === product.id)}
-                  />
-              )}
-            </ProductGrid>
-            {trendingNow.length === 0 &&
-              <Center h={"150px"} >
-                <Text>No Trending Product found.</Text>
-              </Center>
-            }
-          </>
-        )}
-      </Box>
-      <Box
-        maxW="7xl"
-        mx="auto"
-        px={{ base: "4", md: "8", lg: "12" }}
-        py={{ base: "6", md: "8", lg: "12" }}
-      >
-        <Text fontSize="2xl" fontWeight="semibold" py={2}>
-          New Listings
-        </Text>
-        {isLoading &&
-          <Center h={"200px"} >
-            <Spinner
-              thickness='4px'
-              speed='0.65s'
-              emptyColor='orange.200'
-              color='orange.500'
-              size='xl'
-            />
-          </Center>
-        }
-        {!isLoading &&
-          <>
-            <ProductGrid>
-              {newListing.map(
-                (product: any, index: any) =>
-                  index <= 4 && <ProductSingleCard
-                    addToWhishList={(e: any) => addToWhishList(e)}
-                    removeFromWhiteList={(e: any) => removeFromWhiteList(e)}
-                    key={product.id}
-                    product={product}
-                    inWhishList={wihslistIds.some((o: any) => o.id === product.id)}
-                  />
-              )}
-            </ProductGrid>
-            {newListing.length === 0 &&
-              <Center h={"150px"} >
-                <Text>No New Listing found.</Text>
-              </Center>
-            }
-          </>
-        }
-      </Box>*/}
-
-
       <Footer />
     </Box>
   );

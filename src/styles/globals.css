@@ -2568,3 +2568,10 @@ color: #E27832;
 .donation-btn {
   margin-right: 10px;
 }
+
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; /* Adjust as needed */
+}

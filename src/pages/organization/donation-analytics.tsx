@@ -9,12 +9,13 @@ import moment from 'moment';
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Head from "next/head";
 import fav from "../../assets/imgs/favicon.ico"
+import { DonationGuard } from '../../components/Guards';
 
 const DonationAnalytics = () => {
 const [donationData, setDonationData] = useState([]);
 const [slug, setSlug] = useState([]);
 const [show, setShow] = useState(false);
-
+const [isLoading, setIsLoading] = useState(true);
 interface DataSourceType {
   key: string;
   user: string;
@@ -31,7 +32,9 @@ useEffect(() => {
     }
   }).then((res)=>{
     setDonationData(res.data.data);
+    setIsLoading(false);
   }).catch((err)=>{
+    setIsLoading(false);
     console.log(err)
   })
 }, [currOrgSlug])
@@ -67,6 +70,7 @@ const columns: ColumnsType[] = [
 
 
   return (
+    <DonationGuard>
     <div style={{overflowX:"hidden"}}>
       <Head>
         {/* <title>Good Deeds | Profile</title> */}
@@ -135,6 +139,7 @@ const columns: ColumnsType[] = [
     </div>
     <Footer/>
     </div>
+    </DonationGuard>
   )
 }
 

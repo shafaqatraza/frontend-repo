@@ -8,7 +8,7 @@ import DonationListing from '../../../components/DonationListing';
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useRouter } from 'next/router';
 import axios from "axios";
-import { accessToken, baseUrl } from "../../../components/Helper/index";
+import { accessToken, baseUrl, currentOrganization } from "../../../components/Helper/index";
 import { useToast } from '@chakra-ui/toast'
 import Head from "next/head";
 import fav from "../../../assets/imgs/favicon.ico"
@@ -25,8 +25,14 @@ const Listings = () => {
     permissions: [] as any
   });
   const toast = useToast()
+  // @ts-ignore: 
+  const organizationType = currentOrganization.type;
 
   useEffect( ()=> {
+    if(organizationType === 'For-Profit Organization'){
+      setSelectedButton(2)
+    }
+
     axios
     .get(`${baseUrl}/organizations`, {
       headers: {
@@ -36,17 +42,12 @@ const Listings = () => {
     })
     .then((res) => {
       setOrgSlug(res.data[0].slug);
-      setOrgType(res.data[0].organization_type_id);
-      if(res.data[0].organization_type_id === 3){
-        setSelectedButton(2)
-      }
-
     })
     .catch((err) => {
       console.log(err);
     });
 
-  }, [])
+  }, [organizationType])
 
   function getPermissions(){ 
     const rolePermissionsString = localStorage.getItem('rolePermissions');
@@ -152,7 +153,7 @@ const Listings = () => {
         <div className='d-flex justify-content-md-between justify-content-center pb-4 flex-wrap'>
           <div className="btn-list mt-5">
             <div className="d-flex">
-              {orgType && orgType !== 3 && (
+              {organizationType !== 'For-Profit Organization' && (
                 <button
                   onClick={handleClickOne}
                   className={

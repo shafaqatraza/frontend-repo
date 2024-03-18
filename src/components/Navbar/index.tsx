@@ -1,4 +1,3 @@
-import { AddIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -8,35 +7,24 @@ import {
   Link,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   useDisclosure,
   Badge,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   Stack,
-  Input,
   Text,
-  Avatar,
-  Spacer,
-  Spinner,
 } from '@chakra-ui/react'
 
-import { ReactNode, useEffect, useState, useCallback, useRef } from 'react'
+import { ReactNode, useEffect, useState, useRef } from 'react'
 import { FaUserCircle } from 'react-icons/fa'
-import { Modal } from "react-bootstrap";
 import { FiHeart, FiMessageSquare, FiLogIn, FiBell } from 'react-icons/fi'
 import { NavbarDrawer } from './drawer'
 import { useMediaQuery } from '@chakra-ui/react'
 import Image from 'next/image'
 import logo from '../../assets/imgs/gooddeeds-logo.png'
 import logoHorizontal from '../../assets/imgs/logo/newlogo.png'
-const Links = ['Dashboard', 'Projects', 'Team']
 import { MyModal } from '../MyModal'
 import { useRouter } from 'next/router'
-
 import { SignupModal } from '../onboarding/Signup/SignupModal'
 import { Step1 } from '../createProfileModels/step1'
 import { Step1Form } from '../createProfileModels/step1Form'
@@ -53,36 +41,20 @@ import NoImage from '../../assets/imgs/profile/default-profile.png'
 import gdlogo from '../../assets/imgs/gdlogopegiun.png'
 import explorepegiun from '../../assets/imgs/explorepegiun.png'
 import exchangepegiun from '../../assets/imgs/exchangepegiun.png'
-import camera from "../../assets/imgs/camera.png";
-import { useToast } from '@chakra-ui/toast'
 import { formatDistanceToNow, format } from 'date-fns';
 import Head from "next/head";
 import { useOrganizationFormContext } from '../organizationForm/organizationFormContext';
+import { isLogin, Logout, GOOGLE_API_KEY, accessToken, baseUrl, getLoginData } from '../Helper/index'
+import { isMobile } from 'react-device-detect'
+import axios from 'axios'
+import Pusher from 'pusher-js'
+import { Pusher_key } from '../../../config'
 import {
-
-  baseImgUrl,
   userId,
-  listingData,
-  removeListinData,
-  notificationHandler,
   currentOrganization,
   currOrgId,
   currOrgSlug
 } from '../../components/Helper/index';
-// import Img1 from '../../assets/imgs/screen1.png'
-import Img1 from '../../assets/imgs/logo/mainlogo.png'
-import Img2 from '../../assets/imgs/screen2.png'
-import Img3 from '../../assets/imgs/screen3.png'
-import Img4 from '../../assets/imgs/screen4.png'
-import { isLogin, Logout, GOOGLE_API_KEY, accessToken, baseUrl, totalMessageNotification, getLoginData } from '../Helper/index'
-import { isMobile } from 'react-device-detect'
-import axios from 'axios'
-import Pusher from 'pusher-js'
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-import { Pusher_key } from '../../../config'
-
-
 
 interface ModelType {
   login: boolean
@@ -97,7 +69,7 @@ interface ModelType {
   welcomeScreen3: boolean
   welcomeScreen4: boolean
 }
-
+const Links = ['Dashboard', 'Projects', 'Team']
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
     px={2}
@@ -134,18 +106,14 @@ export default function Navbar(props: any) {
   const [organizationNotifications, setOrganizationNotifications] = useState(0)
   const [notificationsCount, setNotificationsCount] = useState(0)
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [conversations, setConversations] = useState()
-  const toast = useToast()
   const [isSmallerThan850] = useMediaQuery('(max-width: 850px)');
   const [isSmallerThan991] = useMediaQuery('(max-width: 991px)');
   const [isSmallerThan767] = useMediaQuery('(max-width: 767px)');
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [showCreateOrg, setShowCreateOrg] = useState(false);
   const [orgData, setOrgData] = useState([]);
   const [orgSlug, setOrgSlug] = useState("");
   const [orgId, setOrgId] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [image, setImage] = useState(null);
   const [isOrganization, setIsOrganization] = useState(false);
   const { openModal } = useOrganizationFormContext();
@@ -163,85 +131,6 @@ export default function Navbar(props: any) {
     welcomeScreen4: false
   })
 
-  const [formData, setFormData] = useState({
-    full_name: "",
-    organization_type_id: 7,
-    business_number: "",
-    business_email: "",
-    about: "",
-    website_url: "",
-    location: "",
-    profile_picture: []
-  });
-
-  const handleThumbnailClick = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.click();
-    input.onchange = (event: any) => {
-      const file = event.target.files[0];
-      setImage(file);
-      // @ts-ignore: Unreachable code error
-      setThumbnail(URL.createObjectURL(file));
-      // @ts-ignore: Unreachable code error
-      // setFormData((prevFormData) => ({
-      //   ...prevFormData,
-      //   thumbnail: [file],
-      // }));
-
-      setFormData({ ...formData, profile_picture: [file] })
-    };
-    // input.click();
-  };
-
-  const submitCreateOrganization = (e: any) => {
-    e.preventDefault();
-    // console.log(formData, "form");
-    const form = new FormData();
-    form.append("full_name", formData.full_name);
-    form.append("business_email", formData.business_email);
-    form.append("business_number", formData.business_number);
-    form.append("about", formData.about);
-    form.append("website_url", formData.website_url);
-    form.append("organization_type_id",
-      // @ts-ignore: Unreachable code error
-      formData.organization_type_id);
-    form.append("location", formData.location);
-    formData.profile_picture.forEach((file) => form.append("profile_picture", file));
-    axios.post(`${baseUrl}/organizations`, form, {
-      headers: {
-        Authorization: 'Bearer ' + accessToken(),
-      }
-    })
-      .then((response) => {
-        // console.log('org res', response.data);
-        setShowSuccess(true);
-        setShowCreateOrg(false);
-        router.push("/organization")
-        // Handle response data here
-      })
-      .catch((error) => {
-        // console.log('errrr org', error.response.data.message);
-        toast({ title: error?.response?.data.message, status: "error" })
-
-        // let errors = error.response?.data.errors;
-        // Object.entries(errors).map((error) => {
-        //   toast({ title: error[1], status: "error" })
-        //   // console.log('single error', error)
-        // });
-
-      });
-
-  }
-
-  const closeCreateOrgModal = () => {
-    setShowCreateOrg(false)
-  }
-
-  const closeCreateOrgSuccessModal = () => {
-    setShowSuccess(false)
-  }
 
   const [data, setData] = useState<any>({
     username: '',
@@ -321,39 +210,16 @@ export default function Navbar(props: any) {
           setOrgData(res.data);
           setOrgSlug(res.data[0].slug)
           setOrgId(res.data[0].id)
-        }).catch((err) => {
-          // console.log(err);
-        })
+        }).catch((err) => {})
       }
 
       if (router.asPath.startsWith('/organization')) {
         if (isLogin()) {
-          // if(!isMobile){
             setIsOrganization(true);
-            axios.get(`${baseUrl}/organizations`, {
-              headers: {
-                Authorization: 'Bearer ' + accessToken(),
-              }
-            }).then((res) => {
-              
-              if (router.asPath.startsWith('/organization')) {
-                if(!currOrgSlug){
-                  localStorage.setItem("currentOrganization", JSON.stringify(res.data[0]));
-                }
-              }
-    
-            }).catch((err) => {
-              // console.log(err);
-            })
-          // }else{
-          //   router.push('/donor-management-portal');
-          // }
         }else{
           router.push("/");
         }
       }else{ 
-        //@ts-ignore
-        localStorage.setItem('currentOrganization', null);
         getChats()
       }
 
@@ -413,7 +279,7 @@ export default function Navbar(props: any) {
     
 
     useEffect(() => {
-      
+      if(isLogin()){
         axios.get(`${baseUrl}/notifications`, {
           headers: {
             Authorization: 'Bearer ' + accessToken(),
@@ -452,6 +318,7 @@ export default function Navbar(props: any) {
         .catch((err) => {
           console.error('Error fetching notifications:', err);
         });
+      }
     }, []);
 
     
@@ -589,18 +456,20 @@ export default function Navbar(props: any) {
     }
   };
 
-  const createOrganization = () => {
-    if(isMobile){
-      router.push('/donor-management-portal');
-    }else{
-      setShowCreateOrg(true)
+  const handleLogout = async () => {
+    try {
+      await Logout();
+      router.push('/'); // Redirect after successful logout
+    } catch (error) {
+      // Handle logout errors appropriately, e.g., display an error message
+      console.error('Logout error:', error);
     }
-  }
+  };
+
 
   return (
     <>
       <Box bg="grey.100" p={4} boxShadow="base" position="relative">
-        {/* <ToastContainer /> */}
         <Head>
           <script src={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`}></script>
           <script
@@ -1078,7 +947,6 @@ export default function Navbar(props: any) {
                         :
                         <Link
                           href='javascript:void(0)'
-                          // onClick={() => createOrganization()}
                           onClick={openModal}
                           _hover={{
                             textDecoration: 'none',
@@ -1088,10 +956,7 @@ export default function Navbar(props: any) {
                         </Link>
                       }
                       <Link
-                        onClick={() => {
-                          Logout()
-                          router.push('/')
-                        }}
+                        onClick={handleLogout}
                         _hover={{
                           textDecoration: 'none',
                           color: '#dd6b20'
@@ -1125,7 +990,6 @@ export default function Navbar(props: any) {
                             setShowModel(dubShow)
                           }
                         }}
-                      //   leftIcon={<AddIcon />}
                       >
                         Create a listing
                       </Button>
@@ -1140,157 +1004,7 @@ export default function Navbar(props: any) {
 
 
         </Flex>
-        {/* Create organization modal */}
-        <Modal show={showCreateOrg} onHide={closeCreateOrgModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Create Organization</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div className="p-3">     
-                    <form>
-                    <div className="mb-3">
-                        <label className="form-label fw-bold">Email</label>
-                        <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
-                        type="email"
-                        className="form-control"
-                        value={formData.business_email}
-                        onChange={(event) =>
-                            setFormData({ ...formData, business_email: event.target.value })
-                        }
-                        name="business_email"
-                        id="email"
-                        placeholder="Enter an email address"
-                        required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label fw-bold">Organization Name</label>
-                        <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
-                        type="text"
-                        className="form-control"
-                        id="admin-name"
-                        value={formData.full_name}
-                        onChange={(event) =>
-                            setFormData({ ...formData, full_name: event.target.value })
-                        }
-                        name="full_name"
-                        placeholder="Enter an organization name"
-                        required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label fw-bold">Address</label>
-                        <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
-                        type="text"
-                        className="form-control"
-                        id="address"
-                        value={formData.location}
-                        onChange={(event) =>
-                            setFormData({ ...formData, location: event.target.value })
-                        }
-                        name="location"
-                        placeholder="Enter an organization address"
-                        required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label fw-bold">
-                        Business Number
-                        </label>
-                        <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
-                        type="text"
-                        className="form-control"
-                        id="business-number"
-                        value={formData.business_number}
-                        onChange={(event) =>
-                            setFormData({ ...formData, business_number: event.target.value })
-                        }
-                        name="business_number"
-                        placeholder="Enter mobile number"
-                        required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label fw-bold">Website Url</label>
-                        <Input
-                        style={{ backgroundColor: "#E8E8E8" }}
-                        type="tel"
-                        className="form-control"
-                        id="phone-number"
-                        value={formData.website_url}
-                        onChange={(event) =>
-                            setFormData({ ...formData, website_url: event.target.value })
-                        }
-                        name="website_url"
-                        placeholder="Enter website url"
-                        required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label fw-bold">
-                        Company Description
-                        </label>
-                        <textarea
-                        style={{ backgroundColor: "#E8E8E8" }}
-                        className="form-control"
-                        id="company-description"
-                        rows={3}
-                        value={formData.about}
-                        onChange={(event) =>
-                            setFormData({ ...formData, about: event.target.value })
-                        }
-                        name="about"
-                        placeholder="Enter comapny description"
-                        required
-                        ></textarea>
-                    </div>
-                    <label
-                        style={{
-                        fontWeight: "500",
-                        fontSize: "20px",
-                        lineHeight: "24px",
-                        }}
-                        className="form-label"
-                    >
-                        Upload a Profile Picture
-                    </label>
-                    <div className="upload-pic d-flex justify-content-center align-items-center">
-                        {thumbnail ? (
-                        <Image src={thumbnail} width={200} height={200} />
-                        ) : (
-                        <Image
-                            src={camera.src}
-                            onClick={handleThumbnailClick}
-                            alt="Thumbnail placeholder"
-                            width={39}
-                            height={36}
-                        />
-                        )}
-                    </div>
-                    </form>
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <button onClick={submitCreateOrganization} type="submit" className="btn-reset mt-1 justify-content-end">Submit</button>
-            </Modal.Footer>
-        </Modal>
-        
-        {/* Success message modal on organization creation */}
-        <Modal show={showSuccess} onHide={closeCreateOrgSuccessModal} >
-          <div className="p-3">
-            <p className="modal-txt text-center p-5 mt-3">
-              Organization Created Successfully
-            </p>
-          </div>
-          <div className="d-flex justify-content-center pb-5">
-            <button onClick={() => setShowSuccess(false)} className="modal-btn">Got it</button>
-          </div>
-        </Modal>
-
+     
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
