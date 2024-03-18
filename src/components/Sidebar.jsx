@@ -47,8 +47,6 @@ const Sidebar = (props) => {
     }
   }, []);
 
- // mowofif982@picvw.com
-
   // useEffect (() => {
   //   if(slug !== ""){
   //     axios.get(`${baseUrl}/org-role-permissions/member?org=${slug}`, {
