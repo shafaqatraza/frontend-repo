@@ -1,53 +1,13 @@
 import {
   Box,
   Center,
-  Spinner,
-  Flex,
-  GridItem,
   Text,
   Image,
-  Skeleton,
-  Tag,
-  AspectRatio,
-  MenuButton,
-  Menu,
-  MenuItem,
-  MenuList,
-  TagLabel,
-  Icon,
-  IconButton,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Avatar,
-  HStack,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  TabIndicator,
-  Button,
-  Divider,
-  Link,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState} from "react";
 import {
   baseUrl,
-  baseImgUrl,
-  isLogin,
   accessToken,
-  getLoginData,
 } from "../Helper/index";
 import Rec1 from "../../assets/imgs/Rec1.png";
 import Rect2 from "../../assets/imgs/Rect2.png";
@@ -56,7 +16,6 @@ import Rect4 from "../../assets/imgs/Rect4.png";
 import Re3 from "../../assets/imgs/Re3.png";
 import pennyandstudents from "../../assets/imgs/pennyandstudents.png";
 import { useRouter } from 'next/router'
-import pennyanimals from "../../assets/imgs/Rect2.png";
 import axios from "axios";
 import ProductGrids from "../ProductGrids";
 import { ProductSingleCard } from "../ProductSingleCard";
@@ -68,14 +27,6 @@ const VolunteerCategories = () => {
   const router = useRouter()
   const [hotDeals, setHotDeals] = useState([]);
   const [wihslistIds, setWishListIds] = useState([]);
-
-  const getHotDeals = React.useCallback(async () => {
-    let url = `${baseUrl}/listings/hot-deals`;
-    const data = await axios.get(url);
-    if (data.status === 200) {
-      setHotDeals(data.data.data);
-    }
-  }, []);
 
   const addToWhishList = async (id) => {
     let fd = new FormData();
@@ -113,7 +64,15 @@ const VolunteerCategories = () => {
     }
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { 
+    const getHotDeals = async () => {
+      let url = `${baseUrl}/listings/hot-deals`;
+      const data = await axios.get(url);
+      if (data.status === 200) {
+        setHotDeals(data.data.data);
+      }
+    }
+    
     getHotDeals();
   }, []);
 

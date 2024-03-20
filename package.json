@@ -24,6 +24,7 @@
     "blob-polyfill": "^7.0.20220408",
     "bootstrap": "^5.2.3",
     "chakra-ui-autocomplete": "^1.4.5",
+    "crypto-js": "^4.2.0",
     "final-form": "^4.20.4",
     "formik": "^2.2.9",
     "framer-motion": "^4",
@@ -50,9 +51,11 @@
     "slick-carousel": "^1.8.1",
     "stripe": "^12.12.0",
     "styled-components": "^5.3.3",
+    "stylis": "^4.3.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "16.11.7",
     "@types/react": "18.0.1",
     "@types/react-slick": "^0.23.10",

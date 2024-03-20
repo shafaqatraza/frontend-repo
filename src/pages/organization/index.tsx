@@ -1,22 +1,14 @@
 import React, { useEffect } from "react";
 import { Footer } from "../../components/Footer";
 import Navbar from "../../components/Navbar";
-import { useState, createContext, useContext } from "react";
-import user from "../../assets/imgs/user.png";
+import { useState} from "react";
 import userB from "../../assets/imgs/userB.png";
 import heartB from "../../assets/imgs/heartB.png";
-import heart from "../../assets/imgs/heart.png";
-import home from "../../assets/imgs/home.png";
-import setting from "../../assets/imgs/setting.png";
-import volunteer from "../../assets/imgs/volunteer.png";
-import listing from "../../assets/imgs/listing.png";
-import donation from "../../assets/imgs/donation.png";
 import giving from "../../assets/imgs/giving.png";
-import { color, Image, Button } from "@chakra-ui/react";
-import Candadogo from "../../assets/imgs/Canadogo.png";
+import {Image, Button } from "@chakra-ui/react";
 import Link from "next/link";
 import Sidebar from "../../components/Sidebar";
-import { accessToken, baseUrl, currOrgId, currOrgSlug, currentOrganization, isLogin } from "../../components/Helper/index";
+import { accessToken, baseUrl, currentUserData, currOrgSlug, currentOrganization, isLogin } from "../../components/Helper/index";
 import axios from "axios";
 import { useRouter } from 'next/router'
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -29,10 +21,6 @@ import fav from "../../assets/imgs/favicon.ico"
 const organization = () => {
   const router = useRouter();
   const toast = useToast()
-  const [user, setUser] = useState(null);
-  const [slug, setSlug] = useState([]);
-  const [organization, setOrganization] = useState([]);
-
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [subscriptionLoading, setSubscriptionLoading] = useState(true);
@@ -44,65 +32,29 @@ const organization = () => {
     permissions: [] as any
   });
 
-  function getPermissions(){ 
-    const rolePermissionsString = localStorage.getItem('rolePermissions');
-    if (rolePermissionsString !== null) {
-      const rolePermissions = JSON.parse(rolePermissionsString);
-      setUserPermissions(rolePermissions);
-    }
-  }
+  
 
   useEffect( ()=> {
+    function getPermissions(){ 
+      const rolePermissionsString = localStorage.getItem('rolePermissions');
+      if (rolePermissionsString !== null) {
+        const rolePermissions = JSON.parse(rolePermissionsString);
+        setUserPermissions(rolePermissions);
+      }
+    }
+
     getPermissions()
   }, [])
 
 
-  useEffect(() => {
-    if(isLogin() && !currentOrganization){ 
-      window.location.reload();
-    }
-
-    axios 
-        .get(`${baseUrl}/organizations`, {
-          headers: {
-            Authorization: "Bearer " + accessToken(),
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        })
-        .then((res) => {
-          
-          setSlug(res.data[0]?.full_name);
-          setOrganization(res.data[0]?.slug);
-        })
-        .catch((err) => {
-          console.log(err);
-      });
-  }, []);
-
-
-
-
-  
+  // useEffect(() => {
+  //   if(isLogin() && !currentOrganization){ 
+  //     window.location.reload();
+  //   }
+  // }, [currentOrganization]);
 
   useEffect(() => {
-    axios
-      .get(`${baseUrl}/profile/info`, {
-        headers: {
-          Authorization: "Bearer " + accessToken(),
-          // 'Content-Type': 'application/x-www-form-urlencoded'
-        },
-      })
-      .then((response) => {
-        const messageData = response.data.message;
-        setUser(messageData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    if(currentOrganization){
+    if(currOrgSlug){
     axios
       .get(`${baseUrl}/volunteer-listings/all/${currOrgSlug}`, {
         headers: {
@@ -135,7 +87,7 @@ const organization = () => {
         setSubscriptionLoading(false)
       })
     }
-  }, [currentOrganization, currOrgSlug]);
+  }, [currOrgSlug]);
   
 
   function handleCrearePaymentPlan(){
@@ -221,7 +173,7 @@ const organization = () => {
                   <span className="welc-txt2">
                     {
                       // @ts-ignore: Unreachable code error
-                      user?.username
+                      currentUserData?.full_name
                     }
                   </span>
                 </div>
@@ -244,7 +196,7 @@ const organization = () => {
                         <p className="mt-3 card-txt">
                           {
                             // @ts-ignore: Unreachable code error
-                            user?.username
+                            currentUserData?.full_name
                           }
                         </p>
                         <div className="mt-3">
@@ -255,10 +207,6 @@ const organization = () => {
                         <div className="mt-3">
                           <Link href="/organization/profile">
                             <a className="orga-txt">
-                              {
-                                // @ts-ignore: Unreachable code error
-                                slug?.full_name
-                              }
                             </a>
                           </Link>
                         </div>
@@ -271,7 +219,7 @@ const organization = () => {
                         <p className="mt-3 card-txt">
                           {
                             // @ts-ignore: Unreachable code error
-                            slug
+                            currentOrganization?.full_name
                           }
                         </p>
                         <div className="mt-3">
