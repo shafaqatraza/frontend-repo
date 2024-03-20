@@ -23,7 +23,7 @@ const Sidebar = (props) => {
   
   
   useEffect(() => {
-    if(!currentOrganization){
+    if(!currentOrganization){ 
     axios
       .get(`${baseUrl}/organizations`, {
         headers: {
@@ -76,9 +76,7 @@ const Sidebar = (props) => {
             <div className="ps-2">
               <div className="main-round-img">
                 <div className="side-profile-img">
-                  {!isLoaded && <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </Spinner>}
+                  {/* {!isLoaded && <Spinner animation="border" role="status"></Spinner>} */}
                   <Image
                     // style={{ height: "165px", width: "340px" }}
                     className="img-fluid"

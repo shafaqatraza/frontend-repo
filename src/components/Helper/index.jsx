@@ -1,4 +1,13 @@
-import { baseUrl as baseURL, baseImgUrl as baseImgURL, GOOGLE_API_KEY as GOOGLE_API, STRIPE_PUB_KEY_TEST as Stripe_Pub_Key_Test, STRIPE_PUB_KEY_LIVE as Stripe_Pub_Key_Live } from "../../../config";
+import { 
+    baseUrl as baseURL, 
+    baseImgUrl as baseImgURL, 
+    GOOGLE_API_KEY as GOOGLE_API, 
+    STRIPE_PUB_KEY_TEST as Stripe_Pub_Key_Test, 
+    STRIPE_PUB_KEY_LIVE as Stripe_Pub_Key_Live,
+    ORGANIZATION_SECRET_KEY as Organization_Secret_Key
+} from "../../../config";
+import CryptoJS from 'crypto-js';
+
 export const isLogin = () => {
     if (typeof window !== 'undefined') {
         let storageVal = {};
@@ -44,12 +53,28 @@ export const currentUser = () => {
     return "";
 };
 
+// Function to decrypt organization data
+const decryptOrganizationData = (encryptedData) => {
+    try {
+        // Decrypt the encrypted data and parse it as JSON
+        const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, Organization_Secret_Key);
+        const decryptedData = JSON.parse(decryptedBytes.toString(CryptoJS.enc.Utf8));
+        return decryptedData;
+    } catch (error) {
+        console.error('Error decrypting organization data:', error);
+        // Return null or an empty object in case of decryption error
+        return null;
+    }
+};
 
 export const currentOrganizationInfo = () => {
     if (typeof window !== 'undefined') {
         let orgData = {};
         if (localStorage.getItem('currentOrganization') !== null) {
-            orgData = JSON.parse(localStorage.getItem('currentOrganization'));
+
+            const encryptedData = localStorage.getItem('currentOrganization');
+            // Parse the decrypted data as JSON
+            orgData = decryptOrganizationData(encryptedData);
             return orgData;
         }
     }
@@ -61,7 +86,9 @@ export const currOrganizationId = () => {
     if (typeof window !== 'undefined') {
         let organizationId = null;
         if (localStorage.getItem('currentOrganization') !== null) {
-            organizationId = JSON.parse(localStorage.getItem('currentOrganization'));
+            const encryptedData = localStorage.getItem('currentOrganization');
+
+            organizationId = decryptOrganizationData(encryptedData);
             return organizationId? organizationId.id : null;
         }
     }
@@ -72,7 +99,8 @@ export const currOrganizationSlug = () => {
     if (typeof window !== 'undefined') {
         let organizationSlug = null;
         if (localStorage.getItem('currentOrganization') !== null) {
-            organizationSlug = JSON.parse(localStorage.getItem('currentOrganization'));
+            const encryptedData = localStorage.getItem('currentOrganization');
+            organizationSlug = decryptOrganizationData(encryptedData);
             return organizationSlug? organizationSlug.slug : null;
         }
     }
@@ -184,3 +212,4 @@ export const listingData = contactListingData();
 export const GOOGLE_API_KEY = GOOGLE_API;
 export const STRIPE_PUB_KEY_TEST = Stripe_Pub_Key_Test;
 export const STRIPE_PUB_KEY_LIVE = Stripe_Pub_Key_Live;
+export const ORGANIZATION_SECRET_KEY = Organization_Secret_Key;

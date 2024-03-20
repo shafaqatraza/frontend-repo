@@ -13,7 +13,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "typeRoots": ["node_modules/@types", "./types"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/createProfileModels/step2/step2Form.jsx", "src/components/onboarding/Signup/SignupForm.jsx", "src/components/onboarding/Login/LoginForm.jsx", "src/components/Sidebar.jsx", "src/pages/donation-listing.jsx"],
   "exclude": ["node_modules"]
