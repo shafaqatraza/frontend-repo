@@ -66,7 +66,7 @@ const Sidebar = (props) => {
 
   useEffect(() => {
     setUserPermissions(JSON.parse(localStorage.getItem('rolePermissions')));
-  }, [])
+  })
  
   return (
     <>

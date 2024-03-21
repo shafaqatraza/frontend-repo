@@ -17,9 +17,9 @@ import axios from "axios";
 import { useToast } from "@chakra-ui/toast";
 import { useMutation, QueryClient } from "react-query";
 import { PasswordField } from "../../PasswordField";
-import { baseUrl } from "../../../../config";
 import { useRouter } from 'next/router'
-
+import { accessToken, baseUrl, ORGANIZATION_SECRET_KEY} from '../../Helper/index'
+import CryptoJS from 'crypto-js';
 export const LoginForm = (props) => {
   let { setShowModel, show } = props;
   const router = useRouter()
@@ -31,6 +31,7 @@ export const LoginForm = (props) => {
     email: "",
     password: password,
   });
+
   const mutation = useMutation(
     (formData) => {
       setIsLoading(true);
@@ -41,9 +42,6 @@ export const LoginForm = (props) => {
         let userStatus = data.data.user.user_profile;
         localStorage.setItem("loggedInUser", JSON.stringify(data.data));
         toast({ title: "Login successfully", status: "success" });
-        if (router.pathname == '/') {
-          router.push('/')
-        }
 
         if (!data.data.user.verified_email) {
           let dubShow = { ...show };
@@ -64,6 +62,23 @@ export const LoginForm = (props) => {
           dubShow.login = false;
           setShowModel(dubShow);
           setIsLoading(false);
+
+          //Get organization data, if exists
+          axios.get(`${baseUrl}/organizations`, {
+            headers: {
+                Authorization: 'Bearer ' + accessToken(),
+            }
+          }).then((res) => { 
+            // Encrypt organization data before storing it in local storage
+            const encryptedOrganizationData = CryptoJS.AES.encrypt(JSON.stringify(res.data[0]), ORGANIZATION_SECRET_KEY).toString();
+            // Set organization info in local storage
+            localStorage.setItem('currentOrganization', encryptedOrganizationData);
+          }).catch((err) => {})
+
+        }
+
+        if (router.pathname == '/') {
+          router.push('/')
         }
       },
       onError: (data) => {
