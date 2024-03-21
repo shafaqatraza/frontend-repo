@@ -65,7 +65,7 @@ function MyApp ({ Component, pageProps }: AppProps) {
                         Authorization: 'Bearer ' + accessToken(),
                     }
                 }).then((res: any) => {
-
+                  
                   // Encrypt organization data before storing it in local storage
                   const encryptedOrganizationData = encryptOrganizationData(res.data[0]);
                   // Set organization info in local storage

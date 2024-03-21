@@ -44,7 +44,7 @@ const organization = () => {
     }
 
     getPermissions()
-  }, [])
+  })
 
 
   // useEffect(() => {
